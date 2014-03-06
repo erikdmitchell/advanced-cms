@@ -1,0 +1,30 @@
+.umb-meta-box {
+	/* overflow: hidden; */
+}
+.umb-meta-box .meta-row {
+	margin: 5px 0;
+	overflow: hidden;
+}
+.umb-meta-box .meta-row label	{
+	font-weight: bold;
+	display: inline-block;
+	width: auto;
+	margin-right: 10px;
+	vertical-align: top;
+}
+.umb-meta-box .meta-row input[type=checkbox] {
+	margin: 0;
+}
+.uploader.button {
+	width: 68px;
+}
+.uploader-input {
+/* 	margin-left: 85px; */
+}
+.umb-meta-box .meta-row .umb-media-thumb {
+	clear: left;
+}
+.umb-meta-box .textarea {
+	width: 75%;
+	height: 100px;
+}

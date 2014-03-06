@@ -17,34 +17,20 @@ class MDW_Admin_Columns {
 		
 		return $columns;
 	}
-	
-	
+		
 	public function custom_colun_row($column_name,$post_id) {
 		$custom_fields=get_post_custom($post_id);
 	
 		foreach ($this->config['columns'] as $col) :
 			if ($col['slug']==$column_name) :
-				echo $custom_fields[$col['slug']][0];
+				if (isset($custom_fields[$col['slug']][0])) :
+					echo $custom_fields[$col['slug']][0];
+				else :
+					echo '';
+				endif;
 			endif;
 		endforeach;
 	}
 
 }
-
-
-$arr=array(
-	'post_type' => 'suppliers',
-	'columns' => array(
-		array (
-			'slug' => '_mdwmb_url',
-			'label' => 'URL'
-		),
-		array(
-			'slug' => '_mdwmb_address',
-			'label' => 'Address'
-		)
-	),
-);
-
-$mdw_admin_columns=new MDW_Admin_Columns($arr);
 ?>

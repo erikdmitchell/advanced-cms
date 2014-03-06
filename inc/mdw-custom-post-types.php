@@ -4,7 +4,7 @@ class MDW_CPT {
 	protected $post_types=array();
 
 	function __construct() {
-		add_action('init',array($this,'create_post_types'));
+		add_action('init',array($this,'create_post_types'));		
 	}
 	
 	function create_post_types() {
