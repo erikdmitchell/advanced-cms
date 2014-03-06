@@ -38,6 +38,14 @@ Usage instructions
    );
  end
  ```
+```ruby
+bitbucket = BitBucket.new do |config|
+  config.oauth_token   = 'request_token'
+  config.oauth_secret  = 'request_secret'
+  config.client_id     = 'consumer_key'
+  config.client_secret = 'consumer_secret'
+  config.adapter       = :net_http
+end
 
 Changelog
 ===========
