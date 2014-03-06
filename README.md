@@ -15,14 +15,14 @@ Usage instructions
  * The custom taxonomy class is already called and stored in $mdw_custom_taxonomies.
  * Use $mdw_custom_taxonomies->add_taxonomy($taxonomy,$object_type,$label); to add taxonomies.
  * The parameters:
- ..* @param string $taxonomy - the taxonomy name (slug form)
- ..* @param string $object_type - name of the object type ie: post,page,custom_post_type
- ..* @param string $label - the taxonomy display name
+  * @param string $taxonomy - the taxonomy name (slug form)
+  * @param string $object_type - name of the object type ie: post,page,custom_post_type
+  * @param string $label - the taxonomy display name
 
 ### Custom Admin Columns
  * Initiate the class new MDW_Admin_Columns($config) and that will generate the columns.
  * @param array $config requires the post_type and one or more columns, which require a slug and label:
- ```php
+ 
    $config=array(
  	'post_type' => 'sample',
 	'columns' => array(
@@ -36,16 +36,7 @@ Usage instructions
 		)
 	),
    );
- end
- ```
-```ruby
-bitbucket = BitBucket.new do |config|
-  config.oauth_token   = 'request_token'
-  config.oauth_secret  = 'request_secret'
-  config.client_id     = 'consumer_key'
-  config.client_secret = 'consumer_secret'
-  config.adapter       = :net_http
-end
+
 
 Changelog
 ===========
