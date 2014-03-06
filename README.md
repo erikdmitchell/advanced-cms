@@ -22,7 +22,7 @@ Usage instructions
 ### Custom Admin Columns
  * Initiate the class new MDW_Admin_Columns($config) and that will generate the columns.
  * @param array $config requires the post_type and one or more columns, which require a slug and label:
- `
+ <pre><code>
  $config=array(
  	'post_type' => 'sample',
 	'columns' => array(
@@ -36,7 +36,7 @@ Usage instructions
 		)
 	),
  );
- `
+ </code></pre>
 
 
 Changelog
