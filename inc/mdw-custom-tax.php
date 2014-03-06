@@ -26,6 +26,7 @@ class mdw_Custom_Tax {
 	 * adds taxonomies (slug) to our taxonomies array
 	 * @param string $taxonomy - the taxonomy name (slug form)
 	 * @param string $object_type - name of the object type ie: post,page,custom_post_type
+	 * @param string $label - the taxonomy display name
 	**/
 	public function add_taxonomy($taxonomy,$object_type,$label) {
 		$arr=array(
