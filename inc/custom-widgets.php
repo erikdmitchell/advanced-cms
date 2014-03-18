@@ -15,7 +15,6 @@ class MDW_Widget_Creator {
 		foreach ($this->params as $params) :
 			$mdw_widget_factory->register('My_Widget_Class',$params);
 		endforeach;
-		//$mdw_widget_factory->register('My_Widget_Class',$params2);
 	
 		foreach ($mdw_widget_factory->widgets as $key => $widget) :
 			$wp_widget_factory->widgets[$key]=$widget;
@@ -54,6 +53,8 @@ class My_Widget_Class extends WP_Widget {
  		);
  		$control_ops = array( 'id_base' => $id );
  		parent::__construct( $id, $params['title'], $widget_ops, $control_ops );
+ 		
+ 		$this->fields=$params['fields'];		
  	}
  	
 	/**
@@ -68,7 +69,15 @@ class My_Widget_Class extends WP_Widget {
 		echo $args['before_widget'];
 		if ( ! empty( $title ) )
 			echo $args['before_title'] . $title . $args['after_title'];
-		echo __( 'Hello, World!', 'text_domain' );
+
+			foreach ($instance as $key => $value) :
+				if ($key!='title') :
+					echo '<div class="'.$args['id'].' '.$key.'" id="'.$args['id'].'_'.$key.'">';
+						echo __($value,'text_domain');
+					echo '</div>';
+				endif;
+			endforeach;
+
 		echo $args['after_widget'];
 	}
 
@@ -78,18 +87,24 @@ class My_Widget_Class extends WP_Widget {
 	 * @param array $instance The widget options
 	 */
 	public function form( $instance ) {
-		if ( isset( $instance[ 'title' ] ) ) {
-			$title = $instance[ 'title' ];
-		}
-		else {
-			$title = __( 'New title', 'text_domain' );
-		}
-		?>
-		<p>
-		<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> 
-		<input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
-		</p>
-		<?php 
+		foreach ($this->fields as $field) :
+			$value=$this->get_input_value($field['id'],$instance);
+			echo '<p>';
+				echo $this->get_input_label($field['id'],$field['label']);
+				echo $this->get_input_box($field['type'],$field['id'],$value);
+				if (isset($field['description'])) :
+					echo $this->get_input_description($field['description']);
+				endif;
+			echo '</p>';
+		endforeach;
+	}
+
+	function get_input_value($id,$instance) {
+			if (isset($instance[$id])) :
+				return $instance[$id];
+			endif;
+
+		return false;
 	}
 
 	/**
@@ -100,10 +115,68 @@ class My_Widget_Class extends WP_Widget {
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
-		$instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+
+		foreach ($this->fields as $field) :
+			$instance[$field['id']] = ( ! empty( $new_instance[$field['id']] ) ) ? strip_tags( $new_instance[$field['id']] ) : '';
+		endforeach;
 
 		return $instance;
 	}
-	 	
+	
+	/**
+	 * HELPER FUNCTIONS FOR OUR DYNAMIC INPUT
+	**/
+
+	/**
+	 * outputs the field label in the admin section
+	 *
+	 * @param string $id the id of the input
+	 * @param string $label the label of the input
+	**/
+	function get_input_label($id,$label) {
+		$html=null;
+		
+		$html.='<label for="'.$this->get_field_id($id).'">'.__( $label ).'</label>';
+		
+		return $html;
+	}
+	
+	/**
+	 * outputs the correct field type in the admin section
+	 *
+	 * @param string $type the type of the input
+	 * @param string $id the id of the input
+	 * @param string $value the value of the input - default null
+	**/
+	function get_input_box($type,$id,$value=null) {
+		$html=null;
+		
+		switch ($type) :
+			case 'text' :
+				$html.='<input class="widefat" type="text" name="'.$this->get_field_name($id).'" id="'.$this->get_field_id($id).'" value="'.$value.'" />';
+				break;
+			case 'textarea' :
+				$html.='<textarea class="widefat" rows="8" cols="8" name="'.$this->get_field_name($id).'" id="'.$this->get_field_id($id).'">'.$value.'</textarea>';
+				break;
+			default :
+				$html.='<input type="text" name="'.$this->get_field_name($id).'" id="'.$this->get_field_id($id).'" value="'.$value.'" />';
+		endswitch;
+		
+		return $html;
+	}
+
+	/**
+	 * outputs the field description in the admin section
+	 *
+	 * @param string $description the description of the input	 
+	**/
+	function get_input_description($description) {
+		$html=null;
+		
+		$html.='<span class="description">'.$description.'</span>';
+		
+		return $html;
+	}
+
 }
 ?>

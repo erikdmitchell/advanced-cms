@@ -47,13 +47,26 @@ $params=array(
 	array(
 		'id' => 'type',
 		'title' => __('My Title'),
-		'description' => __('This is a description of the widget.')
+		'description' => __('This is a description of the widget.'),
+ 		'fields' => array(
+ 			array(
+ 				'id' => 'title',
+ 				'type' => 'text',
+ 				'label' => 'Title:',
+ 				'description' => 'Sample description goes here.',
+ 			),
+ 			array(
+ 				'id' => 'slogan',
+ 				'type' => 'text',
+ 				'label' => 'Slogan:',
+ 			),
+ 			array(
+ 				'id' => 'details',
+ 				'type' => 'textarea',
+ 				'label' => 'Details:',
+ 			), 			
+ 		),
 	),
-	array(
-		'id' => 'type2',
-		'title' => __('My Title2'),
-		'description' => __('This is a description of the widget 2.')
-	)		
 );
 
 new MDW_Widget_Creator($params);
