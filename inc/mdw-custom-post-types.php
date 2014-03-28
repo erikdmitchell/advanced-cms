@@ -25,7 +25,7 @@ class MDW_CPT {
 			register_post_type($post_type,
 				array(
 					'labels' => array(
-						'name' => _x($post_type_formal,$post_type_plural),
+						'name' => _x($post_type_formal_plural,$post_type_formal_plural,$post_type),
 						'singular_name' => _x($post_type_formal,$post_type),
 						'add_new' => _x('Add New',$post_type),
 						'add_new_item' => __('Add New '.$post_type_formal),
