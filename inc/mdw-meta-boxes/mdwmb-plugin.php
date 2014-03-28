@@ -164,7 +164,7 @@ class mdw_Meta_Box {
 				endif;
 				
 				break;
-			deafult:
+			default:
 				$html.='<input type="text" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 		endswitch;
 		
