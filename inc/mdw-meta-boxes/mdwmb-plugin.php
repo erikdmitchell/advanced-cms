@@ -35,7 +35,9 @@ class mdw_Meta_Box {
 			$config['post_types']=explode(",",$config['post_types']);
 		endif;
 
-		$this->config=$config;
+		$config=$this->check_config_prefix($config); // makes sure our prefix starts with '_'
+		
+		$this->config=$config; // set out config
 		
 		// load our extra classes and whatnot
 		$this->autoload_class('mdwmb_Functions');
@@ -58,6 +60,18 @@ class mdw_Meta_Box {
 		
 		wp_enqueue_script('video-js_js','//vjs.zencdn.net/4.2/video.js',array(),'4.2', true);
 		wp_enqueue_style('video-js_css','//vjs.zencdn.net/4.2/video-js.css',array(),'4.2');
+	}
+	
+	/**
+	 * makes sure our prefix starts with '_'
+	 * @param array $config
+	 * returns array $config
+	**/
+	function check_config_prefix($config) {
+		if (substr($config['prefix'],0,1)!='_')
+			$config['prefix']='_'.$config['prefix'];
+	
+		return $config;
 	}
 
 	/**
@@ -164,7 +178,7 @@ class mdw_Meta_Box {
 				endif;
 				
 				break;
-			deafult:
+			default:
 				$html.='<input type="text" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 		endswitch;
 		
@@ -192,12 +206,12 @@ class mdw_Meta_Box {
 	public function save_custom_meta_data($post_id) {
 		// Bail if we're doing an auto save  
 		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return; 
-
-		// if our nonce isn't there, or we can't verify it, bail 
-		if (!isset($_POST[$nonce]) || !wp_verify_nonce($_POST[$nonce],plugin_basename(__FILE__)));
+	
+		// if our nonce isn't there, or we can't verify it, bail
+		if (!isset($_POST[$this->nonce]) || !wp_verify_nonce($_POST[$this->nonce],plugin_basename(__FILE__))) return;
 
 		// if our current user can't edit this post, bail  
-		if( !current_user_can( 'edit_post' ) ) return;
+		if (!current_user_can('edit_post',$post_id)) return;
 
 		foreach ($this->fields as $field) :
 			$data = "";
@@ -221,7 +235,7 @@ class mdw_Meta_Box {
 } // end class
 
 /**
- * loadp lugin first
+ * this loads our load plugin first so that the meta boxes can be used throughout the site
 **/
 add_action('plugins_loaded','load_plugin_first');
 function load_plugin_first() {
