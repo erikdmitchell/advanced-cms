@@ -41,9 +41,13 @@ Usage instructions
 Changelog
 ===========
 
+### 1.0.2
+ * Added ability to create very basic, custom widgets.
+
 ### 1.0.1
  * Added to Git
  * Added mdw-meta-boxes to the inc folder. Allows us to use a simple custom meta box generator.
+ 
  * Fixed some glitches in custom admin columns when there is some data missing.
 
 Credits
