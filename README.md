@@ -24,7 +24,7 @@ Usage instructions
  * @param array $config requires the post_type and one or more columns, which require a slug and label:
  
 	$config=array(
-	'post_type' => 'sample',
+		'post_type' => 'sample',
 	'columns' => array(
 	array (
 	'slug' => '_url',
