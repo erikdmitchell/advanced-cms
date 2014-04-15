@@ -41,9 +41,20 @@ Usage instructions
 Changelog
 ===========
 
+### 1.0.2
+ * Added ability to create very basic, custom widgets.
+ * Removed default data from plugin. Will incoroprate into seperate file.
+ * Fixed $nonce issue in MDW Meta Boxes.
+ * Added $post_id to (if (!current_user_can('edit_post',$post_id)) return;) in our save meta. The lack of id threw an error.
+ * Added check_config_prefix($config) to meta boxes to ensure our prefix starts with an '_'.
+ * Our admin columns now use a 'type' parameter for meta and taxonomy fields.
+ * Added post_tag taxonomy to our custom post type.
+ * Expanded our custom post type to include taxonomies and supports in our array.
+
 ### 1.0.1
  * Added to Git
  * Added mdw-meta-boxes to the inc folder. Allows us to use a simple custom meta box generator.
+ 
  * Fixed some glitches in custom admin columns when there is some data missing.
 
 Credits

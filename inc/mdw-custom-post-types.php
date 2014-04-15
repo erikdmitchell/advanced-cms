@@ -8,11 +8,11 @@ class MDW_CPT {
 	}
 	
 	function create_post_types() {
-		foreach ($this->post_types as $post_type) :
+		foreach ($this->post_types as $post_type => $args) :
 			// format our post type by forcing it to lowercase and replacing spaces with hyphens //
 			$post_type=strtolower($post_type);
 			$post_type=str_replace(' ','-',$post_type);
-// WILL NEED TO REDO SPACES FOR FORMAL
+			// WILL NEED TO REDO SPACES FOR FORMAL
 			if (substr($post_type,-1)=='s') :
 				$post_type_plural=$post_type;
 			else :
@@ -21,7 +21,18 @@ class MDW_CPT {
 			
 			$post_type_formal=ucwords($post_type);
 			$post_type_formal_plural=ucwords($post_type_plural);
-	
+			
+			// setup our default 'args' //
+			$taxonomies='post_tag';
+			$supports=array('title','thumbnail','editor','revisions');
+			
+			// check for custom 'args' //
+			if (isset($args['taxonomies']))
+				$taxonomies=$args['taxonomies'];
+
+			if (isset($args['supports']))
+				$supports=$args['supports'];
+
 			register_post_type($post_type,
 				array(
 					'labels' => array(
@@ -43,7 +54,8 @@ class MDW_CPT {
 					'has_archive' => false,
 					'show_in_menu' => true,
 					'menu_position'=> 5,
-					'supports' => array('title','thumbnail','editor','revisions'),
+					'supports' => $supports,
+					'taxonomies' => array($taxonomies),
 				)
 			);
 		
@@ -55,13 +67,14 @@ class MDW_CPT {
 	 * @param string/array $args - the slug name of the post type(s)
 	**/
 	public function add_post_types($args) {
-		if (!is_array($args)) :
-			$args=explode(',',$args);
-		endif;
-
-		foreach ($args as $type) :
-			array_push($this->post_types,$type);
-		endforeach;	
+		// determine if we have a simple or complex post type via $args - get first key and determine if number //
+		if (is_numeric(key($args))) :
+			foreach ($args as $type) :
+				$this->post_types[$type]=array();
+			endforeach;			
+		else :
+			$this->post_types=$args;
+		endif;	
 	}
 
 }
