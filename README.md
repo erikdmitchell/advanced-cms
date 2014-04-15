@@ -22,30 +22,6 @@ Usage instructions
 ### Custom Admin Columns
  * Initiate the class new MDW_Admin_Columns($config) and that will generate the columns.
  * @param array $config requires the post_type and one or more columns, which require a slug and label:
-<<<<<<< HEAD
-=======
-
-    :::coffeescript
-    $('.label').each ->
-      label = $ this
-      label.css backgroundColor: sexyhex label.text()
-      
- 	:::coffeescript
-    $config=array(
-	  'post_type' => 'sample',
-	  'columns' => array(
-	    array (
-	     'slug' => '_url',
-	     'label' => 'URL'
-	    ),
-	    array(
-	     'slug' => '_address',
-	     'label' => 'Address'
-	    )
-	  ),
-	);
-
->>>>>>> origin/master
 
 Changelog
 ===========
