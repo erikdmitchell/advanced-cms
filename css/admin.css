@@ -1,0 +1,10 @@
+textarea#custom_code {
+	width: 70%;
+	height: 550px;
+	border: 1px solid #cccccc;
+	padding: 5px;
+	font-family: Tahoma, sans-serif;
+}
+.form-table .description {
+	float: left;
+}
