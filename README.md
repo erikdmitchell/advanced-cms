@@ -41,6 +41,8 @@ Changelog
 ### 1.0.3
  * Added an admin options page for our custom code. Prevents overwriting of code on updates. -- This has been postponed do to more detailed setup requirements then I thought.
  * Added admin.css for use on our options page and plugin.
+ * Added a new class: AJAXMetaBoxes, that allows dynamic creation of meta fields similar to the WP Custom Fields functions. -- not fully integrated yet
+ 
  
 ### 1.0.2
  * Added ability to create very basic, custom widgets.
