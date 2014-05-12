@@ -38,6 +38,10 @@ See the mdw-cms-demo.php for detailed examples.
 Changelog
 ===========
 
+### 1.0.2beta
+ * Added ability to duplicate metaboxes
+ * Added multidimension array to config (we can add multiple boxes in one statement)
+ 
 ### 1.0.2
  * Added ability to create very basic, custom widgets.
  * Removed default data from plugin. Will incoroprate into seperate file.

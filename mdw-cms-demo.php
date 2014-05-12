@@ -14,11 +14,13 @@ $mdw_custom_post_types->add_post_types($args);
 $mdw_custom_taxonomies->add_taxonomy('supplier-type','suppliers','Supplier Type');
 
 // custom meta boxes for suppliers //
+/*
 $config=array(
 	'id' => 'supplier_meta',
 	'title' => 'Supplier Details',
 	'prefix' => 'supplier',
-	'post_types' => 'suppliers'
+	'post_types' => 'suppliers',
+	'duplicate' => 1,
 );
 $suppliers_meta=new mdw_Meta_Box($config);
 
@@ -32,6 +34,42 @@ $suppliers_meta->add_field(array(
 	'type' => 'text',
 	'label' => 'URL'
 ));
+*/
+
+// custom meta boxes for meats //
+$config=array(
+	array(
+		'id' => 'meats_details',
+		'title' => 'Meats Details',
+		'prefix' => 'meats',
+		'post_types' => 'meats',
+		'duplicate' => 0,
+		'fields' => array(
+			'brand' => array(
+				'type' => 'text',
+				'label' => 'Brand'		
+			)
+		)
+	),
+	array(
+		'id' => 'supplier_meta',
+		'title' => 'Supplier Details',
+		'prefix' => 'supplier',
+		'post_types' => 'suppliers',
+		'duplicate' => 1,
+		'fields' => array(
+			'address' => array(
+				'type' => 'textarea',
+				'label' => 'Address'		
+			),
+			'url' => array(
+				'type' => 'text',
+				'label' => 'URL'		
+			)			
+		)		
+	)
+);
+$meta=new mdw_Meta_Box($config);
 
 // admin columns for suppliers //
 $arr=array(
@@ -53,6 +91,7 @@ $arr=array(
 		)		
 	),
 );
+
 $mdw_admin_columns=new MDW_Admin_Columns($arr);
 
 // custom widgets //

@@ -1,13 +1,13 @@
 <?php
 /**
- * Version: 1.0.0
+ * Version: 1.1.8
  * Author: erikdmitchell
 **/
 
 class mdw_Meta_Box {
 
 	private $nonce = 'wp_upm_media_nonce'; // Represents the nonce value used to save the post media //
-	private $umb_version='1.1.7';
+	private $umb_version='1.1.8';
 	
 	protected $fields=array();
 
@@ -20,28 +20,15 @@ class mdw_Meta_Box {
 	 							prefix
 	**/
 	function __construct($config=array()) {
-		$ran_string=substr(substr("abcdefghijklmnopqrstuvwxyz",mt_rand(0,25),1).substr(md5(time()),1),0,5);
-	
-		$default_config=array(
-			'id' => 'mdwmb_'.$ran_string,
-			'title' => 'Default Meta Box',
-			'prefix' => '_mdwmb',
-			'post_types' => 'post,page'
-		);
-
-		$config=array_merge($default_config,$config);
-	
-		if (!is_array($config['post_types'])) :
-			$config['post_types']=explode(",",$config['post_types']);
+		if (!$this->is_multi($config)) :
+			$config=$this->convert_to_multi($config);
 		endif;
 
-		$config=$this->check_config_prefix($config); // makes sure our prefix starts with '_'
-		
-		$this->config=$config; // set out config
+		$this->config=$this->setup_config($config); // set our config
 		
 		// load our extra classes and whatnot
 		$this->autoload_class('mdwmb_Functions');
-		
+	
 		// include any files needed
 		require_once(plugin_dir_path(__FILE__).'mdwmb-image-video.php');
 
@@ -49,9 +36,24 @@ class mdw_Meta_Box {
 		add_action('wp_enqueue_scripts',array($this,'register_scripts_styles'));
 		add_action('save_post',array($this,'save_custom_meta_data'));
 		add_action('add_meta_boxes',array($this,'mdwmb_add_meta_box'));
+		add_action('wp_ajax_dup-box',array($this,'duplicate_meta_box'));
 	}
 
 	function register_admin_scripts_styles() {
+		wp_enqueue_script('metabox-duplicator',plugins_url('/js/metabox-duplicator.js',__FILE__),array('jquery'),'0.1.0',true);
+		
+		$options=array();
+		foreach ($this->config as $config) :	
+			$options[]=array(
+				'metaboxID' => $config['id'],
+				'metaboxClass' => $config['id'].'-meta-box',
+				'metaboxTitle' => $config['title'],
+				'metaboxPrefix' => $config['prefix'],
+				'metaboxPostTypes' => $config['post_types'],
+			);
+		endforeach;
+		wp_localize_script('metabox-duplicator','options',$options);
+		
 		wp_enqueue_style('mdwmb-admin-css',plugins_url('/css/admin.css',__FILE__));
 	}
 	
@@ -89,36 +91,74 @@ class mdw_Meta_Box {
 	 * callback: generate_meta_box_fields
 	**/
 	function mdwmb_add_meta_box() {
-		foreach ($this->config['post_types'] as $post_type) :
-	    add_meta_box(
-	    	$this->config['id'],
-	      __($this->config['title'],'Upload_Meta_Box'),
-	      array($this,'generate_meta_box_fields'),
-	      $post_type,
-	      'normal',
-	      'high'
-	    );
+		global $config_id;
+
+		foreach ($this->config as $key => $config) :
+			$config_id=$config['id']; // for use in our classes function
+			foreach ($config['post_types'] as $post_type) :
+		    add_meta_box(
+		    	$config['id'],
+		      __($config['title'],'Upload_Meta_Box'),
+		      array($this,'generate_meta_box_fields'),
+		      $post_type,
+		      'normal',
+		      'high',
+		      array(
+		      	'config_key' => $key,
+						'duplicate' => $config['duplicate'],
+						'meta_box_id' => $config['id']
+		      )
+		    );
+		    
+		    if ($config['duplicate'])
+			    add_filter('postbox_classes_'.$post_type.'_'.$config['id'],array($this,'add_meta_box_classes'));
+		    
+	    endforeach;
     endforeach;
+	}
+	
+	/**
+	 * adds classes to our meta box
+	**/
+	function add_meta_box_classes($classes=array()) {
+		global $config_id;
+		
+		$classes[]='dupable';
+		$classes[]=$config_id.'-meta-box';
+		
+		return $classes;
 	}
 	
 	/**
 	 * cycles through the fields (set in add_field)
 	 * calls the generate_field() function
 	**/
-	function generate_meta_box_fields($post) {
+	function generate_meta_box_fields($post,$metabox) {
 		$html=null;
-		
+	
 		wp_enqueue_script('umb-admin',plugins_url('/js/metabox-media-uploader.js',__FILE__),array('jquery'),$this->umb_version);
 		
 		wp_nonce_field(plugin_basename( __FILE__ ),$this->nonce);
 
 		$html.='<div class="umb-meta-box">';
+
+			foreach ($this->config as $config) :
+				if ($metabox['args']['meta_box_id']==$config['id']) :
+					if (!empty($config['fields']))
+						$this->add_fields_array($config['fields'],$config['id']);
+				endif;
+			endforeach;
+			
 			foreach ($this->fields as $field) :
 				$html.='<div class="meta-row">';
 					$html.='<label for="'.$field['id'].'">'.$field['label'].'</label>';
 					$html.=$this->generate_field($field);
 				$html.='</div>';
 			endforeach;
+		
+			if ($metabox['args']['duplicate'])
+				$html.='<div class="dup-meta-box"><a href="#">Duplicate Box</a></div>';
+				
 		$html.='</div>';
 		
 		echo $html;	
@@ -134,7 +174,7 @@ class mdw_Meta_Box {
 
 		$html=null;
 		$values=get_post_custom($post->ID);
-		
+
 		if (isset($values[$args['id']][0])) :
 			$value=$values[$args['id']][0];
 		else :
@@ -192,12 +232,40 @@ class mdw_Meta_Box {
 	 							type (type of input field) 
 	 							label (for field)
 	 							value (of field)
+	 * because we allow multiple configs now, we must use legacy support (1 config) and expand to allow for multi configs (pre 1.1.8)
 	**/
-	public function add_field($args) {
+	public function add_field($args,$meta_id=false) {
+		if (count($this->config)==1) :
+			$prefix=$this->config[0]['prefix'];
+		else :
+			if ($meta_id) :
+				foreach ($this->config as $config) :
+					if ($config['id']==$meta_id)
+						$prefix=$config['prefix'];
+				endforeach;
+			endif;
+		endif;
+		
 		$new_field=array('id' => '', 'type' => 'text', 'label' => 'Text Box', 'value' => '');
 		$new_field=array_merge($new_field,$args);
-		$new_field['id']=$this->config['prefix'].'_'.$new_field['id'];
+		$new_field['id']=$prefix.'_'.$new_field['id'];
 		$this->fields[$new_field['id']]=$new_field;	
+	}
+	
+	/**
+	 * a variation of the add_fields function
+	 * this allows us to generate our fields with a passed array
+	 * added 1.1.8
+	**/
+	function add_fields_array($arr,$meta_id) {
+		foreach ($arr as $id => $values) :
+			$args=array(
+				'id' => $id,
+				'type' => $values['type'],
+				'label' => $values['label'],
+			);
+			$this->add_field($args,$meta_id);
+		endforeach;
 	}
 	
 	/**
@@ -213,23 +281,152 @@ class mdw_Meta_Box {
 		// if our current user can't edit this post, bail  
 		if (!current_user_can('edit_post',$post_id)) return;
 
-		foreach ($this->fields as $field) :
-			$data = "";
+		foreach ($this->config as $config) :
+			$data=null;
+			$prefix=$config['prefix'];
 			
-			if (isset($_POST[$field['id']])):
-				$data=$_POST[$field['id']]; // submitted value //
-			endif;
+			foreach ($config['fields'] as $id => $field) :
+				$field_id=$prefix.'_'.$id;
+		
+				if (isset($_POST[$field_id])):
+					$data=$_POST[$field_id]; // submitted value //
+				endif;
+	
+				// fix notices on unchecked check boxes //
+				//if (get_post_meta($post_id, $field['id']) == "") :
+				//	add_post_meta($post_id, $field['id'], $data, true);
+				//elseif ($data != get_post_meta($post_id, $field['id'], true)) :
 
-			// fix notices on unchecked check boxes //
-			//if (get_post_meta($post_id, $field['id']) == "") :
-			//	add_post_meta($post_id, $field['id'], $data, true);
-			//elseif ($data != get_post_meta($post_id, $field['id'], true)) :
-			if ($data=="") :
-				delete_post_meta($post_id, $field['id'], get_post_meta($post_id, $field['id'], true));
-			else :
-				update_post_meta($post_id, $field['id'], $data);
-			endif;			
+				if ($data=="") :
+					delete_post_meta($post_id, $field_id, get_post_meta($post_id, $field_id, true));
+				else :
+					update_post_meta($post_id, $field_id, $data);
+				endif;
+
+			endforeach;	
+
 		endforeach;			
+	}
+	
+	function duplicate_meta_box() {
+/*
+mdw_Meta_Box Object
+(
+    [nonce:mdw_Meta_Box:private] => wp_upm_media_nonce
+    [umb_version:mdw_Meta_Box:private] => 1.1.7
+    [fields:protected] => Array
+        (
+            [_supplier_address] => Array
+                (
+                    [id] => _supplier_address
+                    [type] => textarea
+                    [label] => Address
+                    [value] => 
+                )
+
+            [_supplier_url] => Array
+                (
+                    [id] => _supplier_url
+                    [type] => text
+                    [label] => URL
+                    [value] => 
+                )
+
+        )
+
+    [config] => Array
+        (
+            [id] => supplier_meta
+            [title] => Supplier Details
+            [prefix] => _supplier
+            [post_types] => Array
+                (
+                    [0] => suppliers
+                )
+
+            [duplicate] => 1
+        )
+
+)
+*/
+/* print_r($_POST); */
+		$new_box_config=array(
+			'id' => $_POST['id'],
+			'title' => $_POST['title'],
+			'prefix' => $_POST['prefix'],
+			'post_types' => $_POST['post_types'],
+			'duplicate' => 0, // duplicate is 0 aka false
+		);
+		$this->config[]=$new_box_config;
+		
+		print_r($this->config);
+		
+		exit;
+	}
+	
+	/**
+	 * is array multidimensional (check only first level)
+	 * takes in array
+	 * returns true/false
+	**/
+	function is_multi($a) {
+		if (isset($a[0]))
+			return true;
+
+		return false;
+	}
+	
+	/**
+	 * converts a 1d array to multi dimensional
+	 * takes in arr
+	 * returns multi dimen arr
+	**/
+	function convert_to_multi($arr) {
+		$multi_arr=array();
+
+		$multi_arr[]=$arr;
+		
+		return $multi_arr;
+	}
+	
+	/**
+	 * setup our config with defaults and adjusments
+	**/
+	function setup_config($configs) {
+		$ran_string=substr(substr("abcdefghijklmnopqrstuvwxyz",mt_rand(0,25),1).substr(md5(time()),1),0,5);
+		$default_config=array(
+			'id' => 'mdwmb_'.$ran_string,
+			'title' => 'Default Meta Box',
+			'prefix' => '_mdwmb',
+			'post_types' => 'post,page',
+			'duplicate' => 0,
+			'fields' => array(), // for legacy support (pre 1.1.8)
+		);
+/*
+echo 'setup config<br>';		
+echo '<pre>';
+print_r($configs);
+echo '</pre>';
+*/
+		foreach ($configs as $key => $config) :
+/*
+echo 'foreach';
+echo '<pre>';
+print_r($config);
+echo '</pre>';	
+*/	
+			$config=array_merge($default_config,$config);
+
+			if (!is_array($config['post_types'])) :
+				$config['post_types']=explode(",",$config['post_types']);
+			endif;			
+			
+			$config=$this->check_config_prefix($config); // makes sure our prefix starts with '_'
+			
+			$configs[$key]=$config;
+		endforeach;			
+	
+		return $configs;
 	}
 
 } // end class
