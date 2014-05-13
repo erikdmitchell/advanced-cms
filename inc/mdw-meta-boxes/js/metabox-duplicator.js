@@ -1,32 +1,47 @@
-console.log(options);
 jQuery(document).ready(function($) {
 	$('.dup-meta-box a').click(function(e) {
 		e.preventDefault();
-		var parentID=$('#'+options.metaboxID).parent().attr('id');
-		var boxCounter=0;
+
+		var metaID=$(this).data('meta-id');
 		
-		$('.'+options.metaboxClass).each(function() {
+		for (var i in options) {
+			if (options[i].metaboxID==metaID) {
+				var optionsKey=options[i];
+			}		
+		}
+		
+		var parentID=$('#'+optionsKey.metaboxID).parent().attr('id');
+		var boxCounter=0;
+
+		
+		$('.'+optionsKey.metaboxClass).each(function() {
 			boxCounter++;
 		});
 
 		// clone metbox, append to parent box, adjust id and id/name of input elements
-		var newID='#'+options.metaboxID+'-'+boxCounter;
-		var newIDraw=options.metaboxID+'-'+boxCounter;
+		var newID='#'+optionsKey.metaboxID+'-'+boxCounter;
+		var newIDraw=optionsKey.metaboxID+'-'+boxCounter;
+		var fields=new Array();
+		var id, name, type, label, strippedName;
+		var fieldsObj={};
 		
-		$('#'+options.metaboxID).clone()
+		$('#'+optionsKey.metaboxID).clone()
 			.insertAfter('#'+parentID)
 			.attr('id',newID)
 			.find('.meta-row').each(function() {
-				var id=$(this).find('input').attr('id');
-				var name=$(this).find('input').attr('name');
+				id=$(this).find('input').attr('id');
+				name=$(this).find('input').attr('name');
+				type='text';
+				label=$(this).find('label').text();
 
 				if (typeof id==='undefined') {
 					id=$(this).find('textarea').attr('id');
 					name=$(this).find('textarea').attr('name');
+					type='textarea';
 
 					$(this).find('textarea').prop({
 						'id' : id+'-'+boxCounter,
-						'name' : name+'-'+boxCounter					
+						'name' : name+'-'+boxCounter				
 					});
 				}	else {
 					$(this).find('input').prop({
@@ -34,16 +49,25 @@ jQuery(document).ready(function($) {
 						'name' : name+'-'+boxCounter					
 					});
 				}
+				strippedName=name.replace(optionsKey.metaboxPrefix+'_','');
+
+				// build our field objects //
+				fieldsObj[strippedName]={
+					type : type,
+					label : label
+				};			
 			});
-			
+
 		// do ajax stuff //
 		var data={ 
 			action:'dup-box' ,
 			id:newIDraw,
-			title:options.metaboxTitle,
-			prefix:options.metaboxPrefix,
-			post_types:options.metaboxPostTypes
+			title:optionsKey.metaboxTitle,
+			prefix:optionsKey.metaboxPrefix,
+			post_types:optionsKey.metaboxPostTypes,
+			fields:fieldsObj
 		};
+	
 		$.post(ajaxurl,data, function(response) {
 			console.log('ajax resp');
 	  	console.log(response);

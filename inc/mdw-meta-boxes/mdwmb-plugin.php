@@ -43,14 +43,16 @@ class mdw_Meta_Box {
 		wp_enqueue_script('metabox-duplicator',plugins_url('/js/metabox-duplicator.js',__FILE__),array('jquery'),'0.1.0',true);
 		
 		$options=array();
-		foreach ($this->config as $config) :	
-			$options[]=array(
-				'metaboxID' => $config['id'],
-				'metaboxClass' => $config['id'].'-meta-box',
-				'metaboxTitle' => $config['title'],
-				'metaboxPrefix' => $config['prefix'],
-				'metaboxPostTypes' => $config['post_types'],
-			);
+		foreach ($this->config as $config) :
+			//if ($config['duplicate']) :	
+				$options[]=array(
+					'metaboxID' => $config['id'],
+					'metaboxClass' => $config['id'].'-meta-box',
+					'metaboxTitle' => $config['title'],
+					'metaboxPrefix' => $config['prefix'],
+					'metaboxPostTypes' => $config['post_types'],
+				);
+			//endif;
 		endforeach;
 		wp_localize_script('metabox-duplicator','options',$options);
 		
@@ -157,7 +159,7 @@ class mdw_Meta_Box {
 			endforeach;
 		
 			if ($metabox['args']['duplicate'])
-				$html.='<div class="dup-meta-box"><a href="#">Duplicate Box</a></div>';
+				$html.='<div class="dup-meta-box"><a href="#" data-meta-id="'.$metabox['args']['meta_box_id'].'">Duplicate Box</a></div>';
 				
 		$html.='</div>';
 		
@@ -280,7 +282,11 @@ class mdw_Meta_Box {
 
 		// if our current user can't edit this post, bail  
 		if (!current_user_can('edit_post',$post_id)) return;
-
+echo '<pre>';
+print_r($this);
+print_r($_POST);
+echo '</pre>';
+exit;
 		foreach ($this->config as $config) :
 			$data=null;
 			$prefix=$config['prefix'];
@@ -309,55 +315,16 @@ class mdw_Meta_Box {
 	}
 	
 	function duplicate_meta_box() {
-/*
-mdw_Meta_Box Object
-(
-    [nonce:mdw_Meta_Box:private] => wp_upm_media_nonce
-    [umb_version:mdw_Meta_Box:private] => 1.1.7
-    [fields:protected] => Array
-        (
-            [_supplier_address] => Array
-                (
-                    [id] => _supplier_address
-                    [type] => textarea
-                    [label] => Address
-                    [value] => 
-                )
-
-            [_supplier_url] => Array
-                (
-                    [id] => _supplier_url
-                    [type] => text
-                    [label] => URL
-                    [value] => 
-                )
-
-        )
-
-    [config] => Array
-        (
-            [id] => supplier_meta
-            [title] => Supplier Details
-            [prefix] => _supplier
-            [post_types] => Array
-                (
-                    [0] => suppliers
-                )
-
-            [duplicate] => 1
-        )
-
-)
-*/
-/* print_r($_POST); */
 		$new_box_config=array(
 			'id' => $_POST['id'],
 			'title' => $_POST['title'],
 			'prefix' => $_POST['prefix'],
 			'post_types' => $_POST['post_types'],
 			'duplicate' => 0, // duplicate is 0 aka false
+			'fields' => $_POST['fields']
 		);
-		$this->config[]=$new_box_config;
+		//$this->config[]=$new_box_config;
+		array_push($this->config,$new_box_config);
 		
 		print_r($this->config);
 		
@@ -402,19 +369,8 @@ mdw_Meta_Box Object
 			'duplicate' => 0,
 			'fields' => array(), // for legacy support (pre 1.1.8)
 		);
-/*
-echo 'setup config<br>';		
-echo '<pre>';
-print_r($configs);
-echo '</pre>';
-*/
+
 		foreach ($configs as $key => $config) :
-/*
-echo 'foreach';
-echo '<pre>';
-print_r($config);
-echo '</pre>';	
-*/	
 			$config=array_merge($default_config,$config);
 
 			if (!is_array($config['post_types'])) :
