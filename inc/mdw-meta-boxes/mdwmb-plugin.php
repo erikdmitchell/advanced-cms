@@ -8,6 +8,7 @@ class mdw_Meta_Box {
 
 	private $nonce = 'wp_upm_media_nonce'; // Represents the nonce value used to save the post media //
 	private $umb_version='1.1.8';
+	private $option_name='mdw_meta_box_duped_boxes';
 	
 	protected $fields=array();
 
@@ -25,7 +26,13 @@ class mdw_Meta_Box {
 		endif;
 
 		$this->config=$this->setup_config($config); // set our config
-		
+
+/*
+global $post,$wp_query;
+var_dump( $post );
+var_dump($wp_query);
+*/
+	
 		// load our extra classes and whatnot
 		$this->autoload_class('mdwmb_Functions');
 	
@@ -40,9 +47,18 @@ class mdw_Meta_Box {
 	}
 
 	function register_admin_scripts_styles() {
+		global $post;
+		
 		wp_enqueue_script('metabox-duplicator',plugins_url('/js/metabox-duplicator.js',__FILE__),array('jquery'),'0.1.0',true);
 		
 		$options=array();
+		
+		if (isset($post->ID)) :
+			$options['postID']=$post->ID;
+		else :
+			$options['postID']=null;
+		endif;
+
 		foreach ($this->config as $config) :
 			//if ($config['duplicate']) :	
 				$options[]=array(
@@ -93,10 +109,13 @@ class mdw_Meta_Box {
 	 * callback: generate_meta_box_fields
 	**/
 	function mdwmb_add_meta_box() {
-		global $config_id;
+		global $config_id,$post;
+
+		$this->build_duplicated_boxes($post->ID); // must do here b/c we need the post id
 
 		foreach ($this->config as $key => $config) :
 			$config_id=$config['id']; // for use in our classes function
+
 			foreach ($config['post_types'] as $post_type) :
 		    add_meta_box(
 		    	$config['id'],
@@ -108,7 +127,8 @@ class mdw_Meta_Box {
 		      array(
 		      	'config_key' => $key,
 						'duplicate' => $config['duplicate'],
-						'meta_box_id' => $config['id']
+						'meta_box_id' => $config['id'],
+						'removable' => $config['removable']
 		      )
 		    );
 		    
@@ -137,7 +157,8 @@ class mdw_Meta_Box {
 	**/
 	function generate_meta_box_fields($post,$metabox) {
 		$html=null;
-	
+		$this->fields=null; // this needs to be adjusted for legacy v 1.1.8
+
 		wp_enqueue_script('umb-admin',plugins_url('/js/metabox-media-uploader.js',__FILE__),array('jquery'),$this->umb_version);
 		
 		wp_nonce_field(plugin_basename( __FILE__ ),$this->nonce);
@@ -150,7 +171,7 @@ class mdw_Meta_Box {
 						$this->add_fields_array($config['fields'],$config['id']);
 				endif;
 			endforeach;
-			
+		
 			foreach ($this->fields as $field) :
 				$html.='<div class="meta-row">';
 					$html.='<label for="'.$field['id'].'">'.$field['label'].'</label>';
@@ -160,6 +181,9 @@ class mdw_Meta_Box {
 		
 			if ($metabox['args']['duplicate'])
 				$html.='<div class="dup-meta-box"><a href="#" data-meta-id="'.$metabox['args']['meta_box_id'].'">Duplicate Box</a></div>';
+
+			if ($metabox['args']['removable'])
+				$html.='<div class="remove-meta-box"><a href="#" data-meta-id="'.$metabox['args']['meta_box_id'].'">Remove Box</a></div>';
 				
 		$html.='</div>';
 		
@@ -282,11 +306,9 @@ class mdw_Meta_Box {
 
 		// if our current user can't edit this post, bail  
 		if (!current_user_can('edit_post',$post_id)) return;
-echo '<pre>';
-print_r($this);
-print_r($_POST);
-echo '</pre>';
-exit;
+		
+		$this->build_duplicated_boxes($post_id); // must do here again b/c this action is added before we have all the info
+		
 		foreach ($this->config as $config) :
 			$data=null;
 			$prefix=$config['prefix'];
@@ -315,20 +337,66 @@ exit;
 	}
 	
 	function duplicate_meta_box() {
-		$new_box_config=array(
+		$this->save_duplicate_meta_box($_POST['postID']);
+
+		exit;
+	}
+
+	/**
+	 * saves our meta field data when we are duplicating a field
+	 * the field needs to be saved so that our class can be updated with the apropriate fields
+	 * it's done via ajax, so the users should not see anything
+	**/
+	public function save_duplicate_meta_box($post_id) {
+		// Bail if we're doing an auto save  
+		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return; 
+
+		// if our current user can't edit this post, bail  
+		if (!current_user_can('edit_post',$post_id)) return;
+
+		$data=null;
+		$option=false;
+		$option_arr=array();
+		$current_option_arr=array();
+		$new_option_arr=array();
+		$prefix=$_POST['prefix'];
+		
+		foreach ($_POST['fields'] as $id => $field) :
+			$field_id=$prefix.'_'.$id;
+			$data='';
+			//update_post_meta($post_id,$field_id,$data);
+		endforeach;		
+
+		// build our option so that we know we have duped boxes //
+		$option=$this->option_name;
+		$option_arr=array(
+			'post_id' => $_POST['postID'],
 			'id' => $_POST['id'],
 			'title' => $_POST['title'],
 			'prefix' => $_POST['prefix'],
 			'post_types' => $_POST['post_types'],
-			'duplicate' => 0, // duplicate is 0 aka false
-			'fields' => $_POST['fields']
+			'duplicate' => 0,
+			'fields' => $_POST['fields'],
 		);
-		//$this->config[]=$new_box_config;
-		array_push($this->config,$new_box_config);
 		
-		print_r($this->config);
-		
-		exit;
+/*
+print_r($option_arr);	
+
+		if ($option)
+			$current_option_arr=get_option($option);
+
+		if ($current_option_arr) :
+			array_push($option_arr,$current_option_arr);
+		else :
+			$new_option_arr[0]=$option_arr;
+			$option_arr=$new_option_arr;
+		endif;
+
+print_r($option_arr);	
+			
+		if ($option)
+			update_option($option,$option_arr);
+*/
 	}
 	
 	/**
@@ -380,9 +448,28 @@ exit;
 			$config=$this->check_config_prefix($config); // makes sure our prefix starts with '_'
 			
 			$configs[$key]=$config;
-		endforeach;			
-	
+		endforeach;
+		
 		return $configs;
+	}
+	
+	function build_duplicated_boxes($post_id=false) {
+		if (!$post_id)
+			return false;
+
+		$option_arr=get_option($this->option_name);
+		
+		if (!count($option_arr))
+			return false;
+			
+		foreach ($option_arr as $option) :
+			if ($option['post_id']==$post_id) :
+				$option['removable']=true; // allows us to have a remove button
+				array_push($this->config,$option);
+			endif;
+		endforeach;				
+	
+		return;
 	}
 
 } // end class

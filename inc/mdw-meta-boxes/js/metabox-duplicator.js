@@ -1,3 +1,4 @@
+console.log(options);
 jQuery(document).ready(function($) {
 	$('.dup-meta-box a').click(function(e) {
 		e.preventDefault();
@@ -49,7 +50,8 @@ jQuery(document).ready(function($) {
 						'name' : name+'-'+boxCounter					
 					});
 				}
-				strippedName=name.replace(optionsKey.metaboxPrefix+'_','');
+				strippedName=name.replace(optionsKey.metaboxPrefix+'_',''); // strip _
+				strippedName=strippedName+'-'+boxCounter; // add -ID
 
 				// build our field objects //
 				fieldsObj[strippedName]={
@@ -61,16 +63,20 @@ jQuery(document).ready(function($) {
 		// do ajax stuff //
 		var data={ 
 			action:'dup-box' ,
+			postID:options.postID,
+			//nonce:options.nonce,
 			id:newIDraw,
 			title:optionsKey.metaboxTitle,
 			prefix:optionsKey.metaboxPrefix,
 			post_types:optionsKey.metaboxPostTypes,
 			fields:fieldsObj
 		};
-	
+		//data[options.nonce]='mdw-cms/inc/mdw-meta-boxes/mdwmb-plugin.php'; // append nonce to object
+
 		$.post(ajaxurl,data, function(response) {
 			console.log('ajax resp');
 	  	console.log(response);
+	  	// reload page //
 	 	});
 	 	
 	});
