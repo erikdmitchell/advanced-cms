@@ -26,12 +26,6 @@ class mdw_Meta_Box {
 		endif;
 
 		$this->config=$this->setup_config($config); // set our config
-
-/*
-global $post,$wp_query;
-var_dump( $post );
-var_dump($wp_query);
-*/
 	
 		// load our extra classes and whatnot
 		$this->autoload_class('mdwmb_Functions');
@@ -44,12 +38,14 @@ var_dump($wp_query);
 		add_action('save_post',array($this,'save_custom_meta_data'));
 		add_action('add_meta_boxes',array($this,'mdwmb_add_meta_box'));
 		add_action('wp_ajax_dup-box',array($this,'duplicate_meta_box'));
+		add_action('wp_ajax_remove-box',array($this,'remove_duplicate_meta_box'));
 	}
 
 	function register_admin_scripts_styles() {
 		global $post;
 		
 		wp_enqueue_script('metabox-duplicator',plugins_url('/js/metabox-duplicator.js',__FILE__),array('jquery'),'0.1.0',true);
+		wp_enqueue_script('metabox-remover',plugins_url('/js/metabox-remover.js',__FILE__),array('jquery'),'0.1.0',true);
 		
 		$options=array();
 		
@@ -71,6 +67,8 @@ var_dump($wp_query);
 			//endif;
 		endforeach;
 		wp_localize_script('metabox-duplicator','options',$options);
+		
+		wp_localize_script('metabox-remover','options',get_option($this->option_name));
 		
 		wp_enqueue_style('mdwmb-admin-css',plugins_url('/css/admin.css',__FILE__));
 	}
@@ -115,7 +113,13 @@ var_dump($wp_query);
 
 		foreach ($this->config as $key => $config) :
 			$config_id=$config['id']; // for use in our classes function
-
+		
+			if (isset($config['removable'])) :
+				$removable=$config['removable'];
+			else :
+				$removable=false;
+			endif;
+			
 			foreach ($config['post_types'] as $post_type) :
 		    add_meta_box(
 		    	$config['id'],
@@ -128,7 +132,7 @@ var_dump($wp_query);
 		      	'config_key' => $key,
 						'duplicate' => $config['duplicate'],
 						'meta_box_id' => $config['id'],
-						'removable' => $config['removable']
+						'removable' => $removable,
 		      )
 		    );
 		    
@@ -183,7 +187,7 @@ var_dump($wp_query);
 				$html.='<div class="dup-meta-box"><a href="#" data-meta-id="'.$metabox['args']['meta_box_id'].'">Duplicate Box</a></div>';
 
 			if ($metabox['args']['removable'])
-				$html.='<div class="remove-meta-box"><a href="#" data-meta-id="'.$metabox['args']['meta_box_id'].'">Remove Box</a></div>';
+				$html.='<div class="remove-meta-box"><a href="#" data-meta-id="'.$metabox['args']['meta_box_id'].'" data-post-id="'.$post->ID.'">Remove Box</a></div>';
 				
 		$html.='</div>';
 		
@@ -339,6 +343,39 @@ var_dump($wp_query);
 	function duplicate_meta_box() {
 		$this->save_duplicate_meta_box($_POST['postID']);
 
+		exit;
+	}
+
+	function remove_duplicate_meta_box() {
+		$option=get_option($this->option_name);
+		
+		// check for option key //
+		if (!isset($_POST['optionKey']))
+			return false;
+		
+		$option_to_remove=$option[$_POST['optionKey']];
+		
+		// do some quick checks to make sure all is ok //
+		if ($option_to_remove['post_id']!=$_POST['postID'])
+			return false;
+			
+		if ($option_to_remove['id']!=$_POST['metaID'])
+			return false;
+		
+		// remove post meta //
+		foreach ($option_to_remove['fields'] as $id => $field) :
+			$meta_key=$option_to_remove['prefix'].'_'.$id;
+			if ($meta_key)
+				delete_post_meta($_POST['postID'],$meta_key);
+		endforeach;		
+		
+		unset($option[$_POST['optionKey']]); // remove from option
+		$option=array_values($option); // reset keys
+		
+		update_option($this->option_name,$option); // update our option
+		
+		return true;
+				
 		exit;
 	}
 

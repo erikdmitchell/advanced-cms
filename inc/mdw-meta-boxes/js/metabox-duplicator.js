@@ -1,4 +1,4 @@
-console.log(options);
+//console.log(options);
 jQuery(document).ready(function($) {
 	$('.dup-meta-box a').click(function(e) {
 		e.preventDefault();
