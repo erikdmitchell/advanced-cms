@@ -25,6 +25,7 @@ class MDW_CPT {
 			// setup our default 'args' //
 			$taxonomies='post_tag';
 			$supports=array('title','thumbnail','editor','revisions');
+			$hierarchical=false;
 			
 			// check for custom 'args' //
 			if (isset($args['taxonomies']))
@@ -32,6 +33,9 @@ class MDW_CPT {
 
 			if (isset($args['supports']))
 				$supports=$args['supports'];
+
+			if (isset($args['hierarchical']))
+				$hierarchical=$args['hierarchical'];
 
 			register_post_type($post_type,
 				array(
@@ -56,6 +60,7 @@ class MDW_CPT {
 					'menu_position'=> 5,
 					'supports' => $supports,
 					'taxonomies' => array($taxonomies),
+					'hierarchical' => $hierarchical
 				)
 			);
 		

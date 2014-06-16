@@ -1,5 +1,12 @@
 == Changelog ==
 
+Added jquery ui styles
+Added jquery ui datepicker via wordpress
+Added jquery masked input plugin (http://digitalbush.com/projects/masked-input-plugin/)
+Added phone field
+Added get_post_meta_advanced() to mdwm_Functions class. Generates a preformatted post meta field.
+Added jQuery based validator for urls
+
 = 1.0 =
 * The first stable release.
 
@@ -19,14 +26,12 @@ Fields to add:
 	¥	text url (optionally repeatable)
 	¥	text email (optionally repeatable)
 	¥	text money (optionally repeatable)
-	¥	date picker
 	¥	date picker (unix timestamp)
 	¥	date time picker combo (unix timestamp)
 	¥	date time picker with time zone combo (serialized DateTime object)
 	¥	time zone dropdown
 	¥	time picker
 	¥	color picker
-	¥	textarea
 	¥	textarea small
 	¥	textarea code
 	¥	select
@@ -35,3 +40,13 @@ Fields to add:
 	¥	taxonomy radio
 	¥	multicheck
 	¥	oEmbed
+	
+Fields:	
+	text
+	checkbox
+	textarea
+	wysiwyg
+	media
+	date (date picker)
+	phone
+	url
