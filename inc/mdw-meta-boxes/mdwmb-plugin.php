@@ -102,7 +102,7 @@ class mdw_Meta_Box {
 
 	/**
 	 * autoloads our helper classes and functions
-	 * @param string $class_name - the name of the fiel/class to include
+	 * @param string $class_name - the name of the field/class to include
 	**/
 	private function autoload_class($filename) {
 		require_once(plugin_dir_path(__FILE__).$filename.'.php');
@@ -531,6 +531,7 @@ print_r($option_arr);
 /**
  * this loads our load plugin first so that the meta boxes can be used throughout the site
 **/
+/*
 add_action('plugins_loaded','load_plugin_first');
 function load_plugin_first() {
 	$path = str_replace( WP_PLUGIN_DIR . '/', '', __FILE__ );
@@ -542,3 +543,4 @@ function load_plugin_first() {
 		}
 	}	
 }
+*/
