@@ -8,6 +8,7 @@
 .umb-meta-box .meta-row label	{
 	font-weight: bold;
 	display: inline-block;
+	min-width: 125px;
 	width: auto;
 	margin-right: 10px;
 	vertical-align: top;
@@ -27,4 +28,17 @@
 .umb-meta-box .textarea {
 	width: 75%;
 	height: 100px;
+}
+.umb-meta-box .url {
+	width: 60%;
+}
+
+/** jquery validator (custom)
+-----------------------------*/
+.jq-validator {
+	margin-left: 2%;
+}
+.jq-validator.error {
+	color: red;
+	font-weight: bold;
 }

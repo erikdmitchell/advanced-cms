@@ -2,7 +2,7 @@
 /*
 Plugin Name: MDW CMS
 Description: Adds cusomtized functionality to the site to make WordPress super awesome.
-Version: 1.0.2beta
+Version: 1.0.4beta
 Author: MillerDesignworks
 Author URI: http://www.millerdesignworks.com
 License: GPL2
