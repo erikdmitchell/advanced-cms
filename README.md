@@ -38,6 +38,8 @@ See the mdw-cms-demo.php for detailed examples.
 Changelog
 ===========
 
+### 1.0.6
+	WORKING ON ADDING THE SLIDER, AND ADMIN PAGE AND OUR SOCIAL MEDIA PAGE
 ### 1.0.3
  * Added an admin options page for our custom code. Prevents overwriting of code on updates. -- This has been postponed do to more detailed setup requirements then I thought.
  * Added admin.css for use on our options page and plugin.
