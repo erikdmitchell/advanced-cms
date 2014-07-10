@@ -42,6 +42,7 @@ Changelog
 	Added our WP Bootstrap slider to the plugin. Can be called via shortcode. Sample shortcode is part of our admin page.
 	Added the Social Media admin page ot the plugin. It's a seperate page from the CMS Settings page, but is still in Apperance.
 	Added sample social media function to the Social Media class.
+	Added upgrade functinoalty. Now, when updated, the plugin can be updated via the WP admin panel.
 
 	Fixed a glitch where underscores (_) in post types were causing display issues.	
 	
