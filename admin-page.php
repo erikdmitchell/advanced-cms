@@ -51,11 +51,14 @@ class MDWCMS_Options {
 		if (false == get_option($this->settings_options))
     	add_option($this->settings_options);
         
-		// Add the section so we can add our fields to it
-		add_settings_section($this->settings_section,'',array($this,'section_cb'),$this->settings_page);
-		
-		// Add the field with the names and function to use for our new settings, put it in our new section
-		add_settings_field('cms-code','Custom Code',array($this,'cms_code_cb'),$this->settings_page,$this->settings_section);			
+		// Setup our section and fields for our custom php code //
+		//add_settings_section($this->settings_section,'',array($this,'section_cb'),$this->settings_page);
+		//add_settings_field('cms-code','Custom Code',array($this,'cms_code_cb'),$this->settings_page,$this->settings_section);			
+
+		// Setup our section and fields for our bootstrap slider //
+		add_settings_section('mdw-cms-slider','Bootstrap Slider',array($this,'mdw_cms_slider_cb'),$this->settings_page);
+		add_settings_field('slider-code','Slider Code',array($this,'slider_code_cb'),$this->settings_page,'mdw-cms-slider');
+		add_settings_field('slider-code-atts','Slider Shortcode Attributes',array($this,'slider_code_atts_cb'),$this->settings_page,'mdw-cms-slider');	
 
 		// Register our setting so that $_POST handling is done for us and
 		// our callback function just has to echo the <input>
@@ -68,7 +71,7 @@ class MDWCMS_Options {
 	function section_cb() {
 		//echo '<p>Intro text for our settings section</p>';
 	}
-	
+
 	function cms_code_cb() {
 		if (isset( $this->options['custom_code'] )) :
 			$value=$this->options['custom_code'];
@@ -79,7 +82,54 @@ class MDWCMS_Options {
 		echo '<textarea name="'.$this->settings_options.'[custom_code]" id="custom_code" class="">'.$value.'</textarea>';
 		echo '<span class="description">Add your customized php code utilizing the CMS Framework.</span>';
 	}
-	
+
+	// BEGIN BOOTSTRAP SLIDER SETUP //
+	/**
+	 * Ouputs our notes after the section title
+	**/	
+	function mdw_cms_slider_cb() {
+		echo '<p>Note: only works if Bootstrap is part of the active theme.</p>';
+	}
+
+	/**
+	 * generates the sample shortcode for slider
+	 */
+	function slider_code_cb() {
+		echo '<code>[bootstrap-slider slider_id="slider" post_type="slides"]</code>';
+	}
+
+	/**
+	 * generates the sample shortcode attributes for slider
+	 */
+	function slider_code_atts_cb() {
+		echo '<ul class="atts">';
+			echo '<li>';
+				echo '<strong>slider_id</strong><br />';
+				echo '(string) The id for the slider.';
+			echo '</li>';
+			echo '<li>';
+				echo '<strong>post_type</strong><br />';
+				echo '(string) The post type of the posts for the slider.';
+			echo '</li>';
+			echo '<li>';
+				echo '<strong>indicators</strong><br />';
+				echo '(true/false) Display the slide indicators.';
+			echo '</li>';
+			echo '<li>';
+				echo '<strong>slides</strong><br />';
+				echo '(true/false) Display the slides.';
+			echo '</li>';
+			echo '<li>';
+				echo '<strong>captions</strong><br />';
+				echo '(true/false) Display slide captions.';
+			echo '</li>';
+			echo '<li>';
+				echo '<strong>controls</strong><br />';
+				echo '(true/false) Display the slide left/right controls.';
+			echo '</li>';													
+		echo '</ul>';
+	}
+			
 	/**
 	 * valudate settings
 	**/

@@ -6,7 +6,11 @@ $args=array(
 		'supports' => array('title','thumbnail','revisions'),
 		'taxonomies' => false
 	),
-	'suppliers' => array()
+	'suppliers' => array(),
+	'slides' => array(
+		'supports' => array('title','thumbnail','revisions'),
+		'taxonomies' => false
+	),
 );
 $mdw_custom_post_types->add_post_types($args);
 
@@ -170,4 +174,3 @@ $sample_meta_box->add_field(array(
 	'label' => 'Media - File',
 ));
 */
-?>

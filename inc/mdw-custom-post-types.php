@@ -12,16 +12,19 @@ class MDW_CPT {
 			// format our post type by forcing it to lowercase and replacing spaces with hyphens //
 			$post_type=strtolower($post_type);
 			$post_type=str_replace(' ','-',$post_type);
+
+			$post_type_mod=str_replace('-',' ',$post_type);
+
 			// WILL NEED TO REDO SPACES FOR FORMAL
 			if (substr($post_type,-1)=='s') :
-				$post_type_plural=$post_type;
+				$post_type_plural=$post_type_mod;
 			else :
-				$post_type_plural=$post_type.'s';
+				$post_type_plural=$post_type_mod.'s';
 			endif;
 			
-			$post_type_formal=ucwords($post_type);
+			$post_type_formal=ucwords($post_type_mod);
 			$post_type_formal_plural=ucwords($post_type_plural);
-			
+	
 			// setup our default 'args' //
 			$taxonomies='post_tag';
 			$supports=array('title','thumbnail','editor','revisions');
