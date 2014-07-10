@@ -15,7 +15,9 @@ require_once(plugin_dir_path(__FILE__).'inc/admin-columns.php');
 require_once(plugin_dir_path(__FILE__).'inc/mdw-meta-boxes/mdwmb-plugin.php');
 require_once(plugin_dir_path(__FILE__).'inc/mdw-meta-boxes/ajax-meta-boxes.php'); // may roll into mdwmd-plugin
 require_once(plugin_dir_path(__FILE__).'inc/custom-widgets.php');
-//require_once(plugin_dir_path(__FILE__).'admin-page.php');
+require_once(plugin_dir_path(__FILE__).'admin-page.php');
+require_once(plugin_dir_path(__FILE__).'/classes/slider.php'); // our bootstrap slider
+require_once(plugin_dir_path(__FILE__).'/classes/social-media.php'); // our social media page
 
 require_once(plugin_dir_path(__FILE__).'mdw-cms-demo.php'); // our demo setup stuff
 

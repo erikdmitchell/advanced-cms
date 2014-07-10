@@ -39,7 +39,10 @@ Changelog
 ===========
 
 ### 1.0.6
-	WORKING ON ADDING THE SLIDER, AND ADMIN PAGE AND OUR SOCIAL MEDIA PAGE
+	Added our WP Bootstrap slider to the plugin. Can be called via shortcode. Sample shortcode is part of our admin page.
+	Added the Social Media admin page ot the plugin. It's a seperate page from the CMS Settings page, but is still in Apperance.
+	Added sample social media function to the Social Media class.
+	
 ### 1.0.3
  * Added an admin options page for our custom code. Prevents overwriting of code on updates. -- This has been postponed do to more detailed setup requirements then I thought.
  * Added admin.css for use on our options page and plugin.

@@ -6,7 +6,11 @@ $args=array(
 		'supports' => array('title','thumbnail','revisions'),
 		'taxonomies' => false
 	),
-	'suppliers' => array()
+	'suppliers' => array(),
+	'slides' => array(
+		'supports' => array('title','thumbnail','revisions'),
+		'taxonomies' => false
+	),
 );
 $mdw_custom_post_types->add_post_types($args);
 
@@ -170,20 +174,3 @@ $sample_meta_box->add_field(array(
 	'label' => 'Media - File',
 ));
 */
-
-/** SLIDER SETUP
-<?php get_template_part('inc/slider'); ?>
-
-	<div class="container full-width">
-		<?php 
-		$config=array(
-			'slider_id' => 'homepage-slider',
-			'post_type' => 'slides',
-			'captions' => true,		
-		);		
-		$slider=new MDWBootstrapSlider($config);
-		echo $slider->get_slider();
-		?>
-	</div>
-	*/
-?>

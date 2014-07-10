@@ -1,11 +1,8 @@
 <?php
-/*
-Version: 0.1.0
-@erikdmitchell
-*/
-
 class MDWSocialMedia {
 
+	public $version='0.1.0';
+	
 	private $options;
 
 	function __construct() {
@@ -53,7 +50,8 @@ class MDWSocialMedia {
 		add_settings_field('facebook','Facebook',array($this,'facebook_callback_function'),'social-media-settings','social_media_section');		
 		add_settings_field('pinterest','Pinterest',array($this,'pinterest_cb'),'social-media-settings','social_media_section');	
 		add_settings_field('twitter','Twitter',array($this,'twitter_cb'),'social-media-settings','social_media_section');	
-		add_settings_field('houzz','Houzz',array($this,'houzz_cb'),'social-media-settings','social_media_section');		
+		add_settings_field('houzz','Houzz',array($this,'houzz_cb'),'social-media-settings','social_media_section');
+		add_settings_field('sample','Display Social Media',array($this,'sample_cb'),'social-media-settings','social_media_section');		
 
 		// Register our setting so that $_POST handling is done for us and
 		// our callback function just has to echo the <input>
@@ -64,7 +62,7 @@ class MDWSocialMedia {
 	 * This function is needed if we added a new section. This function will be run at the start of our section
 	**/	
 	function social_media_section_cb() {
-		//echo '<p>Intro text for our settings section</p>';
+		echo '<p>We can place our social media URLs here.</p>';
 	}
 	
 	function facebook_callback_function() {
@@ -106,7 +104,20 @@ class MDWSocialMedia {
 
 		echo '<input name="social_media_options[houzz]" id="houzz" class="regular-text" type="text" value="'.$value.'" /> Houzz URL';
 	}
+
+	/**
+	 * a sample function for displaying the social media
+	 */
+	function sample_cb() {
 	
+		echo '<code>';
+			echo '$sm_options=get_option(\'social_media_options\');<br />';
+		echo '</code>';
+		echo '<p>Everything is stored in that option as an array, simply run through the array and display the urls.</p>';
+		echo '<p>This class includes the Font Awesome css for easy usage in a theme.</p>';
+		
+	}	
+
 	/**
 	 * valudate settings
 	**/

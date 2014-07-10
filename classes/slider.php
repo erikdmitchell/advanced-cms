@@ -2,10 +2,15 @@
 class MDWBootstrapSlider {
 
 	public $slider=null;
+	public $version='1.0.3';
 
 	private $posts=null;
 
-	function __construct($config=array()) {
+	function __construct() {
+		add_shortcode('bootstrap-slider',array($this,'slider_shortcode'));
+	}
+	
+	function setup_slider($config=array()) {
 		$default_config=array(
 			'slider_id' => 'slider-id',
 			'post_type' => 'posts',
@@ -24,7 +29,21 @@ class MDWBootstrapSlider {
 		
 		$this->posts=get_posts($args);
 
-		$this->build_slider();
+		$this->build_slider();	
+	}
+
+	function slider_shortcode($atts) {
+		foreach ($atts as $key => $value) :
+			if ($value=='false') :
+				$atts[$key]=0;
+			elseif ($value=='true') :
+				$atts[$key]=1;
+			endif;
+		endforeach;	
+
+		$this->setup_slider($atts);
+		
+		return $this->slider;
 	}
 	
 	public function get_slider() {
@@ -115,6 +134,8 @@ class MDWBootstrapSlider {
 	}	
 
 }
+
+new MDWBootstrapSlider();
 
 add_action('init','add_image_sizes');
 function add_image_sizes() {
