@@ -513,7 +513,7 @@ print_r($option_arr);
 
 		$option_arr=get_option($this->option_name);
 		
-		if (!count($option_arr))
+		if (!count($option_arr) || !$option_arr)
 			return false;
 			
 		foreach ($option_arr as $option) :

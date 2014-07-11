@@ -112,6 +112,11 @@ class MDWCMS_Options {
 				echo '(string) The post type of the posts for the slider.';
 			echo '</li>';
 			echo '<li>';
+				echo '<strong>limit</strong><br />';
+				echo '(int) The number of posts (slides) to display.<br />';
+				echo '<i>default: -1 (all)</i>';
+			echo '</li>';
+			echo '<li>';
 				echo '<strong>indicators</strong><br />';
 				echo '(true/false) Display the slide indicators.';
 			echo '</li>';
@@ -122,6 +127,11 @@ class MDWCMS_Options {
 			echo '<li>';
 				echo '<strong>captions</strong><br />';
 				echo '(true/false) Display slide captions.';
+			echo '</li>';
+			echo '<li>';
+				echo '<strong>caption_field</strong><br />';
+				echo '(string) The field used for the caption.<br />';
+				echo '<i>default: excerpt | excerpt,content,title</i>';
 			echo '</li>';
 			echo '<li>';
 				echo '<strong>controls</strong><br />';

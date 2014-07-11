@@ -2,7 +2,7 @@
 class MDWBootstrapSlider {
 
 	public $slider=null;
-	public $version='1.0.3';
+	public $version='1.0.4';
 
 	private $posts=null;
 
@@ -14,16 +14,20 @@ class MDWBootstrapSlider {
 		$default_config=array(
 			'slider_id' => 'slider-id',
 			'post_type' => 'posts',
+			'limit' => -1,
 			'indicators' => true,
 			'slides' => true,
 			'captions' => false,
+			'caption_field' => 'excerpt',
 			'controls' => true
 		);
 
 		$this->config=array_merge($default_config,$config);
-
+echo '<pre>';
+print_r($this->config);
+echo '</pre>';
 		$args=array(
-			'posts_per_page' => -1,
+			'posts_per_page' => $this->config['limit'],
 			'post_type' => $this->config['post_type'],
 		);
 		
@@ -105,7 +109,7 @@ class MDWBootstrapSlider {
 					$html.=get_the_post_thumbnail($post->ID,'slide-image');
 					if ($captions) :
 						$html.='<div class="carousel-caption">';
-							$html.='<p>'.$post->post_excerpt.'</p>';
+							$html.='<p>'.$this->get_caption($post).'</p>';
 						$html.='</div>';
 					endif;
 				$html.='</div>'; 
@@ -131,14 +135,32 @@ class MDWBootstrapSlider {
 		$html.='</a>';
 		
 		return $html;		
+	}
+	
+	function get_caption($post=false) {
+		$html=null;
+		if (!$post)
+			return false;
+		
+		switch ($this->config['caption_field']):
+			case 'excerpt' :
+				$html.=$post->post_excerpt;
+				break;
+			case 'content' :
+				$html.=$post->post_content;
+				break;
+			case 'title' :
+				$html.=$post->post_title;
+				break;
+			default:
+				$html.=$post->post_excerpt;
+				break;
+		endswitch;
+			
+		return $html;
 	}	
 
 }
 
 new MDWBootstrapSlider();
-
-add_action('init','add_image_sizes');
-function add_image_sizes() {
-	add_image_size('slide-image',1400,500,true);
-}
 ?>
