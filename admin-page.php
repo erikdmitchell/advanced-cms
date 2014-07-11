@@ -134,6 +134,16 @@ class MDWCMS_Options {
 				echo '<i>default: excerpt | excerpt,content,title</i>';
 			echo '</li>';
 			echo '<li>';
+				echo '<strong>more_button</strong><br />';
+				echo '(true/false) Display a read more button as part of the caption.<br />';
+				echo '<i>default: true</i>';
+			echo '</li>';
+			echo '<li>';
+				echo '<strong>more_text</strong><br />';
+				echo '(string) The text of our more button.<br />';
+				echo '<i>default: Read More</i>';
+			echo '</li>';
+			echo '<li>';
 				echo '<strong>controls</strong><br />';
 				echo '(true/false) Display the slide left/right controls.';
 			echo '</li>';													

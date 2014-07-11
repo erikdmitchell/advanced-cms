@@ -2,7 +2,7 @@
 class MDWBootstrapSlider {
 
 	public $slider=null;
-	public $version='1.0.4';
+	public $version='1.0.5';
 
 	private $posts=null;
 
@@ -19,13 +19,13 @@ class MDWBootstrapSlider {
 			'slides' => true,
 			'captions' => false,
 			'caption_field' => 'excerpt',
+			'more_button' => true,
+			'more_text' => 'Read More',
 			'controls' => true
 		);
 
 		$this->config=array_merge($default_config,$config);
-echo '<pre>';
-print_r($this->config);
-echo '</pre>';
+
 		$args=array(
 			'posts_per_page' => $this->config['limit'],
 			'post_type' => $this->config['post_type'],
@@ -109,7 +109,9 @@ echo '</pre>';
 					$html.=get_the_post_thumbnail($post->ID,'slide-image');
 					if ($captions) :
 						$html.='<div class="carousel-caption">';
-							$html.='<p>'.$this->get_caption($post).'</p>';
+							$html.='<p class="caption-text">'.$this->get_caption($post).'</p>';
+							if ($this->config['more_button'])
+								$html.='<p><a class="btn btn-primary btn-lg" role="button">'.$this->config['more_text'].'</a></p>';
 						$html.='</div>';
 					endif;
 				$html.='</div>'; 
