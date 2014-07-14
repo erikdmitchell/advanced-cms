@@ -2,12 +2,18 @@
 class MDWBootstrapSlider {
 
 	public $slider=null;
-	public $version='1.0.5';
+	public $version='1.0.6';
 
 	private $posts=null;
 
-	function __construct() {
+	function __construct($config=array()) {
 		add_shortcode('bootstrap-slider',array($this,'slider_shortcode'));
+
+		// v1.0.6 - legacy support for non/pre shortcode version //
+		$old_config=array_filter($config);
+		if (!empty($old_config))
+			$this->setup_slider($old_config);		
+		
 	}
 	
 	function setup_slider($config=array()) {
