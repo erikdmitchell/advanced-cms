@@ -38,6 +38,8 @@ See the mdw-cms-demo.php for detailed examples.
 Changelog
 ===========
 
+### 1.0.8
+
 ### 1.0.7
 	Added legacy support for slider.
 	Added git ignore file.
