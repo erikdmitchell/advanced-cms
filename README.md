@@ -38,6 +38,16 @@ See the mdw-cms-demo.php for detailed examples.
 Changelog
 ===========
 
+### 1.0.7
+	Added legacy support for slider.
+	Added git ignore file.
+	Added more button and more button text to slider and config.
+
+	Fixed meta box glitch, updated slider plugin. Now includes ability to limit slides and select caption type.
+
+	We now have a sample config file that can be replaced by the user (similar to wp-config/wp-config-sample).
+	Cleaned up sample file.
+
 ### 1.0.6
 	Added our WP Bootstrap slider to the plugin. Can be called via shortcode. Sample shortcode is part of our admin page.
 	Added the Social Media admin page ot the plugin. It's a seperate page from the CMS Settings page, but is still in Apperance.

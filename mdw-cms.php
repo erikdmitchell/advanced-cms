@@ -2,7 +2,7 @@
 /*
 Plugin Name: MDW CMS
 Description: Adds cusomtized functionality to the site to make WordPress super awesome.
-Version: 1.0.6
+Version: 1.0.7
 Author: MillerDesignworks
 Author URI: http://www.millerdesignworks.com
 License: GPL2
@@ -20,9 +20,9 @@ require_once(plugin_dir_path(__FILE__).'/classes/slider.php'); // our bootstrap 
 require_once(plugin_dir_path(__FILE__).'/classes/social-media.php'); // our social media page
 require_once(plugin_dir_path(__FILE__).'/updater/updater.php'); // our bitbucket updater stuff
 
-require_once(plugin_dir_path(__FILE__).'mdw-cms-demo.php'); // our demo setup stuff
-
-/**
-	Setup our custom CMS here
-**/
+if (file_exists(plugin_dir_path(__FILE__).'mdw-cms-config.php')) :
+	require_once(plugin_dir_path(__FILE__).'mdw-cms-config.php');
+else :
+	require_once(plugin_dir_path(__FILE__).'mdw-cms-config-sample.php');
+endif;
 ?>

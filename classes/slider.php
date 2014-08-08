@@ -2,28 +2,38 @@
 class MDWBootstrapSlider {
 
 	public $slider=null;
-	public $version='1.0.3';
+	public $version='1.0.6';
 
 	private $posts=null;
 
-	function __construct() {
+	function __construct($config=array()) {
 		add_shortcode('bootstrap-slider',array($this,'slider_shortcode'));
+
+		// v1.0.6 - legacy support for non/pre shortcode version //
+		$old_config=array_filter($config);
+		if (!empty($old_config))
+			$this->setup_slider($old_config);		
+		
 	}
 	
 	function setup_slider($config=array()) {
 		$default_config=array(
 			'slider_id' => 'slider-id',
 			'post_type' => 'posts',
+			'limit' => -1,
 			'indicators' => true,
 			'slides' => true,
 			'captions' => false,
+			'caption_field' => 'excerpt',
+			'more_button' => true,
+			'more_text' => 'Read More',
 			'controls' => true
 		);
 
 		$this->config=array_merge($default_config,$config);
 
 		$args=array(
-			'posts_per_page' => -1,
+			'posts_per_page' => $this->config['limit'],
 			'post_type' => $this->config['post_type'],
 		);
 		
@@ -105,7 +115,9 @@ class MDWBootstrapSlider {
 					$html.=get_the_post_thumbnail($post->ID,'slide-image');
 					if ($captions) :
 						$html.='<div class="carousel-caption">';
-							$html.='<p>'.$post->post_excerpt.'</p>';
+							$html.='<p class="caption-text">'.$this->get_caption($post).'</p>';
+							if ($this->config['more_button'])
+								$html.='<p><a class="btn btn-primary btn-lg" role="button">'.$this->config['more_text'].'</a></p>';
 						$html.='</div>';
 					endif;
 				$html.='</div>'; 
@@ -131,14 +143,32 @@ class MDWBootstrapSlider {
 		$html.='</a>';
 		
 		return $html;		
+	}
+	
+	function get_caption($post=false) {
+		$html=null;
+		if (!$post)
+			return false;
+		
+		switch ($this->config['caption_field']):
+			case 'excerpt' :
+				$html.=$post->post_excerpt;
+				break;
+			case 'content' :
+				$html.=$post->post_content;
+				break;
+			case 'title' :
+				$html.=$post->post_title;
+				break;
+			default:
+				$html.=$post->post_excerpt;
+				break;
+		endswitch;
+			
+		return $html;
 	}	
 
 }
 
 new MDWBootstrapSlider();
-
-add_action('init','add_image_sizes');
-function add_image_sizes() {
-	add_image_size('slide-image',1400,500,true);
-}
 ?>
