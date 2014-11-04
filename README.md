@@ -25,9 +25,9 @@ Usage Instructions
  * The custom taxonomy class is already called and stored in $mdw_custom_taxonomies.
  * Use $mdw_custom_taxonomies->add_taxonomy($taxonomy,$object_type,$label); to add taxonomies.
  * The parameters:
-  * @param string $taxonomy - the taxonomy name (slug form)
-  * @param string $object_type - name of the object type ie: post,page,custom_post_type
-  * @param string $label - the taxonomy display name
+ 		@param string $taxonomy - the taxonomy name (slug form)
+ 		@param string $object_type - name of the object type ie: post,page,custom_post_type
+ 		@param string $label - the taxonomy display name
 
 ### Custom Admin Columns
  * Initiate the class new MDW_Admin_Columns($config) and that will generate the columns.
@@ -37,6 +37,11 @@ See the mdw-cms-demo.php for detailed examples.
 
 Changelog
 ===========
+
+### 1.0.8
+	Added Inflector class (Akelos PHP Application Framework) to handle pluralization of words.
+	
+	Fixed issue with plural custom post types. Accounts for it and added ability to handle both via a word_type config option.
 
 ### 1.0.7
 	Added legacy support for slider.

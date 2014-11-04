@@ -2,15 +2,16 @@
 // add post types //
 //$mdw_custom_post_types->add_post_types(array('meats','suppliers'));
 $args=array(
-	'meats' => array(
+	'meat' => array(
 		'supports' => array('title','thumbnail','revisions'),
-		'taxonomies' => false
+		'taxonomies' => false,
+		'word_type' => 'singular',
 	),
 	'suppliers' => array(),
 	'slides' => array(
 		'supports' => array('title','thumbnail','revisions'),
 		'taxonomies' => false
-	),
+	)
 );
 $mdw_custom_post_types->add_post_types($args);
 

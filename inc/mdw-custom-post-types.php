@@ -8,23 +8,34 @@ class MDW_CPT {
 	}
 	
 	function create_post_types() {
+		$Words=new Inflector();
+		
 		foreach ($this->post_types as $post_type => $args) :
-			// format our post type by forcing it to lowercase and replacing spaces with hyphens //
+			$word_type='plural';
+			
+			if (isset($args['word_type']))
+				$word_type=$args['word_type'];
+
+			// format our post type by forcing it to lowercase and replacing spaces with hyphens //	
 			$post_type=strtolower($post_type);
 			$post_type=str_replace(' ','-',$post_type);
 
 			$post_type_mod=str_replace('-',' ',$post_type);
 
 			// WILL NEED TO REDO SPACES FOR FORMAL
-			if (substr($post_type,-1)=='s') :
-				$post_type_plural=$post_type_mod;
+			if ($word_type=='plural') :
+				$post_type_plural=$post_type;
+				$post_type_formal=$Words->singularize(ucwords($post_type_mod));
+				$post_type_formal_plural=ucwords($post_type_plural);
 			else :
-				$post_type_plural=$post_type_mod.'s';
+				$post_type_plural=$Words->pluralize($post_type);
+				$post_type_formal=ucwords($post_type_mod);
+				$post_type_formal_plural=ucwords($post_type_plural);
 			endif;
 			
-			$post_type_formal=ucwords($post_type_mod);
-			$post_type_formal_plural=ucwords($post_type_plural);
-	
+//echo "pt: $post_type - $post_type_plural<br />";			
+//echo "pt form: $post_type_formal - $post_type_formal_plural<br>";	
+
 			// setup our default 'args' //
 			$taxonomies='post_tag';
 			$supports=array('title','thumbnail','editor','revisions');
