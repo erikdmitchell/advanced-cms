@@ -32,7 +32,13 @@ Usage Instructions
 	
 	Field Types:
 		* text
+		* checkbox
 		* textarea
+		* wysiwyg
+		* media
+		* date
+		* phone
+		* url
 
 ### Custom Taxonomies
 	The custom taxonomy class is already called and stored in $mdw_custom_taxonomies.
