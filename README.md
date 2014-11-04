@@ -7,11 +7,15 @@ Usage Instructions
 ===========
 
 ### Custom Post Types
- * The custom post type class is already called and stored in $mdw_custom_post_types.
- * Use $mdw_custom_post_types->add_post_types(); to add post types.
- * Post types can be added individually or in a group.
- 	* The simple syntax is: $mdw_custom_post_types->add_post_types(array('meats','suppliers'));
- 	* More advanced options can be added using a more advanced syntax:
+	The custom post type class is already called and stored in $mdw_custom_post_types.
+	
+	Use $mdw_custom_post_types->add_post_types(); to add post types.
+	
+	Post types can be added individually or in a group.
+		
+		The simple syntax is: $mdw_custom_post_types->add_post_types(array('meats','suppliers'));
+		
+		More advanced options can be added using a more advanced syntax:
  		$args=array(
  			'meats' => array(
  				'supports' => array('title','thumbnail','revisions'),
@@ -20,10 +24,21 @@ Usage Instructions
  			'suppliers' => array()
  		);
  		$mdw_custom_post_types->add_post_types($args);
- 
+
+### Custom Metaboxes
+	To add meta boxes, use a new instance of the mdw_Meta_Box class.
+	
+	The class utalizes a config parameter to setup everything including the fields.
+	
+	Field Types:
+		* text
+		* textarea
+
 ### Custom Taxonomies
 	The custom taxonomy class is already called and stored in $mdw_custom_taxonomies.
+	
 	Use $mdw_custom_taxonomies->add_taxonomy($taxonomy,$object_type,$label); to add taxonomies.
+	
 	The parameters:
  		string $taxonomy - the taxonomy name (slug form)
  		string $object_type - name of the object type ie: post,page,custom_post_type
@@ -31,7 +46,9 @@ Usage Instructions
  		
 ### Custom Admin Columns
 	Initiate the class new MDW_Admin_Columns($config) and that will generate the columns.
-	array $config requires the post_type and one or more columns, which require a slug and label. An optional type paramater has also been added.
+	
+	array $config requires the post_type and one or more columns, which require a slug and label. 
+	An optional type paramater has also been added.
 
 See the mdw-cms-demo.php for detailed examples.
 
