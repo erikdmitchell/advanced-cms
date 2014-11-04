@@ -6,57 +6,8 @@ Adds cusomtized functionality to the site to make WordPress super awesome.
 Usage Instructions
 ===========
 
-### Custom Post Types
-	The custom post type class is already called and stored in $mdw_custom_post_types.
-	
-	Use $mdw_custom_post_types->add_post_types(); to add post types.
-	
-	Post types can be added individually or in a group.
-		
-		The simple syntax is: $mdw_custom_post_types->add_post_types(array('meats','suppliers'));
-		
-		More advanced options can be added using a more advanced syntax:
- 		$args=array(
- 			'meats' => array(
- 				'supports' => array('title','thumbnail','revisions'),
- 				'taxonomies' => false
- 			),
- 			'suppliers' => array()
- 		);
- 		$mdw_custom_post_types->add_post_types($args);
-
-### Custom Metaboxes
-	To add meta boxes, use a new instance of the mdw_Meta_Box class.
-	
-	The class utalizes a config parameter to setup everything including the fields.
-	
-	Field Types:
-		* text
-		* checkbox
-		* textarea
-		* wysiwyg
-		* media
-		* date
-		* phone
-		* url
-
-### Custom Taxonomies
-	The custom taxonomy class is already called and stored in $mdw_custom_taxonomies.
-	
-	Use $mdw_custom_taxonomies->add_taxonomy($taxonomy,$object_type,$label); to add taxonomies.
-	
-	The parameters:
- 		string $taxonomy - the taxonomy name (slug form)
- 		string $object_type - name of the object type ie: post,page,custom_post_type
- 		string $label - the taxonomy display name
- 		
-### Custom Admin Columns
-	Initiate the class new MDW_Admin_Columns($config) and that will generate the columns.
-	
-	array $config requires the post_type and one or more columns, which require a slug and label. 
-	An optional type paramater has also been added.
-
-See the mdw-cms-demo.php for detailed examples.
+See BitBucket Wiki for details.
+See the mdw-cms-demo.php for sample examples.
 
 Changelog
 ===========
