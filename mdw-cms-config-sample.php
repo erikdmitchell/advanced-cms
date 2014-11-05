@@ -53,6 +53,10 @@ $config=array(
 				'label' => 'Phone',
 				'repeatable' => true
 			),			
+			'email' => array(
+				'type' => 'email',
+				'label' => 'email'
+			),	
 			'logo' => array(
 				'type' => 'media',
 				'label' => 'Logo'

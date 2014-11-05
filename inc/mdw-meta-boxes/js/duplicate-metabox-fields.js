@@ -18,7 +18,7 @@ jQuery(document).ready(function($) {
 	
 });
 
-/**	USED v1.1.8
+/**
  * adds a new field to the specified meta box
  * clones the specified div
  * after cloning, it modifies the id and the class
@@ -33,7 +33,7 @@ function add_field(cloneID,appendID) {
 	});
 	
 	var newFullID=cloneID+'-'+newID;
-	//newID=check_clone_id(newID,mbID,cloneClass);
+	//newID=check_clone_id(newID,mbID,cloneClass); // not used v1.1.8
 	var $clonedElement=$('#'+cloneID).clone();
 	var inputName=$clonedElement.find('input').attr('name');
 	var inputID=$clonedElement.find('input').attr('id');

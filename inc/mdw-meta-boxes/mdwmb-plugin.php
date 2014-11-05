@@ -240,7 +240,10 @@ class mdw_Meta_Box {
 			case 'date-time':
 				//$html.='<input type="text" class="datepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				//$html.='<input type="text" class="timepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
-				break;	
+				break;
+			case 'email' :
+				$html.='<input type="text" class="email validator" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				break;
 			case 'media':
 				$html.='<input id="'.$args['id'].'" class="uploader-input regular-text" type="text" name="'.$args['id'].'" value="'.$value.'" />';
 				$html.='<input class="uploader button" name="'.$args['id'].'_button" id="'.$args['id'].'_button" value="Upload" />';
@@ -262,6 +265,9 @@ class mdw_Meta_Box {
 			case 'phone':
 				$html.='<input type="text" class="phone" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				break;
+			case 'radio':
+				//$html.='<input type="radio" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" '.checked($value,'on',false).' /> '.$value;
+				break;				
 			case 'select' :		
 				$html.='<select name="'.$args['id'].'" id="'.$args['id'].'">';
 					$html.='<option>Select One</option>';				
