@@ -62,10 +62,9 @@ class AJAXMetaBoxes {
 	}
 	
 	// display box
-	
-	
 	function _add_meta_box() {
-		add_meta_box($this->meta_box_id,'AJAX Meta Box',array($this,'_meta_box'),'suppliers','normal','high');
+		$post_type='suppliers';
+		add_meta_box($this->meta_box_id,'AJAX Meta Box',array($this,'_meta_box'),$post_type,'normal','high');
 	}
 
 	function _meta_box($post) {
@@ -138,5 +137,5 @@ class AJAXMetaBoxes {
 
 	}
 }
-new AJAXMetaBoxes();
+//new AJAXMetaBoxes();
 ?>

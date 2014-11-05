@@ -14,8 +14,13 @@ Changelog
 
 ### 1.0.8
 	Added Inflector class (Akelos PHP Application Framework) to handle pluralization of words.
+	Added fields to metabox: colorpicker, time picker, select box.
+	Added ablitty to duplicate meta box fields.
 	
 	Fixed issue with plural custom post types. Accounts for it and added ability to handle both via a word_type config option.
+	
+	Removed duplicate metabox. Functionality still exists, but we need to make this an option.
+	Removed call for AJAX metaboxes. This class is great, but needs to be rolled in to primary class.
 
 ### 1.0.7
 	Added legacy support for slider.

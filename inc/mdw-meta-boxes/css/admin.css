@@ -32,6 +32,20 @@
 .umb-meta-box .url {
 	width: 60%;
 }
+.umb-meta-box .colorPicker {
+	width: 12%;
+}
+
+.umb-meta-box .timepicker {
+	width: 10%;
+}
+.umb-meta-box .datepicker {
+	width: 12%;
+}
+
+.umb-meta-box .meta-row.clone .ajaxmb-field-btn.duplicate {
+	display: none;
+}
 
 /** jquery validator (custom)
 -----------------------------*/

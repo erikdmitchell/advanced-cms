@@ -45,9 +45,35 @@ $config=array(
 				'label' => 'Address'		
 			),
 			'url' => array(
-				'type' => 'text',
+				'type' => 'url',
 				'label' => 'URL'		
-			)			
+			),
+			'phone' => array(
+				'type' => 'phone',
+				'label' => 'Phone',
+				'repeatable' => true
+			),			
+			'logo' => array(
+				'type' => 'media',
+				'label' => 'Logo'
+			),
+			'color' => array(
+				'type' => 'colorpicker',
+				'label' => 'Color'
+			),
+			'time' => array(
+				'type' => 'timepicker',
+				'label' => 'Time'
+			),
+			'date' => array(
+				'type' => 'date',
+				'label' => 'Date'
+			),
+			'category' => array(
+				'type' => 'select',
+				'options' => array('one','two','three'),
+				'label' => 'Category'
+			),
 		)		
 	)
 );

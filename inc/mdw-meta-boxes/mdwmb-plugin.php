@@ -46,13 +46,16 @@ class mdw_Meta_Box {
 
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-datepicker');
+		wp_enqueue_script('colpick-js',plugins_url('/js/colpick.js',__FILE__));
+		wp_enqueue_script('jq-timepicker',plugins_url('/js/jquery.ui.timepicker.js',__FILE__));
 		wp_enqueue_script('jquery-maskedinput-script',plugins_url('/js/jquery.maskedinput.min.js',__FILE__),array('jquery'),'1.3.1',true);
-		
 		wp_enqueue_script('metabox-duplicator',plugins_url('/js/metabox-duplicator.js',__FILE__),array('jquery'),'0.1.0',true);
 		wp_enqueue_script('metabox-remover',plugins_url('/js/metabox-remover.js',__FILE__),array('jquery'),'0.1.0',true);
 		wp_enqueue_script('metabox-datepicker-script',plugins_url('/js/metabox-datepicker.js',__FILE__),array('jquery-ui-datepicker'),'1.0.0',true);
 		wp_enqueue_script('metabox-maskedinput-script',plugins_url('/js/metabox-maskedinput.js',__FILE__),array('jquery-maskedinput-script'),'1.0.0',true);		
 		wp_enqueue_script('jq-validator-script',plugins_url('/js/jquery.validator.js',__FILE__),array('jquery'),'1.0.0',true);
+		wp_enqueue_script('mdw-cms-js',plugins_url('/js/functions.js',__FILE__),array('jquery'));
+		wp_enqueue_script('duplicate-metabox-fields',plugins_url('js/duplicate-metabox-fields.js',__FILE__),array('jquery'),'1.0.1');
 		
 		$options=array();
 		
@@ -79,6 +82,9 @@ class mdw_Meta_Box {
 		
 		wp_enqueue_style('mdwmb-admin-css',plugins_url('/css/admin.css',__FILE__));
 		wp_enqueue_style('jquery-ui-style','//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css',array(),'1.10.4');				
+		wp_enqueue_style('colpick-css',plugins_url('/css/colpick.css',__FILE__));
+		wp_enqueue_style('jq-timepicker-style',plugins_url('/css/jquery.ui.timepicker.css',__FILE__));
+		//wp_enqueue_style('aja-meta-boxes-css',plugins_url('css/ajax-meta-boxes.css',__FILE__),array(),'1.0.0','all');
 	}
 	
 	function register_scripts_styles() {
@@ -170,6 +176,7 @@ class mdw_Meta_Box {
 	function generate_meta_box_fields($post,$metabox) {
 		$html=null;
 		$this->fields=null; // this needs to be adjusted for legacy v 1.1.8
+		$row_counter=1;
 
 		wp_enqueue_script('umb-admin',plugins_url('/js/metabox-media-uploader.js',__FILE__),array('jquery'),$this->umb_version);
 		
@@ -185,18 +192,19 @@ class mdw_Meta_Box {
 			endforeach;
 		
 			foreach ($this->fields as $field) :
-				$html.='<div class="meta-row">';
+				$html.='<div id="meta-row-'.$row_counter.'" class="meta-row" data-input-id="'.$field['id'].'">';
 					$html.='<label for="'.$field['id'].'">'.$field['label'].'</label>';
 					$html.=$this->generate_field($field);
 				$html.='</div>';
+				$row_counter++;
 			endforeach;
-		
+/*		
 			if ($metabox['args']['duplicate'])
 				$html.='<div class="dup-meta-box"><a href="#" data-meta-id="'.$metabox['args']['meta_box_id'].'">Duplicate Box</a></div>';
 
 			if ($metabox['args']['removable'])
 				$html.='<div class="remove-meta-box"><a href="#" data-meta-id="'.$metabox['args']['meta_box_id'].'" data-post-id="'.$post->ID.'">Remove Box</a></div>';
-				
+*/				
 		$html.='</div>';
 		
 		echo $html;	
@@ -220,24 +228,19 @@ class mdw_Meta_Box {
 		endif;
 
 		switch ($args['type']) :
-			case 'text' :
-				$html.='<input type="text" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
-				break;
 			case 'checkbox':
 				$html.='<input type="checkbox" name="'.$args['id'].'" id="'.$args['id'].'" '.checked($value,'on',false).' />';
 				break;
-			case 'textarea':
-				$html.='<textarea class="textarea" name="'.$args['id'].'" id="'.$args['id'].'">'.$value.'</textarea>';
+			case 'colorpicker' :
+				$html.='<input type="text" class="colorPicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				break;
-			case 'wysiwyg':
-				$settings=array(
-					'media_buttons' => false,
-					'textarea_rows' => 10,
-					'quicktags' => false
-				);
-				//$html.=wp_editor($value,$args['id'],$settings);
-				$html.=mdwmb_Functions::mdwm_wp_editor($value,$args['id'],$settings);
-				break;
+			case 'date':
+				$html.='<input type="text" class="datepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				break;				
+			case 'date-time':
+				//$html.='<input type="text" class="datepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				//$html.='<input type="text" class="timepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				break;	
 			case 'media':
 				$html.='<input id="'.$args['id'].'" class="uploader-input regular-text" type="text" name="'.$args['id'].'" value="'.$value.'" />';
 				$html.='<input class="uploader button" name="'.$args['id'].'_button" id="'.$args['id'].'_button" value="Upload" />';
@@ -256,18 +259,46 @@ class mdw_Meta_Box {
 				endif;
 				
 				break;
-			case 'date':
-				$html.='<input type="text" class="datepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
-				break;
 			case 'phone':
 				$html.='<input type="text" class="phone" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
-				break;				
+				break;
+			case 'select' :		
+				$html.='<select name="'.$args['id'].'" id="'.$args['id'].'">';
+					$html.='<option>Select One</option>';				
+					if (isset($args['options']) && is_array($args['options'])) :
+						foreach ($args['options'] as $option) :
+							$html.='<option value="'.$option.'">'.$option.'</option>';
+						endforeach;
+					endif;
+				$html.='</select>';
+				break;
+			case 'text' :
+				$html.='<input type="text" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				break;												
+			case 'textarea':
+				$html.='<textarea class="textarea" name="'.$args['id'].'" id="'.$args['id'].'">'.$value.'</textarea>';
+				break;
+			case 'timepicker' :
+				$html.='<input type="text" class="timepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				break;
 			case 'url':
 				$html.='<input type="text" class="url validator" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				break;				
+			case 'wysiwyg':
+				$settings=array(
+					'media_buttons' => false,
+					'textarea_rows' => 10,
+					'quicktags' => false
+				);
+				//$html.=wp_editor($value,$args['id'],$settings);
+				$html.=mdwmb_Functions::mdwm_wp_editor($value,$args['id'],$settings);
 				break;
 			default:
 				$html.='<input type="text" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 		endswitch;
+		
+		if ($args['repeatable'])
+			$html.='<button type="button" class="ajaxmb-field-btn duplicate">Duplicate Field</button>';
 		
 		return $html;
 	}
@@ -306,10 +337,21 @@ class mdw_Meta_Box {
 	**/
 	function add_fields_array($arr,$meta_id) {
 		foreach ($arr as $id => $values) :
+			$options=false;
+			$repeatable=0;
+			
+			if (isset($values['options']))
+				$options=$values['options'];
+
+			if (isset($values['repeatable']))
+				$repeatable=1;
+						
 			$args=array(
 				'id' => $id,
 				'type' => $values['type'],
 				'label' => $values['label'],
+				'options' => $options,
+				'repeatable' => $repeatable,
 			);
 			$this->add_field($args,$meta_id);
 		endforeach;
@@ -503,7 +545,7 @@ print_r($option_arr);
 			
 			$configs[$key]=$config;
 		endforeach;
-		
+
 		return $configs;
 	}
 	

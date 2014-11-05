@@ -1,6 +1,8 @@
 jQuery(document).ready(function($) {
+//console.log('ajax meta boxes js');
 
 	$('body').on('click','.ajaxmb-field-btn.add',function() {
+console.log('duplicate field');
 		add_field('#ajax_meta_box_id .inside','ajaxmb-field-default-0','.ajaxmb-field');	
 	});
 
