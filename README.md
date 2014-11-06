@@ -12,6 +12,9 @@ See the mdw-cms-demo.php for sample examples.
 Changelog
 ===========
 
+### 1.1.0
+	
+
 ### 1.0.9
 	Removed old BitBucket updater as it failed to work. Utilizing new, self hosted updater.
 	
