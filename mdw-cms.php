@@ -2,7 +2,7 @@
 /*
 Plugin Name: MDW CMS
 Description: Adds cusomtized functionality to the site to make WordPress super awesome.
-Version: 1.0.8
+Version: 1.0.9
 Author: MillerDesignworks
 Author URI: http://www.millerdesignworks.com
 License: GPL2
@@ -19,11 +19,24 @@ require_once(plugin_dir_path(__FILE__).'admin-page.php');
 require_once(plugin_dir_path(__FILE__).'/classes/slider.php'); // our bootstrap slider
 require_once(plugin_dir_path(__FILE__).'/classes/social-media.php'); // our social media page
 require_once(plugin_dir_path(__FILE__).'/classes/inflector.php'); // our pluralizing/singular functions
-require_once(plugin_dir_path(__FILE__).'/updater/updater.php'); // our bitbucket updater stuff
 
 if (file_exists(plugin_dir_path(__FILE__).'mdw-cms-config.php')) :
 	require_once(plugin_dir_path(__FILE__).'mdw-cms-config.php');
 else :
 	require_once(plugin_dir_path(__FILE__).'mdw-cms-config-sample.php');
+endif;
+
+/**
+ * runs our update functions
+ * updater json: http://www.millerdesignworks.com/mdw-wp-plugins/mdw-cms-metadata.json
+ * udater zip url: http://www.millerdesignworks.com/mdw-wp-plugins/mdw-cms.zip
+ */
+require_once(plugin_dir_path(__FILE__).'/updater/plugin-update-checker.php');
+if (class_exists('PucFactory')) :
+	$MyUpdateChecker = PucFactory::buildUpdateChecker (
+	    'http://www.millerdesignworks.com/mdw-wp-plugins/mdw-cms-metadata.json',
+	    __FILE__,
+	    'mdw-cms'
+	);
 endif;
 ?>
