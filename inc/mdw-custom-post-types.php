@@ -32,9 +32,6 @@ class MDW_CPT {
 				$post_type_formal=ucwords($post_type_mod);
 				$post_type_formal_plural=ucwords($post_type_plural);
 			endif;
-			
-//echo "pt: $post_type - $post_type_plural<br />";			
-//echo "pt form: $post_type_formal - $post_type_formal_plural<br>";	
 
 			// setup our default 'args' //
 			$taxonomies='post_tag';

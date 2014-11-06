@@ -16,7 +16,13 @@ $args=array(
 $mdw_custom_post_types->add_post_types($args);
 
 // add custom taxonomy //
-$mdw_custom_taxonomies->add_taxonomy('supplier-type','suppliers','Supplier Type');
+$tax_args=array(
+	'supplier-type' => array(
+		'object_type' => 'suppliers',
+		'label' => 'Supplier Type'
+	)
+);
+$mdw_custom_taxonomies->add_taxonomy($tax_args);
 
 // custom meta boxes for meats //
 $config=array(
