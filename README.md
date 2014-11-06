@@ -13,7 +13,7 @@ Changelog
 ===========
 
 ### 1.1.0
-	
+	Pulled out custom config file to prevent it from being overwritten. This will be stored as a variable at some point.
 
 ### 1.0.9
 	Removed old BitBucket updater as it failed to work. Utilizing new, self hosted updater.

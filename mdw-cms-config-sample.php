@@ -1,6 +1,5 @@
 <?php
 // add post types //
-//$mdw_custom_post_types->add_post_types(array('meats','suppliers'));
 $args=array(
 	'meat' => array(
 		'supports' => array('title','thumbnail','revisions'),

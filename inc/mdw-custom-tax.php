@@ -8,9 +8,6 @@ class mdw_Custom_Tax {
 	}
 	
 	function create_taxonomies() {
-echo '<pre>';		
-print_r($this->taxonomies);		
-echo '</pre>';
 		foreach ($this->taxonomies as $taxonomy) :
 			register_taxonomy( 
 				$taxonomy['taxonomy'], 
