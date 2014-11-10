@@ -1,0 +1,41 @@
+form.custom-post-types {
+	width: 50%;
+	float: left;
+}
+form.custom-post-types label {
+	font-weight: bold;
+	width: 110px;
+	padding-right: 5px;
+	display: inline-block;
+	vertical-align: top;	
+}
+form.custom-post-types .description {
+	padding-left: 5px;	
+}
+form.custom-post-types .description-ext {
+	font-weight: bold;
+	margin-left: 115px;	
+}
+form.custom-post-types .form-row {
+	padding: 5px 0;	
+	width: 470px;
+}
+form.custom-post-types label.required {
+	color: #000;	
+}
+form.custom-post-types label.required:after {
+	color: red;	
+	content: "*";	
+	padding-left: 3px;
+}
+.custom-post-types-list {
+	width: 50%;
+	float: left;	
+}
+.custom-post-types-list .edit,
+.custom-post-types-list .delete {
+	padding: 0 5px;
+}
+.custom-post-types-list .edit {
+	padding-left: 10px;	
+}

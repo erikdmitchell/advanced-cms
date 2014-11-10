@@ -1,6 +1,6 @@
 <?php
 /*
- Builds and admin options type page where we will store our cms functionality, it can also be stored in the themes function.php file.
+ Builds and admin options type page where we will store our cms functionality, it can also be stored in the themes functions.php file.
  Since: 1.0.3
  This will prevent the overriding of custom code un plugin updates.
 */
