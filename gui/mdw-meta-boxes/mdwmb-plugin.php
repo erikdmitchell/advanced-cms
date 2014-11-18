@@ -83,9 +83,11 @@ class MDWMetaboxes {
 		);
 		$this->config=$this->setup_config($config); // set our config
 
+/*
 echo '<pre>';
 print_r($this->config);
 echo '</pre>';
+*/
 
 	
 		// load our extra classes and whatnot

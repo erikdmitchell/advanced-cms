@@ -219,38 +219,7 @@ class MDWCMSgui {
 			'_builtin' => false	
 		);
 		$post_types_arr=get_post_types($args);
-	
-		// add //
-		if (isset($_POST['update-metabox']) && $_POST['update-metabox']=='Create') :		
-			if ($this->update_metaboxes($_POST)) :
-				$this->admin_notices('updated','Metabox has been created.');			
-			else :
-				$this->admin_notices('error','There was an issue creating the metabox.');
-			endif;
-		endif;		
 
-		// update //
-		if (isset($_POST['update-metabox']) && $_POST['update-metabox']=='Update') :		
-			if ($this->update_metaboxes($_POST)) :
-				$this->admin_notices('updated','Metabox has been updated.');			
-			else :
-				$this->admin_notices('error','There was an issue updating the metabox.');
-			endif;
-		endif;	
-
-		// remove //
-		if (isset($_GET['delete']) && $_GET['delete']=='mb') :
-			foreach ($this->options['metaboxes'] as $key => $mb) :
-				if ($mb['mb_id']==$_GET['mb_id'])
-					unset($this->options['metaboxes'][$key]);
-			endforeach;
-
-			$this->options['metaboxes']=array_values($this->options['metaboxes']);
-
-			update_option('mdw_cms',$this->options);
-			$this->admin_notices('updated','Metabox has been removed.');
-		endif;
-		
 		// edit //
 		if (isset($_GET['edit']) && $_GET['edit']=='mb') :
 			foreach ($this->options['metaboxes'] as $key => $mb) :
@@ -340,60 +309,6 @@ class MDWCMSgui {
 	/**
 	 *
 	 */
-	function update_metaboxes($data=array()) {
-		$edit_key=-1;
-//echo 'a';	
-		if (!isset($data['mb_id']) || $data['mb_id']=='')
-			return false;
-	
-		$arr=array(
-			'mb_id' => $data['mb_id'],
-			'title' => $data['title'],
-			'prefix' => $data['prefix'],
-			'post_types' => $data['post_types'],
-		);
-//echo 'b';		
-		// clean fields, if any //
-		if (isset($data['fields'])) :
-			foreach ($data['fields'] as $key => $field) :
-				if (!$field['field_type'])
-					unset($data['fields'][$key]);
-			endforeach;
-		endif;
-
-		$arr['fields']=array_values($data['fields']);
-//echo 'c';
-		if (isset($this->options['metaboxes'])) :
-			foreach ($this->options['metaboxes'] as $key => $mb) :
-				if ($mb['mb_id']==$data['mb_id']) :
-					if (isset($data['update-metabox']) && $data['update-metabox']=='Update') :
-//echo 'd';					
-						$edit_key=$key;
-					else :
-						return false;
-					endif;
-				endif;
-			endforeach;		
-		endif;
-
-		if ($edit_key!=-1) :
-			$this->options['metaboxes'][$edit_key]=$arr;		
-		else :
-			$this->options['metaboxes'][]=$arr;
-		endif;
-
-/*
-echo '<pre>';
-print_r($this->options);
-echo '</pre>';
-*/
-
-		return update_option('mdw_cms',$this->options);
-	}
-	
-	/**
-	 *
-	 */
 	function build_field_rows($field_id,$field,$classes='') {
 		global $MDWMetaboxes;
 		
@@ -452,6 +367,7 @@ echo '</pre>';
 	 */
 	function update_mdw_cms_settings() {
 		$post_types=get_option('mdw_cms_post_types');
+		$metaboxes=get_option('mdw_cms_metaboxes');
 		
 		// create custom post type //
 		if (isset($_POST['add-cpt']) && $_POST['add-cpt']=='Create') :		
@@ -462,7 +378,7 @@ echo '</pre>';
 			endif;
 		endif;
 
-		// edit custom post type //
+		// update/edit custom post type //
 		if (isset($_POST['add-cpt']) && $_POST['add-cpt']=='Update') :		
 			if ($this->update_custom_post_types($_POST)) :
 				$this->admin_notices('updated','Post type has been updated.');			
@@ -483,10 +399,39 @@ echo '</pre>';
 			array_values($post_types);
 
 			update_option('mdw_cms_post_types',$post_types);
-		endif;		
+		endif;	
 		
-		//$this->options['version']=get_option('mdw_cms_version');
-		//$this->options['metaboxes']=get_option('mdw_cms_metaboxes');	
+		// add metabox //
+		if (isset($_POST['update-metabox']) && $_POST['update-metabox']=='Create') :		
+			if ($this->update_metaboxes($_POST)) :
+				$this->admin_notices('updated','Metabox has been created.');			
+			else :
+				$this->admin_notices('error','There was an issue creating the metabox.');
+			endif;
+		endif;	
+		
+		// update/edit metabox //
+		if (isset($_POST['update-metabox']) && $_POST['update-metabox']=='Update') :		
+			if ($this->update_metaboxes($_POST)) :
+				$this->admin_notices('updated','Metabox has been updated.');			
+			else :
+				$this->admin_notices('error','There was an issue updating the metabox.');
+			endif;
+		endif;		
+
+		// remove metabox //
+		if (isset($_GET['delete']) && $_GET['delete']=='mb') :
+			foreach ($metaboxes as $key => $mb) :
+				if ($mb['mb_id']==$_GET['mb_id']) :
+					unset($metaboxes[$key]);
+					$this->admin_notices('updated','Metabox has been removed.');
+				endif;
+			endforeach;
+
+			array_values($metaboxes);
+
+			update_option('mdw_cms_metaboxes',$metaboxes);
+		endif;					
 	}
 
 	/**
@@ -522,6 +467,55 @@ echo '</pre>';
 		endif;
 
 		return update_option('mdw_cms_post_types',$post_types);
+	}
+
+	/**
+	 * updates our metabox settings and its fields
+	 */
+	function update_metaboxes($data=array()) {
+		$metaboxes=get_option('mdw_cms_metaboxes');
+		$edit_key=-1;
+
+		if (!isset($data['mb_id']) || $data['mb_id']=='')
+			return false;
+	
+		$arr=array(
+			'mb_id' => $data['mb_id'],
+			'title' => $data['title'],
+			'prefix' => $data['prefix'],
+			'post_types' => $data['post_types'],
+		);
+//echo 'b';		
+		// clean fields, if any //
+		if (isset($data['fields'])) :
+			foreach ($data['fields'] as $key => $field) :
+				if (!$field['field_type'])
+					unset($data['fields'][$key]);
+			endforeach;
+		endif;
+
+		$arr['fields']=array_values($data['fields']);
+//echo 'c';
+		if (!empty($metaboxes)) :
+			foreach ($metaboxes as $key => $mb) :
+				if ($mb['mb_id']==$data['mb_id']) :
+					if (isset($data['update-metabox']) && $data['update-metabox']=='Update') :
+//echo 'd';					
+						$edit_key=$key;
+					else :
+						return false;
+					endif;
+				endif;
+			endforeach;		
+		endif;
+
+		if ($edit_key!=-1) :
+			$metaboxes[$edit_key]=$arr;		
+		else :
+			$metaboxes[]=$arr;
+		endif;
+
+		return update_option('mdw_cms_metaboxes',$metaboxes);
 	}
 
 	/**

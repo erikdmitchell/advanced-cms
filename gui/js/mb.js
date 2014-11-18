@@ -61,6 +61,7 @@ $j(document).ready(function() {
 	});
 	
 	// handles our checkbox issue for forms //
+/*
 	$j('input[type="checkbox"]').on('change', function(e){
 		if ($j(this).prop('checked')) {
 			$j(this).val(1);
@@ -69,5 +70,6 @@ $j(document).ready(function() {
 			$j(this).removeAttr('checked');
 		}
 	});
+*/
 	
 });
