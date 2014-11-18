@@ -43,33 +43,10 @@ form.custom-metabox .post-type-cb {
 form.custom-metabox .post-type-cb.first {
 	margin-left: 1px;	
 }
-form.custom-metabox .add-fields {
-	display: none;
-	padding: 10px 0;
-	overflow: hidden;
-}
-form.custom-metabox .add-fields.visible {
-	display: block;	
-}
-.add-fields .fields-wrapper {
-	overflow: hidden;	
-}
-.add-fields .fields-wrapper.default {
-	display: none;	
-}
-.add-fields .form-row {
-	
-}
-.add-fields .field-options {
 
-}
-.add-fields .field-options .field {
-	padding: 5px 0;
-}
-.add-fields .fields-wrapper label,
-.add-fields .field-options label {
-	width: 80px;
-}
+
+
+
 .add-fields .field-options .type {
 	display: none;	
 }
@@ -79,14 +56,68 @@ form.custom-metabox .add-fields.visible {
 .add-fields .field-options .type .repeatable label {
 	margin-top: 0;
 }
-.add-fields .field-options .type .options {
 
-}
 .field.options .option-row {
 	
 }
 .field.options .option-row.default {
 	display: none;
+}
+
+/* meta box fields 
+------------------ */
+form.custom-metabox .add-fields {
+	display: none;
+	padding: 0 0 10px 0;
+	overflow: hidden;
+}
+form.custom-metabox .add-fields.visible {
+	display: block;	
+}
+.add-fields .fields-wrapper {
+	overflow: hidden;	
+	width: 75%;
+}
+.add-fields .fields-wrapper.default {
+	display: none;	
+}
+.add-fields .form-row {
+	float: left;
+	width: 25%;
+}
+.add-fields .field-options {
+	float: left;
+	width: 70%;
+}
+.add-fields .field-options .field {
+	float: left;
+}
+.add-fields .field-options .type .repeatable {
+	padding-left: 5px;
+}
+.add-fields .field-options .type .options {
+
+}
+.add-fields .fields-wrapper label,
+.add-fields .field-options label {
+	width: 80px;
+}
+.add-fields .field.options > label {
+	font-size: 14px;
+	padding-bottom: 5px;	
+}
+.add-option-field {
+	padding-top: 10px;	
+}
+.wp-core-ui .button-primary.remove-field {
+	float: right;
+	background: #d64e07;
+	border-color: #b84609;
+}
+.wp-core-ui .button-primary.add-field {
+	margin-left: 15px;
+	background: #9ebaa0;
+	border-color: #90ab92;
 }
 
 /* cpt */

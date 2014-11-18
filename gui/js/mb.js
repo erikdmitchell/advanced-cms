@@ -29,7 +29,7 @@ $j(document).ready(function() {
 	});
 	
 	// adds a new field to our metabox //
-	$j('#add-field-btn').on('click', function() {
+	$j('#add-field-btn').live('click', function() {
 		var newID=0;
 		var lastFieldID='';
 		var $clonedElement=$j('#fields-wrapper-default').clone();
@@ -52,12 +52,13 @@ $j(document).ready(function() {
 			var attrNewName=attrName.replace('default',newID);
 			$j(this).attr('name',attrNewName);
 		});
+		
+		$j('#'+cloneID+' .remove-field').attr('data-id','fields-wrapper-'+newID); // set our button to remove field
 	});
 	
 	// remove a metabox field //
-	$j('a.remove-field').on('click',function(e) {
-		e.preventDefault();
-		var elemID=$j(this).data('id');
+	$j('.button.remove-field').live('click',function(e) {
+		var elemID=$j(this).data('id');		
 		$j('#'+elemID).remove();
 	});
 

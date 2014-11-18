@@ -282,7 +282,8 @@ id of meatball is _supplier_0 (may need to be _supplier_address)
 					$counter++;
 				endforeach;
 			$html.='</div>';
-
+			
+			$html.='<h3>Metabox Fields</h3>';
 			$html.='<div class="add-fields '.$edit_class.'">';
 				if ($fields) :
 					foreach ($fields as $field_id => $field) :
@@ -291,11 +292,12 @@ id of meatball is _supplier_0 (may need to be _supplier_address)
 				endif;
 				
 				$html.=$this->build_field_rows('default',null,'default'); // add default field //			
-			$html.='</div><!-- .add-fields -->';	
+			$html.='</div><!-- .add-fields -->';
 		
-			$html.='<div class="add-field"><input type="button" name="add-field" id="add-field-btn" class="button button-primary" value="Add Field"></div>';
-		
-			$html.='<p class="submit"><input type="submit" name="update-metabox" id="submit" class="button button-primary" value="'.$btn_text.'"></p>';
+			$html.='<p class="submit">';
+				$html.='<input type="submit" name="update-metabox" id="submit" class="button button-primary" value="'.$btn_text.'">';
+				$html.='<input type="button" name="add-field" id="add-field-btn" class="button button-primary add-field" value="Add Field">';
+			$html.='</p>';
 		$html.='</form>';
 		
 		$html.='<div class="custom-metabox-list">';
@@ -382,8 +384,8 @@ id of meatball is _supplier_0 (may need to be _supplier_address)
 						endif;
 					$html.='</div>';
 				endforeach;				
+				$html.='<input type="button" name="remove-field" id="remove-field-btn" class="button button-primary remove-field" data-id="fields-wrapper-'.$field_id.'" value="Remove Field">';
 			$html.='</div><!-- .field-options -->';
-			$html.='[<a href="#" class="remove-field" data-id="fields-wrapper-'.$field_id.'">Remove</a>]';
 		$html.='</div><!-- .fields-wrapper -->';
 		
 		return $html;		
