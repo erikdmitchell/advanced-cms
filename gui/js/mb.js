@@ -16,9 +16,9 @@ $j(document).ready(function() {
 	});
 	
 	// display field data on change //
-	$j('.add-fields .field_type').on('change',function() {
+	$j('.add-fields .field_type').live('change',function() {
 		var ddValue=$j(this).val();
-		
+	
 		$j(this).parent().parent().find('.type').each(function() {
 			if ($j(this).data('field-type')==ddValue) {
 				$j(this).show();							
