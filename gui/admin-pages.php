@@ -80,7 +80,15 @@ class MDWCMSgui {
 		$html.='<h3>CMS</h3>';
 
 		$html.='<div class="mdw-cms-default">';
-			$html.='text';
+			$html.='TODO<br>';
+			$html.='
+Add new metabox when editing
+Test repeatable (mb filed)
+Test options (mb field)
+Field order (add query script from pca)
+posts and pages as options in post type (mb)
+id of meatball is _supplier_0 (may need to be _supplier_address)
+			';
 		$html.='</div>';
 
 		return $html;
@@ -347,9 +355,29 @@ class MDWCMSgui {
 						endif;
 						
 						if ($setup['options']) :
-							$html.='<div class="field options">';
+							$html.='<div class="field options" id="field-options-'.$field_id.'">';
 								$html.='<label for="options">Options</label>';
-								//$html.='<input type="checkbox" name="fields['.$field_id.'][repeatable]" class="repeatable-box name-item" value="1" />';
+								// get options //
+								if (isset($field['options']) && !empty($field['options'])) :
+									foreach ($field['options'] as $key => $option) :
+										$html.='<div class="option-row" id="option-row-'.$key.'">';
+											$html.='<label for="options-default-name">Name</label>';
+											$html.='<input type="text" name="fields['.$field_id.'][options]['.$key.'][name]" class="options-item name" value="'.$option['name'].'" />';
+											$html.='<label for="options-default-value">Value</label>';
+											$html.='<input type="text" name="fields['.$field_id.'][options]['.$key.'][value]" class="options-item value" value="'.$option['value'].'" />';
+										$html.='</div><!-- .option-row -->';										
+									endforeach;								
+								endif;
+								
+								// blank option //
+								$html.='<div class="option-row default" id="option-row-default">';
+									$html.='<label for="options-default-name">Name</label>';
+									$html.='<input type="text" name="fields['.$field_id.'][options][default][name]" class="options-item name" value="" />';
+									$html.='<label for="options-default-value">Value</label>';
+									$html.='<input type="text" name="fields['.$field_id.'][options][default][value]" class="options-item value" value="" />';
+								$html.='</div><!-- .option-row -->';
+								
+								$html.='<div class="add-option-field"><input type="button" name="add-option-field" id="add-option-field-btn" class="button button-primary" value="Add Option"></div>';
 							$html.='</div>';
 						endif;
 					$html.='</div>';
@@ -485,22 +513,28 @@ class MDWCMSgui {
 			'prefix' => $data['prefix'],
 			'post_types' => $data['post_types'],
 		);
-//echo 'b';		
+		
 		// clean fields, if any //
 		if (isset($data['fields'])) :
 			foreach ($data['fields'] as $key => $field) :
-				if (!$field['field_type'])
+				if (!$field['field_type']) :
 					unset($data['fields'][$key]);
+				else :
+					// remove empty options fields //
+					if (isset($field['options'])) :
+						unset($data['fields'][$key]['options']['default']);
+						$data['fields'][$key]['options']=array_values($data['fields'][$key]['options']);
+					endif;
+				endif;				
 			endforeach;
 		endif;
 
 		$arr['fields']=array_values($data['fields']);
-//echo 'c';
+
 		if (!empty($metaboxes)) :
 			foreach ($metaboxes as $key => $mb) :
 				if ($mb['mb_id']==$data['mb_id']) :
-					if (isset($data['update-metabox']) && $data['update-metabox']=='Update') :
-//echo 'd';					
+					if (isset($data['update-metabox']) && $data['update-metabox']=='Update') :				
 						$edit_key=$key;
 					else :
 						return false;

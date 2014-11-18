@@ -1,3 +1,4 @@
+/* meta box */
 form.custom-post-types {
 	width: 50%;
 	float: left;
@@ -81,7 +82,14 @@ form.custom-metabox .add-fields.visible {
 .add-fields .field-options .type .options {
 
 }
+.field.options .option-row {
 	
+}
+.field.options .option-row.default {
+	display: none;
+}
+
+/* cpt */
 .custom-post-types-list {
 	width: 50%;
 	float: left;	

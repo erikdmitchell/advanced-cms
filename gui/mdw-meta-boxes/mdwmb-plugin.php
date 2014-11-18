@@ -344,10 +344,10 @@ echo '</pre>';
 				break;				
 			case 'select' :		
 				$html.='<select name="'.$args['id'].'" id="'.$args['id'].'">';
-					$html.='<option>Select One</option>';				
-					if (isset($args['options']) && is_array($args['options'])) :
+					$html.='<option>Select One</option>';
+					if (isset($args['options']) && is_array($args['options'])) :				
 						foreach ($args['options'] as $option) :
-							$html.='<option value="'.$option.'">'.$option.'</option>';
+							$html.='<option value="'.$option['value'].'">'.$option['name'].'</option>';
 						endforeach;
 					endif;
 				$html.='</select>';
