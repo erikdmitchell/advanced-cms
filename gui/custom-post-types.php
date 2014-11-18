@@ -1,12 +1,10 @@
 <?php
 class MDWCustomPostTypes {
 
-	protected $options=array();
 	protected $post_types=array();
 
 	function __construct() {
-		$this->options=get_option('mdw_cms');
-		$this->post_types=$this->options['custom-post-types'];	
+		$this->post_types=get_option('mdw_cms_post_types');
 				
 		add_action('init',array($this,'create_post_types'));
 	}
@@ -14,7 +12,10 @@ class MDWCustomPostTypes {
 	function create_post_types() {
 		$Words=new Inflector();
 		
-		foreach ($this->post_types as $post_type) :
+		if (empty($this->post_types))
+			return false;
+		
+		foreach ($this->post_types as $post_type) :		
 			// setup our default 'args' //
 			$supports=array();
 			
@@ -87,4 +88,69 @@ class MDWCustomPostTypes {
 }
 
 new MDWCustomPostTypes();
+
+// custom meta boxes for meats //
+$config=array(
+	array(
+		'id' => 'meats_details',
+		'title' => 'Meats Details',
+		'prefix' => 'meats',
+		'post_types' => 'meats',
+		'duplicate' => 0,
+		'fields' => array(
+			'brand' => array(
+				'type' => 'text',
+				'label' => 'Brand'		
+			)
+		)
+	),
+	array(
+		'id' => 'supplier_meta',
+		'title' => 'Supplier Details',
+		'prefix' => 'supplier',
+		'post_types' => 'suppliers',
+		'duplicate' => 1,
+		'fields' => array(
+			'address' => array(
+				'type' => 'textarea',
+				'label' => 'Address'		
+			),
+			'url' => array(
+				'type' => 'url',
+				'label' => 'URL'		
+			),
+			'phone' => array(
+				'type' => 'phone',
+				'label' => 'Phone',
+				'repeatable' => true
+			),			
+			'email' => array(
+				'type' => 'email',
+				'label' => 'email'
+			),	
+			'logo' => array(
+				'type' => 'media',
+				'label' => 'Logo'
+			),
+			'color' => array(
+				'type' => 'colorpicker',
+				'label' => 'Color'
+			),
+			'time' => array(
+				'type' => 'timepicker',
+				'label' => 'Time'
+			),
+			'date' => array(
+				'type' => 'date',
+				'label' => 'Date'
+			),
+			'category' => array(
+				'type' => 'select',
+				'options' => array('one','two','three'),
+				'label' => 'Category'
+			),
+		)		
+	)
+);
+$meta=new mdw_Meta_Box($config);
 ?>

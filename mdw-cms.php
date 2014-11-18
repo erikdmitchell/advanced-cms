@@ -17,9 +17,9 @@ require_once(plugin_dir_path(__FILE__).'inc/mdw-meta-boxes/ajax-meta-boxes.php')
 require_once(plugin_dir_path(__FILE__).'inc/custom-widgets.php');
 require_once(plugin_dir_path(__FILE__).'admin-page.php');
 
-require_once(plugin_dir_path(__FILE__).'/gui/admin-pages.php'); // our new visual gui
-require_once(plugin_dir_path(__FILE__).'/gui/custom-post-types.php');
-
+require_once(plugin_dir_path(__FILE__).'gui/admin-pages.php'); // our new visual gui
+require_once(plugin_dir_path(__FILE__).'gui/custom-post-types.php');
+require_once(plugin_dir_path(__FILE__).'gui/mdw-meta-boxes/mdwmb-plugin.php');
 
 require_once(plugin_dir_path(__FILE__).'/classes/slider.php'); // our bootstrap slider
 require_once(plugin_dir_path(__FILE__).'/classes/social-media.php'); // our social media page
@@ -32,7 +32,7 @@ require_once(plugin_dir_path(__FILE__).'/classes/inflector.php'); // our plurali
  * to prevent over writes, we use a wp option now
  * version 1.1.0 -- Not used due to previous setup - will be integrated later
  */
-if (get_option('mdw_cms')) :
+if (get_option('mdw_cms_version')) :
 	// do nothing //
 else :
 	if (file_exists(plugin_dir_path(dirname(__FILE__)).'mdw-cms-config.php')) :
