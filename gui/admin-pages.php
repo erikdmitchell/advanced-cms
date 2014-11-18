@@ -396,7 +396,7 @@ class MDWCMSgui {
 				endif;
 			endforeach;
 
-			array_values($post_types);
+			$post_types=array_values($post_types);
 
 			update_option('mdw_cms_post_types',$post_types);
 		endif;	
@@ -428,7 +428,7 @@ class MDWCMSgui {
 				endif;
 			endforeach;
 
-			array_values($metaboxes);
+			$metaboxes=array_values($metaboxes);
 
 			update_option('mdw_cms_metaboxes',$metaboxes);
 		endif;					
