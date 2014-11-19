@@ -76,18 +76,24 @@ form.custom-metabox .add-fields.visible {
 }
 .add-fields .fields-wrapper {
 	overflow: hidden;	
-	width: 75%;
+	width: 850px;
+	padding-bottom: 10px;
+}
+.add-fields .fields-wrapper .ui-icon-arrowthick-2-n-s {
+	width: 20px;
+	float: left;
+	margin-top: 5px;
 }
 .add-fields .fields-wrapper.default {
 	display: none;	
 }
 .add-fields .form-row {
 	float: left;
-	width: 25%;
+	width: 215px;
 }
 .add-fields .field-options {
 	float: left;
-	width: 70%;
+	width: 615px;
 }
 .add-fields .field-options .field {
 	float: left;

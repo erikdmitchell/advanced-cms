@@ -22,6 +22,8 @@ class MDWCMSgui {
 	}
 	
 	function scripts_styles() {
+		wp_enqueue_script('jquery');
+		wp_enqueue_script('jquery-ui-sortable');
 		wp_enqueue_script('mdw-cms-gui-mb-script',plugins_url('/js/mb.js',__FILE__),array('jquery'));
 		
 		wp_enqueue_style('mdw-cms-gui-style',plugins_url('/css/admin.css',__FILE__));
@@ -82,12 +84,11 @@ class MDWCMSgui {
 		$html.='<div class="mdw-cms-default">';
 			$html.='TODO<br>';
 			$html.='
-Add new metabox when editing
-Test repeatable (mb filed)
-Test options (mb field)
-Field order (add query script from pca)
-posts and pages as options in post type (mb)
-id of meatball is _supplier_0 (may need to be _supplier_address)
+<ul>			
+<li>Add new metabox when editing</li>
+<li>Test repeatable (mb filed)</li>
+<li>id of meatball is _supplier_0 (may need to be _supplier_address)</li>
+</ul>
 			';
 		$html.='</div>';
 
@@ -224,7 +225,7 @@ id of meatball is _supplier_0 (may need to be _supplier_address)
 
 		$args=array(
 			'public' => true,
-			'_builtin' => false	
+			//'_builtin' => false	
 		);
 		$post_types_arr=get_post_types($args);
 
@@ -284,7 +285,7 @@ id of meatball is _supplier_0 (may need to be _supplier_address)
 			$html.='</div>';
 			
 			$html.='<h3>Metabox Fields</h3>';
-			$html.='<div class="add-fields '.$edit_class.'">';
+			$html.='<div class="add-fields sortable-div '.$edit_class.'">';
 				if ($fields) :
 					foreach ($fields as $field_id => $field) :
 						$html.=$this->build_field_rows($field_id,$field);
@@ -330,7 +331,8 @@ id of meatball is _supplier_0 (may need to be _supplier_address)
 			$repeatable_checked=null;
 		endif;		
 				
-		$html.='<div class="fields-wrapper '.$classes.'" id="fields-wrapper-'.$field_id.'">';
+		$html.='<div class="sortable fields-wrapper '.$classes.'" id="fields-wrapper-'.$field_id.'">';
+			$html.='<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>';
 			$html.='<div class="form-row">';
 				$html.='<label for="field_type">Field Type</label>';
 				$html.='<select class="field_type name-item" name="fields['.$field_id.'][field_type]">';
