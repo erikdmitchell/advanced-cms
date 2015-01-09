@@ -8,7 +8,7 @@ class MDWCMSgui {
 		add_action('admin_enqueue_scripts',array($this,'scripts_styles'));
 		add_action('admin_notices',array($this,'admin_notices')); // may not be needed
 		
-		update_option('mdw_cms_version','1.0.0');
+		//update_option('mdw_cms_version','1.1.1');
 
 		$this->update_mdw_cms_settings();
 		
@@ -464,7 +464,9 @@ class MDWCMSgui {
 	 */
 	function update_custom_post_types($data=array()) {
 		$post_types=get_option('mdw_cms_post_types');
-		
+echo '<pre>';
+print_r($data);
+echo '</pre>';		
 		if (!isset($data['name']) || $data['name']=='')
 			return false;
 	
