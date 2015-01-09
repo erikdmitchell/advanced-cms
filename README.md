@@ -12,6 +12,10 @@ See the mdw-cms-demo.php for sample examples.
 Changelog
 ===========
 
+### 1.1.1
+	
+	Finalized updater and tested it. This is the min version we need for auto updates.
+
 ### 1.1.0
 	Pulled out custom config file to prevent it from being overwritten. This will be stored as a variable at some point.
 
