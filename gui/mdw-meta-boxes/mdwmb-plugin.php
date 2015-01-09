@@ -425,12 +425,6 @@ echo '</pre>';
 	 * added 1.1.8
 	**/
 	function add_fields_array($arr,$meta_id) {
-/*
-echo '<pre>';
-echo $meta_id;
-print_r($arr);
-echo '</pre>';
-*/		
 		foreach ($arr as $id => $values) :
 			$options=false;
 			$repeatable=0;
@@ -449,10 +443,7 @@ echo '</pre>';
 				'repeatable' => $repeatable,
 			);
 			$this->add_field($args,$meta_id);
-		endforeach;
-echo '<pre>';
-print_r($this->fields);
-echo '</pre>';		
+		endforeach;	
 	}
 	
 	/**
