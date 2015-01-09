@@ -17,7 +17,7 @@ class MDWMetaboxes {
 
 	/**
 	 * constructs our function, setups our scripts and styles, attaches meta box to wp actions
-	**/
+	 */
 	function __construct() {
 		$config=get_option('mdw_cms_metaboxes');
 
@@ -152,6 +152,9 @@ echo '</pre>';
 		//wp_enqueue_style('aja-meta-boxes-css',plugins_url('css/ajax-meta-boxes.css',__FILE__),array(),'1.0.0','all');
 	}
 	
+	/**
+	 *
+	 */
 	function register_scripts_styles() {
 		wp_enqueue_style('custom-video-js_css',plugins_url('/css/custom-video-js.css',__FILE__));
 		
@@ -406,7 +409,13 @@ echo '</pre>';
 		
 		$new_field=array('id' => '', 'type' => 'text', 'label' => 'Text Box', 'value' => '');
 		$new_field=array_merge($new_field,$args);
-		$new_field['id']=$prefix.'_'.$new_field['id'];
+		
+		if (empty($new_field['label'])) :
+			$new_field['id']=$prefix.'_'.$new_field['id'];
+		else :
+			$new_field['id']=$prefix.'_'.strtolower($this->clean_special_chars($new_field['label']));		
+		endif;
+	
 		$this->fields[$new_field['id']]=$new_field;	
 	}
 	
@@ -416,6 +425,12 @@ echo '</pre>';
 	 * added 1.1.8
 	**/
 	function add_fields_array($arr,$meta_id) {
+/*
+echo '<pre>';
+echo $meta_id;
+print_r($arr);
+echo '</pre>';
+*/		
 		foreach ($arr as $id => $values) :
 			$options=false;
 			$repeatable=0;
@@ -435,6 +450,9 @@ echo '</pre>';
 			);
 			$this->add_field($args,$meta_id);
 		endforeach;
+echo '<pre>';
+print_r($this->fields);
+echo '</pre>';		
 	}
 	
 	/**
@@ -627,6 +645,17 @@ print_r($option_arr);
 		return;
 	}
 */
+
+	/**
+	 * removes all special chars from a string
+	 */
+	function clean_special_chars($string) {
+		$string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
+		$string = preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
+		
+		return preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
+	}
+
 
 } // end class
 

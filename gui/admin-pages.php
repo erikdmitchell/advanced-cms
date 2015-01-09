@@ -82,14 +82,7 @@ class MDWCMSgui {
 		$html.='<h3>CMS</h3>';
 
 		$html.='<div class="mdw-cms-default">';
-			$html.='TODO<br>';
-			$html.='
-<ul>			
-<li>Add new metabox when editing</li>
-<li>Test repeatable (mb filed)</li>
-<li>id of meatball is _supplier_0 (may need to be _supplier_address)</li>
-</ul>
-			';
+			$html.='CONTENT NEEDS TO GO HERE';
 		$html.='</div>';
 
 		return $html;
