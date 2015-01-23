@@ -8,13 +8,13 @@ class MDWCMSgui {
 		add_action('admin_enqueue_scripts',array($this,'scripts_styles'));
 		add_action('admin_notices',array($this,'admin_notices')); // may not be needed
 		
-		update_option('mdw_cms_version','1.0.0');
+		//update_option('mdw_cms_version','1.1.1');
 
 		$this->update_mdw_cms_settings();
 		
 		$this->options['version']=get_option('mdw_cms_version');
 		$this->options['metaboxes']=get_option('mdw_cms_metaboxes');
-		$this->options['post_types']=get_option('mdw_cms_post_types');
+		$this->options['post_types']=get_option('mdw_cms_post_types');	
 	}
 	
 	function build_admin_menu() {
@@ -102,6 +102,7 @@ class MDWCMSgui {
 		$thumbnail=1;
 		$editor=1;
 		$revisions=1;
+		$hierarchical=0;
 		$id=-1;
 
 		// edit custom post type //
@@ -109,7 +110,7 @@ class MDWCMSgui {
 			foreach ($this->options['post_types'] as $key => $cpt) :
 				if ($cpt['name']==$_GET['slug']) :
 					extract($this->options['post_types'][$key]);
-					$id=$key;
+					$id=$key;					
 				endif;
 			endforeach;
 		endif;
@@ -179,6 +180,14 @@ class MDWCMSgui {
 					$html.='</select>';
 					$html.='<span class="description">(default True)</span>';
 				$html.='</div>';								
+				$html.='<div class="form-row">';
+					$html.='<label for="hierarchical">Hierarchical</label>';
+					$html.='<select name="hierarchical" id="hierarchical">';
+						$html.='<option value="1" '.selected($hierarchical,1,false).'>True</option>';
+						$html.='<option value="0" '.selected($hierarchical,0,false).'>False</option>';
+					$html.='</select>';
+					$html.='<span class="description">(default True)</span>';
+				$html.='</div>';
 			$html.='</div>';			
 			$html.='<p class="submit"><input type="submit" name="add-cpt" id="submit" class="button button-primary" value="'.$btn_text.'"></p>';
 			$html.='<input type="hidden" name="cpt-id" id="cpt-id" value='.$id.' />';
@@ -462,9 +471,9 @@ class MDWCMSgui {
 	/**
 	 *
 	 */
-	function update_custom_post_types($data=array()) {
+	public static function update_custom_post_types($data=array()) {
 		$post_types=get_option('mdw_cms_post_types');
-		
+			
 		if (!isset($data['name']) || $data['name']=='')
 			return false;
 	
@@ -477,9 +486,10 @@ class MDWCMSgui {
 			'thumbnail' => $data['thumbnail'],
 			'editor' => $data['editor'],
 			'revisions' => $data['revisions'],
+			'hierarchical' => $data['hierarchical']
 		);
-		
-		if ($_POST['cpt-id']!=-1) :
+	
+		if ($data['cpt-id']!=-1) :
 			$post_types[$data['cpt-id']]=$arr;
 		else :
 			if (!empty($post_types)) :

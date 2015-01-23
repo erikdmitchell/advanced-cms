@@ -20,7 +20,10 @@ class MDWCustomPostTypes {
 			$supports=array();
 			
 			$taxonomies='post_tag';
-			$hierarchical=false;
+			
+			// semi legacy support //
+			if (!isset($post_type['hierarchical']))
+				$post_type['hierarchical']=false;
 			
 			// check for custom 'args' //
 			if (isset($post_type['title'])) :
@@ -53,7 +56,7 @@ class MDWCustomPostTypes {
 				endif;
 			else :
 				$supports[]='revisions';
-			endif;	
+			endif;
 
 			register_post_type($post_type['name'],
 				array(
@@ -78,7 +81,7 @@ class MDWCustomPostTypes {
 					'menu_position'=> 5,
 					'supports' => $supports,
 					'taxonomies' => array($taxonomies),
-					'hierarchical' => $hierarchical
+					'hierarchical' => $post_type['hierarchical']
 				)
 			);
 		
