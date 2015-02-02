@@ -48,6 +48,15 @@ else :
 		require_once(plugin_dir_path(dirname(__FILE__)).'mdw-cms-config.php');
 		MDWCMSlegacy::legacy_remove_old_config_file(plugin_dir_path(dirname(__FILE__)).'mdw-cms-config.php');
 	else :
+		// we need to do a legacy update //
+		if (file_exists(plugin_dir_path(dirname(__FILE__)).'mdw-cms-config.php')) :
+			$admin_notices[]=array(
+				'class' => 'error',
+				'message' => 'MDW CMS is currently using a custom config file. Please update to the latest version of the plugin.'
+			);
+			require_once(plugin_dir_path(dirname(__FILE__)).'mdw-cms-config.php');
+			MDWCMSlegacy::legacy_remove_old_config_file(plugin_dir_path(dirname(__FILE__)).'mdw-cms-config.php');
+		else :
 		// 	we dont need to do anything //
 		$admin_notices[]=array(
 			'class' => 'error',

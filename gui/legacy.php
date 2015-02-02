@@ -2,9 +2,15 @@
 if (!class_exists('MDW_CPT')) :
 
 	class MDW_CPT {
+<<<<<<< HEAD
 
 		function __construct() {
 
+=======
+		
+		function __contstruct() {
+			
+>>>>>>> 71ca70619439c1ae61a61cd36505c5d619dfa413
 		}
 
 		/**
@@ -12,15 +18,19 @@ if (!class_exists('MDW_CPT')) :
 		 * @param string/array $args - the slug name of the post type(s)
 		 */
 		public function add_post_types($args) {
+<<<<<<< HEAD
 			$Words=new Inflector();
 			$post_types=array();
 			$clean_post_types=array();
 			$mdw_cms_post_types=get_option('mdw_cms_post_types');
+=======
 			$post_types=array();
+>>>>>>> 71ca70619439c1ae61a61cd36505c5d619dfa413
 
 			if (is_numeric(key($args))) :
 				foreach ($args as $type) :
 					$post_types[$type]=array();
+<<<<<<< HEAD
 				endforeach;
 			else :
 				$post_types=$args;
@@ -100,6 +110,16 @@ if (!class_exists('MDW_CPT')) :
 					MDWCMSlegacy::legacy_updates_admin_notices('updated','Custom Post Types Migrated');
 				endif;
 			endforeach;
+=======
+				endforeach;			
+			else :
+				$post_types=$args;
+			endif;
+			
+echo '<pre>';
+print_r($post_types);
+echo '</pre>';				
+>>>>>>> 71ca70619439c1ae61a61cd36505c5d619dfa413
 		}
 
 	}
@@ -109,6 +129,7 @@ if (!class_exists('MDW_CPT')) :
 endif;
 
 if (!class_exists('mdw_Meta_Box')) :
+<<<<<<< HEAD
 
 	class mdw_Meta_Box {
 
@@ -234,4 +255,12 @@ class MDWCMSlegacy {
 	}
 
 }
+=======
+	
+	class mdw_Meta_Box {
+		
+	}
+	
+endif;
+>>>>>>> 71ca70619439c1ae61a61cd36505c5d619dfa413
 ?>
