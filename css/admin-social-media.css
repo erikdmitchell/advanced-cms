@@ -1,0 +1,58 @@
+#fa-icons-overlay {
+	padding: 0;
+	margin: 0;
+	display: none;
+	width: 60%;
+	height: 60%;
+	background: #fff;
+	padding: 10px;
+	overflow: scroll;
+	position: relative;
+}
+.fa-icons-list {
+	padding: 0;
+	margin: 0;
+}
+.fa-icons-list li {
+	float: left;
+	padding: 0;
+	margin: 0 0 5px 0;
+	width: 20%;
+}
+.fa-icons-list li .fa {
+	margin-right: 3px;
+	width: 15px;
+}
+.fa-icons-list li a,
+.fa-icons-list li a:visited {
+	text-decoration: none;
+	color: #000;
+}
+.fa-icons-list li a:hover {
+	text-decoration: underline;
+}
+a.icon-modal-link {
+	padding-left: 10px;
+}
+#lean_overlay {
+  position: fixed;
+  z-index:100;
+  top: 0px;
+  left: 0px;
+  height:100%;
+  width:100%;
+  background: #000;
+  display: none;
+}
+a.modal_close {
+	color: #000;
+	text-decoration: none;
+	position: absolute;
+	top: 0;
+	right: 5px;
+	font-size: 18px;
+}
+.icon-img {
+	margin: 0 5px;
+	display: inline-block;
+}
