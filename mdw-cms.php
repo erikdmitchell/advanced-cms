@@ -18,6 +18,7 @@ require_once(plugin_dir_path(__FILE__).'gui/admin-pages.php'); // our new visual
 require_once(plugin_dir_path(__FILE__).'gui/custom-post-types.php');
 require_once(plugin_dir_path(__FILE__).'gui/mdw-meta-boxes/mdwmb-plugin.php');
 require_once(plugin_dir_path(__FILE__).'gui/legacy.php');
+require_once(plugin_dir_path(__FILE__).'gui/upgrade.php');
 
 
 require_once(plugin_dir_path(__FILE__).'/classes/slider.php'); // our bootstrap slider
@@ -60,6 +61,7 @@ $admin_notices=array();
 			);
 			require_once(plugin_dir_path(__FILE__).'mdw-cms-config-sample.php');
 			MDWCMSlegacy::legacy_remove_old_config_file(plugin_dir_path(__FILE__).'mdw-cms-config-sample.php');
+			// update_option('mdw_cms_version',$this->version);
 		endif;
 	endif;
 //}

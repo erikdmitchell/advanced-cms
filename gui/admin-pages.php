@@ -473,7 +473,9 @@ class MDWCMSgui {
 	 */
 	public static function update_custom_post_types($data=array()) {
 		$post_types=get_option('mdw_cms_post_types');
-
+echo '<pre>';
+print_r($data);
+echo '</pre>';		
 		if (!isset($data['name']) || $data['name']=='')
 			return false;
 
