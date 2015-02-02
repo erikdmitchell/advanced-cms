@@ -1,34 +1,34 @@
 <?php
 class MDWCMSgui {
-	
+
 	protected $options=array();
-	
+
 	function __construct() {
 		add_action('admin_menu',array($this,'build_admin_menu'));
 		add_action('admin_enqueue_scripts',array($this,'scripts_styles'));
 		add_action('admin_notices',array($this,'admin_notices')); // may not be needed
-		
+
 		//update_option('mdw_cms_version','1.1.1');
 
 		$this->update_mdw_cms_settings();
-		
+
 		$this->options['version']=get_option('mdw_cms_version');
 		$this->options['metaboxes']=get_option('mdw_cms_metaboxes');
-		$this->options['post_types']=get_option('mdw_cms_post_types');	
+		$this->options['post_types']=get_option('mdw_cms_post_types');
 	}
-	
+
 	function build_admin_menu() {
 		add_management_page('MDW CMS','MDW CMS','administrator','mdw-cms',array($this,'mdw_cms_page'));
 	}
-	
+
 	function scripts_styles() {
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-sortable');
 		wp_enqueue_script('mdw-cms-gui-mb-script',plugins_url('/js/mb.js',__FILE__),array('jquery'));
-		
+
 		wp_enqueue_style('mdw-cms-gui-style',plugins_url('/css/admin.css',__FILE__));
 	}
-	
+
 	function mdw_cms_page() {
 		$html=null;
 		$tabs=array(
@@ -37,22 +37,22 @@ class MDWCMSgui {
 			'mdw-cms-metaboxes' => 'Metaboxes'
 		);
 		$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'cms-main';
-				
+
 		$html.='<div class="wrap">';
 			$html.='<h2>MDW CMS</h2>';
-		
+
 			$html.='<h2 class="nav-tab-wrapper">';
-				foreach ($tabs as $tab => $name) :				
+				foreach ($tabs as $tab => $name) :
 					if ($active_tab==$tab) :
 						$class='nav-tab-active';
 					else :
 						$class=null;
 					endif;
-					
+
 					$html.='<a href="?page=mdw-cms&tab='.$tab.'" class="nav-tab '.$class.'">'.$name.'</a>';
 				endforeach;
 			$html.='</h2>';
-		
+
 			switch ($active_tab) :
 				case 'cms-main':
 					$html.=$this->default_admin_page();
@@ -69,7 +69,7 @@ class MDWCMSgui {
 			endswitch;
 
 		$html.='</div><!-- /.wrap -->';
-		
+
 		echo $html;
 	}
 
@@ -86,8 +86,8 @@ class MDWCMSgui {
 		$html.='</div>';
 
 		return $html;
-	}	
-	
+	}
+
 	/**
 	 *
 	 */
@@ -110,16 +110,16 @@ class MDWCMSgui {
 			foreach ($this->options['post_types'] as $key => $cpt) :
 				if ($cpt['name']==$_GET['slug']) :
 					extract($this->options['post_types'][$key]);
-					$id=$key;					
+					$id=$key;
 				endif;
 			endforeach;
 		endif;
-		
+
 		if ($id!=-1)
-			$btn_text='Update';	
-		
+			$btn_text='Update';
+
 		$html=null;
-		
+
 		$html.='<form class="custom-post-types" method="post">';
 			$html.='<h3>Add New Custom Post Type</h3>';
 			$html.='<div class="form-row">';
@@ -134,19 +134,19 @@ class MDWCMSgui {
 				$html.='<input type="text" name="label" id="label" value="'.$label.'" />';
 				$html.='<span class="description">(e.g. Movies)</span>';
 			$html.='</div>';
-			
+
 			$html.='<div class="form-row">';
 				$html.='<label for="singular_label">Singular Label</label>';
 				$html.='<input type="text" name="singular_label" id="singular_label" value="'.$singular_label.'" />';
 				$html.='<span class="description">(e.g. Movie)</span>';
 			$html.='</div>';
-			
+
 			$html.='<div class="form-row">';
 				$html.='<label for="description">Description</label>';
 				$html.='<textarea name="description" id="description" rows="4" cols="40">'.$description.'</textarea>';
 				//$html.='<span class="description">description</span>';
 			$html.='</div>';
-			
+
 			$html.='<div class="advanced-options">';
 				$html.='<div class="form-row">';
 					$html.='<label for="title">Title</label>';
@@ -179,7 +179,7 @@ class MDWCMSgui {
 						$html.='<option value="0" '.selected($revisions,0,false).'>False</option>';
 					$html.='</select>';
 					$html.='<span class="description">(default True)</span>';
-				$html.='</div>';								
+				$html.='</div>';
 				$html.='<div class="form-row">';
 					$html.='<label for="hierarchical">Hierarchical</label>';
 					$html.='<select name="hierarchical" id="hierarchical">';
@@ -188,24 +188,24 @@ class MDWCMSgui {
 					$html.='</select>';
 					$html.='<span class="description">(default True)</span>';
 				$html.='</div>';
-			$html.='</div>';			
+			$html.='</div>';
 			$html.='<p class="submit"><input type="submit" name="add-cpt" id="submit" class="button button-primary" value="'.$btn_text.'"></p>';
 			$html.='<input type="hidden" name="cpt-id" id="cpt-id" value='.$id.' />';
 		$html.='</form>';
-		
+
 		$html.='<div class="custom-post-types-list">';
 			$html.='<h3>Custom Post Types</h3>';
-			
-			if ($this->options['post_types']) :			
+
+			if ($this->options['post_types']) :
 				foreach ($this->options['post_types'] as $cpt) :
 					$html.='<div class="cpt-row">';
 						$html.=$cpt['label'].'<span class="edit">[<a href="'.$base_url.'&edit=cpt&slug='.$cpt['name'].'">Edit</a>]</span><span class="delete">[<a href="'.$base_url.'&delete=cpt&slug='.$cpt['name'].'">Delete</a>]</span>';
 					$html.='</div>';
 				endforeach;
 			endif;
-			
+
 		$html.='</div>';
-	
+
 		return $html;
 	}
 
@@ -214,7 +214,7 @@ class MDWCMSgui {
 	 */
 	function metaboxes_admin_page() {
 		global $MDWMetaboxes;
-	
+
 		$base_url=admin_url('tools.php?page=mdw-cms&tab=mdw-cms-metaboxes');
 		$btn_text='Create';
 		$html=null;
@@ -227,7 +227,7 @@ class MDWCMSgui {
 
 		$args=array(
 			'public' => true,
-			//'_builtin' => false	
+			//'_builtin' => false
 		);
 		$post_types_arr=get_post_types($args);
 
@@ -240,8 +240,8 @@ class MDWCMSgui {
 					$btn_text='Update';
 				endif;
 			endforeach;
-		endif;		
-		
+		endif;
+
 		$html.='<h3>Metaboxes</h3>';
 
 		$html.='<form class="custom-metabox" method="post">';
@@ -258,7 +258,7 @@ class MDWCMSgui {
 				$html.='<input type="text" name="title" id="title" value="'.$title.'" />';
 				$html.='<span class="description">(e.g. Movie Details)</span>';
 			$html.='</div>';
-			
+
 			$html.='<div class="form-row">';
 				$html.='<label for="prefix">Prefix</label>';
 				$html.='<input type="text" name="prefix" id="prefix" value="'.$prefix.'" />';
@@ -274,18 +274,18 @@ class MDWCMSgui {
 					else :
 						$class='';
 					endif;
-					
+
 					if (isset($post_types) && in_array($type,$post_types)) :
 						$checked='checked=checked';
 					else :
 						$checked=null;
 					endif;
-					
+
 					$html.='<input class="post-type-cb '.$class.'" type="checkbox" name="post_types[]" value="'.$type.'" '.$checked.'>'.$type.'<br />';
 					$counter++;
 				endforeach;
 			$html.='</div>';
-			
+
 			$html.='<h3>Metabox Fields</h3>';
 			$html.='<div class="add-fields sortable-div '.$edit_class.'">';
 				if ($fields) :
@@ -293,46 +293,46 @@ class MDWCMSgui {
 						$html.=$this->build_field_rows($field_id,$field);
 					endforeach;
 				endif;
-				
-				$html.=$this->build_field_rows('default',null,'default'); // add default field //			
+
+				$html.=$this->build_field_rows('default',null,'default'); // add default field //
 			$html.='</div><!-- .add-fields -->';
-		
+
 			$html.='<p class="submit">';
 				$html.='<input type="submit" name="update-metabox" id="submit" class="button button-primary" value="'.$btn_text.'">';
 				$html.='<input type="button" name="add-field" id="add-field-btn" class="button button-primary add-field" value="Add Field">';
 			$html.='</p>';
 		$html.='</form>';
-		
+
 		$html.='<div class="custom-metabox-list">';
 			$html.='<h3>Custom Metaboxes</h3>';
-			
-			if ($this->options['metaboxes']) :			
+
+			if ($this->options['metaboxes']) :
 				foreach ($this->options['metaboxes'] as $mb) :
 					$html.='<div class="metabox-row">';
 						$html.=$mb['title'].'<span class="edit">[<a href="'.$base_url.'&edit=mb&mb_id='.$mb['mb_id'].'">Edit</a>]</span><span class="delete">[<a href="'.$base_url.'&delete=mb&mb_id='.$mb['mb_id'].'">Delete</a>]</span>';
 					$html.='</div>';
 				endforeach;
 			endif;
-			
+
 		$html.='</div>';
-			
-		return $html;	
+
+		return $html;
 	}
-	
+
 	/**
 	 *
 	 */
 	function build_field_rows($field_id,$field,$classes='') {
 		global $MDWMetaboxes;
-		
+
 		$html=null;
-			
+
 		if (isset($field['repeatable']) && $field['repeatable']) :
 			$repeatable_checked='checked="checked"';
 		else :
 			$repeatable_checked=null;
-		endif;		
-				
+		endif;
+
 		$html.='<div class="sortable fields-wrapper '.$classes.'" id="fields-wrapper-'.$field_id.'">';
 			$html.='<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>';
 			$html.='<div class="form-row">';
@@ -344,22 +344,22 @@ class MDWCMSgui {
 					endforeach;
 				$html.='</select>';
 			$html.='</div>';
-			
+
 			$html.='<div class="field-options" id="">';
 				$html.='<div class="field">';
 					$html.='<label for="field_label">Label</label>';
 					$html.='<input type="text" name="fields['.$field_id.'][field_label]" class="field_label name-item" value="'.$field['field_label'].'" />';
 				$html.='</div>';
-					
-				foreach ($MDWMetaboxes->fields as $field_type => $setup) :				
-					$html.='<div class="type" data-field-type="'.$field_type.'">';				
+
+				foreach ($MDWMetaboxes->fields as $field_type => $setup) :
+					$html.='<div class="type" data-field-type="'.$field_type.'">';
 						if ($setup['repeatable']) :
 							$html.='<div class="field repeatable">';
 								$html.='<label for="repeatable">Repeatable</label>';
 								$html.='<input type="checkbox" name="fields['.$field_id.'][repeatable]" value="1" class="repeatable-box name-item" '.$repeatable_checked.' />';
 							$html.='</div>';
 						endif;
-						
+
 						if ($setup['options']) :
 							$html.='<div class="field options" id="field-options-'.$field_id.'">';
 								$html.='<label for="options">Options</label>';
@@ -371,10 +371,10 @@ class MDWCMSgui {
 											$html.='<input type="text" name="fields['.$field_id.'][options]['.$key.'][name]" class="options-item name" value="'.$option['name'].'" />';
 											$html.='<label for="options-default-value">Value</label>';
 											$html.='<input type="text" name="fields['.$field_id.'][options]['.$key.'][value]" class="options-item value" value="'.$option['value'].'" />';
-										$html.='</div><!-- .option-row -->';										
-									endforeach;								
+										$html.='</div><!-- .option-row -->';
+									endforeach;
 								endif;
-								
+
 								// blank option //
 								$html.='<div class="option-row default" id="option-row-default">';
 									$html.='<label for="options-default-name">Name</label>';
@@ -382,17 +382,17 @@ class MDWCMSgui {
 									$html.='<label for="options-default-value">Value</label>';
 									$html.='<input type="text" name="fields['.$field_id.'][options][default][value]" class="options-item value" value="" />';
 								$html.='</div><!-- .option-row -->';
-								
+
 								$html.='<div class="add-option-field"><input type="button" name="add-option-field" id="add-option-field-btn" class="button button-primary" value="Add Option"></div>';
 							$html.='</div>';
 						endif;
 					$html.='</div>';
-				endforeach;				
+				endforeach;
 				$html.='<input type="button" name="remove-field" id="remove-field-btn" class="button button-primary remove-field" data-id="fields-wrapper-'.$field_id.'" value="Remove Field">';
 			$html.='</div><!-- .field-options -->';
 		$html.='</div><!-- .fields-wrapper -->';
-		
-		return $html;		
+
+		return $html;
 	}
 
 	/**
@@ -402,25 +402,25 @@ class MDWCMSgui {
 	function update_mdw_cms_settings() {
 		$post_types=get_option('mdw_cms_post_types');
 		$metaboxes=get_option('mdw_cms_metaboxes');
-		
+
 		// create custom post type //
-		if (isset($_POST['add-cpt']) && $_POST['add-cpt']=='Create') :		
+		if (isset($_POST['add-cpt']) && $_POST['add-cpt']=='Create') :
 			if ($this->update_custom_post_types($_POST)) :
-				$this->admin_notices('updated','Post type has been created.');			
+				$this->admin_notices('updated','Post type has been created.');
 			else :
 				$this->admin_notices('error','There was an issue creating the post type.');
 			endif;
 		endif;
 
 		// update/edit custom post type //
-		if (isset($_POST['add-cpt']) && $_POST['add-cpt']=='Update') :		
+		if (isset($_POST['add-cpt']) && $_POST['add-cpt']=='Update') :
 			if ($this->update_custom_post_types($_POST)) :
-				$this->admin_notices('updated','Post type has been updated.');			
+				$this->admin_notices('updated','Post type has been updated.');
 			else :
 				$this->admin_notices('error','There was an issue updating the post type.');
 			endif;
 		endif;
-		
+
 		// remove custom post type //
 		if (isset($_GET['delete']) && $_GET['delete']=='cpt') :
 			foreach ($post_types as $key => $cpt) :
@@ -433,25 +433,25 @@ class MDWCMSgui {
 			$post_types=array_values($post_types);
 
 			update_option('mdw_cms_post_types',$post_types);
-		endif;	
-		
+		endif;
+
 		// add metabox //
-		if (isset($_POST['update-metabox']) && $_POST['update-metabox']=='Create') :		
+		if (isset($_POST['update-metabox']) && $_POST['update-metabox']=='Create') :
 			if ($this->update_metaboxes($_POST)) :
-				$this->admin_notices('updated','Metabox has been created.');			
+				$this->admin_notices('updated','Metabox has been created.');
 			else :
 				$this->admin_notices('error','There was an issue creating the metabox.');
 			endif;
-		endif;	
-		
+		endif;
+
 		// update/edit metabox //
-		if (isset($_POST['update-metabox']) && $_POST['update-metabox']=='Update') :		
+		if (isset($_POST['update-metabox']) && $_POST['update-metabox']=='Update') :
 			if ($this->update_metaboxes($_POST)) :
-				$this->admin_notices('updated','Metabox has been updated.');			
+				$this->admin_notices('updated','Metabox has been updated.');
 			else :
 				$this->admin_notices('error','There was an issue updating the metabox.');
 			endif;
-		endif;		
+		endif;
 
 		// remove metabox //
 		if (isset($_GET['delete']) && $_GET['delete']=='mb') :
@@ -465,7 +465,7 @@ class MDWCMSgui {
 			$metaboxes=array_values($metaboxes);
 
 			update_option('mdw_cms_metaboxes',$metaboxes);
-		endif;					
+		endif;
 	}
 
 	/**
@@ -473,10 +473,10 @@ class MDWCMSgui {
 	 */
 	public static function update_custom_post_types($data=array()) {
 		$post_types=get_option('mdw_cms_post_types');
-			
+
 		if (!isset($data['name']) || $data['name']=='')
 			return false;
-	
+
 		$arr=array(
 			'name' => $data['name'],
 			'label' => $data['label'],
@@ -488,7 +488,7 @@ class MDWCMSgui {
 			'revisions' => $data['revisions'],
 			'hierarchical' => $data['hierarchical']
 		);
-	
+
 		if ($data['cpt-id']!=-1) :
 			$post_types[$data['cpt-id']]=$arr;
 		else :
@@ -496,31 +496,38 @@ class MDWCMSgui {
 				foreach ($post_types as $cpt) :
 					if ($cpt['name']==$data['name'])
 						return false;
-				endforeach;		
+				endforeach;
 			endif;
-			$post_types[]=$arr;		
+			$post_types[]=$arr;
 		endif;
 
 		return update_option('mdw_cms_post_types',$post_types);
 	}
 
 	/**
+	 * update_metaboxes function.
+	 *
 	 * updates our metabox settings and its fields
+	 *
+	 * @access public
+	 * @static
+	 * @param array $data (default: array())
+	 * @return void
 	 */
-	function update_metaboxes($data=array()) {
+	public static function update_metaboxes($data=array()) {
 		$metaboxes=get_option('mdw_cms_metaboxes');
 		$edit_key=-1;
 
 		if (!isset($data['mb_id']) || $data['mb_id']=='')
 			return false;
-	
+
 		$arr=array(
 			'mb_id' => $data['mb_id'],
 			'title' => $data['title'],
 			'prefix' => $data['prefix'],
 			'post_types' => $data['post_types'],
 		);
-		
+
 		// clean fields, if any //
 		if (isset($data['fields'])) :
 			foreach ($data['fields'] as $key => $field) :
@@ -532,7 +539,7 @@ class MDWCMSgui {
 						unset($data['fields'][$key]['options']['default']);
 						$data['fields'][$key]['options']=array_values($data['fields'][$key]['options']);
 					endif;
-				endif;				
+				endif;
 			endforeach;
 		endif;
 
@@ -541,17 +548,17 @@ class MDWCMSgui {
 		if (!empty($metaboxes)) :
 			foreach ($metaboxes as $key => $mb) :
 				if ($mb['mb_id']==$data['mb_id']) :
-					if (isset($data['update-metabox']) && $data['update-metabox']=='Update') :				
+					if (isset($data['update-metabox']) && $data['update-metabox']=='Update') :
 						$edit_key=$key;
 					else :
 						return false;
 					endif;
 				endif;
-			endforeach;		
+			endforeach;
 		endif;
 
 		if ($edit_key!=-1) :
-			$metaboxes[$edit_key]=$arr;		
+			$metaboxes[$edit_key]=$arr;
 		else :
 			$metaboxes[]=$arr;
 		endif;

@@ -12,7 +12,7 @@ class MDWMetaboxes {
 
 	protected $options=array(); // gui
 	protected $post_types=array(); // gui
-	
+
 	public $fields=array(); // gui
 
 	/**
@@ -29,7 +29,7 @@ class MDWMetaboxes {
 			'colorpicker' => array(
 				'repeatable' => 0,
 				'options' => 0,
-			), 
+			),
 			'date' => array(
 				'repeatable' => 0,
 				'options' => 0,
@@ -63,7 +63,7 @@ class MDWMetaboxes {
 			'text' => array(
 				'repeatable' => 1,
 				'options' => 0,
-			),				
+			),
 			'textarea' => array(
 				'repeatable' => 1,
 				'options' => 0,
@@ -89,10 +89,10 @@ print_r($this->config);
 echo '</pre>';
 */
 
-	
+
 		// load our extra classes and whatnot
 		//$this->autoload_class('mdwmb_Functions'); -- GUI
-	
+
 		// include any files needed
 		//require_once(plugin_dir_path(__FILE__).'mdwmb-image-video.php'); -- GUI
 
@@ -115,13 +115,13 @@ echo '</pre>';
 		//wp_enqueue_script('metabox-duplicator',plugins_url('/js/metabox-duplicator.js',__FILE__),array('jquery'),'0.1.0',true);
 		wp_enqueue_script('metabox-remover',plugins_url('/js/metabox-remover.js',__FILE__),array('jquery'),'0.1.0',true);
 		wp_enqueue_script('metabox-datepicker-script',plugins_url('/js/metabox-datepicker.js',__FILE__),array('jquery-ui-datepicker'),'1.0.0',true);
-		wp_enqueue_script('metabox-maskedinput-script',plugins_url('/js/metabox-maskedinput.js',__FILE__),array('jquery-maskedinput-script'),'1.0.0',true);		
+		wp_enqueue_script('metabox-maskedinput-script',plugins_url('/js/metabox-maskedinput.js',__FILE__),array('jquery-maskedinput-script'),'1.0.0',true);
 		wp_enqueue_script('jq-validator-script',plugins_url('/js/jquery.validator.js',__FILE__),array('jquery'),'1.0.0',true);
 		wp_enqueue_script('mdw-cms-js',plugins_url('/js/functions.js',__FILE__),array('jquery'));
 		wp_enqueue_script('duplicate-metabox-fields',plugins_url('js/duplicate-metabox-fields.js',__FILE__),array('jquery'),'1.0.1');
-		
+
 		$options=array();
-		
+
 		if (isset($post->ID)) :
 			$options['postID']=$post->ID;
 		else :
@@ -130,7 +130,7 @@ echo '</pre>';
 
 		if (!empty($this->config)) :
 			foreach ($this->config as $config) :
-				//if ($config['duplicate']) :	
+				//if ($config['duplicate']) :
 					$options[]=array(
 						'metaboxID' => $config['mb_id'],
 						'metaboxClass' => $config['mb_id'].'-meta-box',
@@ -139,29 +139,29 @@ echo '</pre>';
 						'metaboxPostTypes' => $config['post_types'],
 					);
 				//endif;
-			endforeach;		
+			endforeach;
 		endif;
-		
+
 		//wp_localize_script('metabox-duplicator','options',$options);
 		//wp_localize_script('metabox-remover','options',get_option($this->option_name));
-		
+
 		wp_enqueue_style('mdwmb-admin-css',plugins_url('/css/admin.css',__FILE__));
-		wp_enqueue_style('jquery-ui-style','//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css',array(),'1.10.4');				
+		wp_enqueue_style('jquery-ui-style','//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css',array(),'1.10.4');
 		wp_enqueue_style('colpick-css',plugins_url('/css/colpick.css',__FILE__));
 		wp_enqueue_style('jq-timepicker-style',plugins_url('/css/jquery.ui.timepicker.css',__FILE__));
 		//wp_enqueue_style('aja-meta-boxes-css',plugins_url('css/ajax-meta-boxes.css',__FILE__),array(),'1.0.0','all');
 	}
-	
+
 	/**
 	 *
 	 */
 	function register_scripts_styles() {
 		wp_enqueue_style('custom-video-js_css',plugins_url('/css/custom-video-js.css',__FILE__));
-		
+
 		wp_enqueue_script('video-js_js','//vjs.zencdn.net/4.2/video.js',array(),'4.2', true);
 		wp_enqueue_style('video-js_css','//vjs.zencdn.net/4.2/video-js.css',array(),'4.2');
 	}
-	
+
 	/**
 	 * makes sure our prefix starts with '_'
 	 * @param array $config
@@ -170,7 +170,7 @@ echo '</pre>';
 	function check_config_prefix($config) {
 		if (substr($config['prefix'],0,1)!='_')
 			$config['prefix']='_'.$config['prefix'];
-	
+
 		return $config;
 	}
 
@@ -180,10 +180,10 @@ echo '</pre>';
 	**/
 	private function autoload_class($filename) {
 		require_once(plugin_dir_path(__FILE__).$filename.'.php');
-		
+
 		return new $filename;
 	}
-	
+
 	/**
 	 * creates the actual metabox itself using the id and title from the config file and attaches it to the post type
 	 * callback: generate_meta_box_fields
@@ -194,10 +194,10 @@ echo '</pre>';
 		//$this->build_duplicated_boxes($post->ID); // must do here b/c we need the post id
 		if (empty($this->config))
 			return false;
-			
+
 		foreach ($this->config as $key => $config) :
 			$config_id=$config['mb_id']; // for use in our classes function
-		
+
 /*
 			if (isset($config['removable'])) :
 				$removable=$config['removable'];
@@ -205,7 +205,7 @@ echo '</pre>';
 				$removable=false;
 			endif;
 */
-			
+
 			foreach ($config['post_types'] as $post_type) :
 		    add_meta_box(
 		    	$config['mb_id'],
@@ -221,28 +221,28 @@ echo '</pre>';
 						//'removable' => $removable,
 		      )
 		    );
-		    
+
 		    //if ($config['duplicate'])
 			    //add_filter('postbox_classes_'.$post_type.'_'.$config['id'],array($this,'add_meta_box_classes'));
-		    
+
 	    endforeach;
     endforeach;
 	}
-	
+
 	/**
 	 * adds classes to our meta box
 	**/
 /*
 	function add_meta_box_classes($classes=array()) {
 		global $config_id;
-		
+
 		$classes[]='dupable';
 		$classes[]=$config_id.'-meta-box';
-		
+
 		return $classes;
 	}
 */
-	
+
 	/**
 	 * cycles through the fields (set in add_field)
 	 * calls the generate_field() function
@@ -253,7 +253,7 @@ echo '</pre>';
 		$row_counter=1;
 
 		wp_enqueue_script('umb-admin',plugins_url('/js/metabox-media-uploader.js',__FILE__),array('jquery'));
-		
+
 		wp_nonce_field(plugin_basename( __FILE__ ),$this->nonce);
 
 		$html.='<div class="umb-meta-box">';
@@ -264,7 +264,7 @@ echo '</pre>';
 						$this->add_fields_array($config['fields'],$config['mb_id']);
 				endif;
 			endforeach;
-			
+
 			// -- may no longer need below function -- //
 			if (isset($this->fields)) :
 				foreach ($this->fields as $field) :
@@ -275,16 +275,16 @@ echo '</pre>';
 					$row_counter++;
 				endforeach;
 			endif;
-/*		
+/*
 			if ($metabox['args']['duplicate'])
 				$html.='<div class="dup-meta-box"><a href="#" data-meta-id="'.$metabox['args']['meta_box_id'].'">Duplicate Box</a></div>';
 
 			if ($metabox['args']['removable'])
 				$html.='<div class="remove-meta-box"><a href="#" data-meta-id="'.$metabox['args']['meta_box_id'].'" data-post-id="'.$post->ID.'">Remove Box</a></div>';
-*/				
+*/
 		$html.='</div>';
-		
-		echo $html;	
+
+		echo $html;
 	}
 
 	/**
@@ -313,7 +313,7 @@ echo '</pre>';
 				break;
 			case 'date':
 				$html.='<input type="text" class="datepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
-				break;				
+				break;
 			case 'date-time':
 				//$html.='<input type="text" class="datepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				//$html.='<input type="text" class="timepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
@@ -325,30 +325,30 @@ echo '</pre>';
 				$html.='<input id="'.$args['id'].'" class="uploader-input regular-text" type="text" name="'.$args['id'].'" value="'.$value.'" />';
 				$html.='<input class="uploader button" name="'.$args['id'].'_button" id="'.$args['id'].'_button" value="Upload" />';
 				$html.='<input type="hidden" name="_name" value="'.$args['id'].'" />';
-				
+
 				$attr=array(
 					'src' => $value,
 					/* 'class' => 'umb-media-thumb', */
 				);
-	
+
 				if ($value) :
 					$html.='<div class="umb-media-thumb">';
 						$html.=get_the_post_thumbnail($post->ID,'thumbnail',$attr);
 						$html.='<a class="remove" data-type-img-id="'.$args['id'].'" href="#">Remove</a>';
 					$html.='</div>';
 				endif;
-				
+
 				break;
 			case 'phone':
 				$html.='<input type="text" class="phone" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				break;
 			case 'radio':
 				//$html.='<input type="radio" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" '.checked($value,'on',false).' /> '.$value;
-				break;				
-			case 'select' :		
+				break;
+			case 'select' :
 				$html.='<select name="'.$args['id'].'" id="'.$args['id'].'">';
 					$html.='<option>Select One</option>';
-					if (isset($args['options']) && is_array($args['options'])) :				
+					if (isset($args['options']) && is_array($args['options'])) :
 						foreach ($args['options'] as $option) :
 							$html.='<option value="'.$option['value'].'">'.$option['name'].'</option>';
 						endforeach;
@@ -357,7 +357,7 @@ echo '</pre>';
 				break;
 			case 'text' :
 				$html.='<input type="text" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
-				break;												
+				break;
 			case 'textarea':
 				$html.='<textarea class="textarea" name="'.$args['id'].'" id="'.$args['id'].'">'.$value.'</textarea>';
 				break;
@@ -366,7 +366,7 @@ echo '</pre>';
 				break;
 			case 'url':
 				$html.='<input type="text" class="url validator" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
-				break;				
+				break;
 			case 'wysiwyg':
 				$settings=array(
 					'media_buttons' => false,
@@ -379,18 +379,18 @@ echo '</pre>';
 			default:
 				$html.='<input type="text" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 		endswitch;
-		
+
 		if ($args['repeatable'])
 			$html.='<button type="button" class="ajaxmb-field-btn duplicate">Duplicate Field</button>';
-		
+
 		return $html;
 	}
-	
+
 	/**
 	 * a public function that allows the user to add a field to the meta box
-	 * @param array $args 
+	 * @param array $args
 	 							id (field id) REQUIRED
-	 							type (type of input field) 
+	 							type (type of input field)
 	 							label (for field)
 	 							value (of field)
 	 * because we allow multiple configs now, we must use legacy support (1 config) and expand to allow for multi configs (pre 1.1.8)
@@ -401,24 +401,27 @@ echo '</pre>';
 		else :
 			if ($meta_id) :
 				foreach ($this->config as $config) :
-					if ($config['id']==$meta_id)
+					if (isset($config['id']) && $config['id']==$meta_id) :
 						$prefix=$config['prefix'];
+					elseif (isset($config['mb_id']) && $config['mb_id']==$meta_id) :
+						$prefix=$config['prefix'];
+					endif;
 				endforeach;
 			endif;
 		endif;
-		
+
 		$new_field=array('id' => '', 'type' => 'text', 'label' => 'Text Box', 'value' => '');
 		$new_field=array_merge($new_field,$args);
-		
+
 		if (empty($new_field['label'])) :
 			$new_field['id']=$prefix.'_'.$new_field['id'];
 		else :
-			$new_field['id']=$prefix.'_'.strtolower($this->clean_special_chars($new_field['label']));		
+			$new_field['id']=$prefix.'_'.strtolower($this->clean_special_chars($new_field['label']));
 		endif;
-	
-		$this->fields[$new_field['id']]=$new_field;	
+
+		$this->fields[$new_field['id']]=$new_field;
 	}
-	
+
 	/**
 	 * a variation of the add_fields function
 	 * this allows us to generate our fields with a passed array
@@ -428,13 +431,13 @@ echo '</pre>';
 		foreach ($arr as $id => $values) :
 			$options=false;
 			$repeatable=0;
-			
+
 			if (isset($values['options']))
 				$options=$values['options'];
 
 			if (isset($values['repeatable']))
 				$repeatable=1;
-						
+
 			$args=array(
 				'id' => $id,
 				'type' => $values['field_type'],
@@ -443,35 +446,35 @@ echo '</pre>';
 				'repeatable' => $repeatable,
 			);
 			$this->add_field($args,$meta_id);
-		endforeach;	
+		endforeach;
 	}
-	
+
 	/**
 	 * saves our meta field data
 	**/
 	public function save_custom_meta_data($post_id) {
-		// Bail if we're doing an auto save  
-		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return; 
-	
+		// Bail if we're doing an auto save
+		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+
 		// if our nonce isn't there, or we can't verify it, bail
 		if (!isset($_POST[$this->nonce]) || !wp_verify_nonce($_POST[$this->nonce],plugin_basename(__FILE__))) return;
 
-		// if our current user can't edit this post, bail  
+		// if our current user can't edit this post, bail
 		if (!current_user_can('edit_post',$post_id)) return;
-		
+
 		$this->build_duplicated_boxes($post_id); // must do here again b/c this action is added before we have all the info
-		
+
 		foreach ($this->config as $config) :
 			$data=null;
 			$prefix=$config['prefix'];
-			
+
 			foreach ($config['fields'] as $id => $field) :
 				$field_id=$prefix.'_'.$id;
-		
+
 				if (isset($_POST[$field_id])):
 					$data=$_POST[$field_id]; // submitted value //
 				endif;
-	
+
 				// fix notices on unchecked check boxes //
 				//if (get_post_meta($post_id, $field['id']) == "") :
 				//	add_post_meta($post_id, $field['id'], $data, true);
@@ -483,11 +486,11 @@ echo '</pre>';
 					update_post_meta($post_id, $field_id, $data);
 				endif;
 
-			endforeach;	
+			endforeach;
 
-		endforeach;			
+		endforeach;
 	}
-	
+
 	function duplicate_meta_box() {
 		$this->save_duplicate_meta_box($_POST['postID']);
 
@@ -496,34 +499,34 @@ echo '</pre>';
 
 	function remove_duplicate_meta_box() {
 		$option=get_option($this->option_name);
-		
+
 		// check for option key //
 		if (!isset($_POST['optionKey']))
 			return false;
-		
+
 		$option_to_remove=$option[$_POST['optionKey']];
-		
+
 		// do some quick checks to make sure all is ok //
 		if ($option_to_remove['post_id']!=$_POST['postID'])
 			return false;
-			
+
 		if ($option_to_remove['id']!=$_POST['metaID'])
 			return false;
-		
+
 		// remove post meta //
 		foreach ($option_to_remove['fields'] as $id => $field) :
 			$meta_key=$option_to_remove['prefix'].'_'.$id;
 			if ($meta_key)
 				delete_post_meta($_POST['postID'],$meta_key);
-		endforeach;		
-		
+		endforeach;
+
 		unset($option[$_POST['optionKey']]); // remove from option
 		$option=array_values($option); // reset keys
-		
+
 		update_option($this->option_name,$option); // update our option
-		
+
 		return true;
-				
+
 		exit;
 	}
 
@@ -533,10 +536,10 @@ echo '</pre>';
 	 * it's done via ajax, so the users should not see anything
 	**/
 	public function save_duplicate_meta_box($post_id) {
-		// Bail if we're doing an auto save  
-		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return; 
+		// Bail if we're doing an auto save
+		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 
-		// if our current user can't edit this post, bail  
+		// if our current user can't edit this post, bail
 		if (!current_user_can('edit_post',$post_id)) return;
 
 		$data=null;
@@ -545,12 +548,12 @@ echo '</pre>';
 		$current_option_arr=array();
 		$new_option_arr=array();
 		$prefix=$_POST['prefix'];
-		
+
 		foreach ($_POST['fields'] as $id => $field) :
 			$field_id=$prefix.'_'.$id;
 			$data='';
 			//update_post_meta($post_id,$field_id,$data);
-		endforeach;		
+		endforeach;
 
 		// build our option so that we know we have duped boxes //
 		$option=$this->option_name;
@@ -563,9 +566,9 @@ echo '</pre>';
 			'duplicate' => 0,
 			'fields' => $_POST['fields'],
 		);
-		
+
 /*
-print_r($option_arr);	
+print_r($option_arr);
 
 		if ($option)
 			$current_option_arr=get_option($option);
@@ -577,13 +580,13 @@ print_r($option_arr);
 			$option_arr=$new_option_arr;
 		endif;
 
-print_r($option_arr);	
-			
+print_r($option_arr);
+
 		if ($option)
 			update_option($option,$option_arr);
 */
 	}
-		
+
 	/**
 	 * setup our config with defaults and adjusments
 	**/
@@ -597,42 +600,42 @@ print_r($option_arr);
 			//'duplicate' => 0,
 			//'fields' => array(), // for legacy support (pre 1.1.8)
 		);
-		
+
 		if (empty($configs))
 			return false;
-		
+
 		foreach ($configs as $key => $config) :
 			$config=array_merge($default_config,$config);
 
 			if (!is_array($config['post_types'])) :
 				$config['post_types']=explode(",",$config['post_types']);
-			endif;			
-			
+			endif;
+
 			$config=$this->check_config_prefix($config); // makes sure our prefix starts with '_'
-			
+
 			$configs[$key]=$config;
 		endforeach;
 
 		return $configs;
 	}
-	
+
 /*
 	function build_duplicated_boxes($post_id=false) {
 		if (!$post_id)
 			return false;
 
 		$option_arr=get_option($this->option_name);
-		
+
 		if (!count($option_arr) || !$option_arr)
 			return false;
-			
+
 		foreach ($option_arr as $option) :
 			if ($option['post_id']==$post_id) :
 				$option['removable']=true; // allows us to have a remove button
 				array_push($this->config,$option);
 			endif;
-		endforeach;				
-	
+		endforeach;
+
 		return;
 	}
 */
@@ -643,7 +646,7 @@ print_r($option_arr);
 	function clean_special_chars($string) {
 		$string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
 		$string = preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
-		
+
 		return preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
 	}
 
@@ -663,7 +666,7 @@ function load_plugin_first() {
 			array_unshift( $plugins, $path );
 			update_option( 'active_plugins', $plugins );
 		}
-	}	
+	}
 }
 */
 $MDWMetaboxes = new MDWMetaboxes();

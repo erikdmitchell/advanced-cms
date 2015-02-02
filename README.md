@@ -12,6 +12,10 @@ See the mdw-cms-demo.php for sample examples.
 Changelog
 ===========
 
+### 1.1.2
+
+	Added legacy functions and classes for older versions of the plugin.
+
 ### 1.1.1
 	
 	Finalized updater and tested it. This is the min version we need for auto updates.
