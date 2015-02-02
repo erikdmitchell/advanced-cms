@@ -156,3 +156,8 @@ form.custom-metabox .add-fields.visible {
 .custom-metabox-list .edit {
 	padding-left: 10px;
 }
+
+/**/
+p.submit > #clear-files {
+	margin-left: 15px;
+}

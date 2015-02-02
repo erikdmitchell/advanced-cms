@@ -2,10 +2,8 @@
 if (!class_exists('MDW_CPT')) :
 
 	class MDW_CPT {
-		function __construct() {
 
-
-		}
+		function __construct() { }
 
 		/**
 		 * adds post types (slug) to our post_types array
@@ -96,8 +94,12 @@ if (!class_exists('MDW_CPT')) :
 				endif;
 
 				if (!$flag) :
-					MDWCMSgui::update_custom_post_types($pt);
-					MDWCMSlegacy::legacy_updates_admin_notices('updated','Custom Post Types Migrated');
+					MDWCMSlegacy::$admin_notices=array(); // reset to "clear" before our new results
+					MDWCMSlegacy::$admin_notices[]=array(
+						'class' => 'updated',
+						'message' => 'MDW CMS Updated custom post types.'
+					);
+					//MDWCMSgui::update_custom_post_types($pt);
 				endif;
 			endforeach;
 		}
@@ -179,6 +181,8 @@ if (!class_exists('mdw_Meta_Box')) :
 		 *
 		 */
 		function convert_metaboxes() {
+			$metaboxes=false;
+
 			foreach ($this->config as $metabox) :
 				$fields_arr=array();
 
@@ -206,11 +210,18 @@ if (!class_exists('mdw_Meta_Box')) :
 			endforeach;
 
 			foreach ($new_arr as $mb) :
-				$metaboxes=MDWCMSgui::update_metaboxes($mb);
+				//$metaboxes=MDWCMSgui::update_metaboxes($mb);
 
 				if ($metaboxes) :
-					//echo $mb['title'].' Metabox Migrated<br>';
-					MDWCMSlegacy::legacy_updates_admin_notices('updated',$mb['title'].' Metabox Migrated');
+					MDWCMSlegacy::$admin_notices[]=array(
+						'class' => 'updated',
+						'message' => $mb['title'].' metabox migrated.'
+					);
+				else :
+					MDWCMSlegacy::$admin_notices[]=array(
+						'class' => 'error',
+						'message' => $mb['title'].' metabox failed to migrate.'
+					);
 				endif;
 			endforeach;
 		}
@@ -219,19 +230,175 @@ if (!class_exists('mdw_Meta_Box')) :
 
 endif;
 
+/**
+ * MDWCMSlegacy class.
+ */
 class MDWCMSlegacy {
 
+	public static $admin_notices=array();
+	public static $config_file=false;
+
 	function __construct() {
-		add_action('admin_notices',array($this,'legacy_updates_admin_notices'));
+		add_action('admin_enqueue_scripts',array($this,'admin_scripts_styles'));
+		add_action('wp_ajax_run_legacy_upgrade',array($this,'ajax_run_legacy_upgrade'));
+		add_action('wp_ajax_legacy_upgrade_remove_file',array($this,'ajax_legacy_upgrade_remove_file'));
 	}
 
-	public static function legacy_updates_admin_notices($class,$message) {
-		echo '<div class="'.$class.'"><p>'.$message.'</p></div>';
+	/**
+	 * admin_scripts_styles function.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	function admin_scripts_styles() {
+		wp_enqueue_script('jquery-ui-dialog');
+		wp_enqueue_script('mdwcms-legacy-script',plugins_url('/js/legacy.js',dirname(__FILE__)),array('jquery','jquery-ui-dialog'),'1.0.0',true);
+
+		if (self::$config_file) :
+			$js_arr=array(
+				'file' => self::$config_file
+			);
+
+			wp_localize_script('mdwcms-legacy-script','options',$js_arr);
+		endif;
+	}
+
+	/**
+	 * get_legacy_updater function.
+	 *
+	 * look for a config file in the plugins dir, this is utalized if it exists and is not over written by the plugin
+	 * to prevent over writes, we use a wp option now
+ 	 *
+	 * @access public
+	 * @return void
+	 */
+	public static function setup_legacy_updater() {
+		//$html=null;
+		$plugin_root_path=ABSPATH.'wp-content/plugins/';
+
+/*
+		if (get_option('mdw_cms_version')) :
+			self::$admin_notices[]=array(
+				'class' => 'updated',
+				'message' => 'MDW CMS Version '.get_option('mdw_cms_version').' is in use.'
+			);
+		else :
+*/
+			if (file_exists($plugin_root_path.'mdw-cms-config.php')) :
+				self::$admin_notices[]=array(
+					'class' => 'error',
+					'message' => 'MDW CMS is currently using a custom config file. Please update to the latest version of the plugin.'
+				);
+
+				self::$config_file=$plugin_root_path.'mdw-cms-config.php';
+			else :
+				self::$admin_notices[]=array(
+					'class' => 'error',
+					'message' => 'MDW CMS is currently using the default config file. Please update to the latest version of the plugin.'
+				);
+
+				self::$config_file=plugin_dir_path(__FILE__).'mdw-cms-config-sample.php';
+			endif;
+		//endif;
+
+		//return $html;
+	}
+
+	/**
+	 * legacy_admin_notices function.
+	 *
+	 * @access public
+	 * @static
+	 * @return void
+	 */
+	public static function legacy_admin_notices($return=false) {
+		$html=null;
+
+		foreach (self::$admin_notices as $notice) :
+			$html.='<div class="'.$notice['class'].'"><p>'.$notice['message'].'</p></div>';
+		endforeach;
+
+		if ($return) :
+			return $html;
+		else :
+			echo $html;
+		endif;
+	}
+
+	public static function get_legacy_page() {
+		$html=null;
+
+		if (!self::$config_file)
+			return false;
+
+		$html.='<h3>MDW CMS Updater</h3>';
+
+		$html.='<div id="mdwcms-updater-notices"></div>';
+
+		$html.='<p>The new version of the MDW CMS plugin utilizes a graphical user interface (GUI). As a result, an upgrade needs to be run. Click on the button below to complete the process.</p>';
+		$html.='<p class="submit">';
+			$html.='<input type="button" name="run-upgrade" id="run-upgrade" class="button button-primary" value="Run Upgrade">';
+			$html.='<input type="button" name="clear-files" id="clear-files" class="button button-primary" value="Clear Config Files" disabled>';
+		$html.='</p>';
+
+		return $html;
 	}
 
 	public static function legacy_remove_old_config_file($file) {
-//echo $file;
+
+	}
+
+	/**
+	 * ajax_run_legacy_upgrade function.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	function ajax_run_legacy_upgrade() {
+		global $mdw_custom_post_types;
+
+		$return_arr=array();
+
+		if (!isset($_POST['action']) || $_POST['action']!='run_legacy_upgrade')
+			return false;
+
+		require_once($_POST['file']);
+
+		$return_arr['notices']=self::legacy_admin_notices(true);
+
+		echo json_encode($return_arr);
+
+		exit;
+	}
+
+	function ajax_legacy_upgrade_remove_file() {
+		$return_arr=array();
+
+		if (!isset($_POST['action']) || $_POST['action']!='legacy_upgrade_remove_file')
+			return false;
+
+		MDWCMSlegacy::$admin_notices=array(); // reset to "clear" before our new results
+
+		//if (unlink($_POST['file'])) :
+		if (false) :
+			MDWCMSlegacy::$admin_notices[]=array(
+				'class' => 'updated',
+				'message' => 'Config file removed.'
+			);
+		else :
+			MDWCMSlegacy::$admin_notices[]=array(
+				'class' => 'error',
+				'message' => 'Failed to remove config file'
+			);
+		endif;
+
+		$return_arr['notices']=self::legacy_admin_notices(true);
+
+		echo json_encode($return_arr);
+
+		exit;
 	}
 
 }
+new MDWCMSlegacy();
 ?>

@@ -8,6 +8,9 @@ class MDWCMSgui {
 		add_action('admin_enqueue_scripts',array($this,'scripts_styles'));
 		add_action('admin_notices',array($this,'admin_notices')); // may not be needed
 
+		add_action('admin_init','MDWCMSlegacy::setup_legacy_updater');
+		add_action('admin_notices','MDWCMSlegacy::legacy_admin_notices');
+
 		//update_option('mdw_cms_version','1.1.1');
 
 		$this->update_mdw_cms_settings();
@@ -83,6 +86,8 @@ class MDWCMSgui {
 
 		$html.='<div class="mdw-cms-default">';
 			$html.='CONTENT NEEDS TO GO HERE';
+
+			$html.=MDWCMSlegacy::get_legacy_page();
 		$html.='</div>';
 
 		return $html;
@@ -475,7 +480,7 @@ class MDWCMSgui {
 		$post_types=get_option('mdw_cms_post_types');
 echo '<pre>';
 print_r($data);
-echo '</pre>';		
+echo '</pre>';
 		if (!isset($data['name']) || $data['name']=='')
 			return false;
 
