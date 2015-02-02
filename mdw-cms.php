@@ -12,19 +12,16 @@ License: GPL2
 require_once(plugin_dir_path(__FILE__).'inc/mdw-custom-tax.php');
 require_once(plugin_dir_path(__FILE__).'inc/admin-columns.php');
 require_once(plugin_dir_path(__FILE__).'inc/custom-widgets.php');
-require_once(plugin_dir_path(__FILE__).'admin-page.php');
+require_once(plugin_dir_path(__FILE__).'inc/legacy.php');
+require_once(plugin_dir_path(__FILE__).'inc/mdw-meta-boxes/mdwmb-plugin.php');
 
-require_once(plugin_dir_path(__FILE__).'gui/admin-pages.php'); // our new visual gui
-require_once(plugin_dir_path(__FILE__).'gui/custom-post-types.php');
-require_once(plugin_dir_path(__FILE__).'gui/mdw-meta-boxes/mdwmb-plugin.php');
-require_once(plugin_dir_path(__FILE__).'gui/legacy.php');
-require_once(plugin_dir_path(__FILE__).'gui/upgrade.php');
+require_once(plugin_dir_path(__FILE__).'admin-page-cms-settings.php'); // older settings type page - for slider which will be removed
+require_once(plugin_dir_path(__FILE__).'admin-pages.php'); // our new visual gui
 
-
-require_once(plugin_dir_path(__FILE__).'/classes/slider.php'); // our bootstrap slider
-require_once(plugin_dir_path(__FILE__).'/classes/social-media.php'); // our social media page
-require_once(plugin_dir_path(__FILE__).'/classes/inflector.php'); // our pluralizing/singular functions
-
+require_once(plugin_dir_path(__FILE__).'classes/custom-post-types.php');
+require_once(plugin_dir_path(__FILE__).'classes/slider.php'); // our bootstrap slider
+require_once(plugin_dir_path(__FILE__).'classes/social-media.php'); // our social media page
+require_once(plugin_dir_path(__FILE__).'classes/inflector.php'); // our pluralizing/singular functions
 
 $admin_notices=array();
 
@@ -48,15 +45,6 @@ else :
 		require_once(plugin_dir_path(dirname(__FILE__)).'mdw-cms-config.php');
 		MDWCMSlegacy::legacy_remove_old_config_file(plugin_dir_path(dirname(__FILE__)).'mdw-cms-config.php');
 	else :
-		// we need to do a legacy update //
-		if (file_exists(plugin_dir_path(dirname(__FILE__)).'mdw-cms-config.php')) :
-			$admin_notices[]=array(
-				'class' => 'error',
-				'message' => 'MDW CMS is currently using a custom config file. Please update to the latest version of the plugin.'
-			);
-			require_once(plugin_dir_path(dirname(__FILE__)).'mdw-cms-config.php');
-			MDWCMSlegacy::legacy_remove_old_config_file(plugin_dir_path(dirname(__FILE__)).'mdw-cms-config.php');
-		else :
 		// 	we dont need to do anything //
 		$admin_notices[]=array(
 			'class' => 'error',
@@ -94,7 +82,7 @@ function mdwcms_admin_notices() {
  * updater json: http://www.millerdesignworks.com/mdw-wp-plugins/mdw-cms-metadata.json
  * udater zip url: http://www.millerdesignworks.com/mdw-wp-plugins/mdw-cms.zip
  */
-require_once(plugin_dir_path(__FILE__).'/updater/plugin-update-checker.php');
+require_once(plugin_dir_path(__FILE__).'inc/updater/plugin-update-checker.php');
 if (class_exists('PucFactory')) :
 	$MyUpdateChecker = PucFactory::buildUpdateChecker (
 	    'http://www.millerdesignworks.com/mdw-wp-plugins/mdw-cms-metadata.json',
