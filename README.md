@@ -15,6 +15,8 @@ Changelog
 ### 1.1.2
 
 	Added legacy functions and classes for older versions of the plugin.
+	Reworked Social Media add on to be more flexible.
+	Tweaked GUI and updated it to be the standard for this plugin.
 
 ### 1.1.1
 	
