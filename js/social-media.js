@@ -57,6 +57,8 @@ jQuery(document).ready(function($) {
 
 		$td.html($td.html().replace(/default_field/g,id));
 
+		$td.find('#github-name').val(name); // set name
+
 	}
 
 });

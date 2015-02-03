@@ -82,7 +82,11 @@ class MDWSocialMedia {
     else :
    		$this->options=get_option($this->option_name);
 		endif;
-
+/*
+echo '<pre>';
+print_r($this->options);
+echo '</pre>';
+*/
 		$this->add_default_field();
 
 		// Add the section so we can add our fields to it
@@ -184,15 +188,12 @@ class MDWSocialMedia {
 	function validate_settings($input) {
 		$new_input=array();
 
-/*
-		if (isset($input))
-			$new_input=$input;
-*/
+		foreach ($input as $id => $values) :
+			if ($id!='default_field')
+				$new_input[$id]=$values;
+		endforeach;
 
-echo '<pre>';
-print_r($input);
-echo'</pre>';
-exit;
+		update_option($this->option_name,$new_input); // apparently this isn't "magically done"
 
 		return $new_input;
 	}
