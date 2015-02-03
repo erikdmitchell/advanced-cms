@@ -15,11 +15,9 @@ require_once(plugin_dir_path(__FILE__).'inc/custom-widgets.php');
 require_once(plugin_dir_path(__FILE__).'inc/legacy.php');
 require_once(plugin_dir_path(__FILE__).'inc/mdw-meta-boxes/mdwmb-plugin.php');
 
-//require_once(plugin_dir_path(__FILE__).'admin-page-cms-settings.php'); // older settings type page - for slider which will be removed
 require_once(plugin_dir_path(__FILE__).'admin-pages.php'); // our new visual gui
 
 require_once(plugin_dir_path(__FILE__).'classes/custom-post-types.php');
-require_once(plugin_dir_path(__FILE__).'classes/slider.php'); // our bootstrap slider
 require_once(plugin_dir_path(__FILE__).'classes/social-media.php'); // our social media page
 require_once(plugin_dir_path(__FILE__).'classes/inflector.php'); // our pluralizing/singular functions
 

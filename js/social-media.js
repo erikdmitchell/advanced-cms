@@ -2,16 +2,9 @@ jQuery(document).ready(function($) {
 
 	var input_id;
 
-	$('.icon-modal-link').leanModal({
-		top : 200,
-		overlay : 0.4,
-		closeButton : '.modal_close'
-	});
-
-
+	$('.icon-modal-link').modal();
 
 	$('body').on('click','.icon-modal-link',function() {
-console.log('click');
 		input_id=$(this).data('input-id');
 	});
 
@@ -20,9 +13,10 @@ console.log('click');
 
 		$('#'+input_id).val($(this).data('icon'));
 
-		$('.'+input_id+'-icon.icon-img').append('<i class="fa '+$(this).data('icon')+'"></i>');
+		$('.'+input_id+'-icon .icon-img-fa').html('');
+		$('.'+input_id+'-icon.icon-img .icon-img-fa').append('<i class="fa '+$(this).data('icon')+'"></i>');
 
-		$("#lean_overlay").fadeOut(200);
+		$(".jquery-modal").fadeOut(200);
 		$("#fa-icons-overlay").fadeOut(200);
 	});
 
@@ -61,9 +55,6 @@ console.log('click');
 
 		$tr.find('th').text(name); // set name
 
-		//url.attr('id',id);
-		//url.attr('name','social_media_options['+id+'][url]');
-//console.log($td.html());
 		$td.html($td.html().replace(/default_field/g,id));
 
 	}

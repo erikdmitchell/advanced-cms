@@ -31,7 +31,7 @@ class MDWSocialMedia {
 		wp_enqueue_style('social-media-admin-style',plugin_dir_url(dirname(__FILE__)).'css/admin-social-media.css');
 
 		wp_enqueue_script('jquery');
-		wp_enqueue_script('leanModal-script',plugin_dir_url(dirname(__FILE__)).'js/jquery.leanModal.min.js',array('jquery'),'1.1',true);
+		wp_enqueue_script('jquery-modal-script',plugin_dir_url(dirname(__FILE__)).'js/jquery.modal.min.js',array('jquery'),'0.5.5',true);
 		wp_enqueue_script('social-media-script',plugin_dir_url(dirname(__FILE__)).'js/social-media.js',array('jquery'),'1.0.0',true);
 	}
 
@@ -140,8 +140,8 @@ class MDWSocialMedia {
 		$values=$arr['values'];
 
 		$html.='<input name="social_media_options['.$id.'][url]" id="'.$id.'" class="regular-text" type="text" value="'.$values['url'].'" />';
-		$html.='<span class="'.$id.'-icon-icon icon-img"><span class="icon-txt">Icon: </span><i class="fa '.$values['icon'].'"></i></span>';
-		$html.='<a class="icon-modal-link" data-input-id="'.$id.'-icon" rel="leanModal" name="fa-icons-overlay" href="#fa-icons-overlay">Select Icon</a>';
+		$html.='<span class="'.$id.'-icon-icon icon-img"><span class="icon-txt">Icon: </span><span class="icon-img-fa"><i class="fa '.$values['icon'].'"></i></span></span>';
+		$html.='<a class="icon-modal-link" data-input-id="'.$id.'-icon" rel="modal:open" name="fa-icons-overlay" href="#fa-icons-overlay">Select Icon</a>';
 
 		$html.='<input type="hidden" name="social_media_options['.$id.'][icon]" id="'.$id.'-icon" value="'.$values['icon'].'" />';
 		$html.='<input type="hidden" name="social_media_options['.$id.'][name]" id="'.$id.'-name" value="'.$values['name'].'" />';
@@ -205,7 +205,7 @@ exit;
 		$fa_icons=$this->get_fa_arr();
 
 		$html.='<div id="fa-icons-overlay">';
-			$html.='<a class="modal_close"><i class="fa fa-times"></i></a>';
+			$html.='<a class="close-modal" rel="modal:close"></a>';
 			$html.='<ul class="fa-icons-list">';
 				foreach ($fa_icons as $icon) :
 					$html.='<li id="'.$icon['class'].'"><a href="#" data-icon="'.$icon['class'].'"><i class="fa '.$icon['class'].'"></i>'.$icon['name'].'</a></li>';
