@@ -572,7 +572,12 @@ class MDWCMSgui {
 	}
 
 	/**
+	 * admin_notices function.
 	 *
+	 * @access public
+	 * @param string $class (default: 'error')
+	 * @param string $message (default: '')
+	 * @return void
 	 */
 	function admin_notices($class='error',$message='') {
 		echo '<div class="'.$class.'"><p>'.$message.'</p></div>';

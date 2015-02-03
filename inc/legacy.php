@@ -282,7 +282,7 @@ class MDWCMSlegacy {
 
 			self::$admin_notices[]=array(
 				'class' => 'updated',
-				'message' => 'MDW CMS Version '.get_option('mdw_cms_version').' is in use.'
+				'message' => 'Config file has been removed. MDW CMS Version '.get_option('mdw_cms_version').' is in use.'
 			);
 
 		endif;
