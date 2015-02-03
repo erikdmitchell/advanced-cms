@@ -462,7 +462,7 @@ echo '</pre>';
 		// if our current user can't edit this post, bail
 		if (!current_user_can('edit_post',$post_id)) return;
 
-		$this->build_duplicated_boxes($post_id); // must do here again b/c this action is added before we have all the info
+		//$this->build_duplicated_boxes($post_id); // must do here again b/c this action is added before we have all the info
 
 		foreach ($this->config as $config) :
 			$data=null;

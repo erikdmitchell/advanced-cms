@@ -11,8 +11,22 @@ jQuery(document).ready(function($) {
 
 		$.post(ajaxurl, data, function(response) {
 			var result=$.parseJSON(response);
+			var resultHTML=$(result.notices);
+			var error=false;
+
+			resultHTML.each(function() {
+				if ($(this).hasClass('error') && !$(this).hasClass('primary')) {
+					error=true;
+					return false;
+				}
+			});
 
 			$('#mdwcms-updater-notices').append(result.notices);
+
+			if (error) {
+				$('#run-upgrade').prop('disabled',false);
+			}
+
 			$('#clear-files').prop('disabled',false);
 		});
 	});
@@ -32,7 +46,6 @@ jQuery(document).ready(function($) {
         resizable: false,
         buttons: {
             Yes: function () {
-
 							var data={
 								'action': 'legacy_upgrade_remove_file',
 								'file': options.file
@@ -40,12 +53,25 @@ jQuery(document).ready(function($) {
 
 							$.post(ajaxurl, data, function(response) {
 								var result=$.parseJSON(response);
+								var resultHTML=$(result.notices);
+								var error=false;
 
-								$('#mdwcms-updater-notices').html(result.notices);
-								$('#clear-files').prop('disabled',true);
+								resultHTML.each(function() {
+									if ($(this).hasClass('error') && !$(this).hasClass('primary')) {
+										error=true;
+										return false;
+									}
+								});
+
+								if (error) {
+									$('#mdwcms-updater-notices').html(result.notices);
+									$('#clear-files').prop('disabled',true);
+								} else {
+									top.location.replace(options.clear_config_url);
+								}
 							});
 
-                $(this).dialog("close");
+              $(this).dialog("close");
             },
             No: function () {
 		            $('#clear-files').prop('disabled',false);

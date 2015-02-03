@@ -161,3 +161,7 @@ form.custom-metabox .add-fields.visible {
 p.submit > #clear-files {
 	margin-left: 15px;
 }
+
+#mdwcms-updater-notices > .primary {
+	display: none;
+}
