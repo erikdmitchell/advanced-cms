@@ -8,3 +8,160 @@ textarea#custom_code {
 .form-table .description {
 	float: left;
 }
+
+/* meta box */
+form.custom-post-types {
+	width: 50%;
+	float: left;
+}
+form.custom-metabox {
+	width: 100%;
+	float: left;
+}
+form.custom-post-types label,
+form.custom-metabox label {
+	font-weight: bold;
+	width: 110px;
+	padding-right: 5px;
+	display: inline-block;
+	vertical-align: top;
+	margin-top: 4px;
+}
+form.custom-post-types .description {
+	padding-left: 5px;
+}
+form.custom-post-types .description-ext {
+	font-weight: bold;
+	margin-left: 115px;
+}
+form.custom-post-types .form-row {
+	padding: 5px 0;
+	width: 470px;
+}
+form.custom-post-types label.required,
+form.custom-metabox label.required {
+	color: #000;
+}
+form.custom-post-types label.required:after,
+form.custom-metabox label.required:after {
+	color: red;
+	content: "*";
+	padding-left: 3px;
+}
+form.custom-metabox .post-type-cb {
+	margin-left: 116px;
+}
+form.custom-metabox .post-type-cb.first {
+	margin-left: 1px;
+}
+
+
+
+
+.add-fields .field-options .type {
+	display: none;
+}
+.add-fields .field-options .type .field-label {
+
+}
+.add-fields .field-options .type .repeatable label {
+	margin-top: 0;
+}
+
+.field.options .option-row {
+
+}
+.field.options .option-row.default {
+	display: none;
+}
+
+/* meta box fields
+------------------ */
+form.custom-metabox .add-fields {
+	display: none;
+	padding: 0 0 10px 0;
+	overflow: hidden;
+}
+form.custom-metabox .add-fields.visible {
+	display: block;
+}
+.add-fields .fields-wrapper {
+	overflow: hidden;
+	width: 850px;
+	padding-bottom: 10px;
+}
+.add-fields .fields-wrapper .ui-icon-arrowthick-2-n-s {
+	width: 20px;
+	float: left;
+	margin-top: 5px;
+}
+.add-fields .fields-wrapper.default {
+	display: none;
+}
+.add-fields .form-row {
+	float: left;
+	width: 215px;
+}
+.add-fields .field-options {
+	float: left;
+	width: 615px;
+}
+.add-fields .field-options .field {
+	float: left;
+}
+.add-fields .field-options .type .repeatable {
+	padding-left: 5px;
+}
+.add-fields .field-options .type .options {
+
+}
+.add-fields .fields-wrapper label,
+.add-fields .field-options label {
+	width: 80px;
+}
+.add-fields .field.options > label {
+	font-size: 14px;
+	padding-bottom: 5px;
+}
+.add-option-field {
+	padding-top: 10px;
+}
+.wp-core-ui .button-primary.remove-field {
+	float: right;
+	background: #d64e07;
+	border-color: #b84609;
+}
+.wp-core-ui .button-primary.add-field {
+	margin-left: 15px;
+	background: #9ebaa0;
+	border-color: #90ab92;
+}
+
+/* cpt */
+.custom-post-types-list {
+	width: 50%;
+	float: left;
+}
+.custom-metabox-list {
+	width: 25%;
+	float: left;
+}
+.custom-post-types-list .edit,
+.custom-post-types-list .delete
+.custom-metabox-list .edit,
+.custom-metabox-list .delete {
+	padding: 0 5px;
+}
+.custom-post-types-list .edit,
+.custom-metabox-list .edit {
+	padding-left: 10px;
+}
+
+/**/
+p.submit > #clear-files {
+	margin-left: 15px;
+}
+
+#mdwcms-updater-notices > .primary {
+	display: none;
+}

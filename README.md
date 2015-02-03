@@ -12,6 +12,17 @@ See the mdw-cms-demo.php for sample examples.
 Changelog
 ===========
 
+### 1.1.2
+
+	Added legacy functions and classes for older versions of the plugin.
+	Reworked Social Media add on to be more flexible.
+	Tweaked GUI and updated it to be the standard for this plugin.
+
+### 1.1.1
+	
+	Finalized updater and tested it. This is the min version we need for auto updates.
+	Reworked metabox field ids to utilize the label and not some generic number.
+
 ### 1.1.0
 	Pulled out custom config file to prevent it from being overwritten. This will be stored as a variable at some point.
 
