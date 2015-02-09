@@ -15,6 +15,7 @@ Changelog
 ### 1.1.3
 
 	Added custom taxonomies to custom post types.
+	Added class MDWCustomTaxonomies to handle taxonomies.
 
 ### 1.1.2
 
