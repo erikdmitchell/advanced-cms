@@ -1,3 +1,29 @@
+/* general
+---------- */
+.tools_page_mdw-cms label {
+	font-weight: bold;
+	width: 110px;
+	padding-right: 5px;
+	display: inline-block;
+	vertical-align: top;
+	margin-top: 4px;
+}
+.tools_page_mdw-cms label.required {
+	color: #000;
+}
+.tools_page_mdw-cms label.required:after {
+	color: red;
+	content: "*";
+	padding-left: 3px;
+}
+.post-type-list-admin .post-type-cb {
+	margin-left: 116px;
+}
+.post-type-list-admin .post-type-cb.first {
+	margin-left: 1px;
+	margin-top: 7px;
+	margin-bottom: 2px;
+}
 textarea#custom_code {
 	width: 70%;
 	height: 550px;
@@ -8,9 +34,14 @@ textarea#custom_code {
 .form-table .description {
 	float: left;
 }
+.tools_page_mdw-cms .description-ext {
+	font-weight: bold;
+	margin-left: 115px;
+}
 
-/* meta box */
-form.custom-post-types {
+
+form.custom-post-types,
+form.custom-taxonomies {
 	width: 50%;
 	float: left;
 }
@@ -18,42 +49,15 @@ form.custom-metabox {
 	width: 100%;
 	float: left;
 }
-form.custom-post-types label,
-form.custom-metabox label {
-	font-weight: bold;
-	width: 110px;
-	padding-right: 5px;
-	display: inline-block;
-	vertical-align: top;
-	margin-top: 4px;
-}
 form.custom-post-types .description {
 	padding-left: 5px;
 }
-form.custom-post-types .description-ext {
-	font-weight: bold;
-	margin-left: 115px;
-}
+
 form.custom-post-types .form-row {
 	padding: 5px 0;
 	width: 470px;
 }
-form.custom-post-types label.required,
-form.custom-metabox label.required {
-	color: #000;
-}
-form.custom-post-types label.required:after,
-form.custom-metabox label.required:after {
-	color: red;
-	content: "*";
-	padding-left: 3px;
-}
-form.custom-metabox .post-type-cb {
-	margin-left: 116px;
-}
-form.custom-metabox .post-type-cb.first {
-	margin-left: 1px;
-}
+
 
 
 

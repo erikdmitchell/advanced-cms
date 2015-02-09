@@ -5,26 +5,26 @@ class MDWCustomPostTypes {
 
 	function __construct() {
 		$this->post_types=get_option('mdw_cms_post_types');
-				
+
 		add_action('init',array($this,'create_post_types'));
 	}
-	
+
 	function create_post_types() {
 		$Words=new Inflector();
-		
+
 		if (empty($this->post_types))
 			return false;
-		
-		foreach ($this->post_types as $post_type) :		
+
+		foreach ($this->post_types as $post_type) :
 			// setup our default 'args' //
 			$supports=array();
-			
+
 			$taxonomies='post_tag';
-			
+
 			// semi legacy support //
 			if (!isset($post_type['hierarchical']))
 				$post_type['hierarchical']=false;
-			
+
 			// check for custom 'args' //
 			if (isset($post_type['title'])) :
 				if ($post_type['title']) :
@@ -41,14 +41,14 @@ class MDWCustomPostTypes {
 			else :
 				$supports[]='thumbnail';
 			endif;
-			
+
 			if (isset($post_type['editor'])) :
 				if ($post_type['editor']) :
 					$supports[]='editor';
 				endif;
 			else :
 				$supports[]='editor';
-			endif;			
+			endif;
 
 			if (isset($post_type['revisions'])) :
 				if ($post_type['revisions']) :
@@ -71,7 +71,7 @@ class MDWCustomPostTypes {
 						'view_item' => __('View '.$post_type['singular_label']),
 						'search_items' => __('Search '.$post_type['label']),
 						'not_found' =>  __('No '.$post_type['label'].' found'),
-						'not_found_in_trash' => __('No '.$post_type['label'].' found in Trash'), 
+						'not_found_in_trash' => __('No '.$post_type['label'].' found in Trash'),
 						'parent_item_colon' => '',
 						'menu_name' => $post_type['label']
 					),
@@ -84,7 +84,7 @@ class MDWCustomPostTypes {
 					'hierarchical' => $post_type['hierarchical']
 				)
 			);
-		
+
 		endforeach;
 	}
 

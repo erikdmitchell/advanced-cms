@@ -12,6 +12,10 @@ See the mdw-cms-demo.php for sample examples.
 Changelog
 ===========
 
+### 1.1.3
+
+	Added custom taxonomies to custom post types.
+
 ### 1.1.2
 
 	Added legacy functions and classes for older versions of the plugin.

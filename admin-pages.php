@@ -18,6 +18,7 @@ class MDWCMSgui {
 		$this->options['version']=get_option('mdw_cms_version');
 		$this->options['metaboxes']=get_option('mdw_cms_metaboxes');
 		$this->options['post_types']=get_option('mdw_cms_post_types');
+		$this->options['taxonomies']=get_option('mdw_cms_taxonomies');
 	}
 
 	function build_admin_menu() {
@@ -37,7 +38,8 @@ class MDWCMSgui {
 		$tabs=array(
 			'cms-main' => 'Main',
 			'mdw-cms-cpt' => 'Custom Post Types',
-			'mdw-cms-metaboxes' => 'Metaboxes'
+			'mdw-cms-metaboxes' => 'Metaboxes',
+			'mdw-cms-tax' => 'Custom Taxonomies'
 		);
 		$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'cms-main';
 
@@ -65,6 +67,9 @@ class MDWCMSgui {
 					break;
 				case 'mdw-cms-metaboxes':
 					$html.=$this->metaboxes_admin_page();
+					break;
+				case 'mdw-cms-tax':
+					$html.=$this->custom_taxonomies_admin_page();
 					break;
 				default:
 					$html.=$this->default_admin_page();
@@ -94,7 +99,10 @@ class MDWCMSgui {
 	}
 
 	/**
+	 * cpt_admin_page function.
 	 *
+	 * @access public
+	 * @return void
 	 */
 	function cpt_admin_page() {
 		$base_url=admin_url('tools.php?page=mdw-cms&tab=mdw-cms-cpt');
@@ -215,7 +223,10 @@ class MDWCMSgui {
 	}
 
 	/**
+	 * metaboxes_admin_page function.
 	 *
+	 * @access public
+	 * @return void
 	 */
 	function metaboxes_admin_page() {
 		global $MDWMetaboxes;
@@ -226,15 +237,9 @@ class MDWCMSgui {
 		$mb_id=null;
 		$title=null;
 		$prefix=null;
-		$post_type=null;
+		$post_types=null;
 		$edit_class='';
 		$fields=false;
-
-		$args=array(
-			'public' => true,
-			//'_builtin' => false
-		);
-		$post_types_arr=get_post_types($args);
 
 		// edit //
 		if (isset($_GET['edit']) && $_GET['edit']=='mb') :
@@ -270,26 +275,7 @@ class MDWCMSgui {
 				$html.='<span class="description">(e.g. movies)</span>';
 			$html.='</div>';
 
-			$html.='<div class="form-row">';
-				$html.='<label for="post_type">Post Type</label>';
-				$counter=0;
-				foreach ($post_types_arr as $type) :
-					if ($counter==0) :
-						$class='first';
-					else :
-						$class='';
-					endif;
-
-					if (isset($post_types) && in_array($type,$post_types)) :
-						$checked='checked=checked';
-					else :
-						$checked=null;
-					endif;
-
-					$html.='<input class="post-type-cb '.$class.'" type="checkbox" name="post_types[]" value="'.$type.'" '.$checked.'>'.$type.'<br />';
-					$counter++;
-				endforeach;
-			$html.='</div>';
+			$html.=$this->get_post_types_list($post_types);
 
 			$html.='<h3>Metabox Fields</h3>';
 			$html.='<div class="add-fields sortable-div '.$edit_class.'">';
@@ -320,6 +306,103 @@ class MDWCMSgui {
 			endif;
 
 		$html.='</div>';
+
+		return $html;
+	}
+
+	/**
+	 * custom_taxonomies_admin_page function.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	function custom_taxonomies_admin_page() {
+		$base_url=admin_url('tools.php?page=mdw-cms&tab=mdw-cms-tax');
+		$btn_text='Create';
+		$name=null;
+		$label=null;
+		$object_type=null;
+		$hierarchical=1;
+		$show_ui=1;
+		$show_admin_col=1;
+		$id=-1;
+
+		// edit custom taxonomy //
+		if (isset($_GET['edit']) && $_GET['edit']=='tax') :
+			foreach ($this->options['taxonomies'] as $key => $tax) :
+				if ($tax['name']==$_GET['slug']) :
+					extract($this->options['taxonomies'][$key]);
+					$label=$args['label'];
+					$id=$key;
+				endif;
+			endforeach;
+		endif;
+
+		if ($id!=-1)
+			$btn_text='Update';
+
+		$html=null;
+
+		$html.='<form class="custom-taxonomies" method="post">';
+			$html.='<h3>Add New Custom Taxonomy</h3>';
+			$html.='<div class="form-row">';
+				$html.='<label for="name" class="required">Name</label>';
+				$html.='<input type="text" name="name" id="name" value="'.$name.'" />';
+				$html.='<span class="description">(e.g. brands)</span>';
+				$html.='<div class="description-ext">Max 20 characters, can not contain capital letters or spaces.</div>';
+			$html.='</div>';
+
+			$html.='<div class="form-row">';
+				$html.='<label for="label">Label</label>';
+				$html.='<input type="text" name="label" id="label" value="'.$label.'" />';
+				$html.='<span class="description">(e.g. Brands)</span>';
+			$html.='</div>';
+
+			$html.=$this->get_post_types_list($object_type);
+/*
+			$html.='<div class="advanced-options">';
+				$html.='<div class="form-row">';
+					$html.='<label for="hierarchical">Hierarchical</label>';
+					$html.='<select name="hierarchical" id="hierarchical">';
+						$html.='<option value="1" '.selected($hierarchical,1,false).'>True</option>';
+						$html.='<option value="0" '.selected($hierarchical,0,false).'>False</option>';
+					$html.='</select>';
+					$html.='<span class="description">(default True)</span>';
+				$html.='</div>';
+				$html.='<div class="form-row">';
+					$html.='<label for="show_ui">Show UI</label>';
+					$html.='<select name="show_ui" id="show_ui">';
+						$html.='<option value="1" '.selected($show_ui,1,false).'>True</option>';
+						$html.='<option value="0" '.selected($show_ui,0,false).'>False</option>';
+					$html.='</select>';
+					$html.='<span class="description">(default True)</span>';
+				$html.='</div>';
+				$html.='<div class="form-row">';
+					$html.='<label for="show_admin_col">Show Admin Column</label>';
+					$html.='<select name="show_admin_col" id="show_admin_col">';
+						$html.='<option value="1" '.selected($show_admin_col,1,false).'>True</option>';
+						$html.='<option value="0" '.selected($show_admin_col,0,false).'>False</option>';
+					$html.='</select>';
+					$html.='<span class="description">(default True)</span>';
+				$html.='</div>';
+			$html.='</div>';
+*/
+			$html.='<p class="submit"><input type="submit" name="add-tax" id="submit" class="button button-primary" value="'.$btn_text.'"></p>';
+			$html.='<input type="hidden" name="tax-id" id="tax-id" value='.$id.' />';
+		$html.='</form>';
+
+		$html.='<div class="custom-taxonomies-list">';
+			$html.='<h3>Custom Taxonomies</h3>';
+
+			if ($this->options['taxonomies']) :
+				foreach ($this->options['taxonomies'] as $tax) :
+					$html.='<div class="tax-row">';
+						$html.=$tax['args']['label'].'<span class="edit">[<a href="'.$base_url.'&edit=tax&slug='.$tax['name'].'">Edit</a>]</span><span class="delete">[<a href="'.$base_url.'&delete=tax&slug='.$tax['name'].'">Delete</a>]</span>';
+					$html.='</div>';
+				endforeach;
+			endif;
+
+		$html.='</div><!-- .custom-taxonomies-list -->';
 
 		return $html;
 	}
@@ -407,6 +490,7 @@ class MDWCMSgui {
 	function update_mdw_cms_settings() {
 		$post_types=get_option('mdw_cms_post_types');
 		$metaboxes=get_option('mdw_cms_metaboxes');
+		$taxonomies=get_option('mdw_cms_taxonomies');
 
 		// create custom post type //
 		if (isset($_POST['add-cpt']) && $_POST['add-cpt']=='Create') :
@@ -471,10 +555,33 @@ class MDWCMSgui {
 
 			update_option('mdw_cms_metaboxes',$metaboxes);
 		endif;
+
+		// create custom taxonomy //
+		if (isset($_POST['add-tax']) && $_POST['add-tax']=='Create') :
+			if ($this->update_taxonomies($_POST)) :
+				$this->admin_notices('updated','Taxonomy has been created.');
+			else :
+				$this->admin_notices('error','There was an issue creating the taxonomy.');
+			endif;
+		endif;
+
+		// update/edit taxonomy //
+		if (isset($_POST['add-tax']) && $_POST['add-tax']=='Update') :
+			if ($this->update_taxonomies($_POST)) :
+				$this->admin_notices('updated','Taxonomy has been updated.');
+			else :
+				$this->admin_notices('error','There was an issue updating the taxonomy.');
+			endif;
+		endif;
 	}
 
 	/**
+	 * update_custom_post_types function.
 	 *
+	 * @access public
+	 * @static
+	 * @param array $data (default: array())
+	 * @return void
 	 */
 	public static function update_custom_post_types($data=array()) {
 		$post_types=get_option('mdw_cms_post_types');
@@ -572,6 +679,45 @@ class MDWCMSgui {
 	}
 
 	/**
+	 * update_taxonomies function.
+	 *
+	 * @access public
+	 * @param array $data (default: array())
+	 * @return void
+	 */
+	function update_taxonomies($data=array()) {
+		$taxonomies=get_option('mdw_cms_taxonomies');
+
+		if (!isset($data['name']) || $data['name']=='')
+			return false;
+
+		$arr=array(
+			'name' => $data['name'],
+			'object_type' => $data['post_types'],
+			'args' => array(
+				'hierarchical' => true,
+				'label' => $data['label'],
+				'query_var' => true,
+				'rewrite' => true
+			)
+		);
+
+		if ($data['tax-id']!=-1) :
+			$taxonomies[$data['tax-id']]=$arr;
+		else :
+			if (!empty($taxonomies)) :
+				foreach ($taxonomies as $tax) :
+					if ($tax['name']==$data['name'])
+						return false;
+				endforeach;
+			endif;
+			$taxonomies[]=$arr;
+		endif;
+
+		return update_option('mdw_cms_taxonomies',$taxonomies);
+	}
+
+	/**
 	 * admin_notices function.
 	 *
 	 * @access public
@@ -581,6 +727,45 @@ class MDWCMSgui {
 	 */
 	function admin_notices($class='error',$message='') {
 		echo '<div class="'.$class.'"><p>'.$message.'</p></div>';
+	}
+
+	/**
+	 * get_post_types_list function.
+	 *
+	 * @access public
+	 * @param bool $selected_pt (default: false)
+	 * @param string $output (default: 'checkbox')
+	 * @return void
+	 */
+	function get_post_types_list($selected_pt=false,$output='checkbox') {
+		$html=null;
+		$args=array(
+			'public' => true
+		);
+		$post_types_arr=get_post_types($args);
+
+		$html.='<div class="form-row post-type-list-admin">';
+			$html.='<label for="post_type">Post Type</label>';
+			$counter=0;
+			foreach ($post_types_arr as $type) :
+				if ($counter==0) :
+					$class='first';
+				else :
+					$class='';
+				endif;
+
+				if ($selected_pt && in_array($type,$selected_pt)) :
+					$checked='checked=checked';
+				else :
+					$checked=null;
+				endif;
+
+				$html.='<input class="post-type-cb '.$class.'" type="checkbox" name="post_types[]" value="'.$type.'" '.$checked.'>'.$type.'<br />';
+				$counter++;
+			endforeach;
+		$html.='</div>';
+
+		return $html;
 	}
 }
 

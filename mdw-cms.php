@@ -2,14 +2,14 @@
 /*
 Plugin Name: MDW CMS
 Description: Adds cusomtized functionality to the site to make WordPress super awesome.
-Version: 1.1.2
+Version: 1.1.3
 Author: MillerDesignworks
 Author URI: http://www.millerdesignworks.com
 License: GPL2
 @erikdmitchell
 */
 
-require_once(plugin_dir_path(__FILE__).'inc/mdw-custom-tax.php');
+require_once(plugin_dir_path(__FILE__).'inc/mdw-custom-tax.php'); // 1.1.3 - MAY NOT BE USED
 require_once(plugin_dir_path(__FILE__).'inc/admin-columns.php');
 require_once(plugin_dir_path(__FILE__).'inc/custom-widgets.php');
 require_once(plugin_dir_path(__FILE__).'inc/legacy.php');
@@ -17,7 +17,7 @@ require_once(plugin_dir_path(__FILE__).'inc/mdw-meta-boxes/mdwmb-plugin.php');
 
 require_once(plugin_dir_path(__FILE__).'admin-pages.php'); // our new visual gui
 
-require_once(plugin_dir_path(__FILE__).'classes/custom-post-types.php');
+require_once(plugin_dir_path(__FILE__).'classes/custom-post-types.php'); // 1.1.3 - MAY NOT BE USED
 require_once(plugin_dir_path(__FILE__).'classes/social-media.php'); // our social media page
 require_once(plugin_dir_path(__FILE__).'classes/inflector.php'); // our pluralizing/singular functions
 
