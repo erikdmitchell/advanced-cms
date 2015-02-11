@@ -1,13 +1,13 @@
 <?php
 /**
- * Version: 1.2.0
+ * Version: 1.2.1
  * Author: erikdmitchell
 **/
 
 class MDWMetaboxes {
 
 	private $nonce = 'wp_upm_media_nonce'; // Represents the nonce value used to save the post media //
-	private $version='1.2.0';
+	private $version='1.2.1';
 	private $option_name='mdw_meta_box_duped_boxes';
 
 	protected $options=array(); // gui
@@ -34,12 +34,6 @@ class MDWMetaboxes {
 				'repeatable' => 0,
 				'options' => 0,
 			),
-/*
-			'date-time' => array(
-				'repeatable' => 1,
-				'options' => 0,
-			),
-*/
 			'email' => array(
 				'repeatable' => 1,
 				'options' => 0,
@@ -163,15 +157,23 @@ echo '</pre>';
 	}
 
 	/**
+	 * check_config_prefix function.
+	 *
 	 * makes sure our prefix starts with '_'
-	 * @param array $config
-	 * returns array $config
-	**/
-	function check_config_prefix($config) {
-		if (substr($config['prefix'],0,1)!='_')
-			$config['prefix']='_'.$config['prefix'];
+	 *
+	 * @access public
+	 * @param bool $config (default: false)
+	 * @param bool $prefix (default: false)
+	 * @return $prefix
+	 */
+	function check_config_prefix($prefix=false) {
+		if (!$prefix)
+			return false;
 
-		return $config;
+		if (substr($prefix,0,1)!='_')
+			$prefix='_'.$prefix;
+
+		return $prefix;
 	}
 
 	/**
@@ -312,7 +314,7 @@ echo '</pre>';
 				$html.='<input type="text" class="colorPicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				break;
 			case 'date':
-				$html.='<input type="text" class="datepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				$html.='<input type="text" class="mdw-cms-datepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				break;
 			case 'date-time':
 				//$html.='<input type="text" class="datepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
@@ -413,13 +415,35 @@ echo '</pre>';
 		$new_field=array('id' => '', 'type' => 'text', 'label' => 'Text Box', 'value' => '');
 		$new_field=array_merge($new_field,$args);
 
-		if (empty($new_field['label'])) :
-			$new_field['id']=$prefix.'_'.$new_field['id'];
-		else :
-			$new_field['id']=$prefix.'_'.strtolower($this->clean_special_chars($new_field['label']));
-		endif;
+		$new_field['id']=$this->generate_field_id($prefix,$new_field['label'],$new_field['id']);
 
 		$this->fields[$new_field['id']]=$new_field;
+	}
+
+	/**
+	 * generate_field_id function.
+	 *
+	 * @access public
+	 * @param bool $prefix (default: false)
+	 * @param bool $label (default: false)
+	 * @param bool $field_id (default: false)
+	 * @return $id
+	 */
+	function generate_field_id($prefix=false,$label=false,$field_id=false) {
+		$id=null;
+
+		if (!$prefix || !$label)
+			return false;
+
+		$prefix=$this->check_config_prefix($prefix);
+
+		if (empty($label)) :
+			$id=$prefix.'_'.$field_id;
+		else :
+			$id=$prefix.'_'.strtolower($this->clean_special_chars($label));
+		endif;
+
+		return $id;
 	}
 
 	/**
@@ -471,6 +495,9 @@ echo '</pre>';
 			foreach ($config['fields'] as $id => $field) :
 				$field_id=$prefix.'_'.$id;
 
+				if (isset($field['field_id']))
+					$field_id=$field['field_id'];
+
 				if (isset($_POST[$field_id])):
 					$data=$_POST[$field_id]; // submitted value //
 				endif;
@@ -480,7 +507,7 @@ echo '</pre>';
 				//	add_post_meta($post_id, $field['id'], $data, true);
 				//elseif ($data != get_post_meta($post_id, $field['id'], true)) :
 
-				if ($data=="") :
+				if ($data=='') :
 					delete_post_meta($post_id, $field_id, get_post_meta($post_id, $field_id, true));
 				else :
 					update_post_meta($post_id, $field_id, $data);
@@ -611,7 +638,7 @@ print_r($option_arr);
 				$config['post_types']=explode(",",$config['post_types']);
 			endif;
 
-			$config=$this->check_config_prefix($config); // makes sure our prefix starts with '_'
+			$config['prefix']=$this->check_config_prefix($config['prefix']); // makes sure our prefix starts with '_'
 
 			$configs[$key]=$config;
 		endforeach;

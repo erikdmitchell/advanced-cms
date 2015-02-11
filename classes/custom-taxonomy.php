@@ -10,13 +10,15 @@ class MDWCustomTaxonomies {
 	}
 
 	function create_taxonomies() {
-		foreach ($this->taxonomies as $taxonomy) :
-			register_taxonomy(
-				$taxonomy['name'],
-				$taxonomy['object_type'],
-				$taxonomy['args']
-			);
-		endforeach;
+		if (isset($this->taxonomies) && !empty($this->taxonomies)) :
+			foreach ($this->taxonomies as $taxonomy) :
+				register_taxonomy(
+					$taxonomy['name'],
+					$taxonomy['object_type'],
+					$taxonomy['args']
+				);
+			endforeach;
+		endif;
 	}
 
 }

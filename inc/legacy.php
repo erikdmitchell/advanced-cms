@@ -289,22 +289,22 @@ class MDWCMSlegacy {
 
 		if (get_option('mdw_cms_version')) :
 			// do nothing //
+		elseif (file_exists($plugin_root_path.'mdw-cms-config.php')) :
+			self::$admin_notices[]=array(
+				'class' => 'error primary',
+				'message' => 'MDW CMS is currently using a custom config file. Please <a href="'.admin_url('tools.php?page=mdw-cms').'">click here</a> to update.'
+			);
+
+			self::$config_file=$plugin_root_path.'mdw-cms-config.php';
+		elseif (file_exists(plugin_dir_path(dirname(__FILE__)).'mdw-cms-config-sample.php')) :
+			self::$admin_notices[]=array(
+				'class' => 'error primary',
+				'message' => 'MDW CMS is currently using the default config file. The new version of the plugin will no longer include this file. Please <a href="'.admin_url('tools.php?page=mdw-cms').'">click here</a> to update.'
+			);
+
+			self::$config_file=plugin_dir_path(dirname(__FILE__)).'mdw-cms-config-sample.php';
 		else :
-			if (file_exists($plugin_root_path.'mdw-cms-config.php')) :
-				self::$admin_notices[]=array(
-					'class' => 'error primary',
-					'message' => 'MDW CMS is currently using a custom config file. Please <a href="'.admin_url('tools.php?page=mdw-cms').'">click here</a> to update.'
-				);
-
-				self::$config_file=$plugin_root_path.'mdw-cms-config.php';
-			else :
-				self::$admin_notices[]=array(
-					'class' => 'error primary',
-					'message' => 'MDW CMS is currently using the default config file. The new version of the plugin will no longer include this file. Please <a href="'.admin_url('tools.php?page=mdw-cms').'">click here</a> to update.'
-				);
-
-				self::$config_file=plugin_dir_path(dirname(__FILE__)).'mdw-cms-config-sample.php';
-			endif;
+			update_option('mdw_cms_version','1.1.1');
 		endif;
 	}
 

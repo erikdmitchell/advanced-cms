@@ -1,5 +1,5 @@
 (function($) {
-	$('.datepicker').datepicker({
-		'dateFormat' : 'mm-dd-yy'
+	$('.mdw-cms-datepicker').datepicker({
+		'dateFormat' : 'mm/dd/yy'
 	});
 })(jQuery);

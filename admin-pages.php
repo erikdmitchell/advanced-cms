@@ -11,8 +11,6 @@ class MDWCMSgui {
 		add_action('admin_init','MDWCMSlegacy::setup_legacy_updater');
 		add_action('admin_notices','MDWCMSlegacy::legacy_admin_notices');
 
-		//update_option('mdw_cms_version','1.1.1');
-
 		$this->update_mdw_cms_settings();
 
 		$this->options['version']=get_option('mdw_cms_version');
@@ -627,6 +625,8 @@ class MDWCMSgui {
 	 * @return void
 	 */
 	public static function update_metaboxes($data=array()) {
+		global $MDWMetaboxes;
+
 		$metaboxes=get_option('mdw_cms_metaboxes');
 		$edit_key=-1;
 
@@ -646,6 +646,7 @@ class MDWCMSgui {
 				if (!$field['field_type']) :
 					unset($data['fields'][$key]);
 				else :
+					$data['fields'][$key]['field_id']=$MDWMetaboxes->generate_field_id($data['prefix'],$field['field_label']); // add id
 					// remove empty options fields //
 					if (isset($field['options'])) :
 						unset($data['fields'][$key]['options']['default']);
