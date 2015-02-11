@@ -16,12 +16,14 @@ Changelog
 
 	Added generate_field_id() to MDWMetaboxes class and implemented it in	add_field() and MDWCMSgui::update_metaboxes.
 	Added secondary check to MDWMetaboxes save_custom_meta_data for field id.
-
+	Added delete custom taxonomy.
+	
 	Fixed glitch on custom taxonomy with and empty array.
 	Fixed issues where a new, non-legacy plugin returned an options error on activation.	
 	Fixed glitch where metaboxes were not updating.
 	Fixed MDWMetaboxes->check_config_prefix to just accept prefix.
 	Fixed glitch where our js was setting up our datepicker in european (-) but in american style layout.
+	Fixed errant error message on taxonomy update.
 		
 	Renamed datebox (metaboxes) class to mdw-cms-datepicker to prevent potential conflicts.
 
