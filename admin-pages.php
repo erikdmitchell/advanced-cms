@@ -571,6 +571,20 @@ class MDWCMSgui {
 				$this->admin_notices('error','There was an issue updating the taxonomy.');
 			endif;
 		endif;
+
+		// remove taxonomy //
+		if (isset($_GET['delete']) && $_GET['delete']=='tax') :
+			foreach ($taxonomies as $key => $tax) :
+				if ($tax['name']==$_GET['slug']) :
+					unset($taxonomies[$key]);
+					$this->admin_notices('updated','Taxonomy has been deleted.');
+				endif;
+			endforeach;
+
+			$taxonomies=array_values($taxonomies);
+
+			update_option('mdw_cms_taxonomies',$taxonomies);
+		endif;
 	}
 
 	/**
@@ -687,6 +701,7 @@ class MDWCMSgui {
 	 * @return void
 	 */
 	function update_taxonomies($data=array()) {
+		$option_exists=false;
 		$taxonomies=get_option('mdw_cms_taxonomies');
 
 		if (!isset($data['name']) || $data['name']=='')
@@ -715,7 +730,18 @@ class MDWCMSgui {
 			$taxonomies[]=$arr;
 		endif;
 
-		return update_option('mdw_cms_taxonomies',$taxonomies);
+		if (get_option('mdw_cms_taxonomies'))
+			$option_exists=true;
+
+		$update=update_option('mdw_cms_taxonomies',$taxonomies);
+
+		if ($update) :
+			return true;
+		elseif ($option_exists) :
+			return true;
+		else :
+			return false;
+		endif;
 	}
 
 	/**
