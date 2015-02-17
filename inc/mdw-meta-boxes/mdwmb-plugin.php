@@ -283,13 +283,28 @@ echo '</pre>';
 
 			// output all of our fields //
 			if (isset($this->fields)) :
+
+				// sort fields by order //
+				usort($this->fields, function ($a, $b) {
+					return strcmp($a['order'], $b['order']);
+				});
+
 echo '<pre>';
 print_r($this->fields);
 echo '</pre>';
 				foreach ($this->fields as $field) :
-					$html.='<div id="meta-row-'.$row_counter.'" class="meta-row" data-input-id="'.$field['id'].'" data-field-type="'.$field['type'].'">';
+					$classes='';
+
+					if ($field['duplicate'])
+						$classes='clone';
+
+					$html.='<div id="meta-row-'.$row_counter.'" class="meta-row '.$classes.'" data-input-id="'.$field['id'].'" data-field-type="'.$field['type'].'" data-field-order="'.$field['order'].'">';
 						$html.='<label for="'.$field['id'].'">'.$field['label'].'</label>';
 						$html.=$this->generate_field($field);
+
+						if ($field['duplicate'])
+							$html.='<button type="button" class="ajaxmb-field-btn delete">Delete Field</button>'; // add delete btn
+
 					$html.='</div>';
 					$row_counter++;
 				endforeach;
@@ -477,6 +492,7 @@ echo '</pre>';
 		foreach ($arr as $id => $values) :
 			$options=false;
 			$repeatable=0;
+			$order=0;
 
 			if (isset($values['options']))
 				$options=$values['options'];
@@ -484,13 +500,17 @@ echo '</pre>';
 			if (isset($values['repeatable']))
 				$repeatable=1;
 
+			if (isset($values['order']))
+				$order=$values['order'];
+
 			$args=array(
 				'id' => $id,
 				'type' => $values['field_type'],
 				'label' => $values['field_label'],
-				'order' => 0,
+				'order' => $order,
 				'options' => $options,
 				'repeatable' => $repeatable,
+				'duplicate' => 0
 			);
 
 			$this->add_field($args,$meta_id);
@@ -519,8 +539,10 @@ echo '</pre>';
 								'id' => $post_field['field_id'],
 								'type' => $post_field['field_type'],
 								'label' => $post_field['field_label'],
+								'order' => $post_field['order'],
 								'options' => 0,
 								'repeatable' => 0,
+								'duplicate' => 1
 							);
 							$this->add_field($args,$post_field['metabox_id']);
 						endif;
@@ -548,9 +570,6 @@ echo '</pre>';
 		if (!current_user_can('edit_post',$post_id)) return;
 
 		//$this->build_duplicated_boxes($post_id); // must do here again b/c this action is added before we have all the info
-//echo '<pre>';
-//print_r($this->config);
-//print_r($_POST);
 
 		// cycle through config fields and find matches //
 		foreach ($this->config as $config) :
@@ -601,8 +620,6 @@ echo '</pre>';
 			endif;
 
 		endforeach;
-//echo '</pre>';
-//exit;
 	}
 
 	function duplicate_meta_box() {
@@ -790,11 +807,12 @@ print_r($option_arr);
 			'field_type' => $_POST['field_type'],
 			'field_label' => $_POST['field_label'],
 			'options' => array(),
-			'field_id' => $_POST['field_id']
+			'field_id' => $_POST['field_id'],
+			'order' => $_POST['order']
 		);
 
 		// check for dups and replace if found //
-		$dup_falg=false;
+		$dup_flag=false;
 		if (isset($this->config[$_POST['config_key']]['post_fields']) && !empty($this->config[$_POST['config_key']]['post_fields'])) :
 			foreach ($this->config[$_POST['config_key']]['post_fields'] as $key => $post_field) :
 				if ($post_field['field_id']==$arr['field_id']) :
@@ -819,7 +837,6 @@ print_r($option_arr);
 
 	function ajax_remove_duplicate_metabox_field() {
 // todo: check empty
-
 		foreach ($this->config[$_POST['config_key']]['post_fields'] as $key => $post_field) :
 			if ($post_field['field_id']==$_POST['field_id'])
 				unset($this->config[$_POST['config_key']]['post_fields'][$key]);

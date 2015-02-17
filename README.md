@@ -20,6 +20,8 @@ Changelog
 	Added ajax_duplicate_metabox_field() and ajax_remove_duplicate_metabox_field() to our MDWMetaboxes class.
 	Added add_post_fields() to MDWMetaboxes class, called via generate_meta_box_fields().
 	Added numeric check to MDWMetaboxes->add_field() for our post fields.
+	
+	Fixed glitch in MDWMetaboxes->update_metaboxes() to account for out post fields
 
 ### 1.1.4
 

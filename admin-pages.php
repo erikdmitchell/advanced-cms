@@ -280,7 +280,6 @@ class MDWCMSgui {
 			$html.='<div class="add-fields sortable-div '.$edit_class.'">';
 				if ($fields) :
 					foreach ($fields as $field_id => $field) :
-print_r($field);
 						$html.=$this->build_field_rows($field_id,$field,$field_counter);
 						$field_counter++;
 					endforeach;
@@ -657,9 +656,7 @@ print_r($field);
 			'prefix' => $data['prefix'],
 			'post_types' => $data['post_types'],
 		);
-echo '<pre>';
-print_r($data);
-echo '</pre>';
+
 		// clean fields, if any //
 		if (isset($data['fields'])) :
 			foreach ($data['fields'] as $key => $field) :
@@ -683,6 +680,7 @@ echo '</pre>';
 				if ($mb['mb_id']==$data['mb_id']) :
 					if (isset($data['update-metabox']) && $data['update-metabox']=='Update') :
 						$edit_key=$key;
+						$arr['post_fields']=$mb['post_fields'];
 					else :
 						return false;
 					endif;

@@ -51,24 +51,28 @@ function add_field(cloneID,appendID) {
 	$=jQuery.noConflict();
 
 	var newID=0;
+	var cloneClass='clone';
 
 	$('.clone').each(function(i) {
 		newID++;
 	});
 
 	var newFullID=cloneID+'-'+newID;
-	//newID=check_clone_id(newID,mbID,cloneClass); // not used v1.1.8
+	newID=check_clone_id(newID,cloneClass); // not used v1.1.8, re added 1.2.1
+
 	var $clonedElement=$('#'+cloneID).clone();
 	var inputName=$clonedElement.find('input').attr('name');
 	var inputID=$clonedElement.find('input').attr('id');
 	var newInputID=inputID+'-'+newID;
+	//var orderInput='<input type="hidden" name="'+inputName+'-'+newID+'-order" value="'+$('#'+cloneID).data('field-order')+'" />';
 
 	$clonedElement.attr('id',newFullID); // change id of row
 	$clonedElement.find('input').attr('name',inputName+'-'+newID); // change input name
 	$clonedElement.find('input').attr('id',newInputID); // change input id
-	$clonedElement.addClass('clone'); // add classes
+	$clonedElement.addClass(cloneClass); // add classes
 	$clonedElement.attr('data-parent-clone',cloneID); // add data parent
 	$clonedElement.insertAfter('#'+appendID); // insert into form
+	//$clonedElement.append(orderInput);
 	$('<button type="button" class="ajaxmb-field-btn delete">Delete Field</button>').insertAfter('#'+newInputID); // add delete btn
 
 	var $metabox=$clonedElement.parent();
@@ -81,11 +85,12 @@ function add_field(cloneID,appendID) {
 		'post_id' : $metabox.find('#mdw-cms-post-id').val(),
 		'field_type' : $clonedElement.data('field-type'),
 		'field_label' : $clonedElement.find('label').text(),
-		'field_id' : $clonedElement.find('input').attr('id')
+		'field_id' : $clonedElement.find('input').attr('id'),
+		'order' : $('#'+cloneID).data('field-order')
 	};
 
 	$.post(ajaxurl, data, function(response) {
-		//console.log(response);
+		console.log(response);
 	});
 
 }
