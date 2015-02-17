@@ -289,9 +289,6 @@ echo '</pre>';
 					return strcmp($a['order'], $b['order']);
 				});
 
-echo '<pre>';
-print_r($this->fields);
-echo '</pre>';
 				foreach ($this->fields as $field) :
 					$classes='';
 
