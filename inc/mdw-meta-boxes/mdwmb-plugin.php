@@ -290,10 +290,10 @@ echo '</pre>';
 				});
 
 				foreach ($this->fields as $field) :
-					$classes='';
+					$classes=$field['id'].' type-'.$field['type'];
 
 					if ($field['duplicate'])
-						$classes='clone';
+						$classes.=' clone';
 
 					$html.='<div id="meta-row-'.$row_counter.'" class="meta-row '.$classes.'" data-input-id="'.$field['id'].'" data-field-type="'.$field['type'].'" data-field-order="'.$field['order'].'">';
 						$html.='<label for="'.$field['id'].'">'.$field['label'].'</label>';

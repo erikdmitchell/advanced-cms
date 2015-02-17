@@ -349,7 +349,7 @@ class MDWCMSgui {
 				$html.='<label for="name" class="required">Name</label>';
 				$html.='<input type="text" name="name" id="name" value="'.$name.'" />';
 				$html.='<span class="description">(e.g. brands)</span>';
-				$html.='<div class="description-ext">Max 20 characters, can not contain capital letters or spaces.</div>';
+				$html.='<div class="description-ext">Max 20 characters, can not contain capital letters or spaces. Cannot be the same name as a (custom) post type.</div>';
 			$html.='</div>';
 
 			$html.='<div class="form-row">';

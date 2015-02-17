@@ -178,3 +178,11 @@ p.submit > #clear-files {
 #mdwcms-updater-notices > .primary {
 	display: none;
 }
+
+/* metabox display
+------------------ */
+.mdw-cms-meta-box .type-textarea button.duplicate,
+.mdw-cms-meta-box .type-textarea button.delete {
+	float: right;
+	margin-right: 7%;
+}
