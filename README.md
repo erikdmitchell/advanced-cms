@@ -12,6 +12,8 @@ See the mdw-cms-demo.php for sample examples.
 Changelog
 ===========
 
+### 1.1.5
+
 ### 1.1.4
 
 	Added generate_field_id() to MDWMetaboxes class and implemented it in	add_field() and MDWCMSgui::update_metaboxes.
