@@ -27,6 +27,7 @@ class MDWCMSgui {
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-sortable');
 		wp_enqueue_script('mdw-cms-gui-mb-script',plugins_url('/js/mb.js',__FILE__),array('jquery'));
+		wp_enqueue_script('mdw-cms-admin-custom-post-types-script',plugins_url('/js/admin-custom-post-types.js',__FILE__),array('jquery'));
 
 		wp_enqueue_style('mdw-cms-gui-style',plugins_url('/css/admin.css',__FILE__));
 	}
@@ -200,7 +201,7 @@ class MDWCMSgui {
 					$html.='<span class="description">(default True)</span>';
 				$html.='</div>';
 			$html.='</div>';
-			$html.='<p class="submit"><input type="submit" name="add-cpt" id="submit" class="button button-primary" value="'.$btn_text.'"></p>';
+			$html.='<p class="submit"><input type="submit" name="add-cpt" id="submit" class="button button-primary" value="'.$btn_text.'" disabled></p>';
 			$html.='<input type="hidden" name="cpt-id" id="cpt-id" value='.$id.' />';
 		$html.='</form>';
 
