@@ -32,7 +32,7 @@ jQuery(document).ready(function($) {
 			'post_id' : $metabox.find('#mdw-cms-post-id').val(),
 			'field_type' : $this.data('field-type'),
 			'field_label' : $this.find('label').text(),
-			'field_id' : $this.find('input').attr('id')
+			'field_id' : $this.find('.field-input').attr('id')
 		};
 
 		$.post(ajaxurl, data, function(response) {
@@ -61,14 +61,14 @@ function add_field(cloneID,appendID) {
 	newID=check_clone_id(newID,cloneClass); // not used v1.1.8, re added 1.2.1
 
 	var $clonedElement=$('#'+cloneID).clone();
-	var inputName=$clonedElement.find('input').attr('name');
-	var inputID=$clonedElement.find('input').attr('id');
+	var inputName=$clonedElement.find('.field-input').attr('name');
+	var inputID=$clonedElement.find('.field-input').attr('id');
 	var newInputID=inputID+'-'+newID;
 	//var orderInput='<input type="hidden" name="'+inputName+'-'+newID+'-order" value="'+$('#'+cloneID).data('field-order')+'" />';
 
 	$clonedElement.attr('id',newFullID); // change id of row
-	$clonedElement.find('input').attr('name',inputName+'-'+newID); // change input name
-	$clonedElement.find('input').attr('id',newInputID); // change input id
+	$clonedElement.find('.field-input').attr('name',inputName+'-'+newID); // change input name
+	$clonedElement.find('.field-input').attr('id',newInputID); // change input id
 	$clonedElement.addClass(cloneClass); // add classes
 	$clonedElement.attr('data-parent-clone',cloneID); // add data parent
 	$clonedElement.insertAfter('#'+appendID); // insert into form
@@ -85,7 +85,7 @@ function add_field(cloneID,appendID) {
 		'post_id' : $metabox.find('#mdw-cms-post-id').val(),
 		'field_type' : $clonedElement.data('field-type'),
 		'field_label' : $clonedElement.find('label').text(),
-		'field_id' : $clonedElement.find('input').attr('id'),
+		'field_id' : $clonedElement.find('.field-input').attr('id'),
 		'order' : $('#'+cloneID).data('field-order')
 	};
 

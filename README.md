@@ -12,6 +12,10 @@ See the mdw-cms-demo.php for sample examples.
 Changelog
 ===========
 
+### 1.1.6
+
+	Fixed error in duplicate meta box fields where js was looking at input, not actual field (ie textarea).
+
 ### 1.1.5
 	
 	Added mdw-cms-meta-box class to the admin metaboxes

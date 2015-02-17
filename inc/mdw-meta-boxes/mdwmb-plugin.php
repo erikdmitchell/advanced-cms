@@ -51,7 +51,7 @@ class MDWMetaboxes {
 				'options' => 0,
 			),
 			'select' => array(
-				'repeatable' => 1,
+				'repeatable' => 0,
 				'options' => 1,
 			),
 			'text' => array(
@@ -332,6 +332,7 @@ echo '</pre>';
 
 		$html=null;
 		$values=get_post_custom($post->ID);
+		$classes='field-input';
 
 		if (isset($values[$args['id']][0])) :
 			$value=$values[$args['id']][0];
@@ -341,7 +342,7 @@ echo '</pre>';
 
 		switch ($args['type']) :
 			case 'checkbox':
-				$html.='<input type="checkbox" name="'.$args['id'].'" id="'.$args['id'].'" '.checked($value,'on',false).' />';
+				$html.='<input type="checkbox" class="'.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" '.checked($value,'on',false).' />';
 				break;
 			case 'colorpicker' :
 				$html.='<input type="text" class="colorPicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
@@ -354,7 +355,7 @@ echo '</pre>';
 				//$html.='<input type="text" class="timepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				break;
 			case 'email' :
-				$html.='<input type="text" class="email validator" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				$html.='<input type="text" class="email validator '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				break;
 			case 'media':
 				$html.='<input id="'.$args['id'].'" class="uploader-input regular-text" type="text" name="'.$args['id'].'" value="'.$value.'" />';
@@ -375,10 +376,10 @@ echo '</pre>';
 
 				break;
 			case 'phone':
-				$html.='<input type="text" class="phone" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				$html.='<input type="text" class="phone '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				break;
 			case 'radio':
-				//$html.='<input type="radio" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" '.checked($value,'on',false).' /> '.$value;
+				//$html.='<input type="radio" class="'.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" '.checked($value,'on',false).' /> '.$value;
 				break;
 			case 'select' :
 				$html.='<select name="'.$args['id'].'" id="'.$args['id'].'">';
@@ -391,16 +392,16 @@ echo '</pre>';
 				$html.='</select>';
 				break;
 			case 'text' :
-				$html.='<input type="text" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				$html.='<input type="text" class="'.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				break;
 			case 'textarea':
-				$html.='<textarea class="textarea" name="'.$args['id'].'" id="'.$args['id'].'">'.$value.'</textarea>';
+				$html.='<textarea class="textarea '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'">'.$value.'</textarea>';
 				break;
 			case 'timepicker' :
 				$html.='<input type="text" class="timepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				break;
 			case 'url':
-				$html.='<input type="text" class="url validator" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				$html.='<input type="text" class="url validator '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				break;
 			case 'wysiwyg':
 				$settings=array(
