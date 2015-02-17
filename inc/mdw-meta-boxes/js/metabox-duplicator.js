@@ -1,20 +1,18 @@
-//console.log(options);
 jQuery(document).ready(function($) {
 	$('.dup-meta-box a').click(function(e) {
 		e.preventDefault();
 
 		var metaID=$(this).data('meta-id');
-		
+
 		for (var i in options) {
 			if (options[i].metaboxID==metaID) {
 				var optionsKey=options[i];
-			}		
+			}
 		}
-		
+
 		var parentID=$('#'+optionsKey.metaboxID).parent().attr('id');
 		var boxCounter=0;
 
-		
 		$('.'+optionsKey.metaboxClass).each(function() {
 			boxCounter++;
 		});
@@ -25,7 +23,7 @@ jQuery(document).ready(function($) {
 		var fields=new Array();
 		var id, name, type, label, strippedName;
 		var fieldsObj={};
-		
+
 		$('#'+optionsKey.metaboxID).clone()
 			.insertAfter('#'+parentID)
 			.attr('id',newID)
@@ -42,12 +40,12 @@ jQuery(document).ready(function($) {
 
 					$(this).find('textarea').prop({
 						'id' : id+'-'+boxCounter,
-						'name' : name+'-'+boxCounter				
+						'name' : name+'-'+boxCounter
 					});
 				}	else {
 					$(this).find('input').prop({
 						'id' : id+'-'+boxCounter,
-						'name' : name+'-'+boxCounter					
+						'name' : name+'-'+boxCounter
 					});
 				}
 				strippedName=name.replace(optionsKey.metaboxPrefix+'_',''); // strip _
@@ -57,11 +55,11 @@ jQuery(document).ready(function($) {
 				fieldsObj[strippedName]={
 					type : type,
 					label : label
-				};			
+				};
 			});
 
 		// do ajax stuff //
-		var data={ 
+		var data={
 			action:'dup-box' ,
 			postID:options.postID,
 			//nonce:options.nonce,
@@ -78,6 +76,6 @@ jQuery(document).ready(function($) {
 	  	console.log(response);
 	  	// reload page //
 	 	});
-	 	
+
 	});
 });

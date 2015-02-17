@@ -13,6 +13,13 @@ Changelog
 ===========
 
 ### 1.1.5
+	
+	Added mdw-cms-meta-box class to the admin metaboxes
+	Added various hidden fields to the metaboxes for field duplication.
+	Added post_fields to our metabox config array to hold specific post fields
+	Added ajax_duplicate_metabox_field() and ajax_remove_duplicate_metabox_field() to our MDWMetaboxes class.
+	Added add_post_fields() to MDWMetaboxes class, called via generate_meta_box_fields().
+	Added numeric check to MDWMetaboxes->add_field() for our post fields.
 
 ### 1.1.4
 

@@ -238,6 +238,7 @@ class MDWCMSgui {
 		$post_types=null;
 		$edit_class='';
 		$fields=false;
+		$field_counter=1;
 
 		// edit //
 		if (isset($_GET['edit']) && $_GET['edit']=='mb') :
@@ -279,7 +280,9 @@ class MDWCMSgui {
 			$html.='<div class="add-fields sortable-div '.$edit_class.'">';
 				if ($fields) :
 					foreach ($fields as $field_id => $field) :
-						$html.=$this->build_field_rows($field_id,$field);
+print_r($field);
+						$html.=$this->build_field_rows($field_id,$field,$field_counter);
+						$field_counter++;
 					endforeach;
 				endif;
 
@@ -408,7 +411,7 @@ class MDWCMSgui {
 	/**
 	 *
 	 */
-	function build_field_rows($field_id,$field,$classes='') {
+	function build_field_rows($field_id,$field,$order=0,$classes='') {
 		global $MDWMetaboxes;
 
 		$html=null;
@@ -476,6 +479,7 @@ class MDWCMSgui {
 				endforeach;
 				$html.='<input type="button" name="remove-field" id="remove-field-btn" class="button button-primary remove-field" data-id="fields-wrapper-'.$field_id.'" value="Remove Field">';
 			$html.='</div><!-- .field-options -->';
+			$html.='<input type="hidden" name="fields['.$field_id.'][order]" class="order" value="'.$order.'" />';
 		$html.='</div><!-- .fields-wrapper -->';
 
 		return $html;
@@ -653,7 +657,9 @@ class MDWCMSgui {
 			'prefix' => $data['prefix'],
 			'post_types' => $data['post_types'],
 		);
-
+echo '<pre>';
+print_r($data);
+echo '</pre>';
 		// clean fields, if any //
 		if (isset($data['fields'])) :
 			foreach ($data['fields'] as $key => $field) :

@@ -7,13 +7,13 @@
 class MDWMetaboxes {
 
 	private $nonce = 'wp_upm_media_nonce'; // Represents the nonce value used to save the post media //
-	private $version='1.2.1';
+	private $version='1.2.2';
 	private $option_name='mdw_meta_box_duped_boxes';
 
-	protected $options=array(); // gui
-	protected $post_types=array(); // gui
+	protected $options=array();
+	protected $post_types=array();
 
-	public $fields=array(); // gui
+	public $fields=array();
 
 	/**
 	 * constructs our function, setups our scripts and styles, attaches meta box to wp actions
@@ -96,6 +96,9 @@ echo '</pre>';
 		add_action('add_meta_boxes',array($this,'mdwmb_add_meta_box'));
 		//add_action('wp_ajax_dup-box',array($this,'duplicate_meta_box'));
 		//add_action('wp_ajax_remove-box',array($this,'remove_duplicate_meta_box'));
+
+		add_action('wp_ajax_duplicate_metabox_field',array($this,'ajax_duplicate_metabox_field'));
+		add_action('wp_ajax_remove_duplicate_metabox_field',array($this,'ajax_remove_duplicate_metabox_field'));
 	}
 
 	function register_admin_scripts_styles() {
@@ -112,15 +115,17 @@ echo '</pre>';
 		wp_enqueue_script('metabox-maskedinput-script',plugins_url('/js/metabox-maskedinput.js',__FILE__),array('jquery-maskedinput-script'),'1.0.0',true);
 		wp_enqueue_script('jq-validator-script',plugins_url('/js/jquery.validator.js',__FILE__),array('jquery'),'1.0.0',true);
 		wp_enqueue_script('mdw-cms-js',plugins_url('/js/functions.js',__FILE__),array('jquery'));
-		wp_enqueue_script('duplicate-metabox-fields',plugins_url('js/duplicate-metabox-fields.js',__FILE__),array('jquery'),'1.0.1');
+		wp_enqueue_script('duplicate-metabox-fields',plugins_url('js/duplicate-metabox-fields.js',__FILE__),array('jquery'),'1.0.2');
+
+		if (isset($post->ID)) :
+			$post_id=$post->ID;
+		else :
+			$post_id=null;
+		endif;
 
 		$options=array();
 
-		if (isset($post->ID)) :
-			$options['postID']=$post->ID;
-		else :
-			$options['postID']=null;
-		endif;
+		$options['postID']=$post_id;
 
 		if (!empty($this->config)) :
 			foreach ($this->config as $config) :
@@ -221,6 +226,7 @@ echo '</pre>';
 						//'duplicate' => $config['duplicate'],
 						'meta_box_id' => $config['mb_id'],
 						//'removable' => $removable,
+						'post_id' => $post->ID
 		      )
 		    );
 
@@ -258,25 +264,37 @@ echo '</pre>';
 
 		wp_nonce_field(plugin_basename( __FILE__ ),$this->nonce);
 
-		$html.='<div class="umb-meta-box">';
+		// because our legacy and current setups can be different, we need this function to do our post fields //
+		$this->add_post_fields($this,$metabox,$post->ID);
+
+		$html.='<div class="mdw-cms-meta-box umb-meta-box">';
 
 			foreach ($this->config as $config) :
+
 				if ($metabox['args']['meta_box_id']==$config['mb_id']) :
-					if (!empty($config['fields']))
+
+					if (!empty($config['fields'])) :
 						$this->add_fields_array($config['fields'],$config['mb_id']);
+					endif;
+
 				endif;
+
 			endforeach;
 
-			// -- may no longer need below function -- //
+			// output all of our fields //
 			if (isset($this->fields)) :
+echo '<pre>';
+print_r($this->fields);
+echo '</pre>';
 				foreach ($this->fields as $field) :
-					$html.='<div id="meta-row-'.$row_counter.'" class="meta-row" data-input-id="'.$field['id'].'">';
+					$html.='<div id="meta-row-'.$row_counter.'" class="meta-row" data-input-id="'.$field['id'].'" data-field-type="'.$field['type'].'">';
 						$html.='<label for="'.$field['id'].'">'.$field['label'].'</label>';
 						$html.=$this->generate_field($field);
 					$html.='</div>';
 					$row_counter++;
 				endforeach;
 			endif;
+
 /*
 			if ($metabox['args']['duplicate'])
 				$html.='<div class="dup-meta-box"><a href="#" data-meta-id="'.$metabox['args']['meta_box_id'].'">Duplicate Box</a></div>';
@@ -284,6 +302,9 @@ echo '</pre>';
 			if ($metabox['args']['removable'])
 				$html.='<div class="remove-meta-box"><a href="#" data-meta-id="'.$metabox['args']['meta_box_id'].'" data-post-id="'.$post->ID.'">Remove Box</a></div>';
 */
+			$html.='<input type="hidden" id="mdw-cms-metabox-id" name="mdw-cms-metabox-id" value="'.$metabox['args']['meta_box_id'].'" />';
+			$html.='<input type="hidden" id="mdw-cms-config-key" name="mdw-cms-config-key" value="'.$metabox['args']['config_key'].'" />';
+			$html.='<input type="hidden" id="mdw-cms-post-id" name="mdw-cms-post-id" value="'.$metabox['args']['post_id'].'" />';
 		$html.='</div>';
 
 		echo $html;
@@ -391,7 +412,7 @@ echo '</pre>';
 	/**
 	 * a public function that allows the user to add a field to the meta box
 	 * @param array $args
-	 							id (field id) REQUIRED
+	 							id (field id)
 	 							type (type of input field)
 	 							label (for field)
 	 							value (of field)
@@ -412,10 +433,11 @@ echo '</pre>';
 			endif;
 		endif;
 
-		$new_field=array('id' => '', 'type' => 'text', 'label' => 'Text Box', 'value' => '');
+		$new_field=array('id' => '', 'type' => 'text', 'label' => 'Text Box', 'value' => '', 'order' => 0);
 		$new_field=array_merge($new_field,$args);
 
-		$new_field['id']=$this->generate_field_id($prefix,$new_field['label'],$new_field['id']);
+		if (is_numeric($new_field['id']))
+			$new_field['id']=$this->generate_field_id($prefix,$new_field['label'],$new_field['id']);
 
 		$this->fields[$new_field['id']]=$new_field;
 	}
@@ -466,16 +488,55 @@ echo '</pre>';
 				'id' => $id,
 				'type' => $values['field_type'],
 				'label' => $values['field_label'],
+				'order' => 0,
 				'options' => $options,
 				'repeatable' => $repeatable,
 			);
+
 			$this->add_field($args,$meta_id);
 		endforeach;
 	}
 
 	/**
-	 * saves our meta field data
-	**/
+	 * add_post_fields function.
+	 *
+	 * @access public
+	 * @param bool $arr (default: false)
+	 * @param bool $metabox (default: false)
+	 * @param bool $post_id (default: false)
+	 * @return void
+	 */
+	function add_post_fields($arr=false,$metabox=false,$post_id=false) {
+		if (!$arr || empty($arr) || !$metabox || !$post_id)
+			return false;
+
+		foreach ($this->config as $config) :
+			if ($metabox['args']['meta_box_id']==$config['mb_id']) :
+				if (isset($config['post_fields']) && !empty($config['post_fields'])) :
+					foreach ($config['post_fields'] as $post_field) :
+						if ($post_field['post_id']==$post_id) :
+							$args=array(
+								'id' => $post_field['field_id'],
+								'type' => $post_field['field_type'],
+								'label' => $post_field['field_label'],
+								'options' => 0,
+								'repeatable' => 0,
+							);
+							$this->add_field($args,$post_field['metabox_id']);
+						endif;
+					endforeach;
+				endif;
+			endif;
+		endforeach;
+	}
+
+	/**
+	 * save_custom_meta_data function.
+	 *
+	 * @access public
+	 * @param mixed $post_id
+	 * @return void
+	 */
 	public function save_custom_meta_data($post_id) {
 		// Bail if we're doing an auto save
 		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
@@ -487,7 +548,11 @@ echo '</pre>';
 		if (!current_user_can('edit_post',$post_id)) return;
 
 		//$this->build_duplicated_boxes($post_id); // must do here again b/c this action is added before we have all the info
+//echo '<pre>';
+//print_r($this->config);
+//print_r($_POST);
 
+		// cycle through config fields and find matches //
 		foreach ($this->config as $config) :
 			$data=null;
 			$prefix=$config['prefix'];
@@ -515,7 +580,29 @@ echo '</pre>';
 
 			endforeach;
 
+			// if there's specific post fields, look for those //
+			if (isset($config['post_fields']) && !empty($config['post_fields'])) :
+				foreach ($config['post_fields'] as $post_field) :
+					if ($post_field['post_id']==$post_id) :
+						$field_id=$post_field['field_id'];
+
+						if (isset($_POST[$field_id])):
+							$data=$_POST[$field_id]; // submitted value //
+						endif;
+
+						if ($data=='') :
+							delete_post_meta($post_id, $field_id, get_post_meta($post_id, $field_id, true));
+						else :
+							update_post_meta($post_id, $field_id, $data);
+						endif;
+
+					endif;
+				endforeach;
+			endif;
+
 		endforeach;
+//echo '</pre>';
+//exit;
 	}
 
 	function duplicate_meta_box() {
@@ -626,6 +713,7 @@ print_r($option_arr);
 			'post_types' => 'post,page',
 			//'duplicate' => 0,
 			//'fields' => array(), // for legacy support (pre 1.1.8)
+			'post_fields' => array()
 		);
 
 		if (empty($configs))
@@ -668,7 +756,13 @@ print_r($option_arr);
 */
 
 	/**
+	 * clean_special_chars function.
+	 *
 	 * removes all special chars from a string
+	 *
+	 * @access public
+	 * @param mixed $string
+	 * @return $string
 	 */
 	function clean_special_chars($string) {
 		$string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
@@ -677,6 +771,70 @@ print_r($option_arr);
 		return preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
 	}
 
+	/**
+	 * ajax_duplicate_metabox_field function.
+	 *
+	 * adds specific fields to indvidual posts/pages via our duplicate field button
+	 * because we use a config array, when the field is duplicated via js, it needs to be added
+	 * however, the dup fields apply to individual posts only, so we have an array for them
+	 *
+	 * @access public
+	 * @return void
+	 */
+	function ajax_duplicate_metabox_field() {
+// todo: check empty
+		$arr=array(
+			'post_id' => $_POST['post_id'],
+			'config_key' => $_POST['config_key'], // may not be needed
+			'metabox_id' => $_POST['metabox_id'],
+			'field_type' => $_POST['field_type'],
+			'field_label' => $_POST['field_label'],
+			'options' => array(),
+			'field_id' => $_POST['field_id']
+		);
+
+		// check for dups and replace if found //
+		$dup_falg=false;
+		if (isset($this->config[$_POST['config_key']]['post_fields']) && !empty($this->config[$_POST['config_key']]['post_fields'])) :
+			foreach ($this->config[$_POST['config_key']]['post_fields'] as $key => $post_field) :
+				if ($post_field['field_id']==$arr['field_id']) :
+					$this->config[$_POST['config_key']]['post_fields'][$key]=$arr;
+					$dup_flag=true;
+				endif;
+			endforeach;
+		endif;
+
+		// insert if no dup found //
+		if (!$dup_flag)
+			$this->config[$_POST['config_key']]['post_fields'][]=$arr;
+
+		if (update_option('mdw_cms_metaboxes',$this->config)) :
+			echo true;
+		else :
+			echo false;
+		endif;
+
+		wp_die();
+	}
+
+	function ajax_remove_duplicate_metabox_field() {
+// todo: check empty
+
+		foreach ($this->config[$_POST['config_key']]['post_fields'] as $key => $post_field) :
+			if ($post_field['field_id']==$_POST['field_id'])
+				unset($this->config[$_POST['config_key']]['post_fields'][$key]);
+		endforeach;
+
+		$this->config[$_POST['config_key']]['post_fields']=array_values($this->config[$_POST['config_key']]['post_fields']);
+
+		if (update_option('mdw_cms_metaboxes',$this->config)) :
+			echo 'option updated';
+		else :
+			echo 'option failed to update (may be due to no fields being reomved)';
+		endif;
+
+		wp_die();
+	}
 
 } // end class
 
