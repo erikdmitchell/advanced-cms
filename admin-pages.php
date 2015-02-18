@@ -652,10 +652,17 @@ class MDWCMSgui {
 		if (!isset($data['mb_id']) || $data['mb_id']=='')
 			return false;
 
+		// check for prefix //
+		if (empty($data['prefix'])) :
+			$prefix='_'.$data['mb_id'];
+		else :
+			$prefix=$data['prefix'];
+		endif;
+
 		$arr=array(
 			'mb_id' => $data['mb_id'],
 			'title' => $data['title'],
-			'prefix' => $data['prefix'],
+			'prefix' => $prefix,
 			'post_types' => $data['post_types'],
 		);
 
@@ -665,7 +672,7 @@ class MDWCMSgui {
 				if (!$field['field_type']) :
 					unset($data['fields'][$key]);
 				else :
-					$data['fields'][$key]['field_id']=$MDWMetaboxes->generate_field_id($data['prefix'],$field['field_label']); // add id
+					$data['fields'][$key]['field_id']=$MDWMetaboxes->generate_field_id($prefix,$field['field_label']); // add id
 					// remove empty options fields //
 					if (isset($field['options'])) :
 						unset($data['fields'][$key]['options']['default']);
@@ -800,6 +807,7 @@ class MDWCMSgui {
 
 		return $html;
 	}
+
 }
 
 new MDWCMSgui();
