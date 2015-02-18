@@ -14,6 +14,8 @@ Changelog
 
 ### 1.1.6
 
+	Added jQuery custom post name checker.
+
 	Fixed error in duplicate meta box fields where js was looking at input, not actual field (ie textarea).
 
 ### 1.1.5

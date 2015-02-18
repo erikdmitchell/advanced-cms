@@ -138,6 +138,7 @@ class MDWCMSgui {
 				$html.='<label for="name" class="required">Post Type Name</label>';
 				$html.='<input type="text" name="name" id="name" value="'.$name.'" />';
 				$html.='<span class="description">(e.g. movie)</span>';
+				$html.='<div id="mdw-cpt-name-error" class=""></div>';
 				$html.='<div class="description-ext">Max 20 characters, can not contain capital letters or spaces. Reserved post types: post, page, attachment, revision, nav_menu_item.</div>';
 			$html.='</div>';
 

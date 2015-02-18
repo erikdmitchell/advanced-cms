@@ -18,7 +18,8 @@ jQuery(document).ready(function($) {
 	$.fn.checkPostType=function($this,value,options) {
 		var settings=$.extend({
 			maxLength : 20,
-			reservedPostTypes : ['post','page','attachment','revision','nav_menu_item']
+			reservedPostTypes : ['post','page','attachment','revision','nav_menu_item'],
+			errorField : $('#mdw-cpt-name-error')
 		}, options);
 
 		// strip spaces and set to lowercase //
@@ -28,11 +29,13 @@ jQuery(document).ready(function($) {
 
 		// check if name is reserved //
 		if ($.inArray(value,settings.reservedPostTypes)!=-1) {
+			settings.errorField.text('Can not use a reserved post type.');
 			return false;
 		}
 
 		// check length //
 		if (value.length>settings.maxLength) {
+			settings.errorField.text('Name length is too long.');
 			return false;
 		}
 

@@ -58,10 +58,6 @@ form.custom-post-types .form-row {
 	width: 470px;
 }
 
-
-
-
-
 .add-fields .field-options .type {
 	display: none;
 	overflow: hidden;
@@ -78,6 +74,14 @@ form.custom-post-types .form-row {
 }
 .field.options .option-row.default {
 	display: none;
+}
+
+/* errors */
+#mdw-cpt-name-error {
+	color: red;
+	font-weight: bold;
+	margin-left: 115px;
+	padding: 3px 0;
 }
 
 /* meta box fields
