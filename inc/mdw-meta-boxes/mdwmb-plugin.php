@@ -1,13 +1,8 @@
 <?php
-/**
- * Version: 1.2.1
- * Author: erikdmitchell
-**/
-
 class MDWMetaboxes {
 
 	private $nonce = 'wp_upm_media_nonce'; // Represents the nonce value used to save the post media //
-	private $version='1.2.2';
+	private $version='1.2.3';
 	private $option_name='mdw_meta_box_duped_boxes';
 
 	protected $options=array();
@@ -73,17 +68,18 @@ class MDWMetaboxes {
 			'wysiwyg' => array(
 				'repeatable' => 0,
 				'options' => 0,
+			),
+			'media_images' => array(
+				'repeatable' => 0,
+				'options' => 0,
 			)
 		);
 		$this->config=$this->setup_config($config); // set our config
-
 /*
 echo '<pre>';
 print_r($this->config);
 echo '</pre>';
 */
-
-
 		// load our extra classes and whatnot
 		//$this->autoload_class('mdwmb_Functions'); -- GUI
 
@@ -362,15 +358,21 @@ echo '</pre>';
 				$html.='<input class="uploader button" name="'.$args['id'].'_button" id="'.$args['id'].'_button" value="Upload" />';
 				$html.='<input type="hidden" name="_name" value="'.$args['id'].'" />';
 
-				$attr=array(
-					'src' => $value,
-					/* 'class' => 'umb-media-thumb', */
-				);
-
 				if ($value) :
 					$html.='<div class="umb-media-thumb">';
-						$html.=get_the_post_thumbnail($post->ID,'thumbnail',$attr);
-						$html.='<a class="remove" data-type-img-id="'.$args['id'].'" href="#">Remove</a>';
+						$attr=array(
+							'src' => $value,
+							/* 'class' => 'umb-media-thumb', */
+						);
+						$thumbnail=get_the_post_thumbnail($post->ID,'thumbnail',$attr);
+						$attachment_id=$this->get_attachment_id_from_url($value);
+
+						if (get_post_mime_type($attachment_id)!='image') :
+							$html.=wp_get_attachment_image($attachment_id,'thumbnail',true);
+						else :
+							$html.=$thumbnail;
+						endif;
+						$html.='<p><a class="remove" data-type-img-id="'.$args['id'].'" href="#">Remove</a></p>';
 					$html.='</div>';
 				endif;
 
@@ -386,7 +388,7 @@ echo '</pre>';
 					$html.='<option>Select One</option>';
 					if (isset($args['options']) && is_array($args['options'])) :
 						foreach ($args['options'] as $option) :
-							$html.='<option value="'.$option['value'].'">'.$option['name'].'</option>';
+							$html.='<option value="'.$option['value'].'" '.selected($value,$option['value'],false).'>'.$option['name'].'</option>';
 						endforeach;
 					endif;
 				$html.='</select>';
@@ -411,6 +413,24 @@ echo '</pre>';
 				);
 				//$html.=wp_editor($value,$args['id'],$settings);
 				$html.=mdwmb_Functions::mdwm_wp_editor($value,$args['id'],$settings);
+				break;
+			case 'media_images' :
+				$images=$this->get_all_media_images();
+				$value_arr=unserialize($value);
+
+				$html.='<select multiple size="10" name="'.$args['id'].'[]" id="'.$args['id'].'">';
+
+						foreach ($images as $image) :
+							$selected=null;
+
+							if (is_array($value_arr) && !empty($value_arr) && in_array($image->ID,$value_arr))
+								$selected='selected="selected"';
+
+							$html.='<option value="'.$image->ID.'" '.$selected.'>'.$image->post_title.'</option>';
+						endforeach;
+
+				$html.='</select>';
+
 				break;
 			default:
 				$html.='<input type="text" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
@@ -849,6 +869,65 @@ print_r($option_arr);
 		endif;
 
 		wp_die();
+	}
+
+	/**
+	 * get_all_media_images function.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	function get_all_media_images() {
+		$query_images_args = array(
+			'posts_per_page' => -1,
+			'post_type' => 'attachment',
+			'post_mime_type' =>'image',
+			'post_status' => 'inherit',
+		);
+		$query_images = new WP_Query( $query_images_args );
+
+		$images = array();
+		foreach ( $query_images->posts as $image) {
+			$images[]=$image;
+		}
+
+		return $images;
+	}
+
+	/**
+	 * get_attachment_id_from_url function.
+	 *
+	 * @access public
+	 * @param string $attachment_url (default: '')
+	 * @return void
+	 */
+	function get_attachment_id_from_url( $attachment_url = '' ) {
+
+		global $wpdb;
+		$attachment_id = false;
+
+		// If there is no url, return.
+		if ( '' == $attachment_url )
+			return;
+
+		// Get the upload directory paths
+		$upload_dir_paths = wp_upload_dir();
+
+		// Make sure the upload path base directory exists in the attachment URL, to verify that we're working with a media library image
+		if ( false !== strpos( $attachment_url, $upload_dir_paths['baseurl'] ) ) {
+
+			// If this is the URL of an auto-generated thumbnail, get the URL of the original image
+			$attachment_url = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
+
+			// Remove the upload path base directory from the attachment URL
+			$attachment_url = str_replace( $upload_dir_paths['baseurl'] . '/', '', $attachment_url );
+
+			// Finally, run a custom database query to get the attachment ID from the modified attachment URL
+			$attachment_id = $wpdb->get_var( $wpdb->prepare( "SELECT wposts.ID FROM $wpdb->posts wposts, $wpdb->postmeta wpostmeta WHERE wposts.ID = wpostmeta.post_id AND wpostmeta.meta_key = '_wp_attached_file' AND wpostmeta.meta_value = '%s' AND wposts.post_type = 'attachment'", $attachment_url ) );
+
+		}
+
+		return $attachment_id;
 	}
 
 } // end class
