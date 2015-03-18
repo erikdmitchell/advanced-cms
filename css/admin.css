@@ -145,11 +145,24 @@ form.custom-metabox .add-fields.visible {
 	float: left;
 	background: #d64e07;
 	border-color: #b84609;
+	margin-left: 10px;
 }
 .wp-core-ui .button-primary.add-field {
 	margin-left: 15px;
 	background: #9ebaa0;
 	border-color: #90ab92;
+}
+.add-fields .description {
+	clear: both;
+	padding: 7px 0;
+	overflow: hidden;
+	margin-left: 20px;
+}
+.add-fields .description label {
+	width: 120px;
+}
+.add-fields .description .field_description {
+	width: 450px;
 }
 
 
@@ -189,4 +202,14 @@ p.submit > #clear-files {
 .mdw-cms-meta-box .type-textarea button.delete {
 	float: right;
 	margin-right: 7%;
+}
+.mdw-cms-meta-box .field_description {
+	font-style: italic;
+	margin-left: 135px;
+	padding: 3px 0;
+}
+.mdw-cms-meta-box .mdw-cms-meta-box-thumb {
+	clear: left;
+	text-align: center;
+	padding: 5px 0;
 }

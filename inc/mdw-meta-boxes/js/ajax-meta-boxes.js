@@ -2,13 +2,13 @@ jQuery(document).ready(function($) {
 //console.log('ajax meta boxes js');
 
 	$('body').on('click','.ajaxmb-field-btn.add',function() {
-console.log('duplicate field');
-		add_field('#ajax_meta_box_id .inside','ajaxmb-field-default-0','.ajaxmb-field');	
+//console.log('duplicate field');
+		add_field('#ajax_meta_box_id .inside','ajaxmb-field-default-0','.ajaxmb-field');
 	});
 
 	$('body').on('click','.ajaxmb-field-btn.update',function() {
 		var id=$(this).parent().attr('id');
-		
+
 		var data={
 			action:'ajaxmb-field',
 			type:'update',
@@ -20,12 +20,12 @@ console.log('duplicate field');
 		$.post(ajaxurl,data,function(response) {
 	  	//console.log('response: '+response);
 	  	location.reload();
-		});	
+		});
 	});
 
 	$('body').on('click','.ajaxmb-field-btn.delete',function() {
 		var id=$(this).parent().attr('id');
-		
+
 		var data={
 			action:'ajaxmb-field',
 			type:'delete',
@@ -35,14 +35,14 @@ console.log('duplicate field');
 		$.post(ajaxurl,data,function(response) {
 	  	//console.log('response: '+response);
 	  	location.reload();
-		});	
+		});
 	});
-	
+
 	var inputText='';
 
 	$('body').on('focus','#ajaxmb-field-label',function() {
 		inputText=$(this).val();
-		$(this).val('');	
+		$(this).val('');
 	});
 
 	$('body').on('blur','#ajaxmb-field-label',function() {
@@ -53,7 +53,7 @@ console.log('duplicate field');
 
 	$('body').on('focus','.new #ajaxmb-field-value',function() {
 		inputText=$(this).val();
-		$(this).val('');	
+		$(this).val('');
 	});
 
 	$('body').on('blur','.new #ajaxmb-field-value',function() {
@@ -61,7 +61,7 @@ console.log('duplicate field');
 			$(this).val(inputText);
 		}
 	});
-	
+
 });
 
 /**
@@ -71,20 +71,20 @@ console.log('duplicate field');
 **/
 function add_field(mbID,cloneID,cloneClass) {
 	$=jQuery.noConflict();
-	
+
 	var newID=0;
-	
+
 	$(mbID+' '+cloneClass).each(function() {
 		var id=$(this).attr('id');
 		var idArr=id.split('-');
 		var idNum=parseInt(idArr[idArr.length-1]);
 		newID=idNum+1;
-	});	
-	
+	});
+
 	newID=cloneID+'-'+newID;
-	
+
 	newID=check_clone_id(newID,mbID,cloneClass);
-		
+
 	$('#'+cloneID).clone().attr('id',newID).appendTo(mbID);
 }
 
@@ -101,5 +101,5 @@ function check_clone_id(cloneID,id,_class) {
 		}
 	});
 
-	return newCloneID;	
+	return newCloneID;
 }

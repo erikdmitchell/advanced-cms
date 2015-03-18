@@ -431,12 +431,16 @@ class MDWCMSgui {
 		global $MDWMetaboxes;
 
 		$html=null;
+		$field_description=null;
 
 		if (isset($field['repeatable']) && $field['repeatable']) :
 			$repeatable_checked='checked="checked"';
 		else :
 			$repeatable_checked=null;
 		endif;
+
+		if (isset($field['field_description']) && !empty($field['field_description']))
+			$field_description=$field['field_description'];
 
 		$html.='<div class="sortable fields-wrapper '.$classes.'" id="fields-wrapper-'.$field_id.'">';
 			$html.='<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>';
@@ -493,8 +497,15 @@ class MDWCMSgui {
 						endif;
 					$html.='</div>';
 				endforeach;
+
 				$html.='<input type="button" name="remove-field" id="remove-field-btn" class="button button-primary remove-field" data-id="fields-wrapper-'.$field_id.'" value="Remove Field">';
 			$html.='</div><!-- .field-options -->';
+
+			$html.='<div class="description">';
+				$html.='<label for="field_description">Field Description</label>';
+				$html.='<input type="text" name="fields['.$field_id.'][field_description]" class="field_description" value="'.$field_description.'" />';
+			$html.='</div>';
+
 			$html.='<input type="hidden" name="fields['.$field_id.'][order]" class="order" value="'.$order.'" />';
 		$html.='</div><!-- .fields-wrapper -->';
 
