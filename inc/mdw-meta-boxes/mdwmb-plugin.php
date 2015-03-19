@@ -438,7 +438,15 @@ class MDWMetaboxes {
 
 				break;
 			case 'custom' :
-				$values=unserialize($value);
+				if (is_serialized($value)) :
+					$values=unserialize($value);
+				else :
+					$values=$value;
+				endif;
+
+				if (!is_array($values))
+					$values=array($values);
+
 				$html.=apply_filters('add_mdw_cms_metabox_custom_input-'.$args['id'],$args['id'],$values);
 				break;
 			default:
