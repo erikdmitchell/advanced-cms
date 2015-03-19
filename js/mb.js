@@ -63,11 +63,11 @@ $j(document).ready(function() {
 	});
 
 	// adds a new option field to our metabox element //
-	$j('#add-option-field-btn').on('click', function() {
+	$j('.add-option-field-btn').on('click', function() {
 		var newID=0;
 		var lastFieldID='';
 		var wrapperID=$j(this).parent().parent().attr('id');
-		var $clonedElement=$j('#option-row-default').clone();
+		var $clonedElement=$j('#'+wrapperID+' #option-row-default').clone();
 
 		$j('#'+wrapperID+' .option-row').each(function(i) {
 			newID=i+1;
@@ -79,10 +79,7 @@ $j(document).ready(function() {
 
 		$clonedElement.removeClass('default');
 		$clonedElement.attr('id',cloneID);
-
-		$clonedElement.insertAfter('#'+lastFieldID);
-
-		//$j('#'+wrapperID).append($clonedElement);
+		$clonedElement.insertAfter('#'+wrapperID+' #'+lastFieldID);
 
 		$j('#'+cloneID+' .options-item').each(function() {
 			var attrName=$j(this).attr('name');

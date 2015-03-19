@@ -1,3 +1,4 @@
+// removes a metabox //
 jQuery(document).ready(function($) {
 	$('.remove-meta-box a').click(function(e) {
 		e.preventDefault();
@@ -9,15 +10,15 @@ jQuery(document).ready(function($) {
 		for (var i in options) {
 			if (options[i].post_id==postID) {
 				optionKey=i;
-			}		
+			}
 		}
 
 		if (optionKey=='-1') {
 			return false;
-		}	
-		
+		}
+
 		// do ajax stuff //
-		var data={ 
+		var data={
 			action:'remove-box' ,
 			postID:postID,
 			metaID:metaID,
@@ -29,6 +30,6 @@ jQuery(document).ready(function($) {
 	  	//console.log(response);
 	  	// reload page //
 	 	});
-	 	
+
 	});
 });

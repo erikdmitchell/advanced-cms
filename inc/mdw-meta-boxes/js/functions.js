@@ -1,4 +1,5 @@
 jQuery(document).ready(function($) {
+
 	$('.colorPicker').colpick({
 		layout:'hex',
 		color:$('.colorPicker').val(),
@@ -7,7 +8,13 @@ jQuery(document).ready(function($) {
 			$(el).colpickHide();
 		}
 	});
-	
+
 	$('.timepicker').timepicker();
-	
+
+	$('.mdw-cms-datepicker').datepicker({
+		'dateFormat' : 'mm/dd/yy'
+	});
+
+	$('.phone').mask('(999) 999-9999'); // masked input //
+
 });

@@ -102,12 +102,12 @@ class MDWMetaboxes {
 		wp_enqueue_script('jq-timepicker',plugins_url('/js/jquery.ui.timepicker.js',__FILE__));
 		wp_enqueue_script('jquery-maskedinput-script',plugins_url('/js/jquery.maskedinput.min.js',__FILE__),array('jquery'),'1.3.1',true);
 		//wp_enqueue_script('metabox-duplicator',plugins_url('/js/metabox-duplicator.js',__FILE__),array('jquery'),'0.1.0',true);
-		wp_enqueue_script('metabox-remover',plugins_url('/js/metabox-remover.js',__FILE__),array('jquery'),'0.1.0',true);
-		wp_enqueue_script('metabox-datepicker-script',plugins_url('/js/metabox-datepicker.js',__FILE__),array('jquery-ui-datepicker'),'1.0.0',true);
-		wp_enqueue_script('metabox-maskedinput-script',plugins_url('/js/metabox-maskedinput.js',__FILE__),array('jquery-maskedinput-script'),'1.0.0',true);
+		//wp_enqueue_script('metabox-remover',plugins_url('/js/metabox-remover.js',__FILE__),array('jquery'),'0.1.0',true);
+		//---wp_enqueue_script('metabox-datepicker-script',plugins_url('/js/metabox-datepicker.js',__FILE__),array('jquery-ui-datepicker'),'1.0.0',true);
+		//---wp_enqueue_script('metabox-maskedinput-script',plugins_url('/js/metabox-maskedinput.js',__FILE__),array('jquery-maskedinput-script'),'1.0.0',true);
 		wp_enqueue_script('jq-validator-script',plugins_url('/js/jquery.validator.js',__FILE__),array('jquery'),'1.0.0',true);
 		wp_enqueue_script('mdw-cms-js',plugins_url('/js/functions.js',__FILE__),array('jquery'));
-		wp_enqueue_script('duplicate-metabox-fields',plugins_url('js/duplicate-metabox-fields.js',__FILE__),array('jquery'),'1.0.2');
+		//wp_enqueue_script('duplicate-metabox-fields',plugins_url('js/duplicate-metabox-fields.js',__FILE__),array('jquery'),'1.0.2');
 
 		if (isset($post->ID)) :
 			$post_id=$post->ID;

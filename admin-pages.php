@@ -454,12 +454,14 @@ class MDWCMSgui {
 				$html.='</select>';
 			$html.='</div>';
 
-			$html.='<div class="field-options" id="">';
-				$html.='<div class="field">';
-					$html.='<label for="field_label">Label</label>';
-					$html.='<input type="text" name="fields['.$field_id.'][field_label]" class="field_label name-item" value="'.$field['field_label'].'" />';
-				$html.='</div>';
+			$html.='<div class="field-label">';
+				$html.='<label for="field_label">Label</label>';
+				$html.='<input type="text" name="fields['.$field_id.'][field_label]" class="field_label name-item" value="'.$field['field_label'].'" />';
+			$html.='</div>';
 
+			$html.='<input type="button" name="remove-field" id="remove-field-btn" class="button button-primary remove-field" data-id="fields-wrapper-'.$field_id.'" value="Remove Field">';
+
+			$html.='<div class="field-options" id="">';
 				foreach ($MDWMetaboxes->fields as $field_type => $setup) :
 					$html.='<div class="type" data-field-type="'.$field_type.'">';
 						if ($setup['repeatable']) :
@@ -492,13 +494,11 @@ class MDWCMSgui {
 									$html.='<input type="text" name="fields['.$field_id.'][options][default][value]" class="options-item value" value="" />';
 								$html.='</div><!-- .option-row -->';
 
-								$html.='<div class="add-option-field"><input type="button" name="add-option-field" id="add-option-field-btn" class="button button-primary" value="Add Option"></div>';
+								$html.='<div class="add-option-field"><input type="button" name="add-option-field" class="add-option-field-btn button button-primary" value="Add Option"></div>';
 							$html.='</div>';
 						endif;
 					$html.='</div>';
 				endforeach;
-
-				$html.='<input type="button" name="remove-field" id="remove-field-btn" class="button button-primary remove-field" data-id="fields-wrapper-'.$field_id.'" value="Remove Field">';
 			$html.='</div><!-- .field-options -->';
 
 			$html.='<div class="description">';
