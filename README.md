@@ -13,6 +13,10 @@ Changelog
 ===========
 
 ### 1.1.0
+	Finalized updater.
+	This becomes the start of the gui (v2) split.
+
+### 1.1.0
 	Pulled out custom config file to prevent it from being overwritten. This will be stored as a variable at some point.
 
 ### 1.0.9
