@@ -100,10 +100,10 @@ class MDWCMSgui {
 	function default_admin_page() {
 		$html=null;
 
-		$html.='<h3>CMS</h3>';
+		$html.='<h3></h3>';
 
 		$html.='<div class="mdw-cms-default">';
-			$html.='CONTENT NEEDS TO GO HERE';
+			$html.='For more information, please <a href="https://bitbucket.org/millerdesign/mdw-cms/wiki/">visit our WIKI</a>. At this time, only admins can access the wiki. If you need access please contact us.';
 
 			$html.=MDWCMSlegacy::get_legacy_page();
 		$html.='</div>';
