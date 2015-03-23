@@ -431,12 +431,16 @@ class MDWCMSgui {
 		global $MDWMetaboxes;
 
 		$html=null;
+		$field_description=null;
 
 		if (isset($field['repeatable']) && $field['repeatable']) :
 			$repeatable_checked='checked="checked"';
 		else :
 			$repeatable_checked=null;
 		endif;
+
+		if (isset($field['field_description']) && !empty($field['field_description']))
+			$field_description=$field['field_description'];
 
 		$html.='<div class="sortable fields-wrapper '.$classes.'" id="fields-wrapper-'.$field_id.'">';
 			$html.='<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>';
@@ -450,12 +454,14 @@ class MDWCMSgui {
 				$html.='</select>';
 			$html.='</div>';
 
-			$html.='<div class="field-options" id="">';
-				$html.='<div class="field">';
-					$html.='<label for="field_label">Label</label>';
-					$html.='<input type="text" name="fields['.$field_id.'][field_label]" class="field_label name-item" value="'.$field['field_label'].'" />';
-				$html.='</div>';
+			$html.='<div class="field-label">';
+				$html.='<label for="field_label">Label</label>';
+				$html.='<input type="text" name="fields['.$field_id.'][field_label]" class="field_label name-item" value="'.$field['field_label'].'" />';
+			$html.='</div>';
 
+			$html.='<input type="button" name="remove-field" id="remove-field-btn" class="button button-primary remove-field" data-id="fields-wrapper-'.$field_id.'" value="Remove Field">';
+
+			$html.='<div class="field-options" id="">';
 				foreach ($MDWMetaboxes->fields as $field_type => $setup) :
 					$html.='<div class="type" data-field-type="'.$field_type.'">';
 						if ($setup['repeatable']) :
@@ -488,13 +494,18 @@ class MDWCMSgui {
 									$html.='<input type="text" name="fields['.$field_id.'][options][default][value]" class="options-item value" value="" />';
 								$html.='</div><!-- .option-row -->';
 
-								$html.='<div class="add-option-field"><input type="button" name="add-option-field" id="add-option-field-btn" class="button button-primary" value="Add Option"></div>';
+								$html.='<div class="add-option-field"><input type="button" name="add-option-field" class="add-option-field-btn button button-primary" value="Add Option"></div>';
 							$html.='</div>';
 						endif;
 					$html.='</div>';
 				endforeach;
-				$html.='<input type="button" name="remove-field" id="remove-field-btn" class="button button-primary remove-field" data-id="fields-wrapper-'.$field_id.'" value="Remove Field">';
 			$html.='</div><!-- .field-options -->';
+
+			$html.='<div class="description">';
+				$html.='<label for="field_description">Field Description</label>';
+				$html.='<input type="text" name="fields['.$field_id.'][field_description]" class="field_description" value="'.$field_description.'" />';
+			$html.='</div>';
+
 			$html.='<input type="hidden" name="fields['.$field_id.'][order]" class="order" value="'.$order.'" />';
 		$html.='</div><!-- .fields-wrapper -->';
 

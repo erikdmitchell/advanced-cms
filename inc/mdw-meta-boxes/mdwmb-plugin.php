@@ -75,11 +75,7 @@ class MDWMetaboxes {
 			)
 		);
 		$this->config=$this->setup_config($config); // set our config
-/*
-echo '<pre>';
-print_r($this->config);
-echo '</pre>';
-*/
+
 		// load our extra classes and whatnot
 		//$this->autoload_class('mdwmb_Functions'); -- GUI
 
@@ -106,12 +102,12 @@ echo '</pre>';
 		wp_enqueue_script('jq-timepicker',plugins_url('/js/jquery.ui.timepicker.js',__FILE__));
 		wp_enqueue_script('jquery-maskedinput-script',plugins_url('/js/jquery.maskedinput.min.js',__FILE__),array('jquery'),'1.3.1',true);
 		//wp_enqueue_script('metabox-duplicator',plugins_url('/js/metabox-duplicator.js',__FILE__),array('jquery'),'0.1.0',true);
-		wp_enqueue_script('metabox-remover',plugins_url('/js/metabox-remover.js',__FILE__),array('jquery'),'0.1.0',true);
-		wp_enqueue_script('metabox-datepicker-script',plugins_url('/js/metabox-datepicker.js',__FILE__),array('jquery-ui-datepicker'),'1.0.0',true);
-		wp_enqueue_script('metabox-maskedinput-script',plugins_url('/js/metabox-maskedinput.js',__FILE__),array('jquery-maskedinput-script'),'1.0.0',true);
+		//wp_enqueue_script('metabox-remover',plugins_url('/js/metabox-remover.js',__FILE__),array('jquery'),'0.1.0',true);
+		//---wp_enqueue_script('metabox-datepicker-script',plugins_url('/js/metabox-datepicker.js',__FILE__),array('jquery-ui-datepicker'),'1.0.0',true);
+		//---wp_enqueue_script('metabox-maskedinput-script',plugins_url('/js/metabox-maskedinput.js',__FILE__),array('jquery-maskedinput-script'),'1.0.0',true);
 		wp_enqueue_script('jq-validator-script',plugins_url('/js/jquery.validator.js',__FILE__),array('jquery'),'1.0.0',true);
 		wp_enqueue_script('mdw-cms-js',plugins_url('/js/functions.js',__FILE__),array('jquery'));
-		wp_enqueue_script('duplicate-metabox-fields',plugins_url('js/duplicate-metabox-fields.js',__FILE__),array('jquery'),'1.0.2');
+		//wp_enqueue_script('duplicate-metabox-fields',plugins_url('js/duplicate-metabox-fields.js',__FILE__),array('jquery'),'1.0.2');
 
 		if (isset($post->ID)) :
 			$post_id=$post->ID;
@@ -198,6 +194,8 @@ echo '</pre>';
 		if (empty($this->config))
 			return false;
 
+		$this->add_custom_fields(); // method for adding custom metabox fields outside the cms //
+
 		foreach ($this->config as $key => $config) :
 			$config_id=$config['mb_id']; // for use in our classes function
 
@@ -282,7 +280,7 @@ echo '</pre>';
 
 				// sort fields by order //
 				usort($this->fields, function ($a, $b) {
-					return strcmp($a['order'], $b['order']);
+					return bccomp($a['order'], $b['order']);
 				});
 
 				foreach ($this->fields as $field) :
@@ -329,12 +327,17 @@ echo '</pre>';
 		$html=null;
 		$values=get_post_custom($post->ID);
 		$classes='field-input';
+		$description=null;
+		$description_visible=false;
 
 		if (isset($values[$args['id']][0])) :
 			$value=$values[$args['id']][0];
 		else :
 			$value=null;
 		endif;
+
+		if (!empty($args['field_description']))
+			$description=$args['field_description'];
 
 		switch ($args['type']) :
 			case 'checkbox':
@@ -358,12 +361,14 @@ echo '</pre>';
 				$html.='<input class="uploader button" name="'.$args['id'].'_button" id="'.$args['id'].'_button" value="Upload" />';
 				$html.='<input type="hidden" name="_name" value="'.$args['id'].'" />';
 
+				if (!$description_visible) :
+					$html.='<div class="description field_description">'.$description.'</div>';
+					$description_visible=true;
+				endif;
+
 				if ($value) :
-					$html.='<div class="umb-media-thumb">';
-						$attr=array(
-							'src' => $value,
-							/* 'class' => 'umb-media-thumb', */
-						);
+					$html.='<div class="mdw-cms-meta-box-thumb umb-media-thumb">';
+						$attr=array('src' => $value);
 						$thumbnail=get_the_post_thumbnail($post->ID,'thumbnail',$attr);
 						$attachment_id=$this->get_attachment_id_from_url($value);
 
@@ -432,12 +437,27 @@ echo '</pre>';
 				$html.='</select>';
 
 				break;
+			case 'custom' :
+				if (is_serialized($value)) :
+					$values=unserialize($value);
+				else :
+					$values=$value;
+				endif;
+
+				if (!is_array($values))
+					$values=array($values);
+
+				$html.=apply_filters('add_mdw_cms_metabox_custom_input-'.$args['id'],$args['id'],$values);
+				break;
 			default:
 				$html.='<input type="text" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 		endswitch;
 
 		if ($args['repeatable'])
 			$html.='<button type="button" class="ajaxmb-field-btn duplicate">Duplicate Field</button>';
+
+		if (!$description_visible)
+			$html.='<div class="description field_description">'.$description.'</div>';
 
 		return $html;
 	}
@@ -507,10 +527,12 @@ echo '</pre>';
 	 * added 1.1.8
 	**/
 	function add_fields_array($arr,$meta_id) {
+		$fields_counter=0;
 		foreach ($arr as $id => $values) :
 			$options=false;
 			$repeatable=0;
 			$order=0;
+			$description=null;
 
 			if (isset($values['options']))
 				$options=$values['options'];
@@ -521,6 +543,9 @@ echo '</pre>';
 			if (isset($values['order']))
 				$order=$values['order'];
 
+			if (isset($values['field_description']))
+				$description=$values['field_description'];
+
 			$args=array(
 				'id' => $id,
 				'type' => $values['field_type'],
@@ -528,10 +553,12 @@ echo '</pre>';
 				'order' => $order,
 				'options' => $options,
 				'repeatable' => $repeatable,
-				'duplicate' => 0
+				'duplicate' => 0,
+				'field_description' => $description
 			);
 
 			$this->add_field($args,$meta_id);
+			$fields_counter++;
 		endforeach;
 	}
 
@@ -588,6 +615,7 @@ echo '</pre>';
 		if (!current_user_can('edit_post',$post_id)) return;
 
 		//$this->build_duplicated_boxes($post_id); // must do here again b/c this action is added before we have all the info
+		$this->add_custom_fields(); // method for adding custom metabox fields outside the cms // -- this is added here as well for proper saving
 
 		// cycle through config fields and find matches //
 		foreach ($this->config as $config) :
@@ -762,7 +790,6 @@ print_r($option_arr);
 			endif;
 
 			$config['prefix']=$this->check_config_prefix($config['prefix']); // makes sure our prefix starts with '_'
-
 			$configs[$key]=$config;
 		endforeach;
 
@@ -928,6 +955,40 @@ print_r($option_arr);
 		}
 
 		return $attachment_id;
+	}
+
+	/**
+	 * add_custom_fields function.
+	 *
+	 * method for adding custom metabox fields outside the cms
+	 *
+	 * @access public
+	 * @return void
+	 */
+	function add_custom_fields() {
+		foreach ($this->config as $key => $config) :
+
+			$extra_fields=array();
+			$extra_fields=apply_filters('add_mdw_cms_metabox_custom_fields-'.$config['mb_id'],$extra_fields,$config['prefix']);
+			$extra_field_defaults=array(
+				'field_type' => 'custom',
+				'field_label' => 'Extra Field',
+				'options' => array(),
+				'field_description' => null,
+				'order' => 99999,
+				'field_id' => $this->generate_field_id($config['prefix'],'Extra Field')
+			);
+
+			if (empty($extra_fields))
+				continue;
+
+			foreach ($extra_fields as $extra_field) :
+				$args=array_replace_recursive($extra_field_defaults,$extra_field);
+
+				$this->config[$key]['fields'][]=$args;
+			endforeach;
+
+		endforeach;
 	}
 
 } // end class

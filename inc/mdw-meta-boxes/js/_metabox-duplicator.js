@@ -1,3 +1,4 @@
+// duplicates a metabox //
 jQuery(document).ready(function($) {
 	$('.dup-meta-box a').click(function(e) {
 		e.preventDefault();
