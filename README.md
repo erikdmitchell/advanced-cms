@@ -16,9 +16,12 @@ Changelog
 
 	Added jQuery custom post name checker.
 	Added prefix check to our metabox updater admin function.
+	Added some filters for custom metabox fields outside cms.
 
 	Fixed error in duplicate meta box fields where js was looking at input, not actual field (ie textarea).
 	Fixed issue with generating the field id with invalid input.
+
+	Tweaked custom fields select box glitch and add fields glitch.
 
 ### 1.1.5
 	
