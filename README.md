@@ -6,8 +6,7 @@ Adds cusomtized functionality to the site to make WordPress super awesome.
 Usage Instructions
 ===========
 
-See BitBucket Wiki for details.
-See the mdw-cms-demo.php for sample examples.
+See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 
 Changelog
 ===========
