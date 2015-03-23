@@ -12,13 +12,11 @@ See the mdw-cms-demo.php for sample examples.
 Changelog
 ===========
 
-### 2.0.0
+### 2.0.7
 
-	We have split this plugin into two versions after version 1.1.1. Version 2.0.0 is the start of our gui interface.
-	While 2.0.0 can be utilized to upgrade v1.x.x to 2.0.0+, we have found a need to keep v1.
-	There will be some version changes in the history and some other little tweaks to accommodate this split.
+	Minor tweaks and adjustments. More of a super stable release point.
 
-### 1.1.6
+### 2.0.6
 
 	Added jQuery custom post name checker.
 	Added prefix check to our metabox updater admin function.
@@ -28,8 +26,10 @@ Changelog
 	Fixed issue with generating the field id with invalid input.
 
 	Tweaked custom fields select box glitch and add fields glitch.
+	
+	Prev Ver: 1.1.6
 
-### 1.1.5
+### 2.0.5
 	
 	Added mdw-cms-meta-box class to the admin metaboxes
 	Added various hidden fields to the metaboxes for field duplication.
@@ -39,8 +39,10 @@ Changelog
 	Added numeric check to MDWMetaboxes->add_field() for our post fields.
 	
 	Fixed glitch in MDWMetaboxes->update_metaboxes() to account for out post fields
+	
+	Prev Ver: 1.1.5
 
-### 1.1.4
+### 2.0.4
 
 	Added generate_field_id() to MDWMetaboxes class and implemented it in	add_field() and MDWCMSgui::update_metaboxes.
 	Added secondary check to MDWMetaboxes save_custom_meta_data for field id.
@@ -54,22 +56,36 @@ Changelog
 	Fixed errant error message on taxonomy update.
 		
 	Renamed datebox (metaboxes) class to mdw-cms-datepicker to prevent potential conflicts.
+	
+	Prev Ver: 1.1.4
 
-### 1.1.3
+### 2.0.3
 
 	Added custom taxonomies to custom post types.
 	Added class MDWCustomTaxonomies to handle taxonomies.
+	
+	Prev Ver: 1.1.3
 
-### 1.1.2
+### 2.0.2
 
 	Added legacy functions and classes for older versions of the plugin.
 	Reworked Social Media add on to be more flexible.
 	Tweaked GUI and updated it to be the standard for this plugin.
+	
+	Prev Ver: 1.1.2
 
-### 1.1.1
+### 2.0.1
 	
 	Finalized updater and tested it. This is the min version we need for auto updates.
 	Reworked metabox field ids to utilize the label and not some generic number.
+	
+	Prev Ver: 1.1.1
+
+### 2.0.0
+
+	We have split this plugin into two versions after version 1.1.1. Version 2.0.0 is the start of our gui interface.
+	While 2.0.0 can be utilized to upgrade v1.x.x to 2.0.0+, we have found a need to keep v1.
+	There will be some version changes in the history and some other little tweaks to accommodate this split.
 
 ### 1.1.0
 	Pulled out custom config file to prevent it from being overwritten. This will be stored as a variable at some point.
