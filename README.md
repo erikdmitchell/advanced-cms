@@ -12,6 +12,12 @@ See the mdw-cms-demo.php for sample examples.
 Changelog
 ===========
 
+### 2.0.0
+
+	We have split this plugin into two versions after version 1.1.1. Version 2.0.0 is the start of our gui interface.
+	While 2.0.0 can be utilized to upgrade v1.x.x to 2.0.0+, we have found a need to keep v1.
+	There will be some version changes in the history and some other little tweaks to accommodate this split.
+
 ### 1.1.6
 
 	Added jQuery custom post name checker.
