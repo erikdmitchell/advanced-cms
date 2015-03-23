@@ -12,6 +12,11 @@ See the mdw-cms-demo.php for sample examples.
 Changelog
 ===========
 
+### 1.1.1
+
+	Stable release with updater.
+	Version 2.0.0 released, but this will be kept and updated as needed.
+
 ### 1.1.0
 	Finalized updater.
 	This becomes the start of the gui (v2) split.
