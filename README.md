@@ -12,6 +12,11 @@ See the mdw-cms-demo.php for sample examples.
 Changelog
 ===========
 
+### 1.1.2
+
+	Fixed datepicker to load on document ready
+	
+
 ### 1.1.1
 
 	Stable release with updater.
