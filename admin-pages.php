@@ -24,14 +24,14 @@ class MDWCMSgui {
 	}
 
 	function scripts_styles() {
+		wp_enqueue_style('mdw-cms-gui-style',plugins_url('/css/admin.css',__FILE__));
+
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-sortable');
-		wp_enqueue_script('mdw-cms-gui-mb-script',plugins_url('/js/mb.js',__FILE__),array('jquery'));
+		wp_enqueue_script('mdw-cms-gui-mb-script',plugins_url('/js/mb.js',__FILE__),array('jquery'),'1.0.0',true);
 		wp_enqueue_script('namecheck-script',plugins_url('/js/jquery.namecheck.js',__FILE__),array('jquery'));
 		wp_enqueue_script('mdw-cms-admin-custom-post-types-script',plugins_url('/js/admin-custom-post-types.js',__FILE__),array('namecheck-script'));
 		wp_enqueue_script('mdw-cms-admin-custom-taxonomies-script',plugins_url('/js/admin-custom-taxonomies.js',__FILE__),array('namecheck-script'));
-
-		wp_enqueue_style('mdw-cms-gui-style',plugins_url('/css/admin.css',__FILE__));
 
 		$post_types=get_post_types();
 		$types=array();

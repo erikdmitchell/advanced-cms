@@ -2,7 +2,7 @@
 class MDWMetaboxes {
 
 	private $nonce = 'wp_upm_media_nonce'; // Represents the nonce value used to save the post media //
-	private $version='1.2.3';
+	private $version='1.2.4';
 	private $option_name='mdw_meta_box_duped_boxes';
 
 	protected $options=array();
@@ -76,12 +76,6 @@ class MDWMetaboxes {
 		);
 		$this->config=$this->setup_config($config); // set our config
 
-		// load our extra classes and whatnot
-		//$this->autoload_class('mdwmb_Functions'); -- GUI
-
-		// include any files needed
-		//require_once(plugin_dir_path(__FILE__).'mdwmb-image-video.php'); -- GUI
-
 		add_action('admin_enqueue_scripts',array($this,'register_admin_scripts_styles'));
 		add_action('wp_enqueue_scripts',array($this,'register_scripts_styles'));
 		add_action('save_post',array($this,'save_custom_meta_data'));
@@ -96,17 +90,22 @@ class MDWMetaboxes {
 	function register_admin_scripts_styles() {
 		global $post;
 
+		wp_enqueue_style('mdwmb-admin-css',plugins_url('/css/admin.css',__FILE__));
+		wp_enqueue_style('jquery-ui-style','//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css',array(),'1.10.4');
+		wp_enqueue_style('colpick-css',plugins_url('/css/colpick.css',__FILE__));
+		wp_enqueue_style('jq-timepicker-style',plugins_url('/css/jquery.ui.timepicker.css',__FILE__));
+		//wp_enqueue_style('aja-meta-boxes-css',plugins_url('css/ajax-meta-boxes.css',__FILE__),array(),'1.0.0','all');
+
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-datepicker');
 		wp_enqueue_script('colpick-js',plugins_url('/js/colpick.js',__FILE__));
 		wp_enqueue_script('jq-timepicker',plugins_url('/js/jquery.ui.timepicker.js',__FILE__));
 		wp_enqueue_script('jquery-maskedinput-script',plugins_url('/js/jquery.maskedinput.min.js',__FILE__),array('jquery'),'1.3.1',true);
+		wp_enqueue_script('jq-validator-script',plugins_url('/js/jquery.validator.js',__FILE__),array('jquery'),'1.0.0',true);
+		wp_enqueue_script('mdw-cms-js',plugins_url('/js/functions.js',__FILE__),array('jquery'),'1.0.0',true);
+
 		//wp_enqueue_script('metabox-duplicator',plugins_url('/js/metabox-duplicator.js',__FILE__),array('jquery'),'0.1.0',true);
 		//wp_enqueue_script('metabox-remover',plugins_url('/js/metabox-remover.js',__FILE__),array('jquery'),'0.1.0',true);
-		//---wp_enqueue_script('metabox-datepicker-script',plugins_url('/js/metabox-datepicker.js',__FILE__),array('jquery-ui-datepicker'),'1.0.0',true);
-		//---wp_enqueue_script('metabox-maskedinput-script',plugins_url('/js/metabox-maskedinput.js',__FILE__),array('jquery-maskedinput-script'),'1.0.0',true);
-		wp_enqueue_script('jq-validator-script',plugins_url('/js/jquery.validator.js',__FILE__),array('jquery'),'1.0.0',true);
-		wp_enqueue_script('mdw-cms-js',plugins_url('/js/functions.js',__FILE__),array('jquery'));
 		//wp_enqueue_script('duplicate-metabox-fields',plugins_url('js/duplicate-metabox-fields.js',__FILE__),array('jquery'),'1.0.2');
 
 		if (isset($post->ID)) :
@@ -135,12 +134,6 @@ class MDWMetaboxes {
 
 		//wp_localize_script('metabox-duplicator','options',$options);
 		//wp_localize_script('metabox-remover','options',get_option($this->option_name));
-
-		wp_enqueue_style('mdwmb-admin-css',plugins_url('/css/admin.css',__FILE__));
-		wp_enqueue_style('jquery-ui-style','//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css',array(),'1.10.4');
-		wp_enqueue_style('colpick-css',plugins_url('/css/colpick.css',__FILE__));
-		wp_enqueue_style('jq-timepicker-style',plugins_url('/css/jquery.ui.timepicker.css',__FILE__));
-		//wp_enqueue_style('aja-meta-boxes-css',plugins_url('css/ajax-meta-boxes.css',__FILE__),array(),'1.0.0','all');
 	}
 
 	/**
@@ -280,7 +273,11 @@ class MDWMetaboxes {
 
 				// sort fields by order //
 				usort($this->fields, function ($a, $b) {
-					return bccomp($a['order'], $b['order']);
+					if (function_exists('bccomp')) :
+						return bccomp($a['order'], $b['order']);
+					else :
+						return strcmp($a['order'], $b['order']);
+					endif;
 				});
 
 				foreach ($this->fields as $field) :
