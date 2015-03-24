@@ -11,6 +11,12 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
+### 2.0.8
+
+	Minor js loading tweaks.
+	
+	Fixed major bccmp() issue where the plugin would fail if not found.
+
 ### 2.0.7
 
 	Minor tweaks and adjustments. More of a super stable release point.
