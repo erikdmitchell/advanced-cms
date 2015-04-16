@@ -1,7 +1,7 @@
 MDW CMS
 ===========
 
-Adds cusomtized functionality to the site to make WordPress super awesome.  
+Adds customized functionality to the site to make WordPress super awesome.  
 
 Usage Instructions
 ===========
@@ -16,6 +16,8 @@ Changelog
 	Added a name check function (js based) to custom post types and taxonomies.
 	
 	Fixed glitch when editing a custom post type, the disabled button is turned off.
+	
+	Migrated functions from mdwmb_Functions to our mdwmb plugin file.
 
 ### 2.0.8
 

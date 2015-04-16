@@ -414,7 +414,8 @@ class MDWMetaboxes {
 					'quicktags' => false
 				);
 				//$html.=wp_editor($value,$args['id'],$settings);
-				$html.=mdwmb_Functions::mdwm_wp_editor($value,$args['id'],$settings);
+				//$html.=mdwmb_Functions::mdwm_wp_editor($value,$args['id'],$settings);
+				$html.=$this->mdwm_wp_editor($value,$args['id'],$settings);
 				break;
 			case 'media_images' :
 				$images=$this->get_all_media_images();
@@ -986,6 +987,67 @@ print_r($option_arr);
 			endforeach;
 
 		endforeach;
+	}
+
+	/**
+	 * mdwm_wp_editor function.
+	 *
+	 * @access protected
+	 * @param mixed $content
+	 * @param mixed $editor_id
+	 * @param mixed $settings
+	 * @return void
+	 */
+	protected function mdwm_wp_editor($content,$editor_id,$settings) {
+		ob_start(); // Turn on the output buffer
+		wp_editor($content,$editor_id,$settings); // Echo the editor to the buffer
+		$editor_contents = ob_get_clean(); // Store the contents of the buffer in a variable
+
+		return $editor_contents;
+	}
+
+	/**
+	 * get_post_meta_advanced function.
+	 *
+	 * generates a preformatted get post meta field
+	 *
+	 * @access public
+	 * @param mixed $post_id
+	 * @param string $key (default: '')
+	 * @param bool $single (default: false)
+	 * @param string $type (default: '')
+	 * @return void
+	 *
+	 * Not Used v2.0.9
+	 *
+	 */
+	public function get_post_meta_advanced($post_id,$key='',$single=false,$type='') {
+		$metadata=get_metadata('post', $post_id, $key, $single);
+
+		switch($type) :
+			case 'phone' :
+				$raw_phone=str_replace(' ','',$metadata);
+				$raw_phone=str_replace('-','',$raw_phone);
+				$raw_phone=str_replace('(','',$raw_phone);
+				$raw_phone=str_replace(')','',$raw_phone);
+				return '<a href="tel:'.$raw_phone.'">'.$metadata.'</a>';
+				break;
+			case 'fax' :
+				$raw_fax=str_replace(' ','',$metadata);
+				$raw_fax=str_replace('-','',$raw_fax);
+				$raw_fax=str_replace('(','',$raw_fax);
+				$raw_fax=str_replace(')','',$raw_fax);
+				return '<a href="fax:'.$raw_fax.'">'.$metadata.'</a>';
+				break;
+			case 'url' :
+				return '<a href="'.$metadata.'" target="_blank">'.$metadata.'</a>';
+				break;
+			default:
+				return $metadata;
+				break;
+		endswitch;
+
+		return $metadata;
 	}
 
 } // end class
