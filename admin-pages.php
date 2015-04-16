@@ -130,6 +130,7 @@ class MDWCMSgui {
 		$revisions=1;
 		$hierarchical=0;
 		$id=-1;
+		$btn_disabled='disabled';
 
 		// edit custom post type //
 		if (isset($_GET['edit']) && $_GET['edit']=='cpt') :
@@ -139,6 +140,7 @@ class MDWCMSgui {
 					$id=$key;
 				endif;
 			endforeach;
+			$btn_disabled=null;
 		endif;
 
 		if ($id!=-1)
@@ -216,7 +218,7 @@ class MDWCMSgui {
 					$html.='<span class="description">(default True)</span>';
 				$html.='</div>';
 			$html.='</div>';
-			$html.='<p class="submit"><input type="submit" name="add-cpt" id="submit" class="button button-primary" value="'.$btn_text.'" disabled></p>';
+			$html.='<p class="submit"><input type="submit" name="add-cpt" id="submit" class="button button-primary" value="'.$btn_text.'" '.$btn_disabled.'></p>';
 			$html.='<input type="hidden" name="cpt-id" id="cpt-id" value='.$id.' />';
 		$html.='</form>';
 
