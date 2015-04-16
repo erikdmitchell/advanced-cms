@@ -11,6 +11,10 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
+### 2.0.9
+
+
+
 ### 2.0.8
 
 	Minor js loading tweaks.
