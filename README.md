@@ -14,8 +14,10 @@ Changelog
 ### 2.0.9
 
 	Added a name check function (js based) to custom post types and taxonomies.
+	Added ob_start() to our admin notices to prevent a wp error.
 	
 	Fixed glitch when editing a custom post type, the disabled button is turned off.
+	Fixed order when adding a new field to a metabox in the admin area. The order was being set as 'default' not a number.
 	
 	Migrated functions from mdwmb_Functions to our mdwmb plugin file.
 

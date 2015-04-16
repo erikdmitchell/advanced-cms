@@ -303,7 +303,7 @@ class MDWCMSgui {
 					endforeach;
 				endif;
 
-				$html.=$this->build_field_rows('default',null,'default'); // add default field //
+				$html.=$this->build_field_rows('default',null,$field_counter); // add default field //
 			$html.='</div><!-- .add-fields -->';
 
 			$html.='<p class="submit">';
@@ -794,7 +794,9 @@ class MDWCMSgui {
 	 * @return void
 	 */
 	function admin_notices($class='error',$message='') {
+		ob_start();
 		echo '<div class="'.$class.'"><p>'.$message.'</p></div>';
+		//ob_end_clean();
 	}
 
 	/**
