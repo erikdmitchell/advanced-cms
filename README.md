@@ -13,7 +13,9 @@ Changelog
 
 ### 2.0.9
 
-
+	Added a name check function (js based) to custom post types and taxonomies.
+	
+	Fixed glitch when editing a custom post type, the disabled button is turned off.
 
 ### 2.0.8
 
