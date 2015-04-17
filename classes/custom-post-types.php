@@ -58,6 +58,9 @@ class MDWCustomPostTypes {
 				$supports[]='revisions';
 			endif;
 
+			if (isset($post_type['page_attributes']))
+				$supports[]='page-attributes';
+
 			register_post_type($post_type['name'],
 				array(
 					'labels' => array(

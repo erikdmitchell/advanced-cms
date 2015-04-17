@@ -1,12 +1,20 @@
+/**
+ * cms options (main)
+ */
+.mdw-cms-options {
+	margin: 10px 0;
+}
+.mdw-cms-options .description {
+	font-style: italic;
+}
+
+
 /* general
 ---------- */
 .tools_page_mdw-cms label {
 	font-weight: bold;
-	width: 110px;
-	padding-right: 5px;
 	display: inline-block;
 	vertical-align: top;
-	margin-top: 4px;
 }
 .tools_page_mdw-cms label.required {
 	color: #000;
@@ -16,46 +24,29 @@
 	content: "*";
 	padding-left: 3px;
 }
-.post-type-list-admin .post-type-cb {
-	margin-left: 116px;
+
+/* mb */
+.post-type-list-admin .post-types-cbs,
+.post-type-list-admin .post-types-cbs div {
+	padding-left: 0;
 }
-.post-type-list-admin .post-type-cb.first {
-	margin-left: 1px;
-	margin-top: 7px;
-	margin-bottom: 2px;
-}
-textarea#custom_code {
-	width: 70%;
-	height: 550px;
-	border: 1px solid #cccccc;
-	padding: 5px;
-	font-family: Tahoma, sans-serif;
-}
+
 .form-table .description {
 	float: left;
 }
 .tools_page_mdw-cms .description-ext {
 	font-weight: bold;
-	margin-left: 115px;
+
+	padding-left: 0;
 }
 
-
-form.custom-post-types,
-form.custom-taxonomies {
-	width: 50%;
-	float: left;
+.custom-taxonomies .form-row,
+.custom-metabox .form-row,
+.custom-post-types .form-row {
+	margin-bottom: 15px;
 }
-form.custom-metabox {
-	width: 75%;
-	float: left;
-}
-form.custom-post-types .description {
-	padding-left: 5px;
-}
-
-form.custom-post-types .form-row {
-	padding: 5px 0;
-	width: 470px;
+.custom-post-types .form-row > div {
+	padding-left: 0;
 }
 
 .add-fields .field-options .type {
@@ -63,9 +54,7 @@ form.custom-post-types .form-row {
 	overflow: hidden;
 	float: left;
 }
-.add-fields .field-options .type .field-label {
 
-}
 
 .field.options .option-row:nth-child(even) {
 	background: #ccc;
@@ -78,122 +67,53 @@ form.custom-post-types .form-row {
 #mdw-cms-name-error {
 	color: red;
 	font-weight: bold;
-	margin-left: 115px;
-	padding: 3px 0;
 }
 
 /* meta box fields
 ------------------ */
 form.custom-metabox .add-fields {
 	display: none;
-	padding: 0 0 10px 0;
-	overflow: hidden;
 }
 form.custom-metabox .add-fields.visible {
 	display: block;
 }
-.add-fields .fields-wrapper {
-	overflow: hidden;
-	width: 850px;
-	padding-bottom: 10px;
-}
 .add-fields .fields-wrapper .ui-icon-arrowthick-2-n-s {
-	width: 20px;
 	float: left;
-	margin-top: 5px;
 }
 .add-fields .fields-wrapper.default {
 	display: none;
 }
-
-.add-fields .form-row {
-	float: left;
-	width: 215px;
-}
-.add-fields .field-label {
-	float: left;
-	width: 250px;
-	margin: 0 5px;
-}
-.add-fields .field-options {
-	clear: both;
-	margin-left: 20px;
-}
-
-.add-fields .field-options .type .repeatable {
-	padding-left: 5px;
-}
-.add-fields .field-options .type .options {
-
-}
-.field.options .option-row {
-	padding: 5px;
-}
-.field.options .option-row input {
-	margin-right: 5px;
-}
-.add-fields .fields-wrapper label,
-.add-fields .field-options label {
-	width: 80px;
-}
-.add-fields .field.options > label {
-	font-size: 14px;
-	padding-bottom: 5px;
-}
-.add-fields .field-options .type .repeatable label {
-	margin-top: 4px;
-}
-.add-fields .field.repeatable .repeatable-box {
-		margin-top: 6px;
-}
-.add-option-field {
-	padding-top: 10px;
-}
 .wp-core-ui .button-primary.remove-field {
-	float: left;
 	background: #d64e07;
 	border-color: #b84609;
-	margin-left: 10px;
 }
 .wp-core-ui .button-primary.add-field {
-	margin-left: 15px;
 	background: #9ebaa0;
 	border-color: #90ab92;
 }
-.add-fields .description {
-	clear: both;
-	padding: 7px 0;
-	overflow: hidden;
-	margin-left: 20px;
+.add-fields .fields-wrapper label,
+.add-fields .fields-wrapper .ui-icon  {
+	margin-top: 3px;
 }
-.add-fields .description label {
-	width: 120px;
+.add-fields .fields-wrapper .field-options {
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
-.add-fields .description .field_description {
-	width: 450px;
+.add-fields .fields-wrapper .field-options label {
+	margin-top: -2px;
+	padding-right: 5px;
+}
+.add-fields .fields-wrapper .description {
+	margin-bottom: 20px;
+}
+.add-fields .fields-wrapper .description .fd {
+	padding: 0;
+	margin-left: -5px;
+}
+.add-fields .fields-wrapper .description .field_description {
+	width: 101%;
 }
 
-
-
-/* cpt */
-.custom-post-types-list {
-	width: 50%;
-	float: left;
-}
-.custom-metabox-list {
-	width: 25%;
-	float: left;
-}
-.custom-post-types-list .edit,
-.custom-post-types-list .delete
-.custom-metabox-list .edit,
-.custom-metabox-list .delete {
-	padding: 0 5px;
-}
-.custom-post-types-list .edit,
-.custom-metabox-list .edit {
-	padding-left: 10px;
-}
 
 /**/
 p.submit > #clear-files {

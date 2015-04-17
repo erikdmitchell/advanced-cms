@@ -14,16 +14,32 @@ class MDWCMSgui {
 		$this->update_mdw_cms_settings();
 
 		$this->options['version']=get_option('mdw_cms_version');
+		$this->options['options']=get_option('mdw_cms_options');
 		$this->options['metaboxes']=get_option('mdw_cms_metaboxes');
 		$this->options['post_types']=get_option('mdw_cms_post_types');
 		$this->options['taxonomies']=get_option('mdw_cms_taxonomies');
 	}
 
+	/**
+	 * build_admin_menu function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	function build_admin_menu() {
 		add_management_page('MDW CMS','MDW CMS','administrator','mdw-cms',array($this,'mdw_cms_page'));
 	}
 
-	function scripts_styles() {
+	/**
+	 * scripts_styles function.
+	 *
+	 * @access public
+	 * @param mixed $hook
+	 * @return void
+	 */
+	function scripts_styles($hook) {
+		$disable_bootstrap=false;
+
 		wp_enqueue_style('mdw-cms-gui-style',plugins_url('/css/admin.css',__FILE__));
 
 		wp_enqueue_script('jquery');
@@ -32,6 +48,13 @@ class MDWCMSgui {
 		wp_enqueue_script('namecheck-script',plugins_url('/js/jquery.namecheck.js',__FILE__),array('jquery'));
 		wp_enqueue_script('mdw-cms-admin-custom-post-types-script',plugins_url('/js/admin-custom-post-types.js',__FILE__),array('namecheck-script'));
 		wp_enqueue_script('mdw-cms-admin-custom-taxonomies-script',plugins_url('/js/admin-custom-taxonomies.js',__FILE__),array('namecheck-script'));
+
+		extract($this->options['options']);
+
+		if (!$disable_bootstrap) :
+			wp_enqueue_style('mdw-cms-bootstrap-custom-script',plugins_url('/css/bootstrap.css',__FILE__));
+			//wp_enqueue_style('mdw-cms-bootstrap-theme-custom-script',plugins_url('/css/bootstrap-theme.min.css',__FILE__));
+		endif;
 
 		$post_types=get_post_types();
 		$types=array();
@@ -46,6 +69,14 @@ class MDWCMSgui {
 		wp_localize_script('mdw-cms-admin-custom-taxonomies-script','wp_options',$taxonomy_options);
 	}
 
+	/**
+	 * mdw_cms_page function.
+	 *
+	 * our primary admin page, utlaizes tabs for internal navigation
+	 *
+	 * @access public
+	 * @return void
+	 */
 	function mdw_cms_page() {
 		$html=null;
 		$tabs=array(
@@ -56,7 +87,7 @@ class MDWCMSgui {
 		);
 		$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'cms-main';
 
-		$html.='<div class="wrap">';
+		$html.='<div class="mdw-cms-wrap">';
 			$html.='<h2>MDW CMS</h2>';
 
 			$html.='<h2 class="nav-tab-wrapper">';
@@ -95,18 +126,53 @@ class MDWCMSgui {
 	}
 
 	/**
+	 * default_admin_page function.
 	 *
+	 * the main (default) admin page. acts as a landing page.
+	 *
+	 * @access public
+	 * @return void
 	 */
 	function default_admin_page() {
 		$html=null;
+		$disable_bootstrap=false;
+		$options=$this->options['options'];
 
-		$html.='<h3></h3>';
+		$label_class='col-md-3';
+		$input_class='col-md-3';
+		$description_class='col-md-6';
+		$description_ext_class='col-md-9 col-md-offset-3';
+
+		$html.='<h3>Options</h3>';
+
+		if (isset($_POST['update-options']) && isset($_POST['options'])) :
+			$options=$this->update_options($_POST['options']);
+		endif;
+
+		extract($options);
 
 		$html.='<div class="mdw-cms-default">';
-			$html.='For more information, please <a href="https://bitbucket.org/millerdesign/mdw-cms/wiki/">visit our WIKI</a>. At this time, only admins can access the wiki. If you need access please contact us.';
+
+			$html.='<form class="mdw-cms-options col-md-12" method="post">';
+
+				$html.='<div class="mdw-cms-options-row row">';
+					$html.='<label for="options[disable_bootstrap]" class="'.$label_class.'">Disable Bootstrap</label>';
+					$html.='<input type="checkbox" name="options[disable_bootstrap]" class="'.$input_class.'" value="1" '.checked('1',$disable_bootstrap, false).' />';
+					$html.='<span class="description '.$description_class.'">If this box is checked, the MDW CMS bootstrap stylesheet will be disabled.</span>';
+					$html.='<div class="description-ext '.$description_ext_class.'">Our admin pages utilize some bootstrap styles for responsiveness. In some cases, this can cause conflicts with other themes and/or plugins that also use bootstrap.</div>';
+				$html.='</div>';
+
+				$html.='<p class="submit"><input type="submit" name="update-options" id="update-options" class="button button-primary" value="Update Options"></p>';
+				$html.='<input type="hidden" name="options[update]" value="1" />';
+
+			$html.='</form>';
+
+			$html.='<p>';
+				$html.='For more information, please <a href="https://bitbucket.org/millerdesign/mdw-cms/wiki/">visit our WIKI</a>. At this time, only admins can access the wiki. If you need access please contact us.';
+			$html.='</p>';
 
 			$html.=MDWCMSlegacy::get_legacy_page();
-		$html.='</div>';
+		$html.='</div><!-- .mdw-cms-default -->';
 
 		return $html;
 	}
@@ -129,8 +195,19 @@ class MDWCMSgui {
 		$editor=1;
 		$revisions=1;
 		$hierarchical=0;
+		$page_attributes=0;
 		$id=-1;
 		$btn_disabled='disabled';
+
+		$label_class='col-md-3';
+		$input_class='col-md-3';
+		$description_class='col-md-6';
+		$description_ext_class='col-md-9 col-md-offset-3';
+		$error_class='col-md-12';
+		$select_class='col-md-3';
+		$existing_label_class='col-md-5';
+		$edit_class='col-md-2';
+		$delete_class='col-md-2';
 
 		// edit custom post type //
 		if (isset($_GET['edit']) && $_GET['edit']=='cpt') :
@@ -148,92 +225,117 @@ class MDWCMSgui {
 
 		$html=null;
 
-		$html.='<form class="custom-post-types" method="post">';
-			$html.='<h3>Add New Custom Post Type</h3>';
-			$html.='<div class="form-row">';
-				$html.='<label for="name" class="required">Post Type Name</label>';
-				$html.='<input type="text" name="name" id="name" value="'.$name.'" />';
-				$html.='<span class="description">(e.g. movie)</span>';
-				$html.='<div id="mdw-cms-name-error" class=""></div>';
-				$html.='<div class="description-ext">Max 20 characters, can not contain capital letters or spaces. Reserved post types: post, page, attachment, revision, nav_menu_item.</div>';
-			$html.='</div>';
+		$html.='<div class="row">';
 
-			$html.='<div class="form-row">';
-				$html.='<label for="label">Label</label>';
-				$html.='<input type="text" name="label" id="label" value="'.$label.'" />';
-				$html.='<span class="description">(e.g. Movies)</span>';
-			$html.='</div>';
-
-			$html.='<div class="form-row">';
-				$html.='<label for="singular_label">Singular Label</label>';
-				$html.='<input type="text" name="singular_label" id="singular_label" value="'.$singular_label.'" />';
-				$html.='<span class="description">(e.g. Movie)</span>';
-			$html.='</div>';
-
-			$html.='<div class="form-row">';
-				$html.='<label for="description">Description</label>';
-				$html.='<textarea name="description" id="description" rows="4" cols="40">'.$description.'</textarea>';
-				//$html.='<span class="description">description</span>';
-			$html.='</div>';
-
-			$html.='<div class="advanced-options">';
-				$html.='<div class="form-row">';
-					$html.='<label for="title">Title</label>';
-					$html.='<select name="title" id="title">';
-						$html.='<option value="1" '.selected($title,1,false).'>True</option>';
-						$html.='<option value="0" '.selected($title,0,false).'>False</option>';
-					$html.='</select>';
-					$html.='<span class="description">(default True)</span>';
+			$html.='<form class="custom-post-types col-md-8" method="post">';
+				$html.='<h3>Add New Custom Post Type</h3>';
+				$html.='<div class="form-row row">';
+					$html.='<label for="name" class="required '.$label_class.'">Post Type Name</label>';
+					$html.='<input type="text" name="name" id="name" class="'.$input_class.'" value="'.$name.'" />';
+					$html.='<span class="description '.$description_class.'">(e.g. movie)</span>';
+					$html.='<div id="mdw-cms-name-error" class="'.$error_class.'"></div>';
+					$html.='<div class="description-ext '.$description_ext_class.'">Max 20 characters, can not contain capital letters or spaces. Reserved post types: post, page, attachment, revision, nav_menu_item.</div>';
 				$html.='</div>';
-				$html.='<div class="form-row">';
-					$html.='<label for="thumbnail">Thumbnail</label>';
-					$html.='<select name="thumbnail" id="thumbnaill">';
-						$html.='<option value="1" '.selected($thumbnail,1,false).'>True</option>';
-						$html.='<option value="0" '.selected($thumbnail,0,false).'>False</option>';
-					$html.='</select>';
-					$html.='<span class="description">(default True)</span>';
-				$html.='</div>';
-				$html.='<div class="form-row">';
-					$html.='<label for="editor">Editor</label>';
-					$html.='<select name="editor" id="editor">';
-						$html.='<option value="1" '.selected($editor,1,false).'>True</option>';
-						$html.='<option value="0" '.selected($editor,0,false).'>False</option>';
-					$html.='</select>';
-					$html.='<span class="description">(default True)</span>';
-				$html.='</div>';
-				$html.='<div class="form-row">';
-					$html.='<label for="revisions">Revisions</label>';
-					$html.='<select name="revisions" id="revisions">';
-						$html.='<option value="1" '.selected($revisions,1,false).'>True</option>';
-						$html.='<option value="0" '.selected($revisions,0,false).'>False</option>';
-					$html.='</select>';
-					$html.='<span class="description">(default True)</span>';
-				$html.='</div>';
-				$html.='<div class="form-row">';
-					$html.='<label for="hierarchical">Hierarchical</label>';
-					$html.='<select name="hierarchical" id="hierarchical">';
-						$html.='<option value="1" '.selected($hierarchical,1,false).'>True</option>';
-						$html.='<option value="0" '.selected($hierarchical,0,false).'>False</option>';
-					$html.='</select>';
-					$html.='<span class="description">(default True)</span>';
-				$html.='</div>';
-			$html.='</div>';
-			$html.='<p class="submit"><input type="submit" name="add-cpt" id="submit" class="button button-primary" value="'.$btn_text.'" '.$btn_disabled.'></p>';
-			$html.='<input type="hidden" name="cpt-id" id="cpt-id" value='.$id.' />';
-		$html.='</form>';
 
-		$html.='<div class="custom-post-types-list">';
-			$html.='<h3>Custom Post Types</h3>';
+				$html.='<div class="form-row row">';
+					$html.='<label for="label" class="'.$label_class.'">Label</label>';
+					$html.='<input type="text" name="label" id="label" class="'.$input_class.'" value="'.$label.'" />';
+					$html.='<span class="description '.$description_class.'">(e.g. Movies)</span>';
+				$html.='</div>';
 
-			if ($this->options['post_types']) :
-				foreach ($this->options['post_types'] as $cpt) :
-					$html.='<div class="cpt-row">';
-						$html.=$cpt['label'].'<span class="edit">[<a href="'.$base_url.'&edit=cpt&slug='.$cpt['name'].'">Edit</a>]</span><span class="delete">[<a href="'.$base_url.'&delete=cpt&slug='.$cpt['name'].'">Delete</a>]</span>';
+				$html.='<div class="form-row row">';
+					$html.='<label for="singular_label" class="'.$label_class.'">Singular Label</label>';
+					$html.='<input type="text" name="singular_label" id="singular_label" class="'.$input_class.'" value="'.$singular_label.'" />';
+					$html.='<span class="description '.$description_class.'">(e.g. Movie)</span>';
+				$html.='</div>';
+
+				$html.='<div class="form-row row">';
+					$html.='<label for="description" class="'.$label_class.'">Description</label>';
+					$html.='<textarea name="description" id="description" rows="4" cols="40">'.$description.'</textarea>';
+				$html.='</div>';
+
+				$html.='<div class="advanced-options">';
+					$html.='<div class="form-row row">';
+						$html.='<label for="title" class="'.$label_class.'">Title</label>';
+						$html.='<div class="'.$select_class.'">';
+							$html.='<select name="title" id="title">';
+								$html.='<option value="1" '.selected($title,1,false).'>True</option>';
+								$html.='<option value="0" '.selected($title,0,false).'>False</option>';
+							$html.='</select>';
+						$html.='</div>';
+						$html.='<span class="description '.$description_class.'">(default True)</span>';
 					$html.='</div>';
-				endforeach;
-			endif;
+					$html.='<div class="form-row row">';
+						$html.='<label for="thumbnail" class="'.$label_class.'">Thumbnail</label>';
+						$html.='<div class="'.$select_class.'">';
+							$html.='<select name="thumbnail" id="thumbnaill">';
+								$html.='<option value="1" '.selected($thumbnail,1,false).'>True</option>';
+								$html.='<option value="0" '.selected($thumbnail,0,false).'>False</option>';
+							$html.='</select>';
+						$html.='</div>';
+						$html.='<span class="description '.$description_class.'">(default True)</span>';
+					$html.='</div>';
+					$html.='<div class="form-row row">';
+						$html.='<label for="editor" class="'.$label_class.'">Editor</label>';
+						$html.='<div class="'.$select_class.'">';
+							$html.='<select name="editor" id="editor" >';
+								$html.='<option value="1" '.selected($editor,1,false).'>True</option>';
+								$html.='<option value="0" '.selected($editor,0,false).'>False</option>';
+							$html.='</select>';
+						$html.='</div>';
+						$html.='<span class="description '.$description_class.'">(default True)</span>';
+					$html.='</div>';
+					$html.='<div class="form-row row">';
+						$html.='<label for="revisions" class="'.$label_class.'">Revisions</label>';
+						$html.='<div class="'.$select_class.'">';
+							$html.='<select name="revisions" id="revisions">';
+								$html.='<option value="1" '.selected($revisions,1,false).'>True</option>';
+								$html.='<option value="0" '.selected($revisions,0,false).'>False</option>';
+							$html.='</select>';
+						$html.='</div>';
+						$html.='<span class="description '.$description_class.'">(default True)</span>';
+					$html.='</div>';
+					$html.='<div class="form-row row">';
+						$html.='<label for="hierarchical" class="'.$label_class.'">Hierarchical</label>';
+						$html.='<div class="'.$select_class.'">';
+							$html.='<select name="hierarchical" id="hierarchical">';
+								$html.='<option value="1" '.selected($hierarchical,1,false).'>True</option>';
+								$html.='<option value="0" '.selected($hierarchical,0,false).'>False</option>';
+							$html.='</select>';
+						$html.='</div>';
+						$html.='<span class="description '.$description_class.'">(default False)</span>';
+						$html.='<div class="description-ext '.$description_ext_class.'">Whether the post type is hierarchical (e.g. page). Allows Parent to be specified. Note: "page-attributes" must be set to true to show the parent select box.</div>';
+					$html.='</div>';
+					$html.='<div class="form-row row">';
+						$html.='<label for="page_attributes" class="'.$label_class.'">Page Attributes</label>';
+						$html.='<div class="'.$select_class.'">';
+							$html.='<select name="page_attributes" id="page_attributes">';
+								$html.='<option value="1" '.selected($page_attributes,1,false).'>True</option>';
+								$html.='<option value="0" '.selected($page_attributes,0,false).'>False</option>';
+							$html.='</select>';
+						$html.='</div>';
+						$html.='<span class="description '.$description_class.'">(default False)</span>';
+					$html.='</div>';
+				$html.='</div>';
+				$html.='<p class="submit"><input type="submit" name="add-cpt" id="submit" class="button button-primary" value="'.$btn_text.'" '.$btn_disabled.'></p>';
+				$html.='<input type="hidden" name="cpt-id" id="cpt-id" value='.$id.' />';
+			$html.='</form>';
 
-		$html.='</div>';
+			$html.='<div class="custom-post-types-list col-md-4">';
+				$html.='<h3>Custom Post Types</h3>';
+
+				if ($this->options['post_types']) :
+					foreach ($this->options['post_types'] as $cpt) :
+						$html.='<div class="cpt-row row">';
+							$html.='<span class="cpt '.$existing_label_class.'">'.$cpt['label'].'</span><span class="edit '.$edit_class.'">[<a href="'.$base_url.'&edit=cpt&slug='.$cpt['name'].'">Edit</a>]</span><span class="delete '.$delete_class.'">[<a href="'.$base_url.'&delete=cpt&slug='.$cpt['name'].'">Delete</a>]</span>';
+						$html.='</div>';
+					endforeach;
+				endif;
+
+			$html.='</div>';
+
+		$html.='</div><!-- .row -->';
+
 
 		return $html;
 	}
@@ -254,76 +356,86 @@ class MDWCMSgui {
 		$title=null;
 		$prefix=null;
 		$post_types=null;
-		$edit_class='';
+		$edit_class_v='';
 		$fields=false;
 		$field_counter=1;
+
+		$label_class='col-md-3';
+		$input_class='col-md-3';
+		$description_class='col-md-6';
+		$select_class='col-md-3';
+		$existing_label_class='col-md-5';
+		$edit_class='col-md-2';
+		$delete_class='col-md-2';
 
 		// edit //
 		if (isset($_GET['edit']) && $_GET['edit']=='mb') :
 			foreach ($this->options['metaboxes'] as $key => $mb) :
 				if ($mb['mb_id']==$_GET['mb_id']) :
 					extract($this->options['metaboxes'][$key]);
-					$edit_class='visible';
+					$edit_class_v='visible';
 					$btn_text='Update';
 				endif;
 			endforeach;
 		endif;
 
-		$html.='<h3>Metaboxes</h3>';
+		$html.='<div class="row">';
 
-		$html.='<form class="custom-metabox" method="post">';
-			$html.='<h3>Add Metabox</h3>';
-			$html.='<div class="form-row">';
-				$html.='<label for="mb_id" class="required">Metabox ID</label>';
-				$html.='<input type="text" name="mb_id" id="mb_id" value="'.$mb_id.'" />';
-				$html.='<span class="description">(e.g. movie_details)</span>';
-				//$html.='<div class="description-ext">Max 20 characters, can not contain capital letters or spaces. Reserved post types: post, page, attachment, revision, nav_menu_item.</div>';
-			$html.='</div>';
+			$html.='<form class="custom-metabox col-md-8" method="post">';
+				$html.='<h3>Add Metabox</h3>';
+				$html.='<div class="form-row row">';
+					$html.='<label for="mb_id" class="required '.$label_class.'">Metabox ID</label>';
+					$html.='<input type="text" name="mb_id" id="mb_id" class="'.$input_class.'" value="'.$mb_id.'" />';
+					$html.='<span class="description '.$description_class.'">(e.g. movie_details)</span>';
+				$html.='</div>';
 
-			$html.='<div class="form-row">';
-				$html.='<label for="title">Title</label>';
-				$html.='<input type="text" name="title" id="title" value="'.$title.'" />';
-				$html.='<span class="description">(e.g. Movie Details)</span>';
-			$html.='</div>';
+				$html.='<div class="form-row row">';
+					$html.='<label for="title" class="'.$label_class.'">Title</label>';
+					$html.='<input type="text" name="title" id="title" class="'.$input_class.'" value="'.$title.'" />';
+					$html.='<span class="description '.$description_class.'">(e.g. Movie Details)</span>';
+				$html.='</div>';
 
-			$html.='<div class="form-row">';
-				$html.='<label for="prefix">Prefix</label>';
-				$html.='<input type="text" name="prefix" id="prefix" value="'.$prefix.'" />';
-				$html.='<span class="description">(e.g. movies)</span>';
-			$html.='</div>';
+				$html.='<div class="form-row row">';
+					$html.='<label for="prefix" class="'.$label_class.'">Prefix</label>';
+					$html.='<input type="text" name="prefix" id="prefix" class="'.$input_class.'" value="'.$prefix.'" />';
+					$html.='<span class="description '.$description_class.'">(e.g. movies)</span>';
+				$html.='</div>';
 
-			$html.=$this->get_post_types_list($post_types);
+				$html.=$this->get_post_types_list($post_types);
 
-			$html.='<h3>Metabox Fields</h3>';
-			$html.='<div class="add-fields sortable-div '.$edit_class.'">';
-				if ($fields) :
-					foreach ($fields as $field_id => $field) :
-						$html.=$this->build_field_rows($field_id,$field,$field_counter);
-						$field_counter++;
+				$html.='<div class="add-fields sortable-div '.$edit_class_v.'">';
+
+					$html.='<h3>Metabox Fields</h3>';
+					if ($fields) :
+						foreach ($fields as $field_id => $field) :
+							$html.=$this->build_field_rows($field_id,$field,$field_counter);
+							$field_counter++;
+						endforeach;
+					endif;
+
+					$html.=$this->build_field_rows('default',null,$field_counter); // add default field //
+
+				$html.='</div><!-- .add-fields -->';
+				$html.='<p class="submit">';
+					$html.='<input type="submit" name="update-metabox" id="submit" class="button button-primary" value="'.$btn_text.'">';
+					$html.='<input type="button" name="add-field" id="add-field-btn" class="button button-primary add-field" value="Add Field">';
+				$html.='</p>';
+			$html.='</form>';
+
+			$html.='<div class="custom-metabox-list col-md-4">';
+				$html.='<h3>Custom Metaboxes</h3>';
+
+				if ($this->options['metaboxes']) :
+					foreach ($this->options['metaboxes'] as $mb) :
+						$html.='<div class="metabox-row row">';
+							$html.='<span class="mb '.$existing_label_class.'">'.$mb['title'].'</span><span class="edit '.$edit_class.'">[<a href="'.$base_url.'&edit=mb&mb_id='.$mb['mb_id'].'">Edit</a>]</span><span class="delete '.$delete_class.'">[<a href="'.$base_url.'&delete=mb&mb_id='.$mb['mb_id'].'">Delete</a>]</span>';
+						$html.='</div>';
 					endforeach;
 				endif;
 
-				$html.=$this->build_field_rows('default',null,$field_counter); // add default field //
-			$html.='</div><!-- .add-fields -->';
+			$html.='</div>';
 
-			$html.='<p class="submit">';
-				$html.='<input type="submit" name="update-metabox" id="submit" class="button button-primary" value="'.$btn_text.'">';
-				$html.='<input type="button" name="add-field" id="add-field-btn" class="button button-primary add-field" value="Add Field">';
-			$html.='</p>';
-		$html.='</form>';
-
-		$html.='<div class="custom-metabox-list">';
-			$html.='<h3>Custom Metaboxes</h3>';
-
-			if ($this->options['metaboxes']) :
-				foreach ($this->options['metaboxes'] as $mb) :
-					$html.='<div class="metabox-row">';
-						$html.=$mb['title'].'<span class="edit">[<a href="'.$base_url.'&edit=mb&mb_id='.$mb['mb_id'].'">Edit</a>]</span><span class="delete">[<a href="'.$base_url.'&delete=mb&mb_id='.$mb['mb_id'].'">Delete</a>]</span>';
-					$html.='</div>';
-				endforeach;
-			endif;
-
-		$html.='</div>';
+		$html.='</div><!-- .row -->';
 
 		return $html;
 	}
@@ -345,6 +457,15 @@ class MDWCMSgui {
 		$show_admin_col=1;
 		$id=-1;
 
+		$label_class='col-md-3';
+		$input_class='col-md-3';
+		$description_class='col-md-6';
+		$description_ext_class='col-md-9 col-md-offset-3';
+		$error_class='col-md-12';
+		$existing_label_class='col-md-5';
+		$edit_class='col-md-2';
+		$delete_class='col-md-2';
+
 		// edit custom taxonomy //
 		if (isset($_GET['edit']) && $_GET['edit']=='tax') :
 			foreach ($this->options['taxonomies'] as $key => $tax) :
@@ -361,67 +482,44 @@ class MDWCMSgui {
 
 		$html=null;
 
-		$html.='<form class="custom-taxonomies" method="post">';
-			$html.='<h3>Add New Custom Taxonomy</h3>';
-			$html.='<div class="form-row">';
-				$html.='<label for="name" class="required">Name</label>';
-				$html.='<input type="text" name="name" id="name" value="'.$name.'" />';
-				$html.='<span class="description">(e.g. brands)</span>';
-				$html.='<div id="mdw-cms-name-error" class=""></div>';
-				$html.='<div class="description-ext">Max 20 characters, can not contain capital letters or spaces. Cannot be the same name as a (custom) post type.</div>';
-			$html.='</div>';
+		$html.='<div class="row">';
 
-			$html.='<div class="form-row">';
-				$html.='<label for="label">Label</label>';
-				$html.='<input type="text" name="label" id="label" value="'.$label.'" />';
-				$html.='<span class="description">(e.g. Brands)</span>';
-			$html.='</div>';
-
-			$html.=$this->get_post_types_list($object_type);
-/*
-			$html.='<div class="advanced-options">';
-				$html.='<div class="form-row">';
-					$html.='<label for="hierarchical">Hierarchical</label>';
-					$html.='<select name="hierarchical" id="hierarchical">';
-						$html.='<option value="1" '.selected($hierarchical,1,false).'>True</option>';
-						$html.='<option value="0" '.selected($hierarchical,0,false).'>False</option>';
-					$html.='</select>';
-					$html.='<span class="description">(default True)</span>';
+			$html.='<form class="custom-taxonomies col-md-8" method="post">';
+				$html.='<h3>Add New Custom Taxonomy</h3>';
+				$html.='<div class="form-row row">';
+					$html.='<label for="name" class="required '.$label_class.'">Name</label>';
+					$html.='<input type="text" name="name" id="name" class="'.$input_class.'" value="'.$name.'" />';
+					$html.='<span class="description '.$description_class.'">(e.g. brands)</span>';
+					$html.='<div id="mdw-cms-name-error" class="'.$error_class.'"></div>';
+					$html.='<div class="description-ext '.$description_ext_class.'">Max 20 characters, can not contain capital letters or spaces. Cannot be the same name as a (custom) post type.</div>';
 				$html.='</div>';
-				$html.='<div class="form-row">';
-					$html.='<label for="show_ui">Show UI</label>';
-					$html.='<select name="show_ui" id="show_ui">';
-						$html.='<option value="1" '.selected($show_ui,1,false).'>True</option>';
-						$html.='<option value="0" '.selected($show_ui,0,false).'>False</option>';
-					$html.='</select>';
-					$html.='<span class="description">(default True)</span>';
+
+				$html.='<div class="form-row row">';
+					$html.='<label for="label" class="'.$label_class.'">Label</label>';
+					$html.='<input type="text" name="label" id="label" class="'.$input_class.'" value="'.$label.'" />';
+					$html.='<span class="description '.$description_class.'">(e.g. Brands)</span>';
 				$html.='</div>';
-				$html.='<div class="form-row">';
-					$html.='<label for="show_admin_col">Show Admin Column</label>';
-					$html.='<select name="show_admin_col" id="show_admin_col">';
-						$html.='<option value="1" '.selected($show_admin_col,1,false).'>True</option>';
-						$html.='<option value="0" '.selected($show_admin_col,0,false).'>False</option>';
-					$html.='</select>';
-					$html.='<span class="description">(default True)</span>';
-				$html.='</div>';
-			$html.='</div>';
-*/
-			$html.='<p class="submit"><input type="submit" name="add-tax" id="submit" class="button button-primary" value="'.$btn_text.'" disabled></p>';
-			$html.='<input type="hidden" name="tax-id" id="tax-id" value='.$id.' />';
-		$html.='</form>';
 
-		$html.='<div class="custom-taxonomies-list">';
-			$html.='<h3>Custom Taxonomies</h3>';
+				$html.=$this->get_post_types_list($object_type);
 
-			if ($this->options['taxonomies']) :
-				foreach ($this->options['taxonomies'] as $tax) :
-					$html.='<div class="tax-row">';
-						$html.=$tax['args']['label'].'<span class="edit">[<a href="'.$base_url.'&edit=tax&slug='.$tax['name'].'">Edit</a>]</span><span class="delete">[<a href="'.$base_url.'&delete=tax&slug='.$tax['name'].'">Delete</a>]</span>';
-					$html.='</div>';
-				endforeach;
-			endif;
+				$html.='<p class="submit"><input type="submit" name="add-tax" id="submit" class="button button-primary" value="'.$btn_text.'" disabled></p>';
+				$html.='<input type="hidden" name="tax-id" id="tax-id" value='.$id.' />';
+			$html.='</form>';
 
-		$html.='</div><!-- .custom-taxonomies-list -->';
+			$html.='<div class="custom-taxonomies-list col-md-4">';
+				$html.='<h3>Custom Taxonomies</h3>';
+
+				if ($this->options['taxonomies']) :
+					foreach ($this->options['taxonomies'] as $tax) :
+						$html.='<div class="tax-row row">';
+							$html.='<span class="tax '.$existing_label_class.'">'.$tax['args']['label'].'</span><span class="edit '.$edit_class.'">[<a href="'.$base_url.'&edit=tax&slug='.$tax['name'].'">Edit</a>]</span><span class="delete '.$delete_class.'">[<a href="'.$base_url.'&delete=tax&slug='.$tax['name'].'">Delete</a>]</span>';
+						$html.='</div>';
+					endforeach;
+				endif;
+
+			$html.='</div><!-- .custom-taxonomies-list -->';
+
+		$html.='</div><!-- .row -->';
 
 		return $html;
 	}
@@ -435,6 +533,16 @@ class MDWCMSgui {
 		$html=null;
 		$field_description=null;
 
+		$label_class='col-md-3';
+		$input_class='col-md-3';
+		$description_class='col-md-6';
+		//$description_ext_class='col-md-9 col-md-offset-3';
+		//$error_class='col-md-12';
+		$select_class='col-md-3';
+		//$existing_label_class='col-md-5';
+		//$edit_class='col-md-2';
+		//$delete_class='col-md-2';
+
 		if (isset($field['repeatable']) && $field['repeatable']) :
 			$repeatable_checked='checked="checked"';
 		else :
@@ -444,26 +552,38 @@ class MDWCMSgui {
 		if (isset($field['field_description']) && !empty($field['field_description']))
 			$field_description=$field['field_description'];
 
-		$html.='<div class="sortable fields-wrapper '.$classes.'" id="fields-wrapper-'.$field_id.'">';
-			$html.='<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>';
-			$html.='<div class="form-row">';
-				$html.='<label for="field_type">Field Type</label>';
-				$html.='<select class="field_type name-item" name="fields['.$field_id.'][field_type]">';
-					$html.='<option value=0>Select One</option>';
-					foreach ($MDWMetaboxes->fields as $field_type => $setup) :
-						$html.='<option value="'.$field_type.'" '.selected($field['field_type'],$field_type,false).'>'.$field_type.'</option>';
-					endforeach;
-				$html.='</select>';
+		$html.='<div class="row sortable fields-wrapper '.$classes.'" id="fields-wrapper-'.$field_id.'">';
+
+			$html.='<div class="col-md-1">';
+				$html.='<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>';
 			$html.='</div>';
 
-			$html.='<div class="field-label">';
-				$html.='<label for="field_label">Label</label>';
-				$html.='<input type="text" name="fields['.$field_id.'][field_label]" class="field_label name-item" value="'.$field['field_label'].'" />';
+			$html.='<div class="col-md-4">';
+				$html.='<div class="row">';
+					$html.='<label for="field_type" class="col-md-5">Field Type</label>';
+					$html.='<div class="col-md-7">';
+						$html.='<select class="field_type name-item" name="fields['.$field_id.'][field_type]">';
+							$html.='<option value=0>Select One</option>';
+							foreach ($MDWMetaboxes->fields as $field_type => $setup) :
+								$html.='<option value="'.$field_type.'" '.selected($field['field_type'],$field_type,false).'>'.$field_type.'</option>';
+							endforeach;
+						$html.='</select>';
+					$html.='</div>';
+				$html.='</div><!-- .row -->';
 			$html.='</div>';
 
-			$html.='<input type="button" name="remove-field" id="remove-field-btn" class="button button-primary remove-field" data-id="fields-wrapper-'.$field_id.'" value="Remove Field">';
+			$html.='<div class="field-label col-md-4">';
+				$html.='<div class="row">';
+					$html.='<label for="field_label" class="col-md-4">Label</label>';
+					$html.='<input type="text" name="fields['.$field_id.'][field_label]" class="field_label name-item col-md-8" value="'.$field['field_label'].'" />';
+				$html.='</div>';
+			$html.='</div>';
 
-			$html.='<div class="field-options" id="">';
+			$html.='<div class="col-md-3">';
+				$html.='<input type="button" name="remove-field" id="remove-field-btn" class="button button-primary remove-field" data-id="fields-wrapper-'.$field_id.'" value="Remove">';
+			$html.='</div>';
+
+			$html.='<div class="field-options col-md-12" id="">';
 				foreach ($MDWMetaboxes->fields as $field_type => $setup) :
 					$html.='<div class="type" data-field-type="'.$field_type.'">';
 						if ($setup['repeatable']) :
@@ -503,15 +623,31 @@ class MDWCMSgui {
 				endforeach;
 			$html.='</div><!-- .field-options -->';
 
-			$html.='<div class="description">';
-				$html.='<label for="field_description">Field Description</label>';
-				$html.='<input type="text" name="fields['.$field_id.'][field_description]" class="field_description" value="'.$field_description.'" />';
+			$html.='<div class="description col-md-12">';
+				$html.='<div class="row">';
+					$html.='<label for="field_description" class="col-md-3">Field Description</label>';
+					$html.='<div class="col-md-6 fd">';
+						$html.='<input type="text" name="fields['.$field_id.'][field_description]" class="field_description" value="'.$field_description.'" />';
+					$html.='</div>';
+				$html.='</div>';
 			$html.='</div>';
 
 			$html.='<input type="hidden" name="fields['.$field_id.'][order]" class="order" value="'.$order.'" />';
 		$html.='</div><!-- .fields-wrapper -->';
 
 		return $html;
+	}
+
+	function update_options($options) {
+		if (!$options['update'])
+			return false;
+
+		$new_options=$options;
+		unset($new_options['update']); // a temp var passed, remove it
+
+		update_option('mdw_cms_options',$new_options);
+
+		return get_option('mdw_cms_options');
 	}
 
 	/**
@@ -630,6 +766,7 @@ class MDWCMSgui {
 	 */
 	public static function update_custom_post_types($data=array()) {
 		$post_types=get_option('mdw_cms_post_types');
+		$post_types_s=serialize($post_types);
 
 		if (!isset($data['name']) || $data['name']=='')
 			return false;
@@ -643,7 +780,8 @@ class MDWCMSgui {
 			'thumbnail' => $data['thumbnail'],
 			'editor' => $data['editor'],
 			'revisions' => $data['revisions'],
-			'hierarchical' => $data['hierarchical']
+			'hierarchical' => $data['hierarchical'],
+			'page_attributes' => $data['page_attributes']
 		);
 
 		if ($data['cpt-id']!=-1) :
@@ -657,6 +795,10 @@ class MDWCMSgui {
 			endif;
 			$post_types[]=$arr;
 		endif;
+
+		// we are simply updating the same info -- force true //
+		if ($post_types_s==serialize($post_types))
+			return true;
 
 		return update_option('mdw_cms_post_types',$post_types);
 	}
@@ -814,25 +956,34 @@ class MDWCMSgui {
 		);
 		$post_types_arr=get_post_types($args);
 
-		$html.='<div class="form-row post-type-list-admin">';
-			$html.='<label for="post_type">Post Type</label>';
-			$counter=0;
-			foreach ($post_types_arr as $type) :
-				if ($counter==0) :
-					$class='first';
-				else :
-					$class='';
-				endif;
+		$label_class='col-md-3';
+		$input_class='col-md-3';
 
-				if ($selected_pt && in_array($type,$selected_pt)) :
-					$checked='checked=checked';
-				else :
-					$checked=null;
-				endif;
+		$html.='<div class="form-row row post-type-list-admin">';
+			$html.='<label for="post_type" class="'.$label_class.'">Post Type</label>';
+			$html.='<div class="post-types-cbs '.$input_class.'">';
+				$counter=0;
+				foreach ($post_types_arr as $type) :
+					if ($counter==0) :
+						$class='first';
+					else :
+						$class='';
+					endif;
 
-				$html.='<input class="post-type-cb '.$class.'" type="checkbox" name="post_types[]" value="'.$type.'" '.$checked.'>'.$type.'<br />';
-				$counter++;
-			endforeach;
+					if ($selected_pt && in_array($type,$selected_pt)) :
+						$checked='checked=checked';
+					else :
+						$checked=null;
+					endif;
+
+
+					$html.='<div class="col-md-12">';
+						$html.='<input type="checkbox" name="post_types[]" value="'.$type.'" '.$checked.'>'.$type.'<br />';
+					$html.='</div>';
+
+					$counter++;
+				endforeach;
+			$html.='</div>';
 		$html.='</div>';
 
 		return $html;

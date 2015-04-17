@@ -11,6 +11,15 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
+### 2.1.0
+
+	Added bootstrap grid to the plugin. For admin layout only at this point.
+	Added 'page attributes' as an option for custom post types.
+	Added 'options' to the main page in the cms plugin. Plan is for further development of this.
+	Added more detailed descriptions to the options in our post types, metaboxes, etc.
+	
+	Reworked some admin styling beyond bootstrap.
+
 ### 2.0.9
 
 	Added a name check function (js based) to custom post types and taxonomies.
