@@ -7,6 +7,9 @@
 .mdw-cms-options .description {
 	font-style: italic;
 }
+.mdw-cms-options input[type=checkbox] {
+	margin: 0;
+}
 
 
 /* general
