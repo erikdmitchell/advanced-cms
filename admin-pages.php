@@ -153,7 +153,7 @@ class MDWCMSgui {
 
 		$html.='<div class="mdw-cms-default">';
 
-			$html.='<form class="mdw-cms-options col-md-12" method="post">';
+			$html.='<form class="mdw-cms-options" method="post">';
 
 				$html.='<div class="mdw-cms-options-row row">';
 					$html.='<label for="options[disable_bootstrap]" class="'.$label_class.'">Disable Bootstrap</label>';

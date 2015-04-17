@@ -113,7 +113,9 @@ form.custom-metabox .add-fields.visible {
 .add-fields .fields-wrapper .description .field_description {
 	width: 101%;
 }
-
+#add-field-btn {
+	margin-left: 10px;
+}
 
 /**/
 p.submit > #clear-files {

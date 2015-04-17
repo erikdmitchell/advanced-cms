@@ -279,9 +279,11 @@ class MDWMetaboxes {
 						return strcmp($a['order'], $b['order']);
 					endif;
 				});
+/*
 echo '<pre>';
 print_r($this->fields);
 echo '</pre>';
+*/
 				foreach ($this->fields as $field) :
 					$classes=$field['id'].' type-'.$field['type'];
 
