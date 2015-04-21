@@ -87,7 +87,14 @@ class MDWMetaboxes {
 		add_action('wp_ajax_remove_duplicate_metabox_field',array($this,'ajax_remove_duplicate_metabox_field'));
 	}
 
-	function register_admin_scripts_styles() {
+	/**
+	 * register_admin_scripts_styles function.
+	 *
+	 * @access public
+	 * @param mixed $hook
+	 * @return void
+	 */
+	function register_admin_scripts_styles($hook) {
 		global $post;
 
 		wp_enqueue_style('mdwmb-admin-css',plugins_url('/css/admin.css',__FILE__));
@@ -137,7 +144,10 @@ class MDWMetaboxes {
 	}
 
 	/**
+	 * register_scripts_styles function.
 	 *
+	 * @access public
+	 * @return void
 	 */
 	function register_scripts_styles() {
 		wp_enqueue_style('custom-video-js_css',plugins_url('/css/custom-video-js.css',__FILE__));

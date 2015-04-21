@@ -32,26 +32,43 @@ $j(document).ready(function() {
 	$j('#add-field-btn').live('click', function() {
 		var newID=0;
 		var lastFieldID='';
-		var $clonedElement=$j('#fields-wrapper-default').clone();
+		//var $clonedElement=$j('#fields-wrapper-default').clone();
 
 		$j('.fields-wrapper').each(function(i) {
 			newID=i+1;
 			lastFieldID=$j(this).attr('id');
 		});
 
+		var $clonedElement=$j('#'+lastFieldID).clone(); // clone element
+
 		// clean up and configure our cloned element (classes, ids, etc)
 		var cloneID='fields-wrapper-'+newID;
 
 		$clonedElement.removeClass('default');
 		$clonedElement.attr('id',cloneID);
-
 		$clonedElement.insertAfter('#'+lastFieldID);
 
+		// get the id number of the last element in arr for our find and replace //
+		var lastFieldArr=lastFieldID.split('-');
+		var lastFieldIDNum=lastFieldArr.pop();
+
+		// replace lastFieldIDNum with our new attribute name via new id //
 		$j('#'+cloneID+' .name-item').each(function() {
 			var attrName=$j(this).attr('name');
-			var attrNewName=attrName.replace('default',newID);
+			var attrNewName=attrName.replace(lastFieldIDNum,newID);
 			$j(this).attr('name',attrNewName);
 		});
+
+		// clear all input values (reset) - except butons //
+		$j('#fields-wrapper-'+newID).find('input').each(function() {
+			if ($j(this).attr('type')!='button') {
+				$j(this).val('');
+			}
+		});
+
+		var lastFieldOrder=parseInt($j('#'+lastFieldID+' .order').val()); // last field order (as int) //
+
+		$j('#'+cloneID+' .order').val(lastFieldOrder+1); // set new field order //
 
 		$j('#'+cloneID+' .remove-field').attr('data-id','fields-wrapper-'+newID); // set our button to remove field
 	});

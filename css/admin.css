@@ -29,8 +29,7 @@
 }
 
 /* mb */
-.post-type-list-admin .post-types-cbs,
-.post-type-list-admin .post-types-cbs div {
+.post-type-list-admin .post-types-cbs {
 	padding-left: 0;
 }
 
@@ -39,7 +38,6 @@
 }
 .tools_page_mdw-cms .description-ext {
 	font-weight: bold;
-
 	padding-left: 0;
 }
 
@@ -55,7 +53,6 @@
 .add-fields .field-options .type {
 	display: none;
 	overflow: hidden;
-	float: left;
 }
 
 
@@ -80,12 +77,25 @@ form.custom-metabox .add-fields {
 form.custom-metabox .add-fields.visible {
 	display: block;
 }
+.add-fields .fields-wrapper {
+	margin-bottom: 20px;
+}
+.add-fields .fields-wrapper .fields-wrapper-border {
+/*
+	border: 1px solid #ccc;
+	overflow: hidden;
+	padding-top: 10px;
+	padding-bottom: 10px;
+*/
+}
 .add-fields .fields-wrapper .ui-icon-arrowthick-2-n-s {
 	float: left;
 }
+/*
 .add-fields .fields-wrapper.default {
 	display: none;
 }
+*/
 .wp-core-ui .button-primary.remove-field {
 	background: #d64e07;
 	border-color: #b84609;
@@ -100,21 +110,24 @@ form.custom-metabox .add-fields.visible {
 }
 .add-fields .fields-wrapper .field-options {
 	margin-top: 5px;
-	margin-bottom: 5px;
+/* 	margin-bottom: 5px; */
 }
 .add-fields .fields-wrapper .field-options label {
 	margin-top: -2px;
 	padding-right: 5px;
 }
-.add-fields .fields-wrapper .description {
-	margin-bottom: 20px;
-}
 .add-fields .fields-wrapper .description .fd {
-	padding: 0;
-	margin-left: -5px;
 }
 .add-fields .fields-wrapper .description .field_description {
-	width: 101%;
+	/* width: 101%; */
+}
+.add-fields .fields-wrapper .description,
+.add-fields .fields-wrapper .field-id,
+.add-fields .fields-wrapper .remove,
+.add-fields .fields-wrapper .field-label {
+	margin-top: 5px;
+}
+.add-fields .fields-wrapper .field-id .field-id-id {
 }
 #add-field-btn {
 	margin-left: 10px;

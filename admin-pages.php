@@ -384,20 +384,28 @@ class MDWCMSgui {
 			$html.='<form class="custom-metabox col-md-8" method="post">';
 				$html.='<h3>Add Metabox</h3>';
 				$html.='<div class="form-row row">';
-					$html.='<label for="mb_id" class="required '.$label_class.'">Metabox ID</label>';
-					$html.='<input type="text" name="mb_id" id="mb_id" class="'.$input_class.'" value="'.$mb_id.'" />';
+					//$html.='<div class="">';
+						$html.='<label for="mb_id" class="required '.$label_class.'">Metabox ID</label>';
+					//$html.='</div>';
+					$html.='<div class="'.$input_class.'">';
+						$html.='<input type="text" name="mb_id" id="mb_id" class="" value="'.$mb_id.'" />';
+					$html.='</div>';
 					$html.='<span class="description '.$description_class.'">(e.g. movie_details)</span>';
 				$html.='</div>';
 
 				$html.='<div class="form-row row">';
 					$html.='<label for="title" class="'.$label_class.'">Title</label>';
-					$html.='<input type="text" name="title" id="title" class="'.$input_class.'" value="'.$title.'" />';
+					$html.='<div class="'.$input_class.'">';
+						$html.='<input type="text" name="title" id="title" class="" value="'.$title.'" />';
+					$html.='</div>';
 					$html.='<span class="description '.$description_class.'">(e.g. Movie Details)</span>';
 				$html.='</div>';
 
 				$html.='<div class="form-row row">';
 					$html.='<label for="prefix" class="'.$label_class.'">Prefix</label>';
-					$html.='<input type="text" name="prefix" id="prefix" class="'.$input_class.'" value="'.$prefix.'" />';
+					$html.='<div class="'.$input_class.'">';
+						$html.='<input type="text" name="prefix" id="prefix" class="" value="'.$prefix.'" />';
+					$html.='</div>';
 					$html.='<span class="description '.$description_class.'">(e.g. movies)</span>';
 				$html.='</div>';
 
@@ -413,7 +421,11 @@ class MDWCMSgui {
 						endforeach;
 					endif;
 
-					$html.=$this->build_field_rows('default',null,$field_counter); // add default field //
+					$field_id++; // increase our field id for our 'default' field //
+
+					$html.=$this->build_field_rows($field_id,null,$field_counter); // add 'default' field //
+
+					//$html.=$this->build_field_rows('default',null,$field_counter); // add default field //
 
 				$html.='</div><!-- .add-fields -->';
 				$html.='<p class="submit">';
@@ -543,6 +555,14 @@ class MDWCMSgui {
 		//$edit_class='col-md-2';
 		//$delete_class='col-md-2';
 
+		if (isset($_GET['edit']) && $_GET['edit']=='mb') :
+			foreach ($this->options['metaboxes'] as $key => $mb) :
+				if ($mb['mb_id']==$_GET['mb_id']) :
+					extract($this->options['metaboxes'][$key]);
+				endif;
+			endforeach;
+		endif;
+
 		if (isset($field['repeatable']) && $field['repeatable']) :
 			$repeatable_checked='checked="checked"';
 		else :
@@ -553,86 +573,110 @@ class MDWCMSgui {
 			$field_description=$field['field_description'];
 
 		$html.='<div class="row sortable fields-wrapper '.$classes.'" id="fields-wrapper-'.$field_id.'">';
-
-			$html.='<div class="col-md-1">';
-				$html.='<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>';
-			$html.='</div>';
-
-			$html.='<div class="col-md-4">';
-				$html.='<div class="row">';
-					$html.='<label for="field_type" class="col-md-5">Field Type</label>';
-					$html.='<div class="col-md-7">';
-						$html.='<select class="field_type name-item" name="fields['.$field_id.'][field_type]">';
-							$html.='<option value=0>Select One</option>';
-							foreach ($MDWMetaboxes->fields as $field_type => $setup) :
-								$html.='<option value="'.$field_type.'" '.selected($field['field_type'],$field_type,false).'>'.$field_type.'</option>';
-							endforeach;
-						$html.='</select>';
-					$html.='</div>';
-				$html.='</div><!-- .row -->';
-			$html.='</div>';
-
-			$html.='<div class="field-label col-md-4">';
-				$html.='<div class="row">';
-					$html.='<label for="field_label" class="col-md-4">Label</label>';
-					$html.='<input type="text" name="fields['.$field_id.'][field_label]" class="field_label name-item col-md-8" value="'.$field['field_label'].'" />';
+			$html.='<div class="fields-wrapper-border">';
+				$html.='<div class="col-md-1">';
+					$html.='<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>';
 				$html.='</div>';
-			$html.='</div>';
 
-			$html.='<div class="col-md-3">';
-				$html.='<input type="button" name="remove-field" id="remove-field-btn" class="button button-primary remove-field" data-id="fields-wrapper-'.$field_id.'" value="Remove">';
-			$html.='</div>';
+				$html.='<div class="col-md-11">';
+					$html.='<div class="row">';
+						$html.='<div class="col-md-3 field-type-label">';
+							$html.='<label for="field_type">Field Type</label>';
+						$html.='</div>';
+						$html.='<div class="col-md-9">';
+							$html.='<select class="field_type name-item" name="fields['.$field_id.'][field_type]">';
+								$html.='<option value=0>Select One</option>';
+								foreach ($MDWMetaboxes->fields as $field_type => $setup) :
+									$html.='<option value="'.$field_type.'" '.selected($field['field_type'],$field_type,false).'>'.$field_type.'</option>';
+								endforeach;
+							$html.='</select>';
+						$html.='</div>';
+					$html.='</div><!-- .row -->';
+				$html.='</div>';
 
-			$html.='<div class="field-options col-md-12" id="">';
-				foreach ($MDWMetaboxes->fields as $field_type => $setup) :
-					$html.='<div class="type" data-field-type="'.$field_type.'">';
-						if ($setup['repeatable']) :
-							$html.='<div class="field repeatable">';
-								$html.='<label for="repeatable">Repeatable</label>';
-								$html.='<input type="checkbox" name="fields['.$field_id.'][repeatable]" value="1" class="repeatable-box name-item" '.$repeatable_checked.' />';
-							$html.='</div>';
-						endif;
-
-						if ($setup['options']) :
-							$html.='<div class="field options" id="field-options-'.$field_id.'">';
-								$html.='<label for="options">Options</label>';
-								// get options //
-								if (isset($field['options']) && !empty($field['options'])) :
-									foreach ($field['options'] as $key => $option) :
-										$html.='<div class="option-row" id="option-row-'.$key.'">';
-											$html.='<label for="options-default-name">Name</label>';
-											$html.='<input type="text" name="fields['.$field_id.'][options]['.$key.'][name]" class="options-item name" value="'.$option['name'].'" />';
-											$html.='<label for="options-default-value">Value</label>';
-											$html.='<input type="text" name="fields['.$field_id.'][options]['.$key.'][value]" class="options-item value" value="'.$option['value'].'" />';
-										$html.='</div><!-- .option-row -->';
-									endforeach;
-								endif;
-
-								// blank option //
-								$html.='<div class="option-row default" id="option-row-default">';
-									$html.='<label for="options-default-name">Name</label>';
-									$html.='<input type="text" name="fields['.$field_id.'][options][default][name]" class="options-item name" value="" />';
-									$html.='<label for="options-default-value">Value</label>';
-									$html.='<input type="text" name="fields['.$field_id.'][options][default][value]" class="options-item value" value="" />';
-								$html.='</div><!-- .option-row -->';
-
-								$html.='<div class="add-option-field"><input type="button" name="add-option-field" class="add-option-field-btn button button-primary" value="Add Option"></div>';
-							$html.='</div>';
-						endif;
-					$html.='</div>';
-				endforeach;
-			$html.='</div><!-- .field-options -->';
-
-			$html.='<div class="description col-md-12">';
-				$html.='<div class="row">';
-					$html.='<label for="field_description" class="col-md-3">Field Description</label>';
-					$html.='<div class="col-md-6 fd">';
-						$html.='<input type="text" name="fields['.$field_id.'][field_description]" class="field_description" value="'.$field_description.'" />';
+				$html.='<div class="field-label col-md-11 col-md-offset-1">';
+					$html.='<div class="row">';
+						$html.='<div class="col-md-3 field-label-label">';
+							$html.='<label for="field_label">Label</label>';
+						$html.='</div>';
+						$html.='<div class="col-md-9 label-input">';
+							$html.='<input type="text" name="fields['.$field_id.'][field_label]" class="field_label name-item" value="'.$field['field_label'].'" />';
+						$html.='</div>';
 					$html.='</div>';
 				$html.='</div>';
-			$html.='</div>';
 
-			$html.='<input type="hidden" name="fields['.$field_id.'][order]" class="order" value="'.$order.'" />';
+				$html.='<div class="field-options col-md-11 col-md-offset-1" id="">';
+					foreach ($MDWMetaboxes->fields as $field_type => $setup) :
+						$html.='<div class="type" data-field-type="'.$field_type.'">';
+							if ($setup['repeatable']) :
+								$html.='<div class="field repeatable row">';
+									$html.='<div class="col-md-3 field-repeatable-label">';
+										$html.='<label for="repeatable">Repeatable</label>';
+									$html.='</div>';
+									$html.='<div class="col-md-9 field-repeatable-check">';
+										$html.='<input type="checkbox" name="fields['.$field_id.'][repeatable]" value="1" class="repeatable-box name-item" '.$repeatable_checked.' />';
+									$html.='</div>';
+								$html.='</div>';
+							endif;
+
+							if ($setup['options']) :
+								$html.='<div class="field options" id="field-options-'.$field_id.'">';
+									$html.='<label for="options">Options</label>';
+									// get options //
+									if (isset($field['options']) && !empty($field['options'])) :
+										foreach ($field['options'] as $key => $option) :
+											$html.='<div class="option-row" id="option-row-'.$key.'">';
+												$html.='<label for="options-default-name">Name</label>';
+												$html.='<input type="text" name="fields['.$field_id.'][options]['.$key.'][name]" class="options-item name" value="'.$option['name'].'" />';
+												$html.='<label for="options-default-value">Value</label>';
+												$html.='<input type="text" name="fields['.$field_id.'][options]['.$key.'][value]" class="options-item value" value="'.$option['value'].'" />';
+											$html.='</div><!-- .option-row -->';
+										endforeach;
+									endif;
+
+									// blank option //
+									$html.='<div class="option-row default" id="option-row-default">';
+										$html.='<label for="options-default-name">Name</label>';
+										$html.='<input type="text" name="fields['.$field_id.'][options][default][name]" class="options-item name" value="" />';
+										$html.='<label for="options-default-value">Value</label>';
+										$html.='<input type="text" name="fields['.$field_id.'][options][default][value]" class="options-item value" value="" />';
+									$html.='</div><!-- .option-row -->';
+
+									$html.='<div class="add-option-field"><input type="button" name="add-option-field" class="add-option-field-btn button button-primary" value="Add Option"></div>';
+								$html.='</div>';
+							endif;
+						$html.='</div>';
+					endforeach;
+				$html.='</div><!-- .field-options -->';
+
+				$html.='<div class="description col-md-11 col-md-offset-1">';
+					$html.='<div class="row">';
+						$html.='<div class="col-md-3 file-description-label">';
+							$html.='<label for="field_description">Field Description</label>';
+						$html.='</div>';
+						$html.='<div class="col-md-9 fd">';
+							$html.='<input type="text" name="fields['.$field_id.'][field_description]" class="field_description name-item" value="'.$field_description.'" />';
+						$html.='</div>';
+					$html.='</div>';
+				$html.='</div><!-- .description -->';
+
+				$html.='<div class="field-id col-md-11 col-md-offset-1">';
+					$html.='<div class="row">';
+						$html.='<div class="col-md-3 field-id-label">';
+							$html.='<label for="field_id">Field ID</label>';
+						$html.='</div>';
+						$html.='<div class="col-md-9 field-id-id">';
+							$html.='<div class="gen-field-id">'.$MDWMetaboxes->generate_field_id($prefix,$field['field_label'],$field_id).' <span class="description">(use as meta key)</span></div>';
+						$html.='</div>';
+					$html.='</div>';
+				$html.='</div><!-- .description -->';
+
+				$html.='<div class="remove col-md-11 col-md-offset-1">';
+					$html.='<input type="button" name="remove-field" id="remove-field-btn" class="button button-primary remove-field" data-id="fields-wrapper-'.$field_id.'" value="Remove">';
+				$html.='</div>';
+
+				$html.='<input type="hidden" name="fields['.$field_id.'][order]" class="order name-item" value="'.$order.'" />';
+			$html.='</div>';
 		$html.='</div><!-- .fields-wrapper -->';
 
 		return $html;

@@ -17,9 +17,12 @@ Changelog
 	Added 'page attributes' as an option for custom post types.
 	Added 'options' to the main page in the cms plugin. Plan is for further development of this.
 	Added more detailed descriptions to the options in our post types, metaboxes, etc.
+	Added Field ID to the metabox admin page. Allows for easier implementation with get_post_meta().
 	
+	Reworked mb.js so that when we add a new field, it clears the inherited values.	
+	Reworked add new field (mb.js) and our mb admin page so that we now utilize the last existing field instead of a default one.
 	Reworked some admin styling beyond bootstrap.
-
+	
 ### 2.0.9
 
 	Added a name check function (js based) to custom post types and taxonomies.
