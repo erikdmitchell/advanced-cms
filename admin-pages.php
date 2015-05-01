@@ -666,7 +666,7 @@ class MDWCMSgui {
 							$html.='<label for="field_id">Field ID</label>';
 						$html.='</div>';
 						$html.='<div class="col-md-9 field-id-id">';
-							$html.='<div class="gen-field-id">'.$MDWMetaboxes->generate_field_id($prefix,$field['field_label'],$field_id).' <span class="description">(use as meta key)</span></div>';
+							$html.='<div class="gen-field-id"><input type="text" readonly="readonly" value="'.$MDWMetaboxes->generate_field_id($prefix,$field['field_label'],$field_id).'" /> <span class="description">(use as meta key)</span></div>';
 						$html.='</div>';
 					$html.='</div>';
 				$html.='</div><!-- .description -->';
