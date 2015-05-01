@@ -11,6 +11,10 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
+### 2.1.1
+
+	
+
 ### 2.1.0
 
 	Added bootstrap grid to the plugin. For admin layout only at this point.
