@@ -90,7 +90,7 @@ function add_field(cloneID,appendID) {
 	};
 
 	$.post(ajaxurl, data, function(response) {
-		console.log(response);
+		//console.log(response);
 	});
 
 }
