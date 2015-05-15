@@ -49,7 +49,8 @@ class MDWCMSgui {
 		wp_enqueue_script('mdw-cms-admin-custom-post-types-script',plugins_url('/js/admin-custom-post-types.js',__FILE__),array('namecheck-script'));
 		wp_enqueue_script('mdw-cms-admin-custom-taxonomies-script',plugins_url('/js/admin-custom-taxonomies.js',__FILE__),array('namecheck-script'));
 
-		extract($this->options['options']);
+		if (isset($this->options['options']) && is_array($this->options['options']))
+			extract($this->options['options']);
 
 		if (!$disable_bootstrap) :
 			wp_enqueue_style('mdw-cms-bootstrap-custom-script',plugins_url('/css/bootstrap.css',__FILE__));
@@ -149,7 +150,8 @@ class MDWCMSgui {
 			$options=$this->update_options($_POST['options']);
 		endif;
 
-		extract($options);
+		if (is_array($options))
+			extract($options);
 
 		$html.='<div class="mdw-cms-default">';
 

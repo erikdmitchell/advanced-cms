@@ -13,7 +13,8 @@ Changelog
 
 ### 2.1.2
 
-	
+	Fixed error where options was not an array. Basically an init error that we just check for.
+	Fixed css error that was overriding WP default styles (admin.css and bootstrap.css).
 
 ### 2.1.1
 
