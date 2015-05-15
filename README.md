@@ -11,6 +11,10 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
+### 2.1.2
+
+	
+
 ### 2.1.1
 
 	Fixed duplicate filed (meta box field) glitch.	
