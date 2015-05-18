@@ -11,6 +11,10 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
+### 2.1.3
+
+	
+
 ### 2.1.2
 
 	Fixed error where options was not an array. Basically an init error that we just check for.
