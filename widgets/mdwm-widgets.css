@@ -1,0 +1,18 @@
+.post-type-tax {
+	display: none;
+}
+.post-type-tax.active {
+	display: inline-block;
+}
+.for-post-only {
+	display: none;
+}
+p.more-link {
+	display: none;
+}
+p.disp-excerpt {
+	display: none;
+}
+p.for-post-only {
+	display: none;
+}
