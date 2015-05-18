@@ -20,6 +20,7 @@ Changelog
 
 	Widgets:
 		Added Content Widget
+		Added Social Media Widget
 	
 	Fixed $field_id error in metaboxes_admin_page().
 	Fixed admin error positioning so that it is no longer off screen.

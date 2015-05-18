@@ -175,8 +175,9 @@ echo '</pre>';
 	function sample_cb() {
 
 		echo '<code>';
-			echo '$sm_options=get_option(\'social_media_options\');<br />';
+			echo 'get_option("social_media_options");<br />';
 		echo '</code>';
+		echo '<p>There is also the Social Media widget (Appearance -> Widgets) that can be used anywhere on the site.</p>';
 		echo '<p>Everything is stored in that option as an array, simply run through the array and display the urls.</p>';
 		echo '<p>This class includes the Font Awesome css for easy usage in a theme.</p>';
 
