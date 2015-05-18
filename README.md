@@ -17,6 +17,9 @@ Changelog
 	Added a minor redirect when someone creates a new metabox. The redirect keeps them on that page.
 	Added a fallback so that the default Post Type for metaboxes is post.
 	Added ability to customize the date field in metaboxes.
+
+	Widgets:
+		Added Content Widget
 	
 	Fixed $field_id error in metaboxes_admin_page().
 	Fixed admin error positioning so that it is no longer off screen.
