@@ -98,7 +98,7 @@ form.custom-metabox .add-fields.visible {
 	margin-top: 5px;
 /* 	margin-bottom: 5px; */
 }
-.add-fields .fields-wrapper .field-options label {
+.add-fields .fields-wrapper .field-options .field-repeatable-label label {
 	margin-top: -2px;
 	padding-right: 5px;
 }
@@ -145,3 +145,13 @@ p.submit > #clear-files {
 	text-align: center;
 	padding: 5px 0;
 }
+.mdw-cms-meta-box .format {
+	margin-left: 5px;
+	font-style: italic;
+}
+
+/*
+.ui-datepicker-calendar {
+	display: none;
+}
+*/

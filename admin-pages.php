@@ -577,6 +577,12 @@ class MDWCMSgui {
 			$repeatable_checked=null;
 		endif;
 
+		if (isset($field['format']['value'])) :
+			$format=$field['format']['value'];
+		else :
+			$format=null;
+		endif;
+
 		if (isset($field['field_description']) && !empty($field['field_description']))
 			$field_description=$field['field_description'];
 
@@ -651,6 +657,17 @@ class MDWCMSgui {
 									$html.='</div><!-- .option-row -->';
 
 									$html.='<div class="add-option-field"><input type="button" name="add-option-field" class="add-option-field-btn button button-primary" value="Add Option"></div>';
+								$html.='</div>';
+							endif;
+
+							if ($setup['format']) :
+								$html.='<div class="field format row">';
+									$html.='<div class="col-md-3 field-format-label">';
+										$html.='<label for="format">Format</label>';
+									$html.='</div>';
+									$html.='<div class="col-md-9 field-format-check">';
+										$html.='<input type="text" name="fields['.$field_id.'][format][value]" class="options-item value" value="'.$format.'" />';
+									$html.='</div>';
 								$html.='</div>';
 							endif;
 						$html.='</div>';
