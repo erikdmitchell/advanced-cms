@@ -2,11 +2,13 @@
 class MDWCMSgui {
 
 	protected $options=array();
+	protected $admin_notices_output=array();
 
 	function __construct() {
 		add_action('admin_menu',array($this,'build_admin_menu'));
 		add_action('admin_enqueue_scripts',array($this,'scripts_styles'));
-		add_action('admin_notices',array($this,'admin_notices')); // may not be needed
+		//add_action('admin_notices',array($this,'admin_notices')); // may not be needed
+		//add_filter('mdw_cms_admin_notices',array($this,'admin_notices'));
 
 		add_action('admin_init','MDWCMSlegacy::setup_legacy_updater');
 		add_action('admin_notices','MDWCMSlegacy::legacy_admin_notices');
@@ -89,7 +91,10 @@ class MDWCMSgui {
 		$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'cms-main';
 
 		$html.='<div class="mdw-cms-wrap">';
+
 			$html.='<h2>MDW CMS</h2>';
+
+			$html.=implode('',$this->admin_notices_output);
 
 			$html.='<h2 class="nav-tab-wrapper">';
 				foreach ($tabs as $tab => $name) :
@@ -360,7 +365,8 @@ class MDWCMSgui {
 		$post_types=null;
 		$edit_class_v='';
 		$fields=false;
-		$field_counter=1;
+		$field_counter=0;
+		$field_id=0;
 
 		$label_class='col-md-3';
 		$input_class='col-md-3';
@@ -416,6 +422,7 @@ class MDWCMSgui {
 				$html.='<div class="add-fields sortable-div '.$edit_class_v.'">';
 
 					$html.='<h3>Metabox Fields</h3>';
+
 					if ($fields) :
 						foreach ($fields as $field_id => $field) :
 							$html.=$this->build_field_rows($field_id,$field,$field_counter);
@@ -423,11 +430,9 @@ class MDWCMSgui {
 						endforeach;
 					endif;
 
-					$field_id++; // increase our field id for our 'default' field //
-
-					$html.=$this->build_field_rows($field_id,null,$field_counter); // add 'default' field //
-
-					//$html.=$this->build_field_rows('default',null,$field_counter); // add default field //
+					// 0 is default ie no fields exist //
+					if ($field_counter==0)
+						$html.=$this->build_field_rows($field_id,null,$field_counter); // add 'default' field //
 
 				$html.='</div><!-- .add-fields -->';
 				$html.='<p class="submit">';
@@ -546,6 +551,7 @@ class MDWCMSgui {
 
 		$html=null;
 		$field_description=null;
+		$prefix=null;
 
 		$label_class='col-md-3';
 		$input_class='col-md-3';
@@ -741,6 +747,13 @@ class MDWCMSgui {
 		if (isset($_POST['update-metabox']) && $_POST['update-metabox']=='Create') :
 			if ($this->update_metaboxes($_POST)) :
 				$this->admin_notices('updated','Metabox has been created.');
+				// redirect ?? //
+				if (!function_exists('wp_get_current_user')) :
+					include(ABSPATH . "wp-includes/pluggable.php");
+				endif;
+
+				wp_redirect(admin_url('tools.php?page=mdw-cms&tab=mdw-cms-metaboxes&edit=mb&mb_id='.$_POST['mb_id']));
+				exit;
 			else :
 				$this->admin_notices('error','There was an issue creating the metabox.');
 			endif;
@@ -875,6 +888,9 @@ class MDWCMSgui {
 			$prefix=$data['prefix'];
 		endif;
 
+		if (empty($data['post_types']))
+			$data['post_types'][]='post';
+
 		$arr=array(
 			'mb_id' => $data['mb_id'],
 			'title' => $data['title'],
@@ -982,9 +998,7 @@ class MDWCMSgui {
 	 * @return void
 	 */
 	function admin_notices($class='error',$message='') {
-		ob_start();
-		echo '<div class="'.$class.'"><p>'.$message.'</p></div>';
-		//ob_end_clean();
+		$this->admin_notices_output[]='<div class="'.$class.'"><p>'.$message.'</p></div>';
 	}
 
 	/**
