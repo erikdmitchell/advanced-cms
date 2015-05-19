@@ -37,7 +37,7 @@ class SocialMedia extends WP_Widget {
 				?>
 				<ul class="social-media">
 					<?php foreach ($sm_options as $option) : ?>
-						<a href="<?php echo $option['url']; ?>"><i class="fa <?php echo $option['icon']; ?>"></i></a>
+						<li id="social-media-<?php echo $option_id; ?>"><a href="<?php echo $option['url']; ?>"><i class="fa <?php echo $option['icon']; ?>"></i></a></li>
 					<?php endforeach; ?>
 				</ul>
 			<?php
