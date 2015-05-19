@@ -91,9 +91,9 @@ class MDW_Content_Widget extends WP_Widget {
 				echo '<article class="'.$classes.'" id="post-'.$post->ID.'">';				
 					/* echo '<h3>'.get_the_title($instance['post-category']).'</h3>'; */ 
 					
-					echo '<h1>'.$instance['title'].'</h1>';
+					echo '<h2>'.$instance['title'].'</h2>';
 					if ($instance['page-excerpt']>'') :
-						echo $instance['page-excerpt'];
+						echo apply_filters('the_content',$instance['page-excerpt']);
 					else :					
 						if ($instance['excerpt']=='on') :
 							echo $this->pippin_excerpt_by_id_extended($post->ID,$excerpt_length,$tags,$more,$more_link);
@@ -102,7 +102,7 @@ class MDW_Content_Widget extends WP_Widget {
 						endif;
 					endif;
 					if ($more_link ) :
-					echo '<a href="'.get_permalink($post->ID).'" class="btn post-'.$post->ID.'">'.$instance['more'].'</a>';
+					echo '<a href="'.get_permalink($post->ID).'" class="btn btn-large cfa-button post-'.$post->ID.'">'.html_entity_decode($instance['more']).'</a>';
 				endif;
 				echo '</article>';
 			else :
@@ -113,7 +113,7 @@ class MDW_Content_Widget extends WP_Widget {
 					$classes=get_post_class('',$post->ID);
 					$classes=implode(' ',$classes);
 					echo '<article class="'.$classes.'" id="post-'.$post->ID.'">';
-						echo '<h3><a href="'.get_permalink($post->ID).'">'.get_the_title($post->ID).'</a></h3>';
+						echo '<h2><a href="'.get_permalink($post->ID).'">'.get_the_title($post->ID).'</a></h2>';
 						if ($instance['excerpt']=='on') :
 							echo $this->pippin_excerpt_by_id_extended($post->ID,$excerpt_length,$tags,$more,$more_link);
 						elseif ($more_link_each) :
