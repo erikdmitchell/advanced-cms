@@ -55,7 +55,6 @@
 	overflow: hidden;
 }
 
-
 .field.options .option-row:nth-child(even) {
 	background: #ccc;
 }
@@ -72,30 +71,17 @@
 /* meta box fields
 ------------------ */
 form.custom-metabox .add-fields {
-	display: none;
 }
 form.custom-metabox .add-fields.visible {
-	display: block;
 }
 .add-fields .fields-wrapper {
 	margin-bottom: 20px;
 }
 .add-fields .fields-wrapper .fields-wrapper-border {
-/*
-	border: 1px solid #ccc;
-	overflow: hidden;
-	padding-top: 10px;
-	padding-bottom: 10px;
-*/
 }
 .add-fields .fields-wrapper .ui-icon-arrowthick-2-n-s {
 	float: left;
 }
-/*
-.add-fields .fields-wrapper.default {
-	display: none;
-}
-*/
 .wp-core-ui .button-primary.remove-field {
 	background: #d64e07;
 	border-color: #b84609;
@@ -112,7 +98,7 @@ form.custom-metabox .add-fields.visible {
 	margin-top: 5px;
 /* 	margin-bottom: 5px; */
 }
-.add-fields .fields-wrapper .field-options label {
+.add-fields .fields-wrapper .field-options .field-repeatable-label label {
 	margin-top: -2px;
 	padding-right: 5px;
 }
@@ -159,3 +145,13 @@ p.submit > #clear-files {
 	text-align: center;
 	padding: 5px 0;
 }
+.mdw-cms-meta-box .format {
+	margin-left: 5px;
+	font-style: italic;
+}
+
+/*
+.ui-datepicker-calendar {
+	display: none;
+}
+*/

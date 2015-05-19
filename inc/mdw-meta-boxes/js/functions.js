@@ -11,8 +11,15 @@ jQuery(document).ready(function($) {
 
 	$('.timepicker').timepicker();
 
+	/**
+	 * date picker
+	 */
+console.log(wp_options);
 	$('.mdw-cms-datepicker').datepicker({
-		'dateFormat' : 'mm/dd/yy'
+		dateFormat : wp_options.dateFormat,
+		showButtonPanel: true,
+		changeMonth: true,
+		changeYear: true
 	});
 
 	$('.phone').mask('(999) 999-9999'); // masked input //

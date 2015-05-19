@@ -20,58 +20,72 @@ class MDWMetaboxes {
 			'checkbox' => array(
 				'repeatable' => 1,
 				'options' => 0,
+				'format' => 0,
 			),
 			'colorpicker' => array(
 				'repeatable' => 0,
 				'options' => 0,
+				'format' => 0,
 			),
 			'date' => array(
 				'repeatable' => 0,
 				'options' => 0,
+				'format' => 1,
 			),
 			'email' => array(
 				'repeatable' => 1,
 				'options' => 0,
+				'format' => 0,
 			),
 			'media' => array(
 				'repeatable' => 0,
 				'options' => 0,
+				'format' => 0,
 			),
 			'phone' => array(
 				'repeatable' => 1,
 				'options' => 0,
+				'format' => 0,
 			),
 			'radio' => array(
 				'repeatable' => 1,
 				'options' => 0,
+				'format' => 0,
 			),
 			'select' => array(
 				'repeatable' => 0,
 				'options' => 1,
+				'format' => 0,
 			),
 			'text' => array(
 				'repeatable' => 1,
 				'options' => 0,
+				'format' => 0,
 			),
 			'textarea' => array(
 				'repeatable' => 1,
 				'options' => 0,
+				'format' => 0,
 			),
 			'timepicker' => array(
 				'repeatable' => 0,
 				'options' => 0,
+				'format' => 0,
 			),
 			'url'	 => array(
 				'repeatable' => 1,
 				'options' => 0,
+				'format' => 0,
 			),
 			'wysiwyg' => array(
 				'repeatable' => 0,
 				'options' => 0,
+				'format' => 0,
 			),
 			'media_images' => array(
 				'repeatable' => 0,
 				'options' => 0,
+				'format' => 0,
 			)
 		);
 		$this->config=$this->setup_config($config); // set our config
@@ -118,9 +132,10 @@ class MDWMetaboxes {
 		if (isset($post->ID)) :
 			$post_id=$post->ID;
 		else :
-			$post_id=null;
+			$post_id=false;
 		endif;
 
+/*
 		$options=array();
 
 		$options['postID']=$post_id;
@@ -138,9 +153,32 @@ class MDWMetaboxes {
 				//endif;
 			endforeach;
 		endif;
+*/
 
 		//wp_localize_script('metabox-duplicator','options',$options);
 		//wp_localize_script('metabox-remover','options',get_option($this->option_name));
+
+		$mdwcmsjs=array(
+			'dateFormat' => 'mm/dd/yy'
+		);
+
+		if (!empty($this->config) && $post_id) :
+			foreach ($this->config as $config) :
+				if (!in_array(get_post_type($post->ID),$config['post_types']))
+					continue;
+
+				foreach ($config['fields'] as $field) :
+					if (isset($field['format']['value']) && !empty($field['format']['value'])) :
+						if ($field['field_type']=='date') :
+							$mdwcmsjs['dateFormat']=$field['format']['value'];
+						endif;
+					endif;
+				endforeach;
+
+			endforeach;
+		endif;
+
+		wp_localize_script('mdw-cms-js','wp_options',$mdwcmsjs);
 	}
 
 	/**
@@ -289,11 +327,7 @@ class MDWMetaboxes {
 						return strcmp($a['order'], $b['order']);
 					endif;
 				});
-/*
-echo '<pre>';
-print_r($this->fields);
-echo '</pre>';
-*/
+
 				foreach ($this->fields as $field) :
 					$classes=$field['id'].' type-'.$field['type'];
 
@@ -340,6 +374,7 @@ echo '</pre>';
 		$classes='field-input';
 		$description=null;
 		$description_visible=false;
+		$format=false;
 
 		if (isset($values[$args['id']][0])) :
 			$value=$values[$args['id']][0];
@@ -349,6 +384,9 @@ echo '</pre>';
 
 		if (!empty($args['field_description']))
 			$description=$args['field_description'];
+
+		if (!empty($args['format']))
+			$format=$args['format'];
 
 		switch ($args['type']) :
 			case 'checkbox':
@@ -465,6 +503,9 @@ echo '</pre>';
 				$html.='<input type="text" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 		endswitch;
 
+		if ($format)
+			$html.='<span class="format">('.$format.')</span>';
+
 		if ($args['repeatable'])
 			$html.='<button type="button" class="ajaxmb-field-btn duplicate">Duplicate Field</button>';
 
@@ -545,6 +586,7 @@ echo '</pre>';
 			$repeatable=0;
 			$order=0;
 			$description=null;
+			$format=null;
 
 			if (isset($values['options']))
 				$options=$values['options'];
@@ -558,6 +600,9 @@ echo '</pre>';
 			if (isset($values['field_description']))
 				$description=$values['field_description'];
 
+			if (isset($values['format']['value']))
+				$format=$values['format']['value'];
+
 			$args=array(
 				'id' => $id,
 				'type' => $values['field_type'],
@@ -566,6 +611,7 @@ echo '</pre>';
 				'options' => $options,
 				'repeatable' => $repeatable,
 				'duplicate' => 0,
+				'format' => $format,
 				'field_description' => $description
 			);
 

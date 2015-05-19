@@ -11,6 +11,23 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
+### 2.1.3
+
+	Added $prefix=null to build_field_rows() to fix glitch when mb isn’t created yet.
+	Added a minor redirect when someone creates a new metabox. The redirect keeps them on that page.
+	Added a fallback so that the default Post Type for metaboxes is post.
+	Added ability to customize the date field in metaboxes.
+
+	Widgets:
+		Added Content Widget
+		Added Social Media Widget
+	
+	Fixed $field_id error in metaboxes_admin_page().
+	Fixed admin error positioning so that it is no longer off screen.
+	Fixed duplicate metabox fields so that the new fields dropdown is cleared. 
+	Fixed js glitch when calculating the new ids and fields for cloning. This allows multiple fields to be added at once and on the initial create screen.
+	
+
 ### 2.1.2
 
 	Fixed error where options was not an array. Basically an init error that we just check for.

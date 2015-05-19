@@ -29,48 +29,8 @@ $j(document).ready(function() {
 	});
 
 	// adds a new field to our metabox //
-	$j('#add-field-btn').live('click', function() {
-		var newID=0;
-		var lastFieldID='';
-		//var $clonedElement=$j('#fields-wrapper-default').clone();
-
-		$j('.fields-wrapper').each(function(i) {
-			newID=i+1;
-			lastFieldID=$j(this).attr('id');
-		});
-
-		var $clonedElement=$j('#'+lastFieldID).clone(); // clone element
-
-		// clean up and configure our cloned element (classes, ids, etc)
-		var cloneID='fields-wrapper-'+newID;
-
-		$clonedElement.removeClass('default');
-		$clonedElement.attr('id',cloneID);
-		$clonedElement.insertAfter('#'+lastFieldID);
-
-		// get the id number of the last element in arr for our find and replace //
-		var lastFieldArr=lastFieldID.split('-');
-		var lastFieldIDNum=lastFieldArr.pop();
-
-		// replace lastFieldIDNum with our new attribute name via new id //
-		$j('#'+cloneID+' .name-item').each(function() {
-			var attrName=$j(this).attr('name');
-			var attrNewName=attrName.replace(lastFieldIDNum,newID);
-			$j(this).attr('name',attrNewName);
-		});
-
-		// clear all input values (reset) - except butons //
-		$j('#fields-wrapper-'+newID).find('input').each(function() {
-			if ($j(this).attr('type')!='button') {
-				$j(this).val('');
-			}
-		});
-
-		var lastFieldOrder=parseInt($j('#'+lastFieldID+' .order').val()); // last field order (as int) //
-
-		$j('#'+cloneID+' .order').val(lastFieldOrder+1); // set new field order //
-
-		$j('#'+cloneID+' .remove-field').attr('data-id','fields-wrapper-'+newID); // set our button to remove field
+	$j('#add-field-btn').on('click', function() {
+		$j(this).duplicateMetaboxField();
 	});
 
 	// remove a metabox field //
@@ -165,3 +125,73 @@ jQuery(function($) {
 	//$( ".sortable-div" ).sortable({});
   //$( ".sortable" ).disableSelection();
 });
+
+
+/**
+ * add new metabox field
+ * @version: 1.0.0
+ * @since
+ */
+(function($) {
+
+	$.fn.duplicateMetaboxField=function(callback) {
+
+		var newID=0;
+		var lastFieldID;
+		var lastFieldArr;
+		var lastFieldIDNum=0;
+		var $fieldsWrapper=$('.fields-wrapper');
+
+		$fieldsWrapper.each(function() {
+			lastFieldID=$(this).attr('id');
+			lastFieldArr=lastFieldID.split('-');
+			lastFieldIDNum=lastFieldArr.pop();
+			newID=parseInt(lastFieldIDNum)+1;
+		});
+
+
+
+console.log('last id: '+lastFieldID);
+console.log('last num: '+lastFieldIDNum);
+console.log('new id: '+newID);
+
+
+		var $clonedElement=$('#'+lastFieldID).clone(); // clone element
+
+		// clean up and configure our cloned element (classes, ids, etc)
+		var cloneID='fields-wrapper-'+newID;
+
+		$clonedElement.removeClass('default');
+		$clonedElement.attr('id',cloneID);
+		$clonedElement.insertAfter('#'+lastFieldID);
+
+		// get the id number of the last element in arr for our find and replace //
+		//var lastFieldArr=options.lastFieldID.split('-');
+		//var lastFieldIDNum=lastFieldArr.pop();
+
+		// replace lastFieldIDNum with our new attribute name via new id //
+		$('#'+cloneID+' .name-item').each(function() {
+			var attrName=$(this).attr('name');
+			var attrNewName=attrName.replace(lastFieldIDNum,newID);
+			$(this).attr('name',attrNewName);
+		});
+
+		// clear all input values (reset) - except butons //
+		$('#fields-wrapper-'+newID).find('input').each(function() {
+			if ($(this).attr('type')!='button') {
+				$(this).val('');
+			}
+		});
+
+		// clear drop down //
+		$('#fields-wrapper-'+newID).find('select').each(function() {
+			$(this).val(0);
+		});
+
+		var lastFieldOrder=parseInt($('#'+lastFieldID+' .order').val()); // last field order (as int) //
+
+		$('#'+cloneID+' .order').val(lastFieldOrder+1); // set new field order //
+		$('#'+cloneID+' .remove-field').attr('data-id','fields-wrapper-'+newID); // set our button to remove field //
+	};
+
+}(jQuery));
