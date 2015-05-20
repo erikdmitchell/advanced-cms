@@ -16,6 +16,8 @@ Changelog
 	Fixed glitch when updating metaboxes and there are no field values.
 
 	Reworked some issues with input box styling on the CMS admin page.
+	
+	Updated heading level for widget titles in Content Widget.
 
 ### 2.1.3
 
