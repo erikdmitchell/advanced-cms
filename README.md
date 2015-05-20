@@ -11,6 +11,12 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
+### 2.1.4
+
+	Fixed glitch when updating metaboxes and there are no field values.
+
+	Reworked some issues with input box styling on the CMS admin page.
+
 ### 2.1.3
 
 	Added $prefix=null to build_field_rows() to fix glitch when mb isn’t created yet.

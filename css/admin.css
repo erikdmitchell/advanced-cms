@@ -62,6 +62,17 @@
 	display: none;
 }
 
+.mdw-cms-wrap .form-row div.input {
+	padding: 0;
+}
+.mdw-cms-wrap .form-row div.input > input {
+	width: 100%;
+}
+.mdw-cms-wrap .fd > input,
+.mdw-cms-wrap .gen-field-id > input {
+	width: 50%;
+}
+
 /* errors */
 #mdw-cms-name-error {
 	color: red;

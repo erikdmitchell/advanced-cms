@@ -238,7 +238,9 @@ class MDWCMSgui {
 				$html.='<h3>Add New Custom Post Type</h3>';
 				$html.='<div class="form-row row">';
 					$html.='<label for="name" class="required '.$label_class.'">Post Type Name</label>';
-					$html.='<input type="text" name="name" id="name" class="'.$input_class.'" value="'.$name.'" />';
+					$html.='<div class="input '.$input_class.'">';
+						$html.='<input type="text" name="name" id="name" value="'.$name.'" />';
+					$html.='</div>';
 					$html.='<span class="description '.$description_class.'">(e.g. movie)</span>';
 					$html.='<div id="mdw-cms-name-error" class="'.$error_class.'"></div>';
 					$html.='<div class="description-ext '.$description_ext_class.'">Max 20 characters, can not contain capital letters or spaces. Reserved post types: post, page, attachment, revision, nav_menu_item.</div>';
@@ -246,13 +248,17 @@ class MDWCMSgui {
 
 				$html.='<div class="form-row row">';
 					$html.='<label for="label" class="'.$label_class.'">Label</label>';
-					$html.='<input type="text" name="label" id="label" class="'.$input_class.'" value="'.$label.'" />';
+					$html.='<div class="input '.$input_class.'">';
+						$html.='<input type="text" name="label" id="label" value="'.$label.'" />';
+					$html.='</div>';
 					$html.='<span class="description '.$description_class.'">(e.g. Movies)</span>';
 				$html.='</div>';
 
 				$html.='<div class="form-row row">';
 					$html.='<label for="singular_label" class="'.$label_class.'">Singular Label</label>';
-					$html.='<input type="text" name="singular_label" id="singular_label" class="'.$input_class.'" value="'.$singular_label.'" />';
+					$html.='<div class="input '.$input_class.'">';
+						$html.='<input type="text" name="singular_label" id="singular_label" value="'.$singular_label.'" />';
+					$html.='</div>';
 					$html.='<span class="description '.$description_class.'">(e.g. Movie)</span>';
 				$html.='</div>';
 
@@ -395,7 +401,7 @@ class MDWCMSgui {
 					//$html.='<div class="">';
 						$html.='<label for="mb_id" class="required '.$label_class.'">Metabox ID</label>';
 					//$html.='</div>';
-					$html.='<div class="'.$input_class.'">';
+					$html.='<div class="input '.$input_class.'">';
 						$html.='<input type="text" name="mb_id" id="mb_id" class="" value="'.$mb_id.'" />';
 					$html.='</div>';
 					$html.='<span class="description '.$description_class.'">(e.g. movie_details)</span>';
@@ -403,7 +409,7 @@ class MDWCMSgui {
 
 				$html.='<div class="form-row row">';
 					$html.='<label for="title" class="'.$label_class.'">Title</label>';
-					$html.='<div class="'.$input_class.'">';
+					$html.='<div class="input '.$input_class.'">';
 						$html.='<input type="text" name="title" id="title" class="" value="'.$title.'" />';
 					$html.='</div>';
 					$html.='<span class="description '.$description_class.'">(e.g. Movie Details)</span>';
@@ -411,7 +417,7 @@ class MDWCMSgui {
 
 				$html.='<div class="form-row row">';
 					$html.='<label for="prefix" class="'.$label_class.'">Prefix</label>';
-					$html.='<div class="'.$input_class.'">';
+					$html.='<div class="input '.$input_class.'">';
 						$html.='<input type="text" name="prefix" id="prefix" class="" value="'.$prefix.'" />';
 					$html.='</div>';
 					$html.='<span class="description '.$description_class.'">(e.g. movies)</span>';
@@ -507,7 +513,9 @@ class MDWCMSgui {
 				$html.='<h3>Add New Custom Taxonomy</h3>';
 				$html.='<div class="form-row row">';
 					$html.='<label for="name" class="required '.$label_class.'">Name</label>';
-					$html.='<input type="text" name="name" id="name" class="'.$input_class.'" value="'.$name.'" />';
+					$html.='<div class="input '.$input_class.'">';
+						$html.='<input type="text" name="name" id="name" value="'.$name.'" />';
+					$html.='</div>';
 					$html.='<span class="description '.$description_class.'">(e.g. brands)</span>';
 					$html.='<div id="mdw-cms-name-error" class="'.$error_class.'"></div>';
 					$html.='<div class="description-ext '.$description_ext_class.'">Max 20 characters, can not contain capital letters or spaces. Cannot be the same name as a (custom) post type.</div>';
@@ -515,7 +523,9 @@ class MDWCMSgui {
 
 				$html.='<div class="form-row row">';
 					$html.='<label for="label" class="'.$label_class.'">Label</label>';
-					$html.='<input type="text" name="label" id="label" class="'.$input_class.'" value="'.$label.'" />';
+					$html.='<div class="input '.$input_class.'">';
+						$html.='<input type="text" name="label" id="label" value="'.$label.'" />';
+					$html.='</div>';
 					$html.='<span class="description '.$description_class.'">(e.g. Brands)</span>';
 				$html.='</div>';
 
@@ -931,7 +941,8 @@ class MDWCMSgui {
 			endforeach;
 		endif;
 
-		$arr['fields']=array_values($data['fields']);
+		if (isset($data['fields']))
+			$arr['fields']=array_values($data['fields']);
 
 		if (!empty($metaboxes)) :
 			foreach ($metaboxes as $key => $mb) :
