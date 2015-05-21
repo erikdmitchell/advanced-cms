@@ -12,6 +12,7 @@
 	width: auto;
 	margin-right: 10px;
 	vertical-align: top;
+	float: left;
 }
 .umb-meta-box .meta-row input[type=checkbox] {
 	margin: 0;
@@ -45,6 +46,42 @@
 
 .umb-meta-box .meta-row.clone .ajaxmb-field-btn.duplicate {
 	display: none;
+}
+.mdw-cms-meta-box .uploader.button,
+.mdw-cms-meta-box .ajaxmb-field-btn {
+	margin-left: 10px;
+}
+.mdw-cms-meta-box .address-wrap {
+	overflow: hidden;
+	float: left;
+	width: 610px;
+}
+.mdw-cms-meta-box .address-wrap > div {
+	margin-bottom: 5px;
+}
+.mdw-cms-meta-box  .address-wrap > div > span {
+	font-weight: bold;
+	margin-right: 5px;
+}
+.mdw-cms-meta-box .type-address .ajaxmb-field-btn.duplicate {
+	float: right;
+}
+.mdw-cms-meta-box .address-wrap .line-1 > input,
+.mdw-cms-meta-box .address-wrap .line-2 > input {
+	width: 300px;
+}
+.mdw-cms-meta-box .address-wrap .city,
+.mdw-cms-meta-box .address-wrap .state,
+.mdw-cms-meta-box .address-wrap .country,
+.mdw-cms-meta-box .address-wrap .zip {
+	float: left;
+	margin-right: 15px;
+}
+.mdw-cms-meta-box .address-wrap .zip {
+	clear: left;
+}
+.mdw-cms-meta-box .address-wrap .zip > input {
+	width: 80px;
 }
 
 /** jquery validator (custom)

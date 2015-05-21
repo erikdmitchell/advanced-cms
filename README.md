@@ -13,6 +13,8 @@ Changelog
 
 ### 2.1.4
 
+	Added address field option to metabox fields.
+
 	Fixed glitch when updating metaboxes and there are no field values.
 	Fixed issue where changing the Field Type did not change the field options in metabox admin area.
 
