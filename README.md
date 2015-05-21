@@ -17,6 +17,7 @@ Changelog
 
 	Fixed glitch when updating metaboxes and there are no field values.
 	Fixed issue where changing the Field Type did not change the field options in metabox admin area.
+	Fixed attribute box showing up on all custom post types. The default is not to show and now the code reflects that.
 
 	Reworked some issues with input box styling on the CMS admin page.
 	

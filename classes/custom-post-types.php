@@ -18,65 +18,48 @@ class MDWCustomPostTypes {
 		foreach ($this->post_types as $post_type) :
 			// setup our default 'args' //
 			$supports=array();
-
 			$taxonomies='post_tag';
+			$title=false;
+			$thumbnail=false;
+			$editor=false;
+			$revisions=false;
+			$page_attributes=false;
+			$hierarchical=false;
 
-			// semi legacy support //
-			if (!isset($post_type['hierarchical']))
-				$post_type['hierarchical']=false;
+			extract($post_type);
 
 			// check for custom 'args' //
-			if (isset($post_type['title'])) :
-				if ($post_type['title']) :
-					$supports[]='title';
-				endif;
-			else :
+			if ($title)
 				$supports[]='title';
-			endif;
 
-			if (isset($post_type['thumbnail'])) :
-				if ($post_type['thumbnail']) :
-					$supports[]='thumbnail';
-				endif;
-			else :
+			if ($thumbnail)
 				$supports[]='thumbnail';
-			endif;
 
-			if (isset($post_type['editor'])) :
-				if ($post_type['editor']) :
-					$supports[]='editor';
-				endif;
-			else :
+			if ($editor)
 				$supports[]='editor';
-			endif;
 
-			if (isset($post_type['revisions'])) :
-				if ($post_type['revisions']) :
-					$supports[]='revisions';
-				endif;
-			else :
+			if ($revisions)
 				$supports[]='revisions';
-			endif;
 
-			if (isset($post_type['page_attributes']))
+			if ($page_attributes)
 				$supports[]='page-attributes';
 
 			register_post_type($post_type['name'],
 				array(
 					'labels' => array(
-						'name' => _x($post_type['label'],$post_type['label'],$post_type['name']),
-						'singular_name' => _x($post_type['singular_label'],$post_type['name']),
-						'add_new' => _x('Add New',$post_type['name']),
-						'add_new_item' => __('Add New '.$post_type['singular_label']),
-						'edit_item' => __('Edit '.$post_type['singular_label']),
-						'new_item' => __('New '.$post_type['singular_label']),
-						'all_items' => __('All '.$post_type['label']),
-						'view_item' => __('View '.$post_type['singular_label']),
-						'search_items' => __('Search '.$post_type['label']),
-						'not_found' =>  __('No '.$post_type['label'].' found'),
-						'not_found_in_trash' => __('No '.$post_type['label'].' found in Trash'),
+						'name' => _x($label,$label,$name),
+						'singular_name' => _x($singular_label,$name),
+						'add_new' => _x('Add New',$name),
+						'add_new_item' => __('Add New '.$singular_label),
+						'edit_item' => __('Edit '.$singular_label),
+						'new_item' => __('New '.$singular_label),
+						'all_items' => __('All '.$label),
+						'view_item' => __('View '.$singular_label),
+						'search_items' => __('Search '.$label),
+						'not_found' =>  __('No '.$label.' found'),
+						'not_found_in_trash' => __('No '.$label.' found in Trash'),
 						'parent_item_colon' => '',
-						'menu_name' => $post_type['label']
+						'menu_name' => $label
 					),
 					'public' => true,
 					'has_archive' => false,
@@ -84,7 +67,7 @@ class MDWCustomPostTypes {
 					'menu_position'=> 5,
 					'supports' => $supports,
 					'taxonomies' => array($taxonomies),
-					'hierarchical' => $post_type['hierarchical']
+					'hierarchical' => $hierarchical
 				)
 			);
 
