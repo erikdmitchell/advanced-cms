@@ -1,6 +1,6 @@
 $j=jQuery.noConflict();
 
-$j(document).ready(function() {
+$j(document).ready(function($) {
 
 	// display field data on load //
 	$j('.fields-wrapper').each(function() {
@@ -15,22 +15,28 @@ $j(document).ready(function() {
 		});
 	});
 
-	// display field data on change //
-	$j('.add-fields .field_type').live('change',function() {
-		var ddValue=$j(this).val();
+	/**
+	 * display field data (options) on change
+	 */
+	$('.add-fields .field_type').live('change',function() {
+		var $fieldsWrapper=$(this).closest('.fields-wrapper');
+		var $fieldOptions=$fieldsWrapper.find('.field-options');
+		var ddValue=$(this).val();
 
-		$j(this).parent().parent().find('.type').each(function() {
-			if ($j(this).data('field-type')==ddValue) {
-				$j(this).show();
+		$fieldOptions.find('.type').each(function() {
+			if ($(this).data('field-type')==ddValue) {
+				$(this).show();
 			} else {
-				$j(this).hide();
+				$(this).hide();
 			}
 		});
 	});
 
-	// adds a new field to our metabox //
-	$j('#add-field-btn').on('click', function() {
-		$j(this).duplicateMetaboxField();
+	/**
+	 * adds a new field to our metabox
+	 */
+	$('#add-field-btn').on('click', function() {
+		$(this).duplicateMetaboxField();
 	});
 
 	// remove a metabox field //
@@ -149,13 +155,6 @@ jQuery(function($) {
 			newID=parseInt(lastFieldIDNum)+1;
 		});
 
-
-
-console.log('last id: '+lastFieldID);
-console.log('last num: '+lastFieldIDNum);
-console.log('new id: '+newID);
-
-
 		var $clonedElement=$('#'+lastFieldID).clone(); // clone element
 
 		// clean up and configure our cloned element (classes, ids, etc)
@@ -164,10 +163,6 @@ console.log('new id: '+newID);
 		$clonedElement.removeClass('default');
 		$clonedElement.attr('id',cloneID);
 		$clonedElement.insertAfter('#'+lastFieldID);
-
-		// get the id number of the last element in arr for our find and replace //
-		//var lastFieldArr=options.lastFieldID.split('-');
-		//var lastFieldIDNum=lastFieldArr.pop();
 
 		// replace lastFieldIDNum with our new attribute name via new id //
 		$('#'+cloneID+' .name-item').each(function() {
@@ -186,6 +181,11 @@ console.log('new id: '+newID);
 		// clear drop down //
 		$('#fields-wrapper-'+newID).find('select').each(function() {
 			$(this).val(0);
+		});
+
+		// hides any custom fields in our item cloned from //
+		$('#fields-wrapper-'+newID).find('.field-options').each(function() {
+			$(this).hide();
 		});
 
 		var lastFieldOrder=parseInt($('#'+lastFieldID+' .order').val()); // last field order (as int) //

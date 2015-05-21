@@ -17,6 +17,11 @@ class MDWMetaboxes {
 		$config=get_option('mdw_cms_metaboxes');
 
 		$this->fields=array(
+			'address' => array(
+				'repeatable' => 1,
+				'options' => 0,
+				'format' => 0,
+			),
 			'checkbox' => array(
 				'repeatable' => 1,
 				'options' => 0,
@@ -38,6 +43,11 @@ class MDWMetaboxes {
 				'format' => 0,
 			),
 			'media' => array(
+				'repeatable' => 0,
+				'options' => 0,
+				'format' => 0,
+			),
+			'media_images' => array(
 				'repeatable' => 0,
 				'options' => 0,
 				'format' => 0,
@@ -78,11 +88,6 @@ class MDWMetaboxes {
 				'format' => 0,
 			),
 			'wysiwyg' => array(
-				'repeatable' => 0,
-				'options' => 0,
-				'format' => 0,
-			),
-			'media_images' => array(
 				'repeatable' => 0,
 				'options' => 0,
 				'format' => 0,
@@ -389,6 +394,8 @@ class MDWMetaboxes {
 			$format=$args['format'];
 
 		switch ($args['type']) :
+			case 'address':
+				$html.='ADDRESS BOX';
 			case 'checkbox':
 				$html.='<input type="checkbox" class="'.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" '.checked($value,'on',false).' />';
 				break;

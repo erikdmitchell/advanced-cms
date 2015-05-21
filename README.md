@@ -14,6 +14,7 @@ Changelog
 ### 2.1.4
 
 	Fixed glitch when updating metaboxes and there are no field values.
+	Fixed issue where changing the Field Type did not change the field options in metabox admin area.
 
 	Reworked some issues with input box styling on the CMS admin page.
 	
