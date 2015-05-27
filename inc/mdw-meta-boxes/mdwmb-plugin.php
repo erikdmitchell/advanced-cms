@@ -739,12 +739,11 @@ class MDWMetaboxes {
 				break;
 			case 'wysiwyg':
 				$settings=array(
-					'media_buttons' => false,
-					'textarea_rows' => 10,
-					'quicktags' => false
+					//'media_buttons' => false,
+					//'textarea_rows' => 10,
+					//'quicktags' => false
 				);
-				//$html.=wp_editor($value,$args['id'],$settings);
-				//$html.=mdwmb_Functions::mdwm_wp_editor($value,$args['id'],$settings);
+
 				$html.=$this->mdwm_wp_editor($value,$args['id'],$settings);
 				break;
 			case 'media_images' :
@@ -1002,6 +1001,7 @@ class MDWMetaboxes {
 			endif;
 
 		endforeach;
+exit;
 	}
 
 	function duplicate_meta_box() {
