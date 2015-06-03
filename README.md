@@ -11,6 +11,10 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
+### 2.1.4.1
+
+	Fixed metabox glitch causing update posts failure.
+
 ### 2.1.4
 
 	Added address field option to metabox fields.
