@@ -14,7 +14,6 @@ jQuery(document).ready(function($) {
 	/**
 	 * date picker
 	 */
-console.log(wp_options);
 	$('.mdw-cms-datepicker').datepicker({
 		dateFormat : wp_options.dateFormat,
 		showButtonPanel: true,

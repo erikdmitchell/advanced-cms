@@ -1001,7 +1001,6 @@ class MDWMetaboxes {
 			endif;
 
 		endforeach;
-exit;
 	}
 
 	function duplicate_meta_box() {
