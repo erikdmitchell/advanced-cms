@@ -20,6 +20,9 @@
 .uploader.button {
 	width: 68px;
 }
+.gallery-uploader.button {
+	width: 91px;
+}
 .uploader-input {
 /* 	margin-left: 85px; */
 }
@@ -82,6 +85,18 @@
 }
 .mdw-cms-meta-box .address-wrap .zip > input {
 	width: 80px;
+}
+
+.mdw-cms-meta-box .gallery-wrap {
+	overflow: hidden;
+	float: left;
+	width: 610px;
+}
+.mdw-cms-meta-box .gallery-uploader {
+
+}
+.mdw-cms-meta-box .gallery-wrap #mdw-cms-gallery img {
+	margin-right: 8px;
 }
 
 /** jquery validator (custom)

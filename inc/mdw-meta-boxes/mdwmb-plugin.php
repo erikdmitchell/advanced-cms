@@ -251,6 +251,60 @@ class MDWMetaboxes {
     "ZW" => "Zimbabwe"
   );
 
+  public $states = array(
+	  'AL'=>'Alabama',
+	  'AK'=>'Alaska',
+	  'AZ'=>'Arizona',
+	  'AR'=>'Arkansas',
+	  'CA'=>'California',
+	  'CO'=>'Colorado',
+	  'CT'=>'Connecticut',
+	  'DE'=>'Delaware',
+	  'DC'=>'District of Columbia',
+	  'FL'=>'Florida',
+	  'GA'=>'Georgia',
+	  'HI'=>'Hawaii',
+	  'ID'=>'Idaho',
+	  'IL'=>'Illinois',
+	  'IN'=>'Indiana',
+	  'IA'=>'Iowa',
+	  'KS'=>'Kansas',
+	  'KY'=>'Kentucky',
+	  'LA'=>'Louisiana',
+	  'ME'=>'Maine',
+	  'MD'=>'Maryland',
+	  'MA'=>'Massachusetts',
+	  'MI'=>'Michigan',
+	  'MN'=>'Minnesota',
+	  'MS'=>'Mississippi',
+	  'MO'=>'Missouri',
+	  'MT'=>'Montana',
+	  'NE'=>'Nebraska',
+	  'NV'=>'Nevada',
+	  'NH'=>'New Hampshire',
+	  'NJ'=>'New Jersey',
+	  'NM'=>'New Mexico',
+	  'NY'=>'New York',
+	  'NC'=>'North Carolina',
+	  'ND'=>'North Dakota',
+	  'OH'=>'Ohio',
+	  'OK'=>'Oklahoma',
+	  'OR'=>'Oregon',
+	  'PA'=>'Pennsylvania',
+	  'RI'=>'Rhode Island',
+	  'SC'=>'South Carolina',
+	  'SD'=>'South Dakota',
+	  'TN'=>'Tennessee',
+	  'TX'=>'Texas',
+	  'UT'=>'Utah',
+	  'VT'=>'Vermont',
+	  'VA'=>'Virginia',
+	  'WA'=>'Washington',
+	  'WV'=>'West Virginia',
+	  'WI'=>'Wisconsin',
+	  'WY'=>'Wyoming',
+	);
+
 	/**
 	 * constructs our function, setups our scripts and styles, attaches meta box to wp actions
 	 */
@@ -277,6 +331,11 @@ class MDWMetaboxes {
 				'repeatable' => 0,
 				'options' => 0,
 				'format' => 1,
+			),
+			'gallery' => array(
+				'repeatable' => 0,
+				'options' => 0,
+				'format' => 0,
 			),
 			'email' => array(
 				'repeatable' => 1,
@@ -345,6 +404,9 @@ class MDWMetaboxes {
 
 		add_action('wp_ajax_duplicate_metabox_field',array($this,'ajax_duplicate_metabox_field'));
 		add_action('wp_ajax_remove_duplicate_metabox_field',array($this,'ajax_remove_duplicate_metabox_field'));
+		add_action('wp_ajax_mdw_cms_gallery_update',array($this,'ajax_mdw_cms_gallery_update'));
+
+		add_filter('media_view_settings',array($this,'media_view_settings'),10,2);
 	}
 
 	/**
@@ -371,6 +433,7 @@ class MDWMetaboxes {
 		wp_enqueue_script('jq-validator-script',plugins_url('/js/jquery.validator.js',__FILE__),array('jquery'),'1.0.0',true);
 		wp_enqueue_script('mdw-cms-js',plugins_url('/js/functions.js',__FILE__),array('jquery'),'1.0.0',true);
 		wp_enqueue_script('duplicate-metabox-fields',plugins_url('js/duplicate-metabox-fields.js',__FILE__),array('jquery'),'1.0.2');
+		wp_enqueue_script('jquery-mediauploader',plugins_url('js/jquery.mediauploader.js',__FILE__),array('jquery'));
 
 		//wp_enqueue_script('metabox-duplicator',plugins_url('/js/metabox-duplicator.js',__FILE__),array('jquery'),'0.1.0',true);
 		//wp_enqueue_script('metabox-remover',plugins_url('/js/metabox-remover.js',__FILE__),array('jquery'),'0.1.0',true);
@@ -621,12 +684,19 @@ class MDWMetaboxes {
 		$description=null;
 		$description_visible=false;
 		$format=false;
+		$gallery_init=true;
 
 		if (isset($values[$args['id']][0])) :
 			$value=$values[$args['id']][0];
 		else :
 			$value=null;
 		endif;
+
+		// utalized when a gallery has not been set
+		// gravity forms attached images to posts
+		// this will allow us to used said images as a default gallery
+		if ($value && $args['type']=='gallery')
+			$gallery_init=false;
 
 		if (!empty($args['field_description']))
 			$description=$args['field_description'];
@@ -682,6 +752,13 @@ class MDWMetaboxes {
 				break;
 			case 'email' :
 				$html.='<input type="text" class="email validator '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				break;
+			case 'gallery' :
+				$html.='<div class="gallery-wrap">';
+					$html.='<div id="mdw-cms-gallery">'.$this->get_gallery_images($value,$gallery_init).'</div>';
+					$html.='<input class="gallery-uploader button" name="'.$args['id'].'_button" id="'.$args['id'].'_button" value="Edit Gallery" />';
+					$html.='<input type="hidden" name="'.$args['id'].'" value="'.$value.'" />';
+				$html.='</div>';
 				break;
 			case 'media':
 				$html.='<input id="'.$args['id'].'" class="uploader-input regular-text" type="text" name="'.$args['id'].'" value="'.$value.'" />';
@@ -1406,6 +1483,79 @@ print_r($option_arr);
 		$html.='</select>';
 
 		return $html;
+	}
+
+	/**
+	 * get_gallery_images function.
+	 *
+	 * @access protected
+	 * @param array $ids (default: array())
+	 * @param bool $display_attached (default: false)
+	 * @return void
+	 */
+	protected function get_gallery_images($ids=array(),$display_attached=false) {
+		$images=false;
+		$attached_images=false;
+
+		if ($display_attached)
+			$attached_images=get_attached_media('image',$post->ID);
+
+		if (empty($ids) && !$attached_images)
+			return false;
+
+		if (!is_array($ids))
+			$ids=explode(',',$ids);
+
+		if ($attached_images) :
+			foreach ($attached_images as $image_id => $image) :
+				$ids[]=$image_id;
+			endforeach;
+		endif;
+
+		foreach ($ids as $attachment_id) :
+			$images.=wp_get_attachment_image($attachment_id,'thumbnail',false,array('class' => 'img-responsive mdw-cms-gallery-image'));
+		endforeach;
+
+		return $images;
+	}
+
+	/**
+	 * media_view_settings function.
+	 *
+	 * @access public
+	 * @param mixed $settings
+	 * @param mixed $post
+	 * @return void
+	 */
+	public function media_view_settings($settings, $post ) {
+		$images=get_post_meta($post->ID,'_prop_gallery',true);
+		$shortcode = '[gallery ids="'.$images.'"]';
+
+		$settings['mdw_cms_gallery'] = array('shortcode' => $shortcode);
+
+		return $settings;
+	}
+
+	/**
+	 * ajax_mdw_cms_gallery_update function.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function ajax_mdw_cms_gallery_update() {
+		$images=null;
+		$counter=0;
+
+		if (!isset($_POST['ids']) || empty($_POST['ids']))
+			return false;
+
+		foreach ($_POST['ids'] as $attachment_id) :
+			$images.=wp_get_attachment_image($attachment_id,'thumbnail',false,array('class' => 'img-responsive mdw-bg-image'));
+		endforeach;
+
+		echo json_encode($images);
+
+		exit;
 	}
 
 } // end class
