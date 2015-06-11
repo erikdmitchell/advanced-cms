@@ -11,6 +11,12 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
+### 2.1.5
+
+	Added Gallery field to custom metabox
+	Added jquery.mediauploader.js
+	Added state array to metabox class 
+
 ### 2.1.4.1
 
 	Fixed metabox glitch causing update posts failure.
