@@ -1,21 +1,29 @@
 /**
  * custom media uploader
+ *
+ * Version: 0.1.1
+ * @since 2.1.5
  */
 (function($) {
 
 	$.fn.mdwCMScustomMediaUploader=function(options) {
 		var opts=$.extend({
 			$button : $('.mdw-cms-meta-box .gallery-uploader'),
+			$removeButton : $('.mdw-cms-meta-box .gallery-remove'),
 			$gallery : $('#mdw-cms-gallery'),
-			$idsInput : $('input[name=_prop_gallery]'),
+			$idsInput : false,
 			ajaxAction : 'mdw_cms_gallery_update'
 		}, options);
 
 		var file_frame;
 
 		opts.$button.on('click', function( event ) {
-
 		  event.preventDefault();
+
+			// we have a default class setup, so if no $idsInput is passed, we use the default
+			if (typeof opts.$idsInput==='undefined' || !opts.$idsInput) {
+				opts.$idsInput=$(this).parent().find('.gallery-ids');
+			}
 
 		  // If the media frame already exists, reopen it.
 		  if ( file_frame ) {
@@ -61,6 +69,7 @@
 					var images=$.parseJSON(response);
 					opts.$gallery.html(images);
 					opts.$idsInput.val(ids);
+
 				});
 		  });
 
@@ -69,7 +78,7 @@
 
 		  // Gets initial gallery-edit images. Function modified from wp.media.gallery.edit in wp-includes/js/media-editor.js.source.html
 			function selection() {
-	//console.log(wp.media.view.settings.mdw_cms_gallery.shortcode);
+//console.log(wp.media.view.settings.mdw_cms_gallery.shortcode);
 		    var shortcode = wp.shortcode.next( 'gallery', wp.media.view.settings.mdw_cms_gallery.shortcode ); // potential variable
 		    var defaultPostId = wp.media.gallery.defaults.id;
 		    var attachments;
@@ -107,6 +116,22 @@
 
 		});
 
+		/**
+		 * reomve a gallery
+		 */
+		opts.$removeButton.on('click',function(event) {
+			event.preventDefault();
+
+			// we have a default class setup, so if no $idsInput is passed, we use the default
+			if (typeof opts.$idsInput==='undefined' || !opts.$idsInput) {
+				opts.$idsInput=$(this).parent().find('.gallery-ids');
+			}
+
+			opts.$gallery.html('');
+			opts.$idsInput.val('');
+
+			return false;
+		});
 
 	};
 

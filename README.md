@@ -11,6 +11,16 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
+### 2.1.5.1
+
+	Added Remove Gallery button.
+
+	Fixed major glitch in gallery functionality. It is now more dynamic and works smoother.
+
+	Tweaked styling for custom metabox fields.
+	
+	Note: multiple galleries on the same page (ie 2+ gallery fields) are not tested.
+
 ### 2.1.5
 
 	Added Gallery field to custom metabox

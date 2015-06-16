@@ -20,9 +20,6 @@
 .uploader.button {
 	width: 68px;
 }
-.gallery-uploader.button {
-	width: 91px;
-}
 .uploader-input {
 /* 	margin-left: 85px; */
 }
@@ -87,16 +84,48 @@
 	width: 80px;
 }
 
+/**
+ * gallery
+ */
 .mdw-cms-meta-box .gallery-wrap {
 	overflow: hidden;
 	float: left;
 	width: 610px;
+}
+.mdw-cms-meta-box .gallery-wrap #mdw-cms-gallery {
+	padding-bottom: 10px;
 }
 .mdw-cms-meta-box .gallery-uploader {
 
 }
 .mdw-cms-meta-box .gallery-wrap #mdw-cms-gallery img {
 	margin-right: 8px;
+}
+.gallery-uploader.button {
+	width: 91px;
+}
+.gallery-remove.button,
+.gallery-remove.button:focus {
+	width: 117px;
+	background: #d64e07;
+  border-color: #b84609;
+  color: #fff;
+  box-shadow: none;
+  margin-left: 15px;
+}
+.gallery-remove.button:hover,
+.gallery-remove.button:active {
+	background: #b1470e;
+	border-color: #b84609;
+	color: #fff;
+}
+
+/**
+ * wp editor
+ */
+.mdw-cms-meta-box .wp-editor-wrap {
+	clear: both;
+	padding-top: 10px;
 }
 
 /** jquery validator (custom)

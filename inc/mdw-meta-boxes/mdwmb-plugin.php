@@ -671,10 +671,15 @@ class MDWMetaboxes {
 	}
 
 	/**
+	 * generate_field function.
+	 *
 	 * generates the input box of each meta field
 	 * uses a switch case to determine which field to output (default is text)
-	 * @param array $args (set in the add_field() function via the add_field() function)
-	**/
+	 *
+	 * @access public
+	 * @param mixed $args
+	 * @return void
+	 */
 	function generate_field($args) {
 		global $post;
 
@@ -695,6 +700,7 @@ class MDWMetaboxes {
 		// utalized when a gallery has not been set
 		// gravity forms attached images to posts
 		// this will allow us to used said images as a default gallery
+		// would like to build an override to this
 		if ($value && $args['type']=='gallery')
 			$gallery_init=false;
 
@@ -746,18 +752,15 @@ class MDWMetaboxes {
 			case 'date':
 				$html.='<input type="text" class="mdw-cms-datepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				break;
-			case 'date-time':
-				//$html.='<input type="text" class="datepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
-				//$html.='<input type="text" class="timepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
-				break;
 			case 'email' :
 				$html.='<input type="text" class="email validator '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				break;
 			case 'gallery' :
 				$html.='<div class="gallery-wrap">';
-					$html.='<div id="mdw-cms-gallery">'.$this->get_gallery_images($value,$gallery_init).'</div>';
+					$html.='<div id="mdw-cms-gallery">'.$this->get_gallery_images($value,$gallery_init).'</div>'; // make filterable of sorts
 					$html.='<input class="gallery-uploader button" name="'.$args['id'].'_button" id="'.$args['id'].'_button" value="Edit Gallery" />';
-					$html.='<input type="hidden" name="'.$args['id'].'" value="'.$value.'" />';
+					$html.='<input class="gallery-remove button" name="'.$args['id'].'_button" id="'.$args['id'].'_button" value="Remove Gallery" />';
+					$html.='<input class="gallery-ids" type="hidden" name="'.$args['id'].'" value="'.$value.'" />';
 				$html.='</div>';
 				break;
 			case 'media':
@@ -1497,7 +1500,7 @@ print_r($option_arr);
 		$images=false;
 		$attached_images=false;
 
-		if ($display_attached)
+		if ($display_attached && isset($post->ID))
 			$attached_images=get_attached_media('image',$post->ID);
 
 		if (empty($ids) && !$attached_images)
@@ -1522,16 +1525,38 @@ print_r($option_arr);
 	/**
 	 * media_view_settings function.
 	 *
+	 * this is a helper function to load existing gallery images into the wp edit gallery screen
+	 *
 	 * @access public
 	 * @param mixed $settings
 	 * @param mixed $post
 	 * @return void
 	 */
-	public function media_view_settings($settings, $post ) {
-		$images=get_post_meta($post->ID,'_prop_gallery',true);
-		$shortcode = '[gallery ids="'.$images.'"]';
+	public function media_view_settings($settings,$post) {
+		$gallery_field_ids=array();
+		$post_type=get_post_type($post);
 
-		$settings['mdw_cms_gallery'] = array('shortcode' => $shortcode);
+		// cycle through all fields and find our gallery field ids //
+		foreach ($this->config as $config) :
+			if (!in_array($post_type,$config['post_types']))
+				continue;
+
+			foreach ($config['fields'] as $fields) :
+				if ($fields['field_type']=='gallery') :
+					$gallery_field_ids[]=$fields['field_id'];
+				endif;
+			endforeach;
+		endforeach;
+
+		// build our shortcodes // NEEDS WORK FOR MULTIPILE GALLERIES
+		foreach ($gallery_field_ids as $field_id) :
+			if (get_post_meta($post->ID,$field_id,true)) :
+				$images=get_post_meta($post->ID,$field_id,true);
+				$shortcode='[gallery ids="'.$images.'"]';
+
+				$settings['mdw_cms_gallery']=array('shortcode' => $shortcode); // potential filter here
+			endif;
+		endforeach;
 
 		return $settings;
 	}
