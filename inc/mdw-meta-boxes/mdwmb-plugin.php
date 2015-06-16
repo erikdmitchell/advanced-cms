@@ -563,8 +563,8 @@ class MDWMetaboxes {
 		      __($config['title'],'Upload_Meta_Box'),
 		      array($this,'generate_meta_box_fields'),
 		      $post_type,
-		      'normal',
-		      'high',
+		      apply_filters("mdw_cms_add_metabox_context_{$config['mb_id']}",'normal'), // normal, advanced, side
+		      apply_filters("mdw_cms_add_metabox_priority_{$config['mb_id']}",'high'), // high, core, default, low (prority)
 		      array(
 		      	'config_key' => $key,
 						//'duplicate' => $config['duplicate'],

@@ -55,12 +55,7 @@
 	overflow: hidden;
 }
 
-.field.options .option-row:nth-child(even) {
-	background: #ccc;
-}
-.field.options .option-row.default {
-	display: none;
-}
+
 
 .mdw-cms-wrap .form-row div.input {
 	padding: 0;
@@ -129,6 +124,24 @@ form.custom-metabox .add-fields.visible {
 #add-field-btn {
 	margin-left: 10px;
 }
+/* field options */
+.field.options .option-row:nth-child(odd) {
+	background: #e1e1e1;
+}
+.field.options .option-row.default {
+	display: none;
+}
+.field.options label {
+	margin-bottom: 5px;
+}
+.field.options .option-row {
+	margin: 5px 0;
+	padding: 5px;
+}
+.field.options .option-row > input {
+	margin: 0 10px 0 5px;
+}
+
 
 /**/
 p.submit > #clear-files {

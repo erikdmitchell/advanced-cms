@@ -51,6 +51,9 @@
 .mdw-cms-meta-box .ajaxmb-field-btn {
 	margin-left: 10px;
 }
+/**
+ * address meta field
+ */
 .mdw-cms-meta-box .address-wrap {
 	overflow: hidden;
 	float: left;
