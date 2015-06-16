@@ -17,7 +17,7 @@ Changelog
 		mdw_cms_add_metabox_context_{$config['mb_id']}
 		mdw_cms_add_metabox_priority_{$config['mb_id']}
 		
-		Tweaked styling for custom metabox admin panel.
+	Tweaked styling for custom metabox admin panel.
 
 ### 2.1.5.1
 
