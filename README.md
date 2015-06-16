@@ -11,6 +11,8 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
+### 2.1.5.2
+
 ### 2.1.5.1
 
 	Added Remove Gallery button.
