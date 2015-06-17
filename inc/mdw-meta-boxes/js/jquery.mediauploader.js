@@ -78,11 +78,15 @@
 
 		  // Gets initial gallery-edit images. Function modified from wp.media.gallery.edit in wp-includes/js/media-editor.js.source.html
 			function selection() {
-//console.log(wp.media.view.settings.mdw_cms_gallery.shortcode);
-		    var shortcode = wp.shortcode.next( 'gallery', wp.media.view.settings.mdw_cms_gallery.shortcode ); // potential variable
+				var shortcode=false;
 		    var defaultPostId = wp.media.gallery.defaults.id;
 		    var attachments;
 		    var selection;
+
+				if (typeof wp.media.view.settings.mdw_cms_gallery!=='undefined')
+					shortcode = wp.shortcode.next( 'gallery', wp.media.view.settings.mdw_cms_gallery.shortcode ); // potential variable
+
+console.log(shortcode);
 
 		    // Bail if we didn't match the shortcode or all of the content.
 		    if ( ! shortcode )

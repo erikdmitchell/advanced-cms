@@ -11,6 +11,15 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
+### 2.1.5.3
+
+	Added get_gallery_image_ids() to help with our load attached images function.
+	Added mdw_cms_get_gallery_image_ids filter to allow more control over get_gallery_image_ids().
+	Added mdw_cms_get_gallery_images filter for getting the gallery images to display in the gallery meta field.
+	Added mdw_cms_media_settings_gallery_shortcode filter to further customize our shortcode used in our WP Gallery.
+	
+	Removed the gallery init override for getting gallery images and ids. The filters can be utilized to do that.
+
 ### 2.1.5.2
 
 	Add two filters to position the meta boxes: 		      

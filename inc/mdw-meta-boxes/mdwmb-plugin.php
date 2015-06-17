@@ -690,19 +690,10 @@ class MDWMetaboxes {
 		$description_visible=false;
 		$format=false;
 		$gallery_init=true;
+		$value=null;
 
-		if (isset($values[$args['id']][0])) :
+		if (isset($values[$args['id']][0]))
 			$value=$values[$args['id']][0];
-		else :
-			$value=null;
-		endif;
-
-		// utalized when a gallery has not been set
-		// gravity forms attached images to posts
-		// this will allow us to used said images as a default gallery
-		// would like to build an override to this
-		if ($value && $args['type']=='gallery')
-			$gallery_init=false;
 
 		if (!empty($args['field_description']))
 			$description=$args['field_description'];
@@ -757,10 +748,10 @@ class MDWMetaboxes {
 				break;
 			case 'gallery' :
 				$html.='<div class="gallery-wrap">';
-					$html.='<div id="mdw-cms-gallery">'.$this->get_gallery_images($value,$gallery_init).'</div>'; // make filterable of sorts
+					$html.='<div id="mdw-cms-gallery">'.$this->get_gallery_images($value).'</div>'; // make filterable of sorts
 					$html.='<input class="gallery-uploader button" name="'.$args['id'].'_button" id="'.$args['id'].'_button" value="Edit Gallery" />';
 					$html.='<input class="gallery-remove button" name="'.$args['id'].'_button" id="'.$args['id'].'_button" value="Remove Gallery" />';
-					$html.='<input class="gallery-ids" type="hidden" name="'.$args['id'].'" value="'.$value.'" />';
+					$html.='<input class="gallery-ids" type="hidden" name="'.$args['id'].'" value="'.$this->get_gallery_image_ids($value).'" />';
 				$html.='</div>';
 				break;
 			case 'media':
@@ -1493,33 +1484,38 @@ print_r($option_arr);
 	 *
 	 * @access protected
 	 * @param array $ids (default: array())
-	 * @param bool $display_attached (default: false)
 	 * @return void
 	 */
-	protected function get_gallery_images($ids=array(),$display_attached=false) {
+	protected function get_gallery_images($ids=array()) {
+		global $post;
+
 		$images=false;
-		$attached_images=false;
-
-		if ($display_attached && isset($post->ID))
-			$attached_images=get_attached_media('image',$post->ID);
-
-		if (empty($ids) && !$attached_images)
-			return false;
 
 		if (!is_array($ids))
 			$ids=explode(',',$ids);
 
-		if ($attached_images) :
-			foreach ($attached_images as $image_id => $image) :
-				$ids[]=$image_id;
-			endforeach;
-		endif;
+		$ids=apply_filters('mdw_cms_get_gallery_images',$ids,$post);
+
+		if (empty($ids))
+			return false;
 
 		foreach ($ids as $attachment_id) :
 			$images.=wp_get_attachment_image($attachment_id,'thumbnail',false,array('class' => 'img-responsive mdw-cms-gallery-image'));
 		endforeach;
 
 		return $images;
+	}
+
+	protected function get_gallery_image_ids($ids=false) {
+		global $post;
+
+		if ($ids && !is_array($ids))
+			$ids=explode(',',$ids);
+
+		$ids=apply_filters("mdw_cms_get_gallery_image_ids",$ids,$post);
+		$ids=implode(',',$ids);
+
+		return $ids;
 	}
 
 	/**
@@ -1550,12 +1546,14 @@ print_r($option_arr);
 
 		// build our shortcodes // NEEDS WORK FOR MULTIPILE GALLERIES
 		foreach ($gallery_field_ids as $field_id) :
-			if (get_post_meta($post->ID,$field_id,true)) :
-				$images=get_post_meta($post->ID,$field_id,true);
-				$shortcode='[gallery ids="'.$images.'"]';
+			$images=null;
 
-				$settings['mdw_cms_gallery']=array('shortcode' => $shortcode); // potential filter here
-			endif;
+			if (get_post_meta($post->ID,$field_id,true))
+				$images=get_post_meta($post->ID,$field_id,true);
+
+			$shortcode=apply_filters('mdw_cms_media_settings_gallery_shortcode','[gallery ids="'.$images.'"]',$images,$post);
+
+			$settings['mdw_cms_gallery']=array('shortcode' => $shortcode);
 		endforeach;
 
 		return $settings;
