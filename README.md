@@ -11,6 +11,8 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
+### 2.1.5.4
+
 ### 2.1.5.3
 
 	Added get_gallery_image_ids() to help with our load attached images function.
