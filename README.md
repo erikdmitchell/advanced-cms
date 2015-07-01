@@ -13,6 +13,11 @@ Changelog
 
 ### 2.1.5.4
 
+	Added check for post type when saving metabox.
+	
+	Fixed glitch with post_fields on initial metabox creation.
+	Fixed glitch where data was not being reset properly for each field on a metabox save.
+
 ### 2.1.5.3
 
 	Added get_gallery_image_ids() to help with our load attached images function.

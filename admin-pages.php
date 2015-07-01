@@ -949,7 +949,9 @@ class MDWCMSgui {
 				if ($mb['mb_id']==$data['mb_id']) :
 					if (isset($data['update-metabox']) && $data['update-metabox']=='Update') :
 						$edit_key=$key;
-						$arr['post_fields']=$mb['post_fields'];
+						if (isset($arr['post_fields'])) :
+							$arr['post_fields']=$mb['post_fields'];
+						endif;
 					else :
 						return false;
 					endif;

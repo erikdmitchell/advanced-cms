@@ -1024,11 +1024,17 @@ class MDWMetaboxes {
 		$this->add_custom_fields(); // method for adding custom metabox fields outside the cms // -- this is added here as well for proper saving
 
 		// cycle through config fields and find matches //
+		$_post_type=get_post_type($post_id);
 		foreach ($this->config as $config) :
 			$data=null;
 			$prefix=$config['prefix'];
 
+			// skip things that are not affiliated with this post type //
+			if (!in_array($_post_type,$config['post_types']))
+				continue;
+
 			foreach ($config['fields'] as $id => $field) :
+				$data=null;
 				$field_id=$prefix.'_'.$id;
 
 				if (isset($field['field_id']))
