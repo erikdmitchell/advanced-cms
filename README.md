@@ -11,6 +11,10 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
+### 2.1.6
+
+
+
 ### 2.1.5.4
 
 	Added admin-metaboxes.js and jquery.metabox-id-check.js to help with our metaboxes in the admin panel.

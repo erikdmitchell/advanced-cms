@@ -462,6 +462,11 @@ class MDWCMSgui {
 					$html.='<input type="submit" name="update-metabox" id="submit" class="button button-primary" value="'.$btn_text.'">';
 					$html.='<input type="button" name="add-field" id="add-field-btn" class="button button-primary add-field" value="Add Field">';
 				$html.='</p>';
+
+				// add hidden fields for edit //
+				if (isset($_GET['edit']) && $_GET['edit']=='mb') :
+					$html.='<input type="hidden" name="edit_mb_id" value="'.$_GET['mb_id'].'" />';
+				endif;
 			$html.='</form>';
 
 			$html.='<div class="custom-metabox-list col-md-4">';
@@ -961,28 +966,47 @@ class MDWCMSgui {
 		if (isset($data['fields']))
 			$arr['fields']=array_values($data['fields']);
 
+		// check our metaboxes and then updates metabox or modifies it //
 		if (!empty($metaboxes)) :
-			foreach ($metaboxes as $key => $mb) :
-				if ($mb['mb_id']==$data['mb_id']) :
-					if (isset($data['update-metabox']) && $data['update-metabox']=='Update') :
-						$edit_key=$key;
-						if (isset($arr['post_fields'])) :
-							$arr['post_fields']=$mb['post_fields'];
+			if (isset($data['update-metabox']) && $data['update-metabox']=='Update') :
+				// check if id has changed //
+				if (isset($data['edit_mb_id']) && $data['edit_mb_id']!=$data['mb_id']) :
+					foreach ($metaboxes as $key => $mb) :
+						if ($mb['mb_id']==$data['edit_mb_id']) :
+							$edit_key=$key;
+	echo $mb['mb_id'].' - '.$data['edit_mb_id'].'<br>';
+	echo $data['mb_id'].'<br>';
+	// run a db update as well as jsut change the id //
 						endif;
-					else :
-						return false;
-					endif;
+					endforeach;
+				else : // standard edit
+					foreach ($metaboxes as $key => $mb) :
+						// if the ids match, check that we are updating that one, return false if not (a dup) //
+						if ($mb['mb_id']==$data['mb_id']) :
+							$edit_key=$key;
+							if (isset($arr['post_fields'])) :
+								$arr['post_fields']=$mb['post_fields'];
+							endif;
+						else :
+							return false;
+						endif;
+					endforeach;
 				endif;
-			endforeach;
+			endif;
 		endif;
 
+		// if we have an edit key, we edit otherwise add //
 		if ($edit_key!=-1) :
 			$metaboxes[$edit_key]=$arr;
 		else :
 			$metaboxes[]=$arr;
 		endif;
 
-		return update_option('mdw_cms_metaboxes',$metaboxes);
+echo '<pre>';
+print_r($metaboxes);
+echo '</pre>';
+
+		//return update_option('mdw_cms_metaboxes',$metaboxes);
 	}
 
 	/**
