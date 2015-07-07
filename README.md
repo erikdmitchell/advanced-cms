@@ -13,6 +13,8 @@ Changelog
 
 ### 2.1.5.5
 
+	Fixed issue with bootstrap.css where the display property of .hidden was set to !important.
+
 ### 2.1.5.4
 
 	Added admin-metaboxes.js and jquery.metabox-id-check.js to help with our metaboxes in the admin panel.
