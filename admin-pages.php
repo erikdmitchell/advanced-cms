@@ -44,12 +44,16 @@ class MDWCMSgui {
 
 		wp_enqueue_style('mdw-cms-gui-style',plugins_url('/css/admin.css',__FILE__));
 
+		wp_register_script('mdw-cms-admin-metaboxes-script',plugins_url('/js/admin-metaboxes.js',__FILE__),array('metabox-id-check-script'));
+
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-sortable');
 		wp_enqueue_script('mdw-cms-gui-mb-script',plugins_url('/js/mb.js',__FILE__),array('jquery'),'1.0.0',true);
 		wp_enqueue_script('namecheck-script',plugins_url('/js/jquery.namecheck.js',__FILE__),array('jquery'));
+		wp_enqueue_script('metabox-id-check-script',plugins_url('/js/jquery.metabox-id-check.js',__FILE__),array('jquery'));
 		wp_enqueue_script('mdw-cms-admin-custom-post-types-script',plugins_url('/js/admin-custom-post-types.js',__FILE__),array('namecheck-script'));
 		wp_enqueue_script('mdw-cms-admin-custom-taxonomies-script',plugins_url('/js/admin-custom-taxonomies.js',__FILE__),array('namecheck-script'));
+
 
 		if (isset($this->options['options']) && is_array($this->options['options']))
 			extract($this->options['options']);
@@ -70,6 +74,20 @@ class MDWCMSgui {
 		);
 
 		wp_localize_script('mdw-cms-admin-custom-taxonomies-script','wp_options',$taxonomy_options);
+
+		$metaboxes=$this->options['metaboxes'];
+		$mb_arr=array();
+		foreach ($metaboxes as $metabox) :
+			$mb_arr[]=$metabox['mb_id'];
+		endforeach;
+
+		$metabox_options=array(
+			'reserved' => $mb_arr
+		);
+
+		wp_localize_script('mdw-cms-admin-metaboxes-script','wp_metabx_options',$metabox_options);
+
+		wp_enqueue_script('mdw-cms-admin-metaboxes-script');
 	}
 
 	/**
@@ -398,13 +416,12 @@ class MDWCMSgui {
 			$html.='<form class="custom-metabox col-md-8" method="post">';
 				$html.='<h3>Add Metabox</h3>';
 				$html.='<div class="form-row row">';
-					//$html.='<div class="">';
-						$html.='<label for="mb_id" class="required '.$label_class.'">Metabox ID</label>';
-					//$html.='</div>';
+					$html.='<label for="mb_id" class="required '.$label_class.'">Metabox ID</label>';
 					$html.='<div class="input '.$input_class.'">';
 						$html.='<input type="text" name="mb_id" id="mb_id" class="" value="'.$mb_id.'" />';
 					$html.='</div>';
 					$html.='<span class="description '.$description_class.'">(e.g. movie_details)</span>';
+					$html.='<div class="mdw-cms-name-error col-md-6 col-md-offset-3"></div>';
 				$html.='</div>';
 
 				$html.='<div class="form-row row">';

@@ -13,7 +13,9 @@ Changelog
 
 ### 2.1.5.4
 
+	Added admin-metaboxes.js and jquery.metabox-id-check.js to help with our metaboxes in the admin panel.
 	Added check for post type when saving metabox.
+	Added check for duplicate metabox ids.
 	
 	Fixed glitch with post_fields on initial metabox creation.
 	Fixed glitch where data was not being reset properly for each field on a metabox save.

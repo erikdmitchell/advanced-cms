@@ -69,9 +69,14 @@
 }
 
 /* errors */
-#mdw-cms-name-error {
+#mdw-cms-name-error,
+.mdw-cms-name-error {
 	color: red;
 	font-weight: bold;
+}
+.custom-metabox .mdw-cms-name-error {
+	clear: both;
+	padding: 5px 0;
 }
 
 /* meta box fields
