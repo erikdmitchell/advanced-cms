@@ -13,7 +13,11 @@ Changelog
 
 ### 2.1.6
 
-
+	Added option for excerpt in Custom Post Types.
+	
+	When a Custom Post Type name is changed, the db post_type also gets changed to maintain compatibility.
+	
+	Extended the metabox ids that are reserved to prevent odd conflicts.
 
 ### 2.1.5.4
 

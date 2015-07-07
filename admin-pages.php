@@ -77,9 +77,24 @@ class MDWCMSgui {
 
 		$metaboxes=$this->options['metaboxes'];
 		$mb_arr=array();
+
+		// existing metaboxes //
 		foreach ($metaboxes as $metabox) :
 			$mb_arr[]=$metabox['mb_id'];
 		endforeach;
+
+		// taxonomies //
+		$taxonomies=get_taxonomies();
+		foreach ($taxonomies as $taxonomy) :
+			$mb_arr[]=$taxonomy;
+		endforeach;
+
+		// manual additions //
+		$mb_arr[]='postimage';
+		$mb_arr[]='excerpt';
+		$mb_arr[]='commentstatus';
+		$mb_arr[]='slug';
+		$mb_arr[]='author';
 
 		$metabox_options=array(
 			'reserved' => $mb_arr
@@ -219,6 +234,7 @@ class MDWCMSgui {
 		$thumbnail=1;
 		$editor=1;
 		$revisions=1;
+		$excerpt=0;
 		$hierarchical=0;
 		$page_attributes=0;
 		$id=-1;
@@ -327,6 +343,16 @@ class MDWCMSgui {
 						$html.='<span class="description '.$description_class.'">(default True)</span>';
 					$html.='</div>';
 					$html.='<div class="form-row row">';
+						$html.='<label for="revisions" class="'.$label_class.'">Excerpt</label>';
+						$html.='<div class="'.$select_class.'">';
+							$html.='<select name="excerpt" id="_excerpt">';
+								$html.='<option value="1" '.selected($excerpt,1,false).'>True</option>';
+								$html.='<option value="0" '.selected($excerpt,0,false).'>False</option>';
+							$html.='</select>';
+						$html.='</div>';
+						$html.='<span class="description '.$description_class.'">(default True)</span>';
+					$html.='</div>';
+					$html.='<div class="form-row row">';
 						$html.='<label for="hierarchical" class="'.$label_class.'">Hierarchical</label>';
 						$html.='<div class="'.$select_class.'">';
 							$html.='<select name="hierarchical" id="hierarchical">';
@@ -350,6 +376,8 @@ class MDWCMSgui {
 				$html.='</div>';
 				$html.='<p class="submit"><input type="submit" name="add-cpt" id="submit" class="button button-primary" value="'.$btn_text.'" '.$btn_disabled.'></p>';
 				$html.='<input type="hidden" name="cpt-id" id="cpt-id" value='.$id.' />';
+				$html.='<input type="hidden" name="cpt-prev-name" id="cpt-prev-name" value='.$name.' />';
+				$html.='<input type="hidden" name="return-url" id="return-url" value='.$base_url.'&edit=cpt&slug='.$cpt['name'].' />';
 			$html.='</form>';
 
 			$html.='<div class="custom-post-types-list col-md-4">';
@@ -888,11 +916,17 @@ class MDWCMSgui {
 			'thumbnail' => $data['thumbnail'],
 			'editor' => $data['editor'],
 			'revisions' => $data['revisions'],
+			'excerpt' => $data['excerpt'],
 			'hierarchical' => $data['hierarchical'],
 			'page_attributes' => $data['page_attributes']
 		);
 
 		if ($data['cpt-id']!=-1) :
+			// if we change the name, clean up the db //
+			if ($data['name']!=$data['cpt-prev-name']) :
+				self::update_cpt_name($data['cpt-prev-name'],$data['name']);
+			endif;
+
 			$post_types[$data['cpt-id']]=$arr;
 		else :
 			if (!empty($post_types)) :
@@ -974,7 +1008,7 @@ class MDWCMSgui {
 					foreach ($metaboxes as $key => $mb) :
 						if ($mb['mb_id']==$data['edit_mb_id']) :
 							$edit_key=$key;
-	// run a db update as well as jsut change the id //
+							//self::update_metabox_id($data['edit_mb_id'],$data['mb_id']); // run a db update as well as jsut change the id //
 						endif;
 					endforeach;
 				else : // standard edit
@@ -1000,11 +1034,7 @@ class MDWCMSgui {
 			$metaboxes[]=$arr;
 		endif;
 
-echo '<pre>';
-print_r($metaboxes);
-echo '</pre>';
-
-		//return update_option('mdw_cms_metaboxes',$metaboxes);
+		return update_option('mdw_cms_metaboxes',$metaboxes);
 	}
 
 	/**
@@ -1116,6 +1146,62 @@ echo '</pre>';
 		$html.='</div>';
 
 		return $html;
+	}
+
+	/**
+	 * update_metabox_prefix function.
+	 *
+	 * @access protected
+	 * @static
+	 * @param bool $old (default: false)
+	 * @param bool $new (default: false)
+	 * @return void
+	 */
+	protected static function update_metabox_prefix($old=false,$new=false) {
+		global $wpdb;
+
+		if (!$old || !$new)
+			return false;
+
+		$field='meta_key';
+
+		$sql="
+			UPDATE ".$wpdb->prefix."postmeta
+			SET $field = REPLACE($field,'$old','$new')
+			WHERE $field LIKE '%$old%'
+		";
+
+		$wpdb->get_results($sql);
+
+		return true;
+	}
+
+	/**
+	 * update_cpt_name function.
+	 *
+	 * @access protected
+	 * @static
+	 * @param bool $old (default: false)
+	 * @param bool $new (default: false)
+	 * @return void
+	 */
+	protected static function update_cpt_name($old=false,$new=false) {
+		global $wpdb;
+
+		if (!$old || !$new)
+			return false;
+
+		$field='post_type';
+
+		$sql="
+			UPDATE ".$wpdb->prefix."posts
+			SET $field = REPLACE($field,'$old','$new')
+			WHERE $field LIKE '%$old%'
+		";
+
+		$wpdb->get_results($sql);
+
+		return true;
 	}
 
 }
