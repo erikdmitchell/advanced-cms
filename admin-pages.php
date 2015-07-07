@@ -974,8 +974,6 @@ class MDWCMSgui {
 					foreach ($metaboxes as $key => $mb) :
 						if ($mb['mb_id']==$data['edit_mb_id']) :
 							$edit_key=$key;
-	echo $mb['mb_id'].' - '.$data['edit_mb_id'].'<br>';
-	echo $data['mb_id'].'<br>';
 	// run a db update as well as jsut change the id //
 						endif;
 					endforeach;
