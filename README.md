@@ -15,7 +15,7 @@ Changelog
 
 	Added option for excerpt in Custom Post Types.
 	
-	Reworked Custom Post Type functionality. Edit and Delete are all done via ajax. (more to come in future releases)
+	Reworked Custom Post Type functionality. All actions are done via ajax. (more to come in future releases)
 	
 	When a Custom Post Type name is changed, the db post_type also gets changed to maintain compatibility.
 	
