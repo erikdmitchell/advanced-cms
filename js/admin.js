@@ -24,6 +24,7 @@ jQuery(document).ready(function($) {
 
 		$.post(ajaxurl,data,function(response) {
 			var results=$.parseJSON(response);
+
 			$formWrap.html('').html(results.content); // clear and push content to our wrapper
 //console.log(results);
 
@@ -31,6 +32,35 @@ jQuery(document).ready(function($) {
 				$('#'+data.item_type+'-list-'+data.id).remove();
 			}
 
+			$adminNotices.html('').html(results.notice); // clear and post notice
+
+			$ajaxLoader.hide();
+		});
+	});
+
+	/**
+	 * submit button (cpt for now)
+	 */
+	$('.submit-button').live('click',function(e) {
+		e.preventDefault();
+
+		$ajaxLoader.show();
+
+		var type=$(this).data('type');
+		var $form=$(this).parents('form');
+
+		var data={
+			'action' : 'update_cpt',
+			'form_data' : $form.serializeArray(),
+			'page_action' : $(this).data('page-action'),
+			'item_type' : 'cpt'
+		};
+
+		$.post(ajaxurl,data,function(response) {
+			var results=$.parseJSON(response);
+
+			$formWrap.html('').html(results.content); // clear and push content to our wrapper
+//console.log(results);
 			$adminNotices.html('').html(results.notice); // clear and post notice
 
 			$ajaxLoader.hide();

@@ -238,8 +238,9 @@ class MDWCMSgui {
 	 * @return void
 	 */
 	function cpt_admin_page($id=-1) {
+		$this->options['post_types']=get_option('mdw_cms_post_types'); // update our options
+
 		$tab_url=$this->base_url.'&tab=mdw-cms-cpt';
-		$btn_text='Create';
 		$name=null;
 		$label=null;
 		$singular_label=null;
@@ -268,7 +269,6 @@ class MDWCMSgui {
 			extract($this->options['post_types'][$id]);
 
 			$btn_disabled=null;
-			$btn_text='Update';
 		endif;
 
 		$html=null;
@@ -381,7 +381,15 @@ class MDWCMSgui {
 						$html.='<span class="description '.$description_class.'">(default False)</span>';
 					$html.='</div>';
 				$html.='</div>';
-				$html.='<p class="submit"><input type="submit" name="add-cpt" id="submit" class="button button-primary" value="'.$btn_text.'" '.$btn_disabled.'></p>';
+
+				$html.='<p class="submit">';
+					if ($id!=-1) :
+						$html.='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Update" '.$btn_disabled.' data-type="cpt" data-page-action="update">';
+					else :
+						$html.='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Create" '.$btn_disabled.' data-type="cpt" data-page-action="add">';
+					endif;
+				$html.='</p>';
+
 				$html.='<input type="hidden" name="cpt-id" id="cpt-id" value='.$id.' />';
 				$html.='<input type="hidden" name="cpt-prev-name" id="cpt-prev-name" value='.$name.' />';
 				//$html.='<input type="hidden" name="return-url" id="return-url" value='.$base_url.'&edit=cpt&slug='.$cpt['name'].' />';
@@ -776,6 +784,13 @@ class MDWCMSgui {
 		return $html;
 	}
 
+	/**
+	 * update_options function.
+	 *
+	 * @access public
+	 * @param mixed $options
+	 * @return void
+	 */
 	function update_options($options) {
 		if (!$options['update'])
 			return false;
@@ -796,24 +811,6 @@ class MDWCMSgui {
 		$post_types=get_option('mdw_cms_post_types');
 		$metaboxes=get_option('mdw_cms_metaboxes');
 		$taxonomies=get_option('mdw_cms_taxonomies');
-
-		// create custom post type //
-		if (isset($_POST['add-cpt']) && $_POST['add-cpt']=='Create') :
-			if ($this->update_custom_post_types($_POST)) :
-				$this->admin_notices('updated','Post type has been created.');
-			else :
-				$this->admin_notices('error','There was an issue creating the post type.');
-			endif;
-		endif;
-
-		// update/edit custom post type //
-		if (isset($_POST['add-cpt']) && $_POST['add-cpt']=='Update') :
-			if ($this->update_custom_post_types($_POST)) :
-				$this->admin_notices('updated','Post type has been updated.');
-			else :
-				$this->admin_notices('error','There was an issue updating the post type.');
-			endif;
-		endif;
 
 		// add metabox //
 		if (isset($_POST['update-metabox']) && $_POST['update-metabox']=='Create') :
@@ -1225,6 +1222,44 @@ class MDWCMSgui {
 
 				$response['content']=$this->cpt_admin_page();
 				$response['notice']='<div class="updated">Post type "'.$slug.'" has been deleted.</div>';
+			elseif ($page_action=='add') :
+				$form_data_final=array();
+
+				foreach ($form_data as $input) :
+					$form_data_final[$input['name']]=$input['value'];
+				endforeach;
+
+				if ($this->update_custom_post_types($form_data_final)) :
+					$post_types=get_option('mdw_cms_post_types');
+					foreach ($post_types as $key => $post_type) :
+						if ($post_type['name']==$form_data_final['name']) :
+							$id=$key;
+							$slug=$post_type['name'];
+						endif;
+					endforeach;
+					$response['content']=$this->cpt_admin_page($id);
+					$response['notice']='<div class="updated">Post type "'.$slug.'" has been created.</div>';
+				else :
+					$response['content']=$this->cpt_admin_page();
+					$response['notice']='<div class="error">There was an issue creating the post type "'.$slug.'</div>';
+				endif;
+			elseif ($page_action=='update') :
+				$form_data_final=array();
+
+				foreach ($form_data as $input) :
+					$form_data_final[$input['name']]=$input['value'];
+				endforeach;
+
+				$id=$form_data_final['cpt-id'];
+				$slug=$form_data_final['name'];
+
+				if ($this->update_custom_post_types($form_data_final)) :
+					$response['content']=$this->cpt_admin_page($id);
+					$response['notice']='<div class="updated">Post type "'.$slug.'" has been updated.</div>';
+				else :
+					$response['content']=$this->cpt_admin_page($id);
+					$response['notice']='<div class="error">There was an issue updating the post type "'.$slug.'</div>';
+				endif;
 			endif;
 		endif;
 
