@@ -3,10 +3,11 @@ class MDWCMSgui {
 
 	protected $options=array();
 	protected $admin_notices_output=array();
+	protected $base_url=null;
 
 	function __construct() {
 		add_action('admin_menu',array($this,'build_admin_menu'));
-		add_action('admin_enqueue_scripts',array($this,'scripts_styles'));
+		add_action('admin_enqueue_scripts',array($this,'admin_scripts_styles'));
 		//add_action('admin_notices',array($this,'admin_notices')); // may not be needed
 		//add_filter('mdw_cms_admin_notices',array($this,'admin_notices'));
 
@@ -20,6 +21,10 @@ class MDWCMSgui {
 		$this->options['metaboxes']=get_option('mdw_cms_metaboxes');
 		$this->options['post_types']=get_option('mdw_cms_post_types');
 		$this->options['taxonomies']=get_option('mdw_cms_taxonomies');
+
+		$this->base_url=admin_url('tools.php?page=mdw-cms');
+
+		add_action('wp_ajax_update_cpt',array($this,'ajax_update_cpt'));
 	}
 
 	/**
@@ -33,13 +38,13 @@ class MDWCMSgui {
 	}
 
 	/**
-	 * scripts_styles function.
+	 * admin_scripts_styles function.
 	 *
 	 * @access public
 	 * @param mixed $hook
 	 * @return void
 	 */
-	function scripts_styles($hook) {
+	function admin_scripts_styles($hook) {
 		$disable_bootstrap=false;
 
 		wp_enqueue_style('mdw-cms-gui-style',plugins_url('/css/admin.css',__FILE__));
@@ -53,7 +58,7 @@ class MDWCMSgui {
 		wp_enqueue_script('metabox-id-check-script',plugins_url('/js/jquery.metabox-id-check.js',__FILE__),array('jquery'));
 		wp_enqueue_script('mdw-cms-admin-custom-post-types-script',plugins_url('/js/admin-custom-post-types.js',__FILE__),array('namecheck-script'));
 		wp_enqueue_script('mdw-cms-admin-custom-taxonomies-script',plugins_url('/js/admin-custom-taxonomies.js',__FILE__),array('namecheck-script'));
-
+		wp_enqueue_script('mdw-cms-admin-script',plugins_url('/js/admin.js',__FILE__),array('jquery'));
 
 		if (isset($this->options['options']) && is_array($this->options['options']))
 			extract($this->options['options']);
@@ -77,9 +82,24 @@ class MDWCMSgui {
 
 		$metaboxes=$this->options['metaboxes'];
 		$mb_arr=array();
+
+		// existing metaboxes //
 		foreach ($metaboxes as $metabox) :
 			$mb_arr[]=$metabox['mb_id'];
 		endforeach;
+
+		// taxonomies //
+		$taxonomies=get_taxonomies();
+		foreach ($taxonomies as $taxonomy) :
+			$mb_arr[]=$taxonomy;
+		endforeach;
+
+		// manual additions //
+		$mb_arr[]='postimage';
+		$mb_arr[]='excerpt';
+		$mb_arr[]='commentstatus';
+		$mb_arr[]='slug';
+		$mb_arr[]='author';
 
 		$metabox_options=array(
 			'reserved' => $mb_arr
@@ -126,23 +146,30 @@ class MDWCMSgui {
 				endforeach;
 			$html.='</h2>';
 
-			switch ($active_tab) :
-				case 'cms-main':
-					$html.=$this->default_admin_page();
-					break;
-				case 'mdw-cms-cpt':
-					$html.=$this->cpt_admin_page();
-					break;
-				case 'mdw-cms-metaboxes':
-					$html.=$this->metaboxes_admin_page();
-					break;
-				case 'mdw-cms-tax':
-					$html.=$this->custom_taxonomies_admin_page();
-					break;
-				default:
-					$html.=$this->default_admin_page();
-					break;
-			endswitch;
+			$html.='<div id="mdw-cms-admin-notices"></div>';
+			$html.='<div id="mdw-cms-form-wrap">';
+
+				switch ($active_tab) :
+					case 'cms-main':
+						$html.=$this->default_admin_page();
+						break;
+					case 'mdw-cms-cpt':
+						$html.=$this->cpt_admin_page();
+						break;
+					case 'mdw-cms-metaboxes':
+						$html.=$this->metaboxes_admin_page();
+						break;
+					case 'mdw-cms-tax':
+						$html.=$this->custom_taxonomies_admin_page();
+						break;
+					default:
+						$html.=$this->default_admin_page();
+						break;
+				endswitch;
+
+			$html.='</div><!-- #mdw-cms-form-wrap -->';
+
+			$html.='<div id="ajax-loader"><div id="ajax-image"></div></div>';
 
 		$html.='</div><!-- /.wrap -->';
 
@@ -202,15 +229,18 @@ class MDWCMSgui {
 		return $html;
 	}
 
+
 	/**
 	 * cpt_admin_page function.
 	 *
 	 * @access public
+	 * @param float $id (default: -1)
 	 * @return void
 	 */
-	function cpt_admin_page() {
-		$base_url=admin_url('tools.php?page=mdw-cms&tab=mdw-cms-cpt');
-		$btn_text='Create';
+	function cpt_admin_page($id=-1) {
+		$this->options['post_types']=get_option('mdw_cms_post_types'); // update our options
+
+		$tab_url=$this->base_url.'&tab=mdw-cms-cpt';
 		$name=null;
 		$label=null;
 		$singular_label=null;
@@ -219,9 +249,9 @@ class MDWCMSgui {
 		$thumbnail=1;
 		$editor=1;
 		$revisions=1;
+		$excerpt=0;
 		$hierarchical=0;
 		$page_attributes=0;
-		$id=-1;
 		$btn_disabled='disabled';
 
 		$label_class='col-md-3';
@@ -234,19 +264,12 @@ class MDWCMSgui {
 		$edit_class='col-md-2';
 		$delete_class='col-md-2';
 
-		// edit custom post type //
-		if (isset($_GET['edit']) && $_GET['edit']=='cpt') :
-			foreach ($this->options['post_types'] as $key => $cpt) :
-				if ($cpt['name']==$_GET['slug']) :
-					extract($this->options['post_types'][$key]);
-					$id=$key;
-				endif;
-			endforeach;
+		// load cpt if we have one //
+		if ($id!=-1) :
+			extract($this->options['post_types'][$id]);
+
 			$btn_disabled=null;
 		endif;
-
-		if ($id!=-1)
-			$btn_text='Update';
 
 		$html=null;
 
@@ -327,6 +350,16 @@ class MDWCMSgui {
 						$html.='<span class="description '.$description_class.'">(default True)</span>';
 					$html.='</div>';
 					$html.='<div class="form-row row">';
+						$html.='<label for="revisions" class="'.$label_class.'">Excerpt</label>';
+						$html.='<div class="'.$select_class.'">';
+							$html.='<select name="excerpt" id="_excerpt">';
+								$html.='<option value="1" '.selected($excerpt,1,false).'>True</option>';
+								$html.='<option value="0" '.selected($excerpt,0,false).'>False</option>';
+							$html.='</select>';
+						$html.='</div>';
+						$html.='<span class="description '.$description_class.'">(default True)</span>';
+					$html.='</div>';
+					$html.='<div class="form-row row">';
 						$html.='<label for="hierarchical" class="'.$label_class.'">Hierarchical</label>';
 						$html.='<div class="'.$select_class.'">';
 							$html.='<select name="hierarchical" id="hierarchical">';
@@ -348,17 +381,29 @@ class MDWCMSgui {
 						$html.='<span class="description '.$description_class.'">(default False)</span>';
 					$html.='</div>';
 				$html.='</div>';
-				$html.='<p class="submit"><input type="submit" name="add-cpt" id="submit" class="button button-primary" value="'.$btn_text.'" '.$btn_disabled.'></p>';
+
+				$html.='<p class="submit">';
+					if ($id!=-1) :
+						$html.='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Update" '.$btn_disabled.' data-type="cpt" data-page-action="update">';
+					else :
+						$html.='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Create" '.$btn_disabled.' data-type="cpt" data-page-action="add">';
+					endif;
+				$html.='</p>';
+
 				$html.='<input type="hidden" name="cpt-id" id="cpt-id" value='.$id.' />';
+				$html.='<input type="hidden" name="cpt-prev-name" id="cpt-prev-name" value='.$name.' />';
+				//$html.='<input type="hidden" name="return-url" id="return-url" value='.$base_url.'&edit=cpt&slug='.$cpt['name'].' />';
 			$html.='</form>';
 
 			$html.='<div class="custom-post-types-list col-md-4">';
 				$html.='<h3>Custom Post Types</h3>';
 
 				if ($this->options['post_types']) :
-					foreach ($this->options['post_types'] as $cpt) :
-						$html.='<div class="cpt-row row">';
-							$html.='<span class="cpt '.$existing_label_class.'">'.$cpt['label'].'</span><span class="edit '.$edit_class.'">[<a href="'.$base_url.'&edit=cpt&slug='.$cpt['name'].'">Edit</a>]</span><span class="delete '.$delete_class.'">[<a href="'.$base_url.'&delete=cpt&slug='.$cpt['name'].'">Delete</a>]</span>';
+					foreach ($this->options['post_types'] as $key => $cpt) :
+						$html.='<div id="cpt-list-'.$key.'" class="cpt-row row mdw-cms-edit-delete-list">';
+							$html.='<span class="cpt '.$existing_label_class.'">'.$cpt['label'].'</span>';
+							$html.='<span class="edit '.$edit_class.'">[<a href="" data-tab-url="'.$tab_url.'" data-item-type="cpt" data-slug="'.$cpt['name'].'" data-page-action="edit" data-action="update_cpt" data-id="'.$key.'">Edit</a>]</span>';
+							$html.='<span class="delete '.$delete_class.'">[<a href="" data-tab-url="'.$tab_url.'" data-item-type="cpt" data-slug="'.$cpt['name'].'" data-page-action="delete" data-action="update_cpt" data-id="'.$key.'">Delete</a>]</span>';
 						$html.='</div>';
 					endforeach;
 				endif;
@@ -462,6 +507,11 @@ class MDWCMSgui {
 					$html.='<input type="submit" name="update-metabox" id="submit" class="button button-primary" value="'.$btn_text.'">';
 					$html.='<input type="button" name="add-field" id="add-field-btn" class="button button-primary add-field" value="Add Field">';
 				$html.='</p>';
+
+				// add hidden fields for edit //
+				if (isset($_GET['edit']) && $_GET['edit']=='mb') :
+					$html.='<input type="hidden" name="edit_mb_id" value="'.$_GET['mb_id'].'" />';
+				endif;
 			$html.='</form>';
 
 			$html.='<div class="custom-metabox-list col-md-4">';
@@ -734,6 +784,13 @@ class MDWCMSgui {
 		return $html;
 	}
 
+	/**
+	 * update_options function.
+	 *
+	 * @access public
+	 * @param mixed $options
+	 * @return void
+	 */
 	function update_options($options) {
 		if (!$options['update'])
 			return false;
@@ -754,38 +811,6 @@ class MDWCMSgui {
 		$post_types=get_option('mdw_cms_post_types');
 		$metaboxes=get_option('mdw_cms_metaboxes');
 		$taxonomies=get_option('mdw_cms_taxonomies');
-
-		// create custom post type //
-		if (isset($_POST['add-cpt']) && $_POST['add-cpt']=='Create') :
-			if ($this->update_custom_post_types($_POST)) :
-				$this->admin_notices('updated','Post type has been created.');
-			else :
-				$this->admin_notices('error','There was an issue creating the post type.');
-			endif;
-		endif;
-
-		// update/edit custom post type //
-		if (isset($_POST['add-cpt']) && $_POST['add-cpt']=='Update') :
-			if ($this->update_custom_post_types($_POST)) :
-				$this->admin_notices('updated','Post type has been updated.');
-			else :
-				$this->admin_notices('error','There was an issue updating the post type.');
-			endif;
-		endif;
-
-		// remove custom post type //
-		if (isset($_GET['delete']) && $_GET['delete']=='cpt') :
-			foreach ($post_types as $key => $cpt) :
-				if ($cpt['name']==$_GET['slug']) :
-					unset($post_types[$key]);
-					$this->admin_notices('updated','Post type has been deleted.');
-				endif;
-			endforeach;
-
-			$post_types=array_values($post_types);
-
-			update_option('mdw_cms_post_types',$post_types);
-		endif;
 
 		// add metabox //
 		if (isset($_POST['update-metabox']) && $_POST['update-metabox']=='Create') :
@@ -883,11 +908,17 @@ class MDWCMSgui {
 			'thumbnail' => $data['thumbnail'],
 			'editor' => $data['editor'],
 			'revisions' => $data['revisions'],
+			'excerpt' => $data['excerpt'],
 			'hierarchical' => $data['hierarchical'],
 			'page_attributes' => $data['page_attributes']
 		);
 
 		if ($data['cpt-id']!=-1) :
+			// if we change the name, clean up the db //
+			if ($data['name']!=$data['cpt-prev-name']) :
+				self::update_cpt_name($data['cpt-prev-name'],$data['name']);
+			endif;
+
 			$post_types[$data['cpt-id']]=$arr;
 		else :
 			if (!empty($post_types)) :
@@ -961,21 +992,34 @@ class MDWCMSgui {
 		if (isset($data['fields']))
 			$arr['fields']=array_values($data['fields']);
 
+		// check our metaboxes and then updates metabox or modifies it //
 		if (!empty($metaboxes)) :
-			foreach ($metaboxes as $key => $mb) :
-				if ($mb['mb_id']==$data['mb_id']) :
-					if (isset($data['update-metabox']) && $data['update-metabox']=='Update') :
-						$edit_key=$key;
-						if (isset($arr['post_fields'])) :
-							$arr['post_fields']=$mb['post_fields'];
+			if (isset($data['update-metabox']) && $data['update-metabox']=='Update') :
+				// check if id has changed //
+				if (isset($data['edit_mb_id']) && $data['edit_mb_id']!=$data['mb_id']) :
+					foreach ($metaboxes as $key => $mb) :
+						if ($mb['mb_id']==$data['edit_mb_id']) :
+							$edit_key=$key;
+							//self::update_metabox_id($data['edit_mb_id'],$data['mb_id']); // run a db update as well as jsut change the id //
 						endif;
-					else :
-						return false;
-					endif;
+					endforeach;
+				else : // standard edit
+					foreach ($metaboxes as $key => $mb) :
+						// if the ids match, check that we are updating that one, return false if not (a dup) //
+						if ($mb['mb_id']==$data['mb_id']) :
+							$edit_key=$key;
+							if (isset($arr['post_fields'])) :
+								$arr['post_fields']=$mb['post_fields'];
+							endif;
+						else :
+							return false;
+						endif;
+					endforeach;
 				endif;
-			endforeach;
+			endif;
 		endif;
 
+		// if we have an edit key, we edit otherwise add //
 		if ($edit_key!=-1) :
 			$metaboxes[$edit_key]=$arr;
 		else :
@@ -1094,6 +1138,134 @@ class MDWCMSgui {
 		$html.='</div>';
 
 		return $html;
+	}
+
+	/**
+	 * update_metabox_prefix function.
+	 *
+	 * @access protected
+	 * @static
+	 * @param bool $old (default: false)
+	 * @param bool $new (default: false)
+	 * @return void
+	 */
+	protected static function update_metabox_prefix($old=false,$new=false) {
+		global $wpdb;
+
+		if (!$old || !$new)
+			return false;
+
+		$field='meta_key';
+
+		$sql="
+			UPDATE ".$wpdb->prefix."postmeta
+			SET $field = REPLACE($field,'$old','$new')
+			WHERE $field LIKE '%$old%'
+		";
+
+		$wpdb->get_results($sql);
+
+		return true;
+	}
+
+	/**
+	 * update_cpt_name function.
+	 *
+	 * @access protected
+	 * @static
+	 * @param bool $old (default: false)
+	 * @param bool $new (default: false)
+	 * @return void
+	 */
+	protected static function update_cpt_name($old=false,$new=false) {
+		global $wpdb;
+
+		if (!$old || !$new)
+			return false;
+
+		$field='post_type';
+
+		$sql="
+			UPDATE ".$wpdb->prefix."posts
+			SET $field = REPLACE($field,'$old','$new')
+			WHERE $field LIKE '%$old%'
+		";
+
+		$wpdb->get_results($sql);
+
+		return true;
+	}
+
+	/**
+	 * ajax_update_cpt function.
+	 *
+	 * edit/delete custom post type
+	 *
+	 * @access public
+	 * @return void
+	 */
+	function ajax_update_cpt() {
+		$post_types=$this->options['post_types'];
+		$response=array();
+
+		extract($_POST);
+
+		if ($item_type=='cpt') :
+			if ($page_action=='edit') :
+				$response['content']=$this->cpt_admin_page($id);
+				$response['notice']=null;
+			elseif ($page_action=='delete') :
+				// remove post type and update option //
+				unset($post_types[$id]);
+				$post_types=array_values($post_types);
+				update_option('mdw_cms_post_types',$post_types);
+
+				$response['content']=$this->cpt_admin_page();
+				$response['notice']='<div class="updated">Post type "'.$slug.'" has been deleted.</div>';
+			elseif ($page_action=='add') :
+				$form_data_final=array();
+
+				foreach ($form_data as $input) :
+					$form_data_final[$input['name']]=$input['value'];
+				endforeach;
+
+				if ($this->update_custom_post_types($form_data_final)) :
+					$post_types=get_option('mdw_cms_post_types');
+					foreach ($post_types as $key => $post_type) :
+						if ($post_type['name']==$form_data_final['name']) :
+							$id=$key;
+							$slug=$post_type['name'];
+						endif;
+					endforeach;
+					$response['content']=$this->cpt_admin_page($id);
+					$response['notice']='<div class="updated">Post type "'.$slug.'" has been created.</div>';
+				else :
+					$response['content']=$this->cpt_admin_page();
+					$response['notice']='<div class="error">There was an issue creating the post type "'.$slug.'</div>';
+				endif;
+			elseif ($page_action=='update') :
+				$form_data_final=array();
+
+				foreach ($form_data as $input) :
+					$form_data_final[$input['name']]=$input['value'];
+				endforeach;
+
+				$id=$form_data_final['cpt-id'];
+				$slug=$form_data_final['name'];
+
+				if ($this->update_custom_post_types($form_data_final)) :
+					$response['content']=$this->cpt_admin_page($id);
+					$response['notice']='<div class="updated">Post type "'.$slug.'" has been updated.</div>';
+				else :
+					$response['content']=$this->cpt_admin_page($id);
+					$response['notice']='<div class="error">There was an issue updating the post type "'.$slug.'</div>';
+				endif;
+			endif;
+		endif;
+
+		echo json_encode($response);
+
+		wp_die();
 	}
 
 }
