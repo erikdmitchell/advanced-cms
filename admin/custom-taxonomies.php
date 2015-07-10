@@ -50,6 +50,7 @@ class adminTax {
 	}
 
 	public function admin_page() {
+		$notices=$this->update_options();
 		$btn_text='Create';
 		$name=null;
 		$label=null;
@@ -58,7 +59,7 @@ class adminTax {
 		$show_ui=1;
 		$show_admin_col=1;
 		$id=-1;
-		$notices=null;
+
 
 		$label_class='col-md-3';
 		$input_class='col-md-3';
@@ -79,40 +80,6 @@ class adminTax {
 				endif;
 			endforeach;
 		endif;
-
-		// create custom taxonomy //
-		if (isset($_POST['add-tax']) && $_POST['add-tax']=='Create') :
-			if ($this->update_taxonomies($_POST)) :
-				$notices='<div class="updated">Taxonomy has been created.</div>';
-			else :
-				$notices='<div class="error">There was an issue creating the taxonomy.</div>';
-			endif;
-		endif;
-
-		// update taxonomy //
-		if (isset($_POST['add-tax']) && $_POST['add-tax']=='Update') :
-			if ($this->update_taxonomies($_POST)) :
-				$notices='<div class="updated">Taxonomy has been updated.</div>';
-			else :
-				$notices='<div class="error">There was an issue updating the taxonomy.</div>';
-			endif;
-		endif;
-
-		// remove taxonomy //
-		if (isset($_GET['delete']) && $_GET['delete']=='tax') :
-			foreach ($this->options as $key => $tax) :
-				if ($tax['name']==$_GET['slug']) :
-					unset($this->options[$key]);
-					$notices='<div class="updated">Taxonomy has been removed.</div>';
-				endif;
-			endforeach;
-
-			$taxonomies=array_values($this->options);
-
-			update_option('mdw_cms_taxonomies',$taxonomies);
-		endif;
-
-		$this->options=get_option($this->wp_option); // reload our options
 
 		if ($id!=-1)
 			$btn_text='Update';
@@ -167,6 +134,46 @@ class adminTax {
 		echo $html;
 	}
 
+	protected function update_options() {
+		$notices=null;
+
+		// create custom taxonomy //
+		if (isset($_POST['add-tax']) && $_POST['add-tax']=='Create') :
+			if ($this->update_taxonomies($_POST)) :
+				$notices='<div class="updated">Taxonomy has been created.</div>';
+			else :
+				$notices='<div class="error">There was an issue creating the taxonomy.</div>';
+			endif;
+		endif;
+
+		// update taxonomy //
+		if (isset($_POST['add-tax']) && $_POST['add-tax']=='Update') :
+			if ($this->update_taxonomies($_POST)) :
+				$notices='<div class="updated">Taxonomy has been updated.</div>';
+			else :
+				$notices='<div class="error">There was an issue updating the taxonomy.</div>';
+			endif;
+		endif;
+
+		// remove taxonomy //
+		if (isset($_GET['delete']) && $_GET['delete']=='tax') :
+			foreach ($this->options as $key => $tax) :
+				if ($tax['name']==$_GET['slug']) :
+					unset($this->options[$key]);
+					$notices='<div class="updated">Taxonomy has been removed.</div>';
+				endif;
+			endforeach;
+
+			$taxonomies=array_values($this->options);
+
+			update_option('mdw_cms_taxonomies',$taxonomies);
+		endif;
+
+		$this->options=get_option($this->wp_option); // reload our options
+
+		return $notices;
+	}
+
 	/**
 	 * update_taxonomies function.
 	 *
@@ -214,9 +221,7 @@ class adminTax {
 
 		$update=update_option($this->wp_option,$taxonomies);
 
-		if ($update) :
-			return true;
-		elseif ($option_exists) :
+		if ($update || $option_exists) :
 			return true;
 		else :
 			return false;

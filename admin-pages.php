@@ -28,8 +28,7 @@ class MDWCMSgui {
 
 		add_action('admin_menu',array($this,'build_admin_menu'));
 		add_action('admin_enqueue_scripts',array($this,'admin_scripts_styles'));
-		//add_action('admin_notices',array($this,'admin_notices')); // may not be needed
-		//add_filter('mdw_cms_admin_notices',array($this,'admin_notices'));
+
 		add_action('admin_init','MDWCMSlegacy::setup_legacy_updater');
 		add_action('admin_notices','MDWCMSlegacy::legacy_admin_notices');
 
