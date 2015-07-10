@@ -12,15 +12,17 @@ class MDWCMSgui {
 	 * @return void
 	 */
 	public function __construct() {
+		include_once('admin/default.php');
 		include_once('admin/custom-post-types.php');
 
-		$this->update_mdw_cms_settings();
+		$this->update_mdw_cms_settings(); // will be removed soon
 
-		$this->options['version']=get_option('mdw_cms_version');
-		$this->options['options']=get_option('mdw_cms_options');
+		$this->options=$this->setup_default_options();
+
 		$this->options['metaboxes']=get_option('mdw_cms_metaboxes');
-		$this->options['post_types']=get_option('mdw_cms_post_types');
 		$this->options['taxonomies']=get_option('mdw_cms_taxonomies');
+
+
 
 		$this->base_url=admin_url('tools.php?page=mdw-cms');
 
@@ -30,8 +32,6 @@ class MDWCMSgui {
 		//add_filter('mdw_cms_admin_notices',array($this,'admin_notices'));
 		add_action('admin_init','MDWCMSlegacy::setup_legacy_updater');
 		add_action('admin_notices','MDWCMSlegacy::legacy_admin_notices');
-
-		add_action('wp_ajax_update_cms_admin_page',array($this,'ajax_update_cms_admin_page'));
 
 		add_filter('admin_body_class',array($this,'add_classes_to_body'));
 	}
@@ -66,9 +66,7 @@ class MDWCMSgui {
 		wp_enqueue_script('mdw-cms-gui-mb-script',plugins_url('/js/mb.js',__FILE__),array('jquery'),'1.0.0',true);
 		wp_enqueue_script('namecheck-script',plugins_url('/js/jquery.namecheck.js',__FILE__),array('jquery'));
 		wp_enqueue_script('metabox-id-check-script',plugins_url('/js/jquery.metabox-id-check.js',__FILE__),array('jquery'));
-		wp_enqueue_script('mdw-cms-admin-custom-post-types-script',plugins_url('/js/admin-custom-post-types.js',__FILE__),array('namecheck-script'));
 		wp_enqueue_script('mdw-cms-admin-custom-taxonomies-script',plugins_url('/js/admin-custom-taxonomies.js',__FILE__),array('namecheck-script'));
-		wp_enqueue_script('mdw-cms-admin-script',plugins_url('/js/admin.js',__FILE__),array('jquery'));
 
 		if (isset($this->options['options']) && is_array($this->options['options']))
 			extract($this->options['options']);
@@ -142,310 +140,145 @@ class MDWCMSgui {
 	 * @return void
 	 */
 	function mdw_cms_page() {
-		$html=null;
+		$options_tabs=$this->add_options_tab(apply_filters('mdw_cms_options_tabs',array()));
 		$notice=null;
-		$id=-1;
-		$tabs=array(
-			'cms-main' => 'Main',
-			'mdw-cms-cpt' => 'Custom Post Types',
-			'mdw-cms-metaboxes' => 'Metaboxes',
-			'mdw-cms-tax' => 'Custom Taxonomies'
-		);
-		$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'cms-main';
+
+		if (empty($options_tabs))
+			return false;
+
+		$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'default';
+		usort($options_tabs['tabs'], function ($a, $b) {
+			if (function_exists('bccomp')) :
+				return bccomp($a['order'], $b['order']);
+			else :
+				return strcmp($a['order'], $b['order']);
+			endif;
+		});
 
 		if (isset($_POST['notice']))
 			$notice=urldecode($_POST['notice']);
 
-		if (isset($_POST['id']))
-			$id=$_POST['id'];
+		echo '<div class="mdw-cms-wrap">';
 
-		$html.='<div class="mdw-cms-wrap">';
+			echo '<h2>MDW CMS</h2>';
 
-			$html.='<h2>MDW CMS</h2>';
-
-			$html.=implode('',$this->admin_notices_output);
-
-			$html.='<h2 class="nav-tab-wrapper">';
-				foreach ($tabs as $tab => $name) :
-					if ($active_tab==$tab) :
-						$class='nav-tab-active';
+			echo '<h2 class="nav-tab-wrapper">';
+				foreach ($options_tabs['tabs'] as $tab) :
+					if ($active_tab==$tab['id']) :
+						$classes='nav-tab-active';
 					else :
-						$class=null;
+						$classes=null;
 					endif;
 
-					$html.='<a href="?page=mdw-cms&tab='.$tab.'" class="nav-tab '.$class.'">'.$name.'</a>';
+					echo '<a href="'.$this->base_url.'&tab='.$tab['id'].'" class="nav-tab '.$classes.'">'.$tab['name'].'</a>';
 				endforeach;
-			$html.='</h2>';
+			echo '</h2>';
 
-			$html.='<div id="mdw-cms-admin-notices">'.$notice.'</div>';
-			$html.='<div id="mdw-cms-form-wrap">';
+			echo '<div id="mdw-cms-admin-notices">'.$notice.'</div>';
+			echo '<div id="mdw-cms-form-wrap">';
 
-				switch ($active_tab) :
-					case 'cms-main':
-						$html.=$this->default_admin_page();
-						break;
-					case 'mdw-cms-cpt':
-						$html.=$this->cpt_admin_page($id);
-						break;
-					case 'mdw-cms-metaboxes':
-						$html.=$this->metaboxes_admin_page();
-						break;
-					case 'mdw-cms-tax':
-						$html.=$this->custom_taxonomies_admin_page();
-						break;
-					default:
-						$html.=$this->default_admin_page();
-						break;
-				endswitch;
+				foreach ($options_tabs['hooks'] as $tag => $active) :
+					$tag_arr=explode('-',$tag);
+					$id=array_pop($tag_arr);
 
-			$html.='</div><!-- #mdw-cms-form-wrap -->';
-
-			$html.='<div id="ajax-loader"><div id="ajax-image"></div></div>';
-
-		$html.='</div><!-- /.wrap -->';
-
-		echo $html;
-	}
-
-	/**
-	 * default_admin_page function.
-	 *
-	 * the main (default) admin page. acts as a landing page.
-	 *
-	 * @access public
-	 * @return void
-	 */
-	function default_admin_page() {
-		$html=null;
-		$disable_bootstrap=false;
-		$options=$this->options['options'];
-
-		$label_class='col-md-3';
-		$input_class='col-md-3';
-		$description_class='col-md-6';
-		$description_ext_class='col-md-9 col-md-offset-3';
-
-		$html.='<h3>Options</h3>';
-
-		if (isset($_POST['update-options']) && isset($_POST['options'])) :
-			$options=$this->update_options($_POST['options']);
-		endif;
-
-		if (is_array($options))
-			extract($options);
-
-		$html.='<div class="mdw-cms-default">';
-
-			$html.='<form class="mdw-cms-options" method="post">';
-
-				$html.='<div class="mdw-cms-options-row row">';
-					$html.='<label for="options[disable_bootstrap]" class="'.$label_class.'">Disable Bootstrap</label>';
-					$html.='<input type="checkbox" name="options[disable_bootstrap]" class="'.$input_class.'" value="1" '.checked('1',$disable_bootstrap, false).' />';
-					$html.='<span class="description '.$description_class.'">If this box is checked, the MDW CMS bootstrap stylesheet will be disabled.</span>';
-					$html.='<div class="description-ext '.$description_ext_class.'">Our admin pages utilize some bootstrap styles for responsiveness. In some cases, this can cause conflicts with other themes and/or plugins that also use bootstrap.</div>';
-				$html.='</div>';
-
-				$html.='<p class="submit"><input type="submit" name="update-options" id="update-options" class="button button-primary" value="Update Options"></p>';
-				$html.='<input type="hidden" name="options[update]" value="1" />';
-
-			$html.='</form>';
-
-			$html.='<p>';
-				$html.='For more information, please <a href="https://bitbucket.org/millerdesign/mdw-cms/wiki/">visit our WIKI</a>. At this time, only admins can access the wiki. If you need access please contact us.';
-			$html.='</p>';
-
-			$html.=MDWCMSlegacy::get_legacy_page();
-		$html.='</div><!-- .mdw-cms-default -->';
-
-		return $html;
-	}
-
-
-	/**
-	 * cpt_admin_page function.
-	 *
-	 * @access public
-	 * @param float $id (default: -1)
-	 * @return void
-	 */
-	function cpt_admin_page($id=-1) {
-		$this->options['post_types']=get_option('mdw_cms_post_types'); // update our options
-
-		$tab_url=$this->base_url.'&tab=mdw-cms-cpt';
-		$name=null;
-		$label=null;
-		$singular_label=null;
-		$description=null;
-		$title=1;
-		$thumbnail=1;
-		$editor=1;
-		$revisions=1;
-		$excerpt=0;
-		$hierarchical=0;
-		$page_attributes=0;
-		$btn_disabled='disabled';
-
-		$label_class='col-md-3';
-		$input_class='col-md-3';
-		$description_class='col-md-6';
-		$description_ext_class='col-md-9 col-md-offset-3';
-		$error_class='col-md-12';
-		$select_class='col-md-3';
-		$existing_label_class='col-md-5';
-		$edit_class='col-md-2';
-		$delete_class='col-md-2';
-
-		// load cpt if we have one //
-		if ($id!=-1) :
-			extract($this->options['post_types'][$id]);
-
-			$btn_disabled=null;
-		endif;
-
-		$html=null;
-
-		$html.='<div class="row">';
-
-			$html.='<form class="custom-post-types col-md-8" method="post">';
-				$html.='<h3>Add New Custom Post Type</h3>';
-				$html.='<div class="form-row row">';
-					$html.='<label for="name" class="required '.$label_class.'">Post Type Name</label>';
-					$html.='<div class="input '.$input_class.'">';
-						$html.='<input type="text" name="name" id="name" value="'.$name.'" />';
-					$html.='</div>';
-					$html.='<span class="description '.$description_class.'">(e.g. movie)</span>';
-					$html.='<div id="mdw-cms-name-error" class="'.$error_class.'"></div>';
-					$html.='<div class="description-ext '.$description_ext_class.'">Max 20 characters, can not contain capital letters or spaces. Reserved post types: post, page, attachment, revision, nav_menu_item.</div>';
-				$html.='</div>';
-
-				$html.='<div class="form-row row">';
-					$html.='<label for="label" class="'.$label_class.'">Label</label>';
-					$html.='<div class="input '.$input_class.'">';
-						$html.='<input type="text" name="label" id="label" value="'.$label.'" />';
-					$html.='</div>';
-					$html.='<span class="description '.$description_class.'">(e.g. Movies)</span>';
-				$html.='</div>';
-
-				$html.='<div class="form-row row">';
-					$html.='<label for="singular_label" class="'.$label_class.'">Singular Label</label>';
-					$html.='<div class="input '.$input_class.'">';
-						$html.='<input type="text" name="singular_label" id="singular_label" value="'.$singular_label.'" />';
-					$html.='</div>';
-					$html.='<span class="description '.$description_class.'">(e.g. Movie)</span>';
-				$html.='</div>';
-
-				$html.='<div class="form-row row">';
-					$html.='<label for="description" class="'.$label_class.'">Description</label>';
-					$html.='<textarea name="description" id="description" rows="4" cols="40">'.$description.'</textarea>';
-				$html.='</div>';
-
-				$html.='<div class="advanced-options">';
-					$html.='<div class="form-row row">';
-						$html.='<label for="title" class="'.$label_class.'">Title</label>';
-						$html.='<div class="'.$select_class.'">';
-							$html.='<select name="title" id="title">';
-								$html.='<option value="1" '.selected($title,1,false).'>True</option>';
-								$html.='<option value="0" '.selected($title,0,false).'>False</option>';
-							$html.='</select>';
-						$html.='</div>';
-						$html.='<span class="description '.$description_class.'">(default True)</span>';
-					$html.='</div>';
-					$html.='<div class="form-row row">';
-						$html.='<label for="thumbnail" class="'.$label_class.'">Thumbnail</label>';
-						$html.='<div class="'.$select_class.'">';
-							$html.='<select name="thumbnail" id="thumbnaill">';
-								$html.='<option value="1" '.selected($thumbnail,1,false).'>True</option>';
-								$html.='<option value="0" '.selected($thumbnail,0,false).'>False</option>';
-							$html.='</select>';
-						$html.='</div>';
-						$html.='<span class="description '.$description_class.'">(default True)</span>';
-					$html.='</div>';
-					$html.='<div class="form-row row">';
-						$html.='<label for="editor" class="'.$label_class.'">Editor</label>';
-						$html.='<div class="'.$select_class.'">';
-							$html.='<select name="editor" id="editor" >';
-								$html.='<option value="1" '.selected($editor,1,false).'>True</option>';
-								$html.='<option value="0" '.selected($editor,0,false).'>False</option>';
-							$html.='</select>';
-						$html.='</div>';
-						$html.='<span class="description '.$description_class.'">(default True)</span>';
-					$html.='</div>';
-					$html.='<div class="form-row row">';
-						$html.='<label for="revisions" class="'.$label_class.'">Revisions</label>';
-						$html.='<div class="'.$select_class.'">';
-							$html.='<select name="revisions" id="revisions">';
-								$html.='<option value="1" '.selected($revisions,1,false).'>True</option>';
-								$html.='<option value="0" '.selected($revisions,0,false).'>False</option>';
-							$html.='</select>';
-						$html.='</div>';
-						$html.='<span class="description '.$description_class.'">(default True)</span>';
-					$html.='</div>';
-					$html.='<div class="form-row row">';
-						$html.='<label for="revisions" class="'.$label_class.'">Excerpt</label>';
-						$html.='<div class="'.$select_class.'">';
-							$html.='<select name="excerpt" id="_excerpt">';
-								$html.='<option value="1" '.selected($excerpt,1,false).'>True</option>';
-								$html.='<option value="0" '.selected($excerpt,0,false).'>False</option>';
-							$html.='</select>';
-						$html.='</div>';
-						$html.='<span class="description '.$description_class.'">(default True)</span>';
-					$html.='</div>';
-					$html.='<div class="form-row row">';
-						$html.='<label for="hierarchical" class="'.$label_class.'">Hierarchical</label>';
-						$html.='<div class="'.$select_class.'">';
-							$html.='<select name="hierarchical" id="hierarchical">';
-								$html.='<option value="1" '.selected($hierarchical,1,false).'>True</option>';
-								$html.='<option value="0" '.selected($hierarchical,0,false).'>False</option>';
-							$html.='</select>';
-						$html.='</div>';
-						$html.='<span class="description '.$description_class.'">(default False)</span>';
-						$html.='<div class="description-ext '.$description_ext_class.'">Whether the post type is hierarchical (e.g. page). Allows Parent to be specified. Note: "page-attributes" must be set to true to show the parent select box.</div>';
-					$html.='</div>';
-					$html.='<div class="form-row row">';
-						$html.='<label for="page_attributes" class="'.$label_class.'">Page Attributes</label>';
-						$html.='<div class="'.$select_class.'">';
-							$html.='<select name="page_attributes" id="page_attributes">';
-								$html.='<option value="1" '.selected($page_attributes,1,false).'>True</option>';
-								$html.='<option value="0" '.selected($page_attributes,0,false).'>False</option>';
-							$html.='</select>';
-						$html.='</div>';
-						$html.='<span class="description '.$description_class.'">(default False)</span>';
-					$html.='</div>';
-				$html.='</div>';
-
-				$html.='<p class="submit">';
-					if ($id!=-1) :
-						$html.='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Update" '.$btn_disabled.' data-type="cpt" data-tab-url="'.$tab_url.'" data-page-action="update" data-action="update_cms_admin_page" data-item-type="cpt">';
-					else :
-						$html.='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Create" '.$btn_disabled.' data-type="cpt" data-tab-url="'.$tab_url.'" data-page-action="add" data-action="update_cms_admin_page" data-item-type="cpt">';
+					if ($active_tab==$id) :
+						do_action($tag,$this);
 					endif;
-				$html.='</p>';
+				endforeach;
 
-				$html.='<input type="hidden" name="cpt-id" id="cpt-id" value='.$id.' />';
-				$html.='<input type="hidden" name="cpt-prev-name" id="cpt-prev-name" value='.$name.' />';
-				//$html.='<input type="hidden" name="return-url" id="return-url" value='.$base_url.'&edit=cpt&slug='.$cpt['name'].' />';
-			$html.='</form>';
+			echo '</div><!-- #mdw-cms-form-wrap -->';
 
-			$html.='<div class="custom-post-types-list col-md-4">';
-				$html.='<h3>Custom Post Types</h3>';
+			echo '<div id="ajax-loader"><div id="ajax-image"></div></div>';
 
-				if ($this->options['post_types']) :
-					foreach ($this->options['post_types'] as $key => $cpt) :
-						$html.='<div id="cpt-list-'.$key.'" class="cpt-row row mdw-cms-edit-delete-list">';
-							$html.='<span class="cpt '.$existing_label_class.'">'.$cpt['label'].'</span>';
-							$html.='<span class="edit '.$edit_class.'">[<a href="" data-tab-url="'.$tab_url.'" data-item-type="cpt" data-slug="'.$cpt['name'].'" data-page-action="edit" data-action="update_cms_admin_page" data-id="'.$key.'" data-title="Custom Post Type">Edit</a>]</span>';
-							$html.='<span class="delete '.$delete_class.'">[<a href="" data-tab-url="'.$tab_url.'" data-item-type="cpt" data-slug="'.$cpt['name'].'" data-page-action="delete" data-action="update_cms_admin_page" data-id="'.$key.'" data-title="Custom Post Type">Delete</a>]</span>';
-						$html.='</div>';
-					endforeach;
-				endif;
-
-			$html.='</div>';
-
-		$html.='</div><!-- .row -->';
-
-
-		return $html;
+		echo '</div><!-- /.wrap -->';
 	}
+
+	/**
+	 * add_options_tab function.
+	 *
+	 * @access public
+	 * @param array $tabs (default: array())
+	 * @return void
+	 */
+	function add_options_tab($tabs=array()) {
+		$tabs_full=array();
+
+		if (empty($tabs))
+			return false;
+
+		foreach ($tabs as $tab_id => $tab) :
+			// setup our action hooks //
+			$hookname='mdw_theme_options_tab-'.$tab_id;
+
+			add_action($hookname,$tab['function']);
+
+			$tabs_full['hooks'][$hookname]=true;
+
+			// setup our tabs //
+			$tabs_full['tabs'][]=array(
+				'id' => $tab_id,
+				'name' => $tab['name'],
+				'order' => $tab['order']
+			);
+		endforeach;
+
+		return $tabs_full;
+	}
+
+/*
+	function setup_options() {
+		$options=array();
+		$this->default_options=$this->setup_default_options();
+
+		if (get_option($this->option_name)) :
+	 		$options=array_replace_recursive($this->default_options,get_option($this->option_name));
+
+	 		// apply a clean to our options in case there's old values stored in db //
+	 		$default_options_keys=array();
+	 		foreach ($this->default_options as $key => $value) :
+	 			$default_options_keys[]=$key;
+	 		endforeach;
+
+	 		foreach ($options as $key => $option) :
+	 			if (!in_array($key,$default_options_keys))
+	 				unset($options[$key]);
+	 		endforeach;
+
+	 	else :
+	 		$options=$this->default_options;
+	 	endif;
+
+		return $options;
+	}
+*/
+
+	function setup_default_options() {
+		$options=array();
+		$options=apply_filters('mdw_cms_default_options',$options);
+
+		return $options;
+	}
+
+/*
+	function update_options() {
+		$options=array();
+
+		if (get_option($this->option_name)) :
+			$options=array_replace_recursive($this->default_options,get_option($this->option_name)); // merge stored with default options
+		else :
+			$options=$this->default_options;
+		endif;
+
+		$options=array_replace_recursive($options,$_POST['theme_options']); // merger post (updated) options with previous options
+
+		$updated=update_option($this->option_name,$options);
+
+		$this->options=$this->setup_options(); // kind of like a refresh now the db is updated
+
+		return $updated;
+	}
+*/
+
 
 	/**
 	 * metaboxes_admin_page function.
@@ -816,25 +649,6 @@ class MDWCMSgui {
 	}
 
 	/**
-	 * update_options function.
-	 *
-	 * @access public
-	 * @param mixed $options
-	 * @return void
-	 */
-	function update_options($options) {
-		if (!$options['update'])
-			return false;
-
-		$new_options=$options;
-		unset($new_options['update']); // a temp var passed, remove it
-
-		update_option('mdw_cms_options',$new_options);
-
-		return get_option('mdw_cms_options');
-	}
-
-	/**
 	 * runs all of our update and edit functions
 	 * called in __construct and run before everything so that our options are updated before page load
 	 */
@@ -913,59 +727,6 @@ class MDWCMSgui {
 
 			update_option('mdw_cms_taxonomies',$taxonomies);
 		endif;
-	}
-
-	/**
-	 * update_custom_post_types function.
-	 *
-	 * @access public
-	 * @static
-	 * @param array $data (default: array())
-	 * @return void
-	 */
-	public static function update_custom_post_types($data=array()) {
-		$post_types=get_option('mdw_cms_post_types');
-		$post_types_s=serialize($post_types);
-
-		if (!isset($data['name']) || $data['name']=='')
-			return false;
-
-		$arr=array(
-			'name' => $data['name'],
-			'label' => $data['label'],
-			'singular_label' => $data['singular_label'],
-			'description' => $data['description'],
-			'title' => $data['title'],
-			'thumbnail' => $data['thumbnail'],
-			'editor' => $data['editor'],
-			'revisions' => $data['revisions'],
-			'excerpt' => $data['excerpt'],
-			'hierarchical' => $data['hierarchical'],
-			'page_attributes' => $data['page_attributes']
-		);
-
-		if ($data['cpt-id']!=-1) :
-			// if we change the name, clean up the db //
-			if ($data['name']!=$data['cpt-prev-name']) :
-				self::update_cpt_name($data['cpt-prev-name'],$data['name']);
-			endif;
-
-			$post_types[$data['cpt-id']]=$arr;
-		else :
-			if (!empty($post_types)) :
-				foreach ($post_types as $cpt) :
-					if ($cpt['name']==$data['name'])
-						return false;
-				endforeach;
-			endif;
-			$post_types[]=$arr;
-		endif;
-
-		// we are simply updating the same info -- force true //
-		if ($post_types_s==serialize($post_types))
-			return true;
-
-		return update_option('mdw_cms_post_types',$post_types);
 	}
 
 	/**
@@ -1225,87 +986,6 @@ class MDWCMSgui {
 		$wpdb->get_results($sql);
 
 		return true;
-	}
-
-	/**
-	 * ajax_update_cpt function.
-	 *
-	 * edit/delete custom post type
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function ajax_update_cms_admin_page() {
-		$post_types=$this->options['post_types'];
-		$response=array();
-
-		extract($_POST);
-
-/*
-		switch $item_type:
-			case 'cpt' :
-				ajax_update_cpt($_POST);
-				break;
-		endswitch;
-*/
-
-
-		if ($item_type=='cpt') :
-			if ($page_action=='edit') :
-				$response['content']=$this->cpt_admin_page($id);
-				$response['notice']=null;
-			elseif ($page_action=='delete') : // remove post type and update option //
-				unset($post_types[$id]);
-				$post_types=array_values($post_types);
-				update_option('mdw_cms_post_types',$post_types);
-
-				$response=true; // reload page //
-			elseif ($page_action=='add') :
-				$form_data_final=array();
-
-				foreach ($form_data as $input) :
-					$form_data_final[$input['name']]=$input['value'];
-				endforeach;
-
-				if ($this->update_custom_post_types($form_data_final)) :
-					$post_types=get_option('mdw_cms_post_types');
-					foreach ($post_types as $key => $post_type) :
-						if ($post_type['name']==$form_data_final['name']) :
-							$id=$key;
-							$slug=$post_type['name'];
-						endif;
-					endforeach;
-
-					// b/c we do a page reload, this hides some vars so that we can load with the edit screen up //
-					$response['id']=$id;
-					$response['notice']=urlencode('<div class="updated">Post type "'.$slug.'" has been created.</div>');
-				else :
-					$response['content']=$this->cpt_admin_page();
-					$response['notice']='<div class="error">There was an issue creating the post type "'.$slug.'</div>';
-				endif;
-			elseif ($page_action=='update') :
-				$form_data_final=array();
-
-				foreach ($form_data as $input) :
-					$form_data_final[$input['name']]=$input['value'];
-				endforeach;
-
-				$id=$form_data_final['cpt-id'];
-				$slug=$form_data_final['name'];
-
-				if ($this->update_custom_post_types($form_data_final)) :
-					$response['content']=$this->cpt_admin_page($id);
-					$response['notice']='<div class="updated">Post type "'.$slug.'" has been updated.</div>';
-				else :
-					$response['content']=$this->cpt_admin_page($id);
-					$response['notice']='<div class="error">There was an issue updating the post type "'.$slug.'</div>';
-				endif;
-			endif;
-		endif;
-
-		echo json_encode($response);
-
-		wp_die();
 	}
 
 }

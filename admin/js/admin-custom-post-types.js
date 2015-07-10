@@ -5,6 +5,17 @@ jQuery(document).ready(function($) {
 	var $adminNotices=$('#mdw-cms-admin-notices');
 
 	/**
+	 * attach name check to cpt
+	 */
+	$('.custom-post-types #name').change(function() {
+		if ($(this).nameCheck($(this),$(this).val())) {
+			$('.custom-post-types #submit').prop('disabled',false);
+		} else {
+			$('.custom-post-types #submit').prop('disabled',true);
+		}
+	});
+
+	/**
 	 * edit link click
 	 */
 	$('.mdw-cms-edit-delete-list > span.edit > a').live('click',function(e) {
