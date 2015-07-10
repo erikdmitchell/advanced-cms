@@ -13,6 +13,9 @@ Changelog
 
 ### 2.1.7
 
+	Added delete box notification and page reload to smooth out minor issues on add/delete custom post types.
+	Added mdw-cms-admin class to admin body.
+
 ### 2.1.6
 
 	Added option for excerpt in Custom Post Types.

@@ -202,3 +202,10 @@ p.submit > #clear-files {
 	display: none;
 }
 */
+
+/**
+ * custom post types
+ */
+.mdw-cms-admin .ui-widget-overlay {
+	background: #aaaaaa;
+}

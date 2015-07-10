@@ -6,14 +6,6 @@ class MDWCMSgui {
 	protected $base_url=null;
 
 	function __construct() {
-		add_action('admin_menu',array($this,'build_admin_menu'));
-		add_action('admin_enqueue_scripts',array($this,'admin_scripts_styles'));
-		//add_action('admin_notices',array($this,'admin_notices')); // may not be needed
-		//add_filter('mdw_cms_admin_notices',array($this,'admin_notices'));
-
-		add_action('admin_init','MDWCMSlegacy::setup_legacy_updater');
-		add_action('admin_notices','MDWCMSlegacy::legacy_admin_notices');
-
 		$this->update_mdw_cms_settings();
 
 		$this->options['version']=get_option('mdw_cms_version');
@@ -24,7 +16,16 @@ class MDWCMSgui {
 
 		$this->base_url=admin_url('tools.php?page=mdw-cms');
 
+		add_action('admin_menu',array($this,'build_admin_menu'));
+		add_action('admin_enqueue_scripts',array($this,'admin_scripts_styles'));
+		//add_action('admin_notices',array($this,'admin_notices')); // may not be needed
+		//add_filter('mdw_cms_admin_notices',array($this,'admin_notices'));
+		add_action('admin_init','MDWCMSlegacy::setup_legacy_updater');
+		add_action('admin_notices','MDWCMSlegacy::legacy_admin_notices');
+
 		add_action('wp_ajax_update_cpt',array($this,'ajax_update_cpt'));
+
+		add_filter('admin_body_class',array($this,'add_classes_to_body'));
 	}
 
 	/**
@@ -53,6 +54,7 @@ class MDWCMSgui {
 
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-sortable');
+		wp_enqueue_script('jquery-ui-dialog');
 		wp_enqueue_script('mdw-cms-gui-mb-script',plugins_url('/js/mb.js',__FILE__),array('jquery'),'1.0.0',true);
 		wp_enqueue_script('namecheck-script',plugins_url('/js/jquery.namecheck.js',__FILE__),array('jquery'));
 		wp_enqueue_script('metabox-id-check-script',plugins_url('/js/jquery.metabox-id-check.js',__FILE__),array('jquery'));
@@ -111,6 +113,19 @@ class MDWCMSgui {
 	}
 
 	/**
+	 * add_classes_to_body function.
+	 *
+	 * @access public
+	 * @param mixed $classes
+	 * @return void
+	 */
+	public function add_classes_to_body($classes) {
+		$classes.=' mdw-cms-admin';
+
+		return $classes;
+	}
+
+	/**
 	 * mdw_cms_page function.
 	 *
 	 * our primary admin page, utlaizes tabs for internal navigation
@@ -120,6 +135,8 @@ class MDWCMSgui {
 	 */
 	function mdw_cms_page() {
 		$html=null;
+		$notice=null;
+		$id=-1;
 		$tabs=array(
 			'cms-main' => 'Main',
 			'mdw-cms-cpt' => 'Custom Post Types',
@@ -127,6 +144,12 @@ class MDWCMSgui {
 			'mdw-cms-tax' => 'Custom Taxonomies'
 		);
 		$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'cms-main';
+
+		if (isset($_POST['notice']))
+			$notice=urldecode($_POST['notice']);
+
+		if (isset($_POST['id']))
+			$id=$_POST['id'];
 
 		$html.='<div class="mdw-cms-wrap">';
 
@@ -146,7 +169,7 @@ class MDWCMSgui {
 				endforeach;
 			$html.='</h2>';
 
-			$html.='<div id="mdw-cms-admin-notices"></div>';
+			$html.='<div id="mdw-cms-admin-notices">'.$notice.'</div>';
 			$html.='<div id="mdw-cms-form-wrap">';
 
 				switch ($active_tab) :
@@ -154,7 +177,7 @@ class MDWCMSgui {
 						$html.=$this->default_admin_page();
 						break;
 					case 'mdw-cms-cpt':
-						$html.=$this->cpt_admin_page();
+						$html.=$this->cpt_admin_page($id);
 						break;
 					case 'mdw-cms-metaboxes':
 						$html.=$this->metaboxes_admin_page();
@@ -384,9 +407,9 @@ class MDWCMSgui {
 
 				$html.='<p class="submit">';
 					if ($id!=-1) :
-						$html.='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Update" '.$btn_disabled.' data-type="cpt" data-page-action="update">';
+						$html.='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Update" '.$btn_disabled.' data-type="cpt" data-tab-url="'.$tab_url.'" data-page-action="update" data-action="update_cpt" data-item-type="cpt">';
 					else :
-						$html.='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Create" '.$btn_disabled.' data-type="cpt" data-page-action="add">';
+						$html.='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Create" '.$btn_disabled.' data-type="cpt" data-tab-url="'.$tab_url.'" data-page-action="add" data-action="update_cpt" data-item-type="cpt">';
 					endif;
 				$html.='</p>';
 
@@ -402,8 +425,8 @@ class MDWCMSgui {
 					foreach ($this->options['post_types'] as $key => $cpt) :
 						$html.='<div id="cpt-list-'.$key.'" class="cpt-row row mdw-cms-edit-delete-list">';
 							$html.='<span class="cpt '.$existing_label_class.'">'.$cpt['label'].'</span>';
-							$html.='<span class="edit '.$edit_class.'">[<a href="" data-tab-url="'.$tab_url.'" data-item-type="cpt" data-slug="'.$cpt['name'].'" data-page-action="edit" data-action="update_cpt" data-id="'.$key.'">Edit</a>]</span>';
-							$html.='<span class="delete '.$delete_class.'">[<a href="" data-tab-url="'.$tab_url.'" data-item-type="cpt" data-slug="'.$cpt['name'].'" data-page-action="delete" data-action="update_cpt" data-id="'.$key.'">Delete</a>]</span>';
+							$html.='<span class="edit '.$edit_class.'">[<a href="" data-tab-url="'.$tab_url.'" data-item-type="cpt" data-slug="'.$cpt['name'].'" data-page-action="edit" data-action="update_cpt" data-id="'.$key.'" data-title="Custom Post Type">Edit</a>]</span>';
+							$html.='<span class="delete '.$delete_class.'">[<a href="" data-tab-url="'.$tab_url.'" data-item-type="cpt" data-slug="'.$cpt['name'].'" data-page-action="delete" data-action="update_cpt" data-id="'.$key.'" data-title="Custom Post Type">Delete</a>]</span>';
 						$html.='</div>';
 					endforeach;
 				endif;
@@ -1204,7 +1227,7 @@ class MDWCMSgui {
 	 * @access public
 	 * @return void
 	 */
-	function ajax_update_cpt() {
+	public function ajax_update_cpt() {
 		$post_types=$this->options['post_types'];
 		$response=array();
 
@@ -1214,14 +1237,12 @@ class MDWCMSgui {
 			if ($page_action=='edit') :
 				$response['content']=$this->cpt_admin_page($id);
 				$response['notice']=null;
-			elseif ($page_action=='delete') :
-				// remove post type and update option //
+			elseif ($page_action=='delete') : // remove post type and update option //
 				unset($post_types[$id]);
 				$post_types=array_values($post_types);
 				update_option('mdw_cms_post_types',$post_types);
 
-				$response['content']=$this->cpt_admin_page();
-				$response['notice']='<div class="updated">Post type "'.$slug.'" has been deleted.</div>';
+				$response=true; // reload page //
 			elseif ($page_action=='add') :
 				$form_data_final=array();
 
@@ -1237,8 +1258,10 @@ class MDWCMSgui {
 							$slug=$post_type['name'];
 						endif;
 					endforeach;
-					$response['content']=$this->cpt_admin_page($id);
-					$response['notice']='<div class="updated">Post type "'.$slug.'" has been created.</div>';
+
+					// b/c we do a page reload, this hides some vars so that we can load with the edit screen up //
+					$response['id']=$id;
+					$response['notice']=urlencode('<div class="updated">Post type "'.$slug.'" has been created.</div>');
 				else :
 					$response['content']=$this->cpt_admin_page();
 					$response['notice']='<div class="error">There was an issue creating the post type "'.$slug.'</div>';
