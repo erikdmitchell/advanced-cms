@@ -5,7 +5,15 @@ class MDWCMSgui {
 	protected $admin_notices_output=array();
 	protected $base_url=null;
 
-	function __construct() {
+	/**
+	 * __construct function.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function __construct() {
+		include_once('admin/custom-post-types.php');
+
 		$this->update_mdw_cms_settings();
 
 		$this->options['version']=get_option('mdw_cms_version');
@@ -23,7 +31,7 @@ class MDWCMSgui {
 		add_action('admin_init','MDWCMSlegacy::setup_legacy_updater');
 		add_action('admin_notices','MDWCMSlegacy::legacy_admin_notices');
 
-		add_action('wp_ajax_update_cpt',array($this,'ajax_update_cpt'));
+		add_action('wp_ajax_update_cms_admin_page',array($this,'ajax_update_cms_admin_page'));
 
 		add_filter('admin_body_class',array($this,'add_classes_to_body'));
 	}
@@ -34,7 +42,7 @@ class MDWCMSgui {
 	 * @access public
 	 * @return void
 	 */
-	function build_admin_menu() {
+	public function build_admin_menu() {
 		add_management_page('MDW CMS','MDW CMS','administrator','mdw-cms',array($this,'mdw_cms_page'));
 	}
 
@@ -45,7 +53,7 @@ class MDWCMSgui {
 	 * @param mixed $hook
 	 * @return void
 	 */
-	function admin_scripts_styles($hook) {
+	public function admin_scripts_styles($hook) {
 		$disable_bootstrap=false;
 
 		wp_enqueue_style('mdw-cms-gui-style',plugins_url('/css/admin.css',__FILE__));
@@ -407,9 +415,9 @@ class MDWCMSgui {
 
 				$html.='<p class="submit">';
 					if ($id!=-1) :
-						$html.='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Update" '.$btn_disabled.' data-type="cpt" data-tab-url="'.$tab_url.'" data-page-action="update" data-action="update_cpt" data-item-type="cpt">';
+						$html.='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Update" '.$btn_disabled.' data-type="cpt" data-tab-url="'.$tab_url.'" data-page-action="update" data-action="update_cms_admin_page" data-item-type="cpt">';
 					else :
-						$html.='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Create" '.$btn_disabled.' data-type="cpt" data-tab-url="'.$tab_url.'" data-page-action="add" data-action="update_cpt" data-item-type="cpt">';
+						$html.='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Create" '.$btn_disabled.' data-type="cpt" data-tab-url="'.$tab_url.'" data-page-action="add" data-action="update_cms_admin_page" data-item-type="cpt">';
 					endif;
 				$html.='</p>';
 
@@ -425,8 +433,8 @@ class MDWCMSgui {
 					foreach ($this->options['post_types'] as $key => $cpt) :
 						$html.='<div id="cpt-list-'.$key.'" class="cpt-row row mdw-cms-edit-delete-list">';
 							$html.='<span class="cpt '.$existing_label_class.'">'.$cpt['label'].'</span>';
-							$html.='<span class="edit '.$edit_class.'">[<a href="" data-tab-url="'.$tab_url.'" data-item-type="cpt" data-slug="'.$cpt['name'].'" data-page-action="edit" data-action="update_cpt" data-id="'.$key.'" data-title="Custom Post Type">Edit</a>]</span>';
-							$html.='<span class="delete '.$delete_class.'">[<a href="" data-tab-url="'.$tab_url.'" data-item-type="cpt" data-slug="'.$cpt['name'].'" data-page-action="delete" data-action="update_cpt" data-id="'.$key.'" data-title="Custom Post Type">Delete</a>]</span>';
+							$html.='<span class="edit '.$edit_class.'">[<a href="" data-tab-url="'.$tab_url.'" data-item-type="cpt" data-slug="'.$cpt['name'].'" data-page-action="edit" data-action="update_cms_admin_page" data-id="'.$key.'" data-title="Custom Post Type">Edit</a>]</span>';
+							$html.='<span class="delete '.$delete_class.'">[<a href="" data-tab-url="'.$tab_url.'" data-item-type="cpt" data-slug="'.$cpt['name'].'" data-page-action="delete" data-action="update_cms_admin_page" data-id="'.$key.'" data-title="Custom Post Type">Delete</a>]</span>';
 						$html.='</div>';
 					endforeach;
 				endif;
@@ -1227,11 +1235,20 @@ class MDWCMSgui {
 	 * @access public
 	 * @return void
 	 */
-	public function ajax_update_cpt() {
+	public function ajax_update_cms_admin_page() {
 		$post_types=$this->options['post_types'];
 		$response=array();
 
 		extract($_POST);
+
+/*
+		switch $item_type:
+			case 'cpt' :
+				ajax_update_cpt($_POST);
+				break;
+		endswitch;
+*/
+
 
 		if ($item_type=='cpt') :
 			if ($page_action=='edit') :
