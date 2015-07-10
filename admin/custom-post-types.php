@@ -44,7 +44,7 @@ class adminCPT {
 		$tabs['cpt']=array(
 			'name' => 'Custom Post Types',
 			'function' => array($this,'admin_page'),
-			'order' => 10
+			'order' => 1
 		);
 		return $tabs;
 	}

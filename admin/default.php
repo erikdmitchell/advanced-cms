@@ -1,14 +1,50 @@
 <?php
+/**
+ * adminDefault class.
+ */
 class adminDefault {
 
 	public $wp_option='mdw_cms_options';
 	public $options=array();
 
+	/**
+	 * __construct function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	function __construct() {
+		add_action('admin_enqueue_scripts',array($this,'admin_scripts_styles'));
+
 		add_filter('mdw_cms_options_tabs',array($this,'setup_tab'));
 		add_filter('mdw_cms_default_options',array($this,'add_options'));
 	}
 
+	/**
+	 * admin_scripts_styles function.
+	 *
+	 * @access public
+	 * @param mixed $hook
+	 * @return void
+	 */
+	public function admin_scripts_styles($hook) {
+		$disable_bootstrap=false;
+
+		if (isset($this->options['options']) && is_array($this->options['options']))
+			extract($this->options['options']);
+
+		if (!$disable_bootstrap) :
+			wp_enqueue_style('mdw-cms-bootstrap-custom-style',plugins_url('/css/bootstrap.css',__FILE__));
+		endif;
+	}
+
+	/**
+	 * setup_tab function.
+	 *
+	 * @access public
+	 * @param mixed $tabs
+	 * @return void
+	 */
 	public function setup_tab($tabs) {
 		$tabs['default']=array(
 			'name' => 'Main',
@@ -18,6 +54,13 @@ class adminDefault {
 		return $tabs;
 	}
 
+	/**
+	 * add_options function.
+	 *
+	 * @access public
+	 * @param mixed $options
+	 * @return void
+	 */
 	public function add_options($options) {
 		$this->options=array(
 			'version' => get_option('mdw_cms_version'),
