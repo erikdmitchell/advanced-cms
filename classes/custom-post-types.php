@@ -41,9 +41,6 @@ class MDWCustomPostTypes {
 			if ($revisions)
 				$supports[]='revisions';
 
-			if ($excerpt)
-				$supports[]='excerpt';
-
 			if ($page_attributes)
 				$supports[]='page-attributes';
 

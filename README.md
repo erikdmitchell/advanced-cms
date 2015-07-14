@@ -11,15 +11,9 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
-### 2.1.6
+### 2.1.5.5
 
-	Added option for excerpt in Custom Post Types.
-	
-	Reworked Custom Post Type functionality. All actions are done via ajax. (more to come in future releases)
-	
-	When a Custom Post Type name is changed, the db post_type also gets changed to maintain compatibility.
-	
-	Extended the metabox ids that are reserved to prevent odd conflicts.
+	Fixed issue with bootstrap.css where the display property of .hidden was set to !important.
 
 ### 2.1.5.4
 
