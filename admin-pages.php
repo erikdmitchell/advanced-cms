@@ -1005,14 +1005,12 @@ class MDWCMSgui {
 					endforeach;
 				else : // standard edit
 					foreach ($metaboxes as $key => $mb) :
-						// if the ids match, check that we are updating that one, return false if not (a dup) //
+						// if the ids match, check that we are updating that one //
 						if ($mb['mb_id']==$data['mb_id']) :
 							$edit_key=$key;
 							if (isset($arr['post_fields'])) :
 								$arr['post_fields']=$mb['post_fields'];
 							endif;
-						else :
-							return false;
 						endif;
 					endforeach;
 				endif;

@@ -13,7 +13,7 @@ Changelog
 
 ### 2.1.6.1
 
-	
+	Fixed glitch when updating Post Types for metaboxes.
 
 ### 2.1.6
 
