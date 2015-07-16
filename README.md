@@ -11,6 +11,8 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
+### 2.1.6.2
+
 ### 2.1.6.1
 
 	Fixed glitch when updating Post Types for metaboxes.
