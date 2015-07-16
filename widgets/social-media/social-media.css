@@ -1,0 +1,14 @@
+.widget-area .widget .social-media {
+	list-style-type: none;
+}
+.widget-area .widget .social-media li {
+	list-style-type: none;
+	float: left;
+	margin-right: 5px;
+}
+.widget-area .widget .social-media li a {
+	font-size: 24px;
+}
+.widget-area .widget .social-media li a .fa {
+
+}

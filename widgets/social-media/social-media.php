@@ -16,6 +16,18 @@ class SocialMedia extends WP_Widget {
 			__( 'Social Media', 'mdw_social_media' ), // Name
 			array( 'description' => __( 'Displays custom Social Media settings', 'mdw_social_media' ), ) // Args
 		);
+
+		add_action('wp_enqueue_scripts',array($this,'scripts_styles'));
+	}
+
+	/**
+	 * scripts_styles function.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	function scripts_styles() {
+		wp_enqueue_style('social-media-widget-style',plugins_url('social-media.css',__FILE__));
 	}
 
 	/**
@@ -36,7 +48,7 @@ class SocialMedia extends WP_Widget {
 			$sm_options=get_option('social_media_options');
 				?>
 				<ul class="social-media">
-					<?php foreach ($sm_options as $option) : ?>
+					<?php foreach ($sm_options as $option_id => $option) : ?>
 						<li id="social-media-<?php echo $option_id; ?>"><a href="<?php echo $option['url']; ?>"><i class="fa <?php echo $option['icon']; ?>"></i></a></li>
 					<?php endforeach; ?>
 				</ul>
@@ -81,10 +93,4 @@ class SocialMedia extends WP_Widget {
 	}
 
 }
-
-// register SocialMedia widget
-function register_social_media_widget() {
-    register_widget( 'SocialMedia' );
-}
-add_action( 'widgets_init', 'register_social_media_widget' );
 ?>

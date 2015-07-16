@@ -13,6 +13,12 @@ Changelog
 
 ### 2.1.6.2
 
+	Changed the way our widgets are organized and called. See widgets/init.php file for more.
+	
+	Cleaned up some variable issues with the Content Widget.
+	
+	Fixed minor glitches in Social Media widget.
+
 ### 2.1.6.1
 
 	Fixed glitch when updating Post Types for metaboxes.
