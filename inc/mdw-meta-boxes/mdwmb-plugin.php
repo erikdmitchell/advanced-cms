@@ -2,7 +2,7 @@
 class MDWMetaboxes {
 
 	private $nonce = 'wp_upm_media_nonce'; // Represents the nonce value used to save the post media //
-	private $version='1.2.5';
+	private $version='1.2.6';
 	private $option_name='mdw_meta_box_duped_boxes';
 
 	protected $options=array();
@@ -314,6 +314,11 @@ class MDWMetaboxes {
 		$this->fields=array(
 			'address' => array(
 				'repeatable' => 1,
+				'options' => 0,
+				'format' => 0,
+			),
+			'button' => array(
+				'repeatable' => 0,
 				'options' => 0,
 				'format' => 0,
 			),
@@ -715,24 +720,28 @@ class MDWMetaboxes {
 
 				$html.='<div class="address-wrap">';
 					$html.='<div class="line-1">';
-						$html.='<input type="text" class="'.$classes.'" name="'.$args['id'].'[line1]" value="'.$line1.'" />';
+						$html.='<input type="text" class="'.$classes.'" name="'.$args['id'].'[line1]" id="'.$args['id'].'_line1" value="'.$line1.'" />';
 					$html.='</div>';
 					$html.='<div class="line-2">';
-						$html.='<input type="text" class="'.$classes.'" name="'.$args['id'].'[line2]" value="'.$line2.'" />';
+						$html.='<input type="text" class="'.$classes.'" name="'.$args['id'].'[line2]" id="'.$args['id'].'_line2" value="'.$line2.'" />';
 					$html.='</div>';
 					$html.='<div class="city">';
-						$html.='<span>City</span><input type="text" class="'.$classes.'" name="'.$args['id'].'[city]" value="'.$city.'" />';
+						$html.='<span>City</span><input type="text" class="'.$classes.'" name="'.$args['id'].'[city]" id="'.$args['id'].'_city" value="'.$city.'" />';
 					$html.='</div>';
 					$html.='<div class="state">';
-						$html.='<span>State/Province</span><input type="text" class="'.$classes.'" name="'.$args['id'].'[state]" value="'.$state.'" />';
+						$html.='<span>State/Province</span><input type="text" class="'.$classes.'" name="'.$args['id'].'[state]" id="'.$args['id'].'_state" value="'.$state.'" />';
 					$html.='</div>';
 					$html.='<div class="zip">';
-						$html.='<span>Postal Code</span><input type="text" class="'.$classes.'" name="'.$args['id'].'[zip]" value="'.$zip.'" />';
+						$html.='<span>Postal Code</span><input type="text" class="'.$classes.'" name="'.$args['id'].'[zip]" id="'.$args['id'].'_zip" value="'.$zip.'" />';
 					$html.='</div>';
 					$html.='<div class="country">';
 						$html.='<span>Country</span>'.$this->get_countries_dropdown($args['id'].'[country]',$country);
 					$html.='</div>';
 				$html.='</div>';
+				break;
+			case 'button' :
+				$html.='<input type="button" class="button '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$args['label'].'" />';
+				//<input name="geocode" type="button" class="button button-primary button-large" id="cce-company-address-geocode" value="Geocode">
 				break;
 			case 'checkbox':
 				$html.='<input type="checkbox" class="'.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" '.checked($value,'on',false).' />';
