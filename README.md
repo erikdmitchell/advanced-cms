@@ -11,6 +11,10 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
+### 2.1.6.3
+
+	Added 'button' as metabox option.
+
 ### 2.1.6.2
 
 	Changed the way our widgets are organized and called. See widgets/init.php file for more.
