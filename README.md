@@ -14,6 +14,7 @@ Changelog
 ### 2.1.6.3
 
 	Added 'button' as metabox option.
+	Added metaboxes to the wp global variable
 
 ### 2.1.6.2
 

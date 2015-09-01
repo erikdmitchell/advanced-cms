@@ -412,6 +412,8 @@ class MDWMetaboxes {
 		add_action('wp_ajax_mdw_cms_gallery_update',array($this,'ajax_mdw_cms_gallery_update'));
 
 		add_filter('media_view_settings',array($this,'media_view_settings'),10,2);
+
+		add_action('admin_init',array($this,'add_metaboxes_to_global'));
 	}
 
 	/**
@@ -1594,6 +1596,41 @@ print_r($option_arr);
 		echo json_encode($images);
 
 		exit;
+	}
+
+	/**
+	 * add_metaboxes_to_global function.
+	 *
+	 * appends our metaboxes to the $wp_meta_boxes global variable
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function add_metaboxes_to_global() {
+		global $wp_meta_boxes;
+
+		// cycle through metaboxes //
+		foreach ($this->config as $metabox) :
+			$callback=array();
+
+			// grab mb fields (callback) //
+			foreach ($metabox['fields'] as $field) :
+				$callback[]=$field['field_id'];
+			endforeach;
+
+			// setup for each post type //
+			foreach ($metabox['post_types'] as $post_type) :
+				$arr=array(
+					$metabox['mb_id'] => array(
+						'id' => $metabox['mb_id'],
+						'title' => $metabox['title'],
+						'callback' => $callback,
+						'args' => ''
+					)
+				);
+				$wp_meta_boxes[$post_type]['normal']['high']=$arr;
+			endforeach;
+		endforeach;
 	}
 
 } // end class
