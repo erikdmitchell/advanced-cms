@@ -1615,7 +1615,8 @@ print_r($option_arr);
 
 			// grab mb fields (callback) //
 			foreach ($metabox['fields'] as $field) :
-				$callback[]=$field['field_id'];
+				if (isset($field['field_id']))
+					$callback[]=$field['field_id'];
 			endforeach;
 
 			// setup for each post type //
