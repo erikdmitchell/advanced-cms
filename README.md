@@ -11,6 +11,10 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
+### 2.1.6.4
+
+	Fixed issue where double quotes were being chopped off on metabox save.
+
 ### 2.1.6.3
 
 	Added 'button' as metabox option.
