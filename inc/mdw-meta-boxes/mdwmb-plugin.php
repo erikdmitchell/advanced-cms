@@ -808,7 +808,7 @@ class MDWMetaboxes {
 				$html.='</select>';
 				break;
 			case 'text' :
-				$html.='<input type="text" class="'.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				$html.='<input type="text" class="'.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.htmlentities($value).'" />';
 				break;
 			case 'textarea':
 				$html.='<textarea class="textarea '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'">'.$value.'</textarea>';
