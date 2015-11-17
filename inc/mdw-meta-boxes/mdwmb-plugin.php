@@ -1530,7 +1530,9 @@ print_r($option_arr);
 			$ids=explode(',',$ids);
 
 		$ids=apply_filters("mdw_cms_get_gallery_image_ids",$ids,$post);
-		$ids=implode(',',$ids);
+
+		if (is_array($ids))
+			$ids=implode(',',$ids);
 
 		return $ids;
 	}
