@@ -19,6 +19,8 @@ Changelog
 ### 2.2.0
 
 	Added mdwcms_add_admin_column() for custom admin columns.
+	
+	Fixe js glitch for the More Link checkbox in the Content Widget
 
 ### 2.1.6.4
 
