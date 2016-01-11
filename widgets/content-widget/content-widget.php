@@ -1,7 +1,9 @@
 <?php
 /**
- *	content widget
-**/
+ * MDW_Content_Widget class.
+ *
+ * @extends WP_Widget
+ */
 class MDW_Content_Widget extends WP_Widget {
 
 	/**
@@ -131,8 +133,8 @@ class MDW_Content_Widget extends WP_Widget {
 	 * @param array $instance Previously saved values from database.
 	 */
 	public function form( $instance ) {
-		wp_enqueue_script('mdwm-widgets-js',plugins_url('/mdwm-widgets.js',__FILE__));
-		wp_enqueue_style('mdwm-content-widget-form-css',plugins_url('/mdwm-widgets.css',__FILE__));
+		wp_enqueue_script('content-widget-js',plugins_url('/content-widget.js',__FILE__));
+		wp_enqueue_style('content-widget-css',plugins_url('/content-widget.css',__FILE__));
 
 		if (isset($instance['title'])) :
 			$title=$instance['title'];

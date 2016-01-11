@@ -12,7 +12,7 @@ All widgets included and called (initialized) here.
 /**
  * include widget files
  */
-require_once(plugin_dir_path(__FILE__).'mdw-content.php'); // content widget
+require_once(plugin_dir_path(__FILE__).'content-widget/content-widget.php'); // content widget
 require_once(plugin_dir_path(__FILE__).'social-media/social-media.php'); // social media widget
 
 // register our widgets //
