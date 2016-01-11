@@ -8,8 +8,17 @@ Usage Instructions
 
 See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 
+Widgets
+==========
+Content Widget
+Social Media
+
 Changelog
 ===========
+
+### 2.2.0
+
+	Added mdwcms_add_admin_column() for custom admin columns.
 
 ### 2.1.6.4
 
