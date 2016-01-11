@@ -10,17 +10,19 @@ License: GPL2
 */
 
 
-require_once(plugin_dir_path(__FILE__).'inc/admin-columns.php');
+
 require_once(plugin_dir_path(__FILE__).'inc/custom-widgets.php');
 require_once(plugin_dir_path(__FILE__).'inc/legacy.php');
 require_once(plugin_dir_path(__FILE__).'inc/mdw-meta-boxes/mdwmb-plugin.php');
 
 require_once(plugin_dir_path(__FILE__).'admin-pages.php'); // our new visual gui
 
+require_once(plugin_dir_path(__FILE__).'classes/admin-columns.php'); // custom admin columns class
 require_once(plugin_dir_path(__FILE__).'classes/custom-taxonomy.php'); // calls custom taxonomies
 require_once(plugin_dir_path(__FILE__).'classes/custom-post-types.php'); // calls custom post types
-require_once(plugin_dir_path(__FILE__).'classes/social-media.php'); // our social media page
 require_once(plugin_dir_path(__FILE__).'classes/inflector.php'); // our pluralizing/singular functions
+require_once(plugin_dir_path(__FILE__).'classes/social-media.php'); // our social media page
+
 
 require_once(plugin_dir_path(__FILE__).'widgets/init.php'); // our widgets
 
