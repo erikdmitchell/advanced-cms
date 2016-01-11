@@ -1,4 +1,10 @@
 <?php
+/**
+ * Admin page for Custom Taxonomies
+ *
+ * @sonce 2.2.0
+ */
+
 $base_url=admin_url('tools.php?page=mdw-cms&tab=mdw-cms-tax');
 $btn_text='Create';
 $name=null;
