@@ -30,8 +30,11 @@ endif;
 
 <div class="row">
 
+	<h3>Add New Custom Taxonomy</h3>
 	<form class="custom-taxonomies col-md-8" method="post">
-		<h3>Add New Custom Taxonomy</h3>
+		<?php wp_nonce_field('update_custom_taxonomies','mdw_cms_nonce'); ?>
+		<input type="hidden" name="tax_id" id="tax-id" value=<?php echo $id; ?> />
+
 		<div class="form-row row">
 			<label for="name" class="required col-md-3">Name</label>
 			<div class="input col-md-3">
@@ -52,8 +55,9 @@ endif;
 
 		<?php mdwcms_get_post_types_list($object_type); ?>
 
-		<p class="submit"><input type="submit" name="add-tax" id="submit" class="button button-primary" value="<?php echo $btn_text; ?>" <?php echo $disabled; ?>></p>
-		<input type="hidden" name="tax-id" id="tax-id" value=<?php echo $id; ?> />
+		<p class="submit">
+			<input type="submit" name="submit" id="submit" class="button button-primary" value="<?php echo $btn_text; ?>" <?php echo $disabled; ?>>
+		</p>
 	</form>
 
 	<div class="custom-taxonomies-list col-md-4">

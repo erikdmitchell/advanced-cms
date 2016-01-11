@@ -56,7 +56,7 @@ function mdwcms_display_existing_taxonomies($args=array()) {
 	if ($mdwcms_options['taxonomies']) :
 		foreach ($mdwcms_options['taxonomies'] as $tax) :
 			$html.='<div class="tax-row row">';
-				$html.='<span class="tax col-md-5">'.$tax['args']['label'].'</span><span class="edit col-md-2">[<a href="'.$base_url.'&edit=tax&slug='.$tax['name'].'">Edit</a>]</span><span class="delete col-md-2">[<a href="'.$base_url.'&delete=tax&slug='.$tax['name'].'">Delete</a>]</span>';
+				$html.='<span class="tax col-md-5">'.$tax['args']['label'].'</span><span class="edit col-md-2">[<a href="'.$base_url.'&edit=tax&slug='.$tax['name'].'">Edit</a>]</span><span class="delete col-md-2">[<a href="'.wp_nonce_url($base_url.'&delete=tax&slug='.$tax['name'],'delete_custom_taxonomies','mdw_cms_nonce').'">Delete</a>]</span>';
 			$html.='</div>';
 		endforeach;
 	endif;

@@ -8,24 +8,21 @@ class MDWCMSgui {
 
 	public $options=array();
 
-	protected $admin_notices_output=array();
+	protected $admin_notices=array();
 
 	public function __construct() {
 		add_action('admin_menu',array($this,'build_admin_menu'));
 		add_action('admin_enqueue_scripts',array($this,'scripts_styles'));
-		//add_action('admin_notices',array($this,'admin_notices')); // may not be needed
+
+		add_action('init',array($this,'update_mdw_cms_settings'));
+
+		add_action('admin_notices',array($this,'admin_notices'));
 		//add_filter('mdw_cms_admin_notices',array($this,'admin_notices'));
 
 		add_action('admin_init','MDWCMSlegacy::setup_legacy_updater');
 		add_action('admin_notices','MDWCMSlegacy::legacy_admin_notices');
 
-		$this->update_mdw_cms_settings();
-
-		$this->options['version']=get_option('mdw_cms_version');
-		$this->options['options']=get_option('mdw_cms_options');
-		$this->options['metaboxes']=get_option('mdw_cms_metaboxes');
-		$this->options['post_types']=get_option('mdw_cms_post_types');
-		$this->options['taxonomies']=get_option('mdw_cms_taxonomies');
+		add_action('init',array($this,'get_options'),99);
 	}
 
 	/**
@@ -97,6 +94,20 @@ class MDWCMSgui {
 	}
 
 	/**
+	 * get_options function.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function get_options() {
+		$this->options['version']=get_option('mdw_cms_version');
+		$this->options['options']=get_option('mdw_cms_options');
+		$this->options['metaboxes']=get_option('mdw_cms_metaboxes');
+		$this->options['post_types']=get_option('mdw_cms_post_types');
+		$this->options['taxonomies']=get_option('mdw_cms_taxonomies');
+	}
+
+	/**
 	 * mdw_cms_tabs function.
 	 *
 	 * @access public
@@ -137,8 +148,6 @@ class MDWCMSgui {
 		<div class="mdw-cms-wrap">
 
 			<h2>MDW CMS</h2>
-
-			<?php implode('',$this->admin_notices_output); ?>
 
 			<h2 class="nav-tab-wrapper">
 				<?php $this->mdw_cms_tabs(); ?>
@@ -684,7 +693,32 @@ class MDWCMSgui {
 	function update_mdw_cms_settings() {
 		$post_types=get_option('mdw_cms_post_types');
 		$metaboxes=get_option('mdw_cms_metaboxes');
-		$taxonomies=get_option('mdw_cms_taxonomies');
+
+		// update custom taxonomies //
+		if (isset($_POST['mdw_cms_nonce']) && wp_verify_nonce($_POST['mdw_cms_nonce'],'update_custom_taxonomies')) :
+			$this->update_taxonomies($_POST);
+		endif;
+
+		// remove custom taxonomy //
+		if (isset($_GET['mdw_cms_nonce']) && wp_verify_nonce($_GET['mdw_cms_nonce'],'delete_custom_taxonomies')) :
+			$taxonomies=get_option('mdw_cms_taxonomies');
+
+			if (!isset($taxonomies) || !is_array($taxonomies))
+				return false;
+
+			foreach ($taxonomies as $key => $tax) :
+				if ($tax['name']==$_GET['slug']) :
+					unset($taxonomies[$key]);
+					$this->admin_notices[]='<div class="updated">Taxonomy has been deleted.</div>';
+				endif;
+			endforeach;
+
+			$taxonomies=array_values($taxonomies);
+
+			update_option('mdw_cms_taxonomies',$taxonomies);
+		endif;
+
+
 
 		// create custom post type //
 		if (isset($_POST['add-cpt']) && $_POST['add-cpt']=='Create') :
@@ -757,47 +791,12 @@ class MDWCMSgui {
 			update_option('mdw_cms_metaboxes',$metaboxes);
 		endif;
 
-		// create custom taxonomy //
-		if (isset($_POST['add-tax']) && $_POST['add-tax']=='Create') :
-			if ($this->update_taxonomies($_POST)) :
-				$this->admin_notices('updated','Taxonomy has been created.');
-			else :
-				$this->admin_notices('error','There was an issue creating the taxonomy.');
-			endif;
-		endif;
 
-		// update/edit taxonomy //
-		if (isset($_POST['add-tax']) && $_POST['add-tax']=='Update') :
-			if ($this->update_taxonomies($_POST)) :
-				$this->admin_notices('updated','Taxonomy has been updated.');
-			else :
-				$this->admin_notices('error','There was an issue updating the taxonomy.');
-			endif;
-		endif;
 
-		// remove taxonomy //
-		if (isset($_GET['delete']) && $_GET['delete']=='tax') :
-			foreach ($taxonomies as $key => $tax) :
-				if ($tax['name']==$_GET['slug']) :
-					unset($taxonomies[$key]);
-					$this->admin_notices('updated','Taxonomy has been deleted.');
-				endif;
-			endforeach;
 
-			$taxonomies=array_values($taxonomies);
-
-			update_option('mdw_cms_taxonomies',$taxonomies);
-		endif;
 	}
 
-	/**
-	 * update_custom_post_types function.
-	 *
-	 * @access public
-	 * @static
-	 * @param array $data (default: array())
-	 * @return void
-	 */
+
 	public static function update_custom_post_types($data=array()) {
 		$post_types=get_option('mdw_cms_post_types');
 		$post_types_s=serialize($post_types);
@@ -837,16 +836,6 @@ class MDWCMSgui {
 		return update_option('mdw_cms_post_types',$post_types);
 	}
 
-	/**
-	 * update_metaboxes function.
-	 *
-	 * updates our metabox settings and its fields
-	 *
-	 * @access public
-	 * @static
-	 * @param array $data (default: array())
-	 * @return void
-	 */
 	public static function update_metaboxes($data=array()) {
 		global $MDWMetaboxes;
 
@@ -923,7 +912,7 @@ class MDWCMSgui {
 	 * @param array $data (default: array())
 	 * @return void
 	 */
-	function update_taxonomies($data=array()) {
+	public function update_taxonomies($data=array()) {
 		$option_exists=false;
 		$taxonomies=get_option('mdw_cms_taxonomies');
 
@@ -941,8 +930,8 @@ class MDWCMSgui {
 			)
 		);
 
-		if ($data['tax-id']!=-1) :
-			$taxonomies[$data['tax-id']]=$arr;
+		if ($data['tax_id']!=-1) :
+			$taxonomies[$data['tax_id']]=$arr;
 		else :
 			if (!empty($taxonomies)) :
 				foreach ($taxonomies as $tax) :
@@ -958,12 +947,14 @@ class MDWCMSgui {
 
 		$update=update_option('mdw_cms_taxonomies',$taxonomies);
 
-		if ($update) :
-			return true;
+		if ($update && $data['tax_id']=-1) :
+			$this->admin_notices[]='<div class="updated">Taxonomy has been created.</div>';
+		elseif ($update) :
+			$this->admin_notices[]='<div class="updated">Taxonomy has been updated.</div>';
 		elseif ($option_exists) :
-			return true;
+			$this->admin_notices[]='<div class="updated">Taxonomy has been updated.</div>';
 		else :
-			return false;
+			$this->admin_notices[]='<div class="error">There was an issue updating the taxonomy.</div>';
 		endif;
 	}
 
@@ -971,12 +962,12 @@ class MDWCMSgui {
 	 * admin_notices function.
 	 *
 	 * @access public
-	 * @param string $class (default: 'error')
-	 * @param string $message (default: '')
 	 * @return void
 	 */
-	function admin_notices($class='error',$message='') {
-		$this->admin_notices_output[]='<div class="'.$class.'"><p>'.$message.'</p></div>';
+	public function admin_notices() {
+		foreach ($this->admin_notices as $notice) :
+			echo $notice;
+		endforeach;
 	}
 
 }
