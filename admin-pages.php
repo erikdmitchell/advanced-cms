@@ -1,10 +1,16 @@
 <?php
+/**
+ * MDWCMSgui class.
+ *
+ * @since 2.0.0
+ */
 class MDWCMSgui {
 
-	protected $options=array();
+	public $options=array();
+
 	protected $admin_notices_output=array();
 
-	function __construct() {
+	public function __construct() {
 		add_action('admin_menu',array($this,'build_admin_menu'));
 		add_action('admin_enqueue_scripts',array($this,'scripts_styles'));
 		//add_action('admin_notices',array($this,'admin_notices')); // may not be needed
@@ -28,7 +34,7 @@ class MDWCMSgui {
 	 * @access public
 	 * @return void
 	 */
-	function build_admin_menu() {
+	public function build_admin_menu() {
 		add_management_page('MDW CMS','MDW CMS','administrator','mdw-cms',array($this,'mdw_cms_page'));
 	}
 
@@ -39,7 +45,7 @@ class MDWCMSgui {
 	 * @param mixed $hook
 	 * @return void
 	 */
-	function scripts_styles($hook) {
+	public function scripts_styles($hook) {
 		$disable_bootstrap=false;
 
 		wp_enqueue_style('mdw-cms-gui-style',plugins_url('/css/admin.css',__FILE__));
@@ -91,15 +97,12 @@ class MDWCMSgui {
 	}
 
 	/**
-	 * mdw_cms_page function.
-	 *
-	 * our primary admin page, utlaizes tabs for internal navigation
+	 * mdw_cms_tabs function.
 	 *
 	 * @access public
 	 * @return void
 	 */
-	function mdw_cms_page() {
-		$html=null;
+	public function mdw_cms_tabs() {
 		$tabs=array(
 			'cms-main' => 'Main',
 			'mdw-cms-cpt' => 'Custom Post Types',
@@ -108,45 +111,61 @@ class MDWCMSgui {
 		);
 		$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'cms-main';
 
-		$html.='<div class="mdw-cms-wrap">';
+		foreach ($tabs as $tab => $name) :
+			if ($active_tab==$tab) :
+				$class='nav-tab-active';
+			else :
+				$class=null;
+			endif;
 
-			$html.='<h2>MDW CMS</h2>';
+			echo '<a href="?page=mdw-cms&tab='.$tab.'" class="nav-tab '.$class.'">'.$name.'</a>';
+		endforeach;
+	}
 
-			$html.=implode('',$this->admin_notices_output);
+	/**
+	 * mdw_cms_page function.
+	 *
+	 * our primary admin page, utlaizes tabs for internal navigation
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function mdw_cms_page() {
+		$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'cms-main';
+		?>
 
-			$html.='<h2 class="nav-tab-wrapper">';
-				foreach ($tabs as $tab => $name) :
-					if ($active_tab==$tab) :
-						$class='nav-tab-active';
-					else :
-						$class=null;
-					endif;
+		<div class="mdw-cms-wrap">
 
-					$html.='<a href="?page=mdw-cms&tab='.$tab.'" class="nav-tab '.$class.'">'.$name.'</a>';
-				endforeach;
-			$html.='</h2>';
+			<h2>MDW CMS</h2>
 
+			<?php implode('',$this->admin_notices_output); ?>
+
+			<h2 class="nav-tab-wrapper">
+				<?php $this->mdw_cms_tabs(); ?>
+			</h2>
+
+			<?php
 			switch ($active_tab) :
 				case 'cms-main':
-					$html.=$this->default_admin_page();
+					echo $this->default_admin_page();
 					break;
 				case 'mdw-cms-cpt':
-					$html.=$this->cpt_admin_page();
+					echo $this->cpt_admin_page();
 					break;
 				case 'mdw-cms-metaboxes':
-					$html.=$this->metaboxes_admin_page();
+					echo $this->metaboxes_admin_page();
 					break;
 				case 'mdw-cms-tax':
-					$html.=$this->custom_taxonomies_admin_page();
+					mdwcms_admin_page('custom-taxonomies');
 					break;
 				default:
-					$html.=$this->default_admin_page();
+					echo $this->default_admin_page();
 					break;
 			endswitch;
+			?>
 
-		$html.='</div><!-- /.wrap -->';
-
-		echo $html;
+		</div><!-- /.wrap -->
+		<?php
 	}
 
 	/**
@@ -476,94 +495,6 @@ class MDWCMSgui {
 				endif;
 
 			$html.='</div>';
-
-		$html.='</div><!-- .row -->';
-
-		return $html;
-	}
-
-	/**
-	 * custom_taxonomies_admin_page function.
-	 *
-	 * @access public
-	 * @return void
-	 */
-	function custom_taxonomies_admin_page() {
-		$base_url=admin_url('tools.php?page=mdw-cms&tab=mdw-cms-tax');
-		$btn_text='Create';
-		$name=null;
-		$label=null;
-		$object_type=null;
-		$hierarchical=1;
-		$show_ui=1;
-		$show_admin_col=1;
-		$id=-1;
-
-		$label_class='col-md-3';
-		$input_class='col-md-3';
-		$description_class='col-md-6';
-		$description_ext_class='col-md-9 col-md-offset-3';
-		$error_class='col-md-12';
-		$existing_label_class='col-md-5';
-		$edit_class='col-md-2';
-		$delete_class='col-md-2';
-
-		// edit custom taxonomy //
-		if (isset($_GET['edit']) && $_GET['edit']=='tax') :
-			foreach ($this->options['taxonomies'] as $key => $tax) :
-				if ($tax['name']==$_GET['slug']) :
-					extract($this->options['taxonomies'][$key]);
-					$label=$args['label'];
-					$id=$key;
-				endif;
-			endforeach;
-		endif;
-
-		if ($id!=-1)
-			$btn_text='Update';
-
-		$html=null;
-
-		$html.='<div class="row">';
-
-			$html.='<form class="custom-taxonomies col-md-8" method="post">';
-				$html.='<h3>Add New Custom Taxonomy</h3>';
-				$html.='<div class="form-row row">';
-					$html.='<label for="name" class="required '.$label_class.'">Name</label>';
-					$html.='<div class="input '.$input_class.'">';
-						$html.='<input type="text" name="name" id="name" value="'.$name.'" />';
-					$html.='</div>';
-					$html.='<span class="description '.$description_class.'">(e.g. brands)</span>';
-					$html.='<div id="mdw-cms-name-error" class="'.$error_class.'"></div>';
-					$html.='<div class="description-ext '.$description_ext_class.'">Max 20 characters, can not contain capital letters or spaces. Cannot be the same name as a (custom) post type.</div>';
-				$html.='</div>';
-
-				$html.='<div class="form-row row">';
-					$html.='<label for="label" class="'.$label_class.'">Label</label>';
-					$html.='<div class="input '.$input_class.'">';
-						$html.='<input type="text" name="label" id="label" value="'.$label.'" />';
-					$html.='</div>';
-					$html.='<span class="description '.$description_class.'">(e.g. Brands)</span>';
-				$html.='</div>';
-
-				$html.=$this->get_post_types_list($object_type);
-
-				$html.='<p class="submit"><input type="submit" name="add-tax" id="submit" class="button button-primary" value="'.$btn_text.'" disabled></p>';
-				$html.='<input type="hidden" name="tax-id" id="tax-id" value='.$id.' />';
-			$html.='</form>';
-
-			$html.='<div class="custom-taxonomies-list col-md-4">';
-				$html.='<h3>Custom Taxonomies</h3>';
-
-				if ($this->options['taxonomies']) :
-					foreach ($this->options['taxonomies'] as $tax) :
-						$html.='<div class="tax-row row">';
-							$html.='<span class="tax '.$existing_label_class.'">'.$tax['args']['label'].'</span><span class="edit '.$edit_class.'">[<a href="'.$base_url.'&edit=tax&slug='.$tax['name'].'">Edit</a>]</span><span class="delete '.$delete_class.'">[<a href="'.$base_url.'&delete=tax&slug='.$tax['name'].'">Delete</a>]</span>';
-						$html.='</div>';
-					endforeach;
-				endif;
-
-			$html.='</div><!-- .custom-taxonomies-list -->';
 
 		$html.='</div><!-- .row -->';
 
@@ -1048,55 +979,13 @@ class MDWCMSgui {
 		$this->admin_notices_output[]='<div class="'.$class.'"><p>'.$message.'</p></div>';
 	}
 
-	/**
-	 * get_post_types_list function.
-	 *
-	 * @access public
-	 * @param bool $selected_pt (default: false)
-	 * @param string $output (default: 'checkbox')
-	 * @return void
-	 */
-	function get_post_types_list($selected_pt=false,$output='checkbox') {
-		$html=null;
-		$args=array(
-			'public' => true
-		);
-		$post_types_arr=get_post_types($args);
-
-		$label_class='col-md-3';
-		$input_class='col-md-3';
-
-		$html.='<div class="form-row row post-type-list-admin">';
-			$html.='<label for="post_type" class="'.$label_class.'">Post Type</label>';
-			$html.='<div class="post-types-cbs '.$input_class.'">';
-				$counter=0;
-				foreach ($post_types_arr as $type) :
-					if ($counter==0) :
-						$class='first';
-					else :
-						$class='';
-					endif;
-
-					if ($selected_pt && in_array($type,$selected_pt)) :
-						$checked='checked=checked';
-					else :
-						$checked=null;
-					endif;
-
-
-					$html.='<div class="col-md-12">';
-						$html.='<input type="checkbox" name="post_types[]" value="'.$type.'" '.$checked.'>'.$type.'<br />';
-					$html.='</div>';
-
-					$counter++;
-				endforeach;
-			$html.='</div>';
-		$html.='</div>';
-
-		return $html;
-	}
-
 }
 
-new MDWCMSgui();
+$MDWCMSgui=new MDWCMSgui();
+
+function mdwcms_get_options() {
+	global $MDWCMSgui;
+
+	return $MDWCMSgui->options;
+}
 ?>
