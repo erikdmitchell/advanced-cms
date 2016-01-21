@@ -31,10 +31,10 @@ class MDW_Content_Widget extends WP_Widget {
 		$excerpt_length=$instance['excerpt-length'];
 		$tags=$instance['tags'];
 		$more=html_entity_decode($instance['more']);
-		$thumbnail_size=$instance['thumbnail-size'];
-		if (is_null($thumbnail_size)) :
-			$thumbnail_size='thumbnail';
-		endif;
+		$thumbnail_size='thumbnail';
+
+		if (isset($instance['thumbnail-size']))
+			$thumbnail_size=$instance['thumbnail-size'];
 
 		if ($instance['more-link']=='on') :
 			$more_link=true;
@@ -83,7 +83,7 @@ class MDW_Content_Widget extends WP_Widget {
 					/* echo '<h3>'.get_the_title($instance['post-category']).'</h3>'; */
 
 					echo '<h2>'.$instance['title'].'</h2>';
-					if ($instance['page-excerpt']>'') :
+					if (isset($instance['page-excerpt']) && $instance['page-excerpt']>'') :
 						echo apply_filters('the_content',$instance['page-excerpt']);
 					else :
 						if ($instance['excerpt']=='on') :
