@@ -79,6 +79,10 @@ class MDWCMSgui {
 		wp_localize_script('mdw-cms-admin-custom-taxonomies-script','wp_options',$taxonomy_options);
 
 		$metaboxes=$this->options['metaboxes'];
+
+		if (!$metaboxes)
+			return false;
+
 		$mb_arr=array();
 		foreach ($metaboxes as $metabox) :
 			$mb_arr[]=$metabox['mb_id'];
