@@ -21,6 +21,11 @@ Changelog
 	Added mdwcms_add_admin_column() for custom admin columns.
 	
 	Fixe js glitch for the More Link checkbox in the Content Widget
+	
+### 2.1.7
+
+	Added delete box notification and page reload to smooth out minor issues on add/delete custom post types.
+	Added mdw-cms-admin class to admin body.	
 
 ### 2.1.6.4
 
