@@ -1,9 +1,6 @@
 <?php
 class adminCPT {
 
-	public $wp_option='mdw_cms_post_types';
-	public $options=array();
-
 	protected $tab_url=null;
 
 	/**
@@ -12,14 +9,12 @@ class adminCPT {
 	 * @access public
 	 * @return void
 	 */
-	function __construct() {
+	public function __construct() {
 		$this->tab_url=admin_url('tools.php?page=mdw-cms&tab=cpt');
 
 		add_action('admin_enqueue_scripts',array($this,'admin_scripts_styles'));
+		add_action('init',array($this,'add_page'));
 		add_action('wp_ajax_update_cpt',array($this,'ajax_update_cpt'));
-
-		add_filter('mdw_cms_options_tabs',array($this,'setup_tab'));
-		add_filter('mdw_cms_default_options',array($this,'add_options'));
 	}
 
 	/**
@@ -30,37 +25,16 @@ class adminCPT {
 	 * @return void
 	 */
 	public function admin_scripts_styles($hook) {
-		wp_enqueue_script('mdw-cms-admin-custom-post-types-script',plugins_url('/js/admin-custom-post-types.js',__FILE__),array('namecheck-script'));
+		wp_enqueue_script('mdw-cms-admin-custom-post-types-script',plugins_url('/js/post-types.js',__FILE__),array('namecheck-script'));
 	}
 
-	/**
-	 * setup_tab function.
-	 *
-	 * @access public
-	 * @param mixed $tabs
-	 * @return void
-	 */
-	public function setup_tab($tabs) {
-		$tabs['cpt']=array(
-			'name' => 'Custom Post Types',
+	public function add_page() {
+		mdw_cms_add_admin_page(array(
+			'id' => 'post_types',
+			'name' => 'Post Types',
 			'function' => array($this,'admin_page'),
 			'order' => 1
-		);
-		return $tabs;
-	}
-
-	/**
-	 * add_options function.
-	 *
-	 * @access public
-	 * @param mixed $options
-	 * @return void
-	 */
-	public function add_options($options) {
-		$this->options=get_option($this->wp_option);
-		$options['post_types']=$this->options;
-
-		return $options;
+		));
 	}
 
 	/**
@@ -81,7 +55,7 @@ class adminCPT {
 	 * @return void
 	 */
 	protected function admin_page_core($id=-1) {
-		$this->options=get_option($this->wp_option); // update our options
+		global $mdw_cms_options;
 
 		$name=null;
 		$label=null;
@@ -112,7 +86,7 @@ class adminCPT {
 
 		// load cpt if we have one //
 		if ($id!=-1) :
-			extract($this->options[$id]);
+			extract($mdw_cms_options['post_types'][$id]);
 
 			$btn_disabled=null;
 		endif;
@@ -244,8 +218,8 @@ class adminCPT {
 			$html.='<div class="custom-post-types-list col-md-4">';
 				$html.='<h3>Custom Post Types</h3>';
 
-				if ($this->options) :
-					foreach ($this->options as $key => $cpt) :
+				if (isset($mdw_cms_options['post_types'])) :
+					foreach ($mdw_cms_options['post_types'] as $key => $cpt) :
 						$html.='<div id="cpt-list-'.$key.'" class="cpt-row row mdw-cms-edit-delete-list">';
 							$html.='<span class="cpt '.$existing_label_class.'">'.$cpt['label'].'</span>';
 							$html.='<span class="edit '.$edit_class.'">[<a href="" data-tab-url="'.$this->tab_url.'" data-item-type="cpt" data-slug="'.$cpt['name'].'" data-page-action="edit" data-action="update_cpt" data-id="'.$key.'" data-title="Custom Post Type">Edit</a>]</span>';
@@ -271,7 +245,9 @@ class adminCPT {
 	 * @return void
 	 */
 	public function ajax_update_cpt() {
-		$post_types=$this->options;
+		global $mdw_cms_options;
+
+		$post_types=$mdw_cms_options['post_types'];
 		$response=array();
 
 		extract($_POST);
@@ -387,4 +363,38 @@ class adminCPT {
 }
 
 new adminCPT();
+
+
+
+
+
+	/**
+	 * update_cpt_name function.
+	 *
+	 * @access protected
+	 * @static
+	 * @param bool $old (default: false)
+	 * @param bool $new (default: false)
+	 * @return void
+	 */
+	 /*
+	protected static function update_cpt_name($old=false,$new=false) {
+		global $wpdb;
+
+		if (!$old || !$new)
+			return false;
+
+		$field='post_type';
+
+		$sql="
+			UPDATE ".$wpdb->prefix."posts
+			SET $field = REPLACE($field,'$old','$new')
+			WHERE $field LIKE '%$old%'
+		";
+
+		$wpdb->get_results($sql);
+
+		return true;
+	}
+	*/
 ?>

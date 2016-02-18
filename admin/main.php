@@ -4,20 +4,15 @@
  */
 class adminDefault {
 
-	public $wp_option='mdw_cms_options';
-	public $options=array();
-
 	/**
 	 * __construct function.
 	 *
 	 * @access public
 	 * @return void
 	 */
-	function __construct() {
+	public function __construct() {
 		add_action('admin_enqueue_scripts',array($this,'admin_scripts_styles'));
-
-		add_filter('mdw_cms_options_tabs',array($this,'setup_tab'));
-		add_filter('mdw_cms_default_options',array($this,'add_options'));
+		add_action('init',array($this,'add_page'));
 	}
 
 	/**
@@ -39,37 +34,21 @@ class adminDefault {
 	}
 
 	/**
-	 * setup_tab function.
+	 * add_page function.
 	 *
 	 * @access public
-	 * @param mixed $tabs
 	 * @return void
 	 */
-	public function setup_tab($tabs) {
-		$tabs['default']=array(
+	public function add_page() {
+		mdw_cms_add_admin_page(array(
+			'id' => 'main',
 			'name' => 'Main',
 			'function' => array($this,'admin_page'),
-			'order' => 0
-		);
-		return $tabs;
-	}
-
-	/**
-	 * add_options function.
-	 *
-	 * @access public
-	 * @param mixed $options
-	 * @return void
-	 */
-	public function add_options($options) {
-		$this->options=array(
-			'version' => get_option('mdw_cms_version'),
-			'options' => get_option($this->wp_option)
-		);
-
-		$options['default']=$this->options;
-
-		return $options;
+			'order' => 0,
+			'options' => array(
+				'disable_bootstrap' => 0
+			)
+		));
 	}
 
 	/**
@@ -89,14 +68,16 @@ class adminDefault {
 		$description_class='col-md-6';
 		$description_ext_class='col-md-9 col-md-offset-3';
 
-		if (isset($this->options['options']))
-			$options=$this->options['options'];
+		//if (isset($this->options['options']))
+			//$options=$this->options['options'];
 
 		$html.='<h3>Options</h3>';
 
+/*
 		if (isset($_POST['update-options']) && isset($_POST['options'])) :
 			$options=$this->update_options($_POST['options']);
 		endif;
+*/
 
 		if (is_array($options))
 			extract($options);
@@ -125,25 +106,6 @@ class adminDefault {
 		$html.='</div><!-- .mdw-cms-default -->';
 
 		echo $html;
-	}
-
-	/**
-	 * update_options function.
-	 *
-	 * @access public
-	 * @param mixed $options
-	 * @return void
-	 */
-	function update_options($options) {
-		if (!$options['update'])
-			return false;
-
-		$new_options=$options;
-		unset($new_options['update']); // a temp var passed, remove it
-
-		update_option($this->wp_option,$new_options);
-
-		return get_option($this->wp_option);
 	}
 
 }
