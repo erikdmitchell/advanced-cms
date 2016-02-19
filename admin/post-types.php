@@ -28,6 +28,12 @@ class adminCPT {
 		wp_enqueue_script('mdw-cms-admin-custom-post-types-script',plugins_url('/js/post-types.js',__FILE__),array('namecheck-script'));
 	}
 
+	/**
+	 * add_page function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	public function add_page() {
 		mdw_cms_add_admin_page(array(
 			'id' => 'post_types',
@@ -44,196 +50,8 @@ class adminCPT {
 	 * @return void
 	 */
 	public function admin_page() {
-		echo $this->admin_page_core();
-	}
-
-	/**
-	 * admin_page_core function.
-	 *
-	 * @access protected
-	 * @param float $id (default: -1)
-	 * @return void
-	 */
-	protected function admin_page_core($id=-1) {
-		global $mdw_cms_options;
-
-		$name=null;
-		$label=null;
-		$singular_label=null;
-		$description=null;
-		$title=1;
-		$thumbnail=1;
-		$editor=1;
-		$revisions=1;
-		$excerpt=0;
-		$hierarchical=0;
-		$page_attributes=0;
-		$btn_disabled='disabled';
-
-		$label_class='col-md-3';
-		$input_class='col-md-3';
-		$description_class='col-md-6';
-		$description_ext_class='col-md-9 col-md-offset-3';
-		$error_class='col-md-12';
-		$select_class='col-md-3';
-		$existing_label_class='col-md-5';
-		$edit_class='col-md-2';
-		$delete_class='col-md-2';
-
-		// when a cpt is created is runs a fake form so the page refreshes properly //
-		if (isset($_POST['create-cpt']) && $_POST['create-cpt'])
-			$id=$_POST['id'];
-
-		// load cpt if we have one //
-		if ($id!=-1) :
-			extract($mdw_cms_options['post_types'][$id]);
-
-			$btn_disabled=null;
-		endif;
-
-		$html=null;
-
-		$html.='<div class="row">';
-
-			$html.='<form class="custom-post-types col-md-8" method="post">';
-				$html.='<h3>Add New Custom Post Type</h3>';
-				$html.='<div class="form-row row">';
-					$html.='<label for="name" class="required '.$label_class.'">Post Type Name</label>';
-					$html.='<div class="input '.$input_class.'">';
-						$html.='<input type="text" name="name" id="name" value="'.$name.'" />';
-					$html.='</div>';
-					$html.='<span class="description '.$description_class.'">(e.g. movie)</span>';
-					$html.='<div id="mdw-cms-name-error" class="'.$error_class.'"></div>';
-					$html.='<div class="description-ext '.$description_ext_class.'">Max 20 characters, can not contain capital letters or spaces. Reserved post types: post, page, attachment, revision, nav_menu_item.</div>';
-				$html.='</div>';
-
-				$html.='<div class="form-row row">';
-					$html.='<label for="label" class="'.$label_class.'">Label</label>';
-					$html.='<div class="input '.$input_class.'">';
-						$html.='<input type="text" name="label" id="label" value="'.$label.'" />';
-					$html.='</div>';
-					$html.='<span class="description '.$description_class.'">(e.g. Movies)</span>';
-				$html.='</div>';
-
-				$html.='<div class="form-row row">';
-					$html.='<label for="singular_label" class="'.$label_class.'">Singular Label</label>';
-					$html.='<div class="input '.$input_class.'">';
-						$html.='<input type="text" name="singular_label" id="singular_label" value="'.$singular_label.'" />';
-					$html.='</div>';
-					$html.='<span class="description '.$description_class.'">(e.g. Movie)</span>';
-				$html.='</div>';
-
-				$html.='<div class="form-row row">';
-					$html.='<label for="description" class="'.$label_class.'">Description</label>';
-					$html.='<textarea name="description" id="description" rows="4" cols="40">'.$description.'</textarea>';
-				$html.='</div>';
-
-				$html.='<div class="advanced-options">';
-					$html.='<div class="form-row row">';
-						$html.='<label for="title" class="'.$label_class.'">Title</label>';
-						$html.='<div class="'.$select_class.'">';
-							$html.='<select name="title" id="title">';
-								$html.='<option value="1" '.selected($title,1,false).'>True</option>';
-								$html.='<option value="0" '.selected($title,0,false).'>False</option>';
-							$html.='</select>';
-						$html.='</div>';
-						$html.='<span class="description '.$description_class.'">(default True)</span>';
-					$html.='</div>';
-					$html.='<div class="form-row row">';
-						$html.='<label for="thumbnail" class="'.$label_class.'">Thumbnail</label>';
-						$html.='<div class="'.$select_class.'">';
-							$html.='<select name="thumbnail" id="thumbnaill">';
-								$html.='<option value="1" '.selected($thumbnail,1,false).'>True</option>';
-								$html.='<option value="0" '.selected($thumbnail,0,false).'>False</option>';
-							$html.='</select>';
-						$html.='</div>';
-						$html.='<span class="description '.$description_class.'">(default True)</span>';
-					$html.='</div>';
-					$html.='<div class="form-row row">';
-						$html.='<label for="editor" class="'.$label_class.'">Editor</label>';
-						$html.='<div class="'.$select_class.'">';
-							$html.='<select name="editor" id="editor" >';
-								$html.='<option value="1" '.selected($editor,1,false).'>True</option>';
-								$html.='<option value="0" '.selected($editor,0,false).'>False</option>';
-							$html.='</select>';
-						$html.='</div>';
-						$html.='<span class="description '.$description_class.'">(default True)</span>';
-					$html.='</div>';
-					$html.='<div class="form-row row">';
-						$html.='<label for="revisions" class="'.$label_class.'">Revisions</label>';
-						$html.='<div class="'.$select_class.'">';
-							$html.='<select name="revisions" id="revisions">';
-								$html.='<option value="1" '.selected($revisions,1,false).'>True</option>';
-								$html.='<option value="0" '.selected($revisions,0,false).'>False</option>';
-							$html.='</select>';
-						$html.='</div>';
-						$html.='<span class="description '.$description_class.'">(default True)</span>';
-					$html.='</div>';
-					$html.='<div class="form-row row">';
-						$html.='<label for="revisions" class="'.$label_class.'">Excerpt</label>';
-						$html.='<div class="'.$select_class.'">';
-							$html.='<select name="excerpt" id="_excerpt">';
-								$html.='<option value="1" '.selected($excerpt,1,false).'>True</option>';
-								$html.='<option value="0" '.selected($excerpt,0,false).'>False</option>';
-							$html.='</select>';
-						$html.='</div>';
-						$html.='<span class="description '.$description_class.'">(default True)</span>';
-					$html.='</div>';
-					$html.='<div class="form-row row">';
-						$html.='<label for="hierarchical" class="'.$label_class.'">Hierarchical</label>';
-						$html.='<div class="'.$select_class.'">';
-							$html.='<select name="hierarchical" id="hierarchical">';
-								$html.='<option value="1" '.selected($hierarchical,1,false).'>True</option>';
-								$html.='<option value="0" '.selected($hierarchical,0,false).'>False</option>';
-							$html.='</select>';
-						$html.='</div>';
-						$html.='<span class="description '.$description_class.'">(default False)</span>';
-						$html.='<div class="description-ext '.$description_ext_class.'">Whether the post type is hierarchical (e.g. page). Allows Parent to be specified. Note: "page-attributes" must be set to true to show the parent select box.</div>';
-					$html.='</div>';
-					$html.='<div class="form-row row">';
-						$html.='<label for="page_attributes" class="'.$label_class.'">Page Attributes</label>';
-						$html.='<div class="'.$select_class.'">';
-							$html.='<select name="page_attributes" id="page_attributes">';
-								$html.='<option value="1" '.selected($page_attributes,1,false).'>True</option>';
-								$html.='<option value="0" '.selected($page_attributes,0,false).'>False</option>';
-							$html.='</select>';
-						$html.='</div>';
-						$html.='<span class="description '.$description_class.'">(default False)</span>';
-					$html.='</div>';
-				$html.='</div>';
-
-				$html.='<p class="submit">';
-					if ($id!=-1) :
-						$html.='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Update" '.$btn_disabled.' data-type="cpt" data-tab-url="'.$this->tab_url.'" data-page-action="update" data-action="update_cpt" data-item-type="cpt">';
-					else :
-						$html.='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Create" '.$btn_disabled.' data-type="cpt" data-tab-url="'.$this->tab_url.'" data-page-action="add" data-action="update_cpt" data-item-type="cpt">';
-					endif;
-				$html.='</p>';
-
-				$html.='<input type="hidden" name="cpt-id" id="cpt-id" value='.$id.' />';
-				$html.='<input type="hidden" name="cpt-prev-name" id="cpt-prev-name" value='.$name.' />';
-				//$html.='<input type="hidden" name="return-url" id="return-url" value='.$base_url.'&edit=cpt&slug='.$cpt['name'].' />';
-			$html.='</form>';
-
-			$html.='<div class="custom-post-types-list col-md-4">';
-				$html.='<h3>Custom Post Types</h3>';
-
-				if (isset($mdw_cms_options['post_types'])) :
-					foreach ($mdw_cms_options['post_types'] as $key => $cpt) :
-						$html.='<div id="cpt-list-'.$key.'" class="cpt-row row mdw-cms-edit-delete-list">';
-							$html.='<span class="cpt '.$existing_label_class.'">'.$cpt['label'].'</span>';
-							$html.='<span class="edit '.$edit_class.'">[<a href="" data-tab-url="'.$this->tab_url.'" data-item-type="cpt" data-slug="'.$cpt['name'].'" data-page-action="edit" data-action="update_cpt" data-id="'.$key.'" data-title="Custom Post Type">Edit</a>]</span>';
-							$html.='<span class="delete '.$delete_class.'">[<a href="" data-tab-url="'.$this->tab_url.'" data-item-type="cpt" data-slug="'.$cpt['name'].'" data-page-action="delete" data-action="update_cpt" data-id="'.$key.'" data-title="Custom Post Type">Delete</a>]</span>';
-						$html.='</div>';
-					endforeach;
-				endif;
-
-			$html.='</div>';
-
-		$html.='</div><!-- .row -->';
-
-
-		return $html;
+		//echo $this->admin_page_core();
+		mdw_cms_load_admin_page('post-types');
 	}
 
 	/**
@@ -364,7 +182,15 @@ class adminCPT {
 
 new adminCPT();
 
+function mdw_cms_post_types_submit_button($id=-1) {
+	if ($id!=-1) :
+		$html='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Update" data-type="cpt" data-tab-url="'.admin_url('tools.php?page=mdw-cms&tab=post_types').'" data-page-action="update" data-action="update_cpt" data-item-type="cpt">';
+	else :
+		$html='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Create" disabled data-type="cpt" data-tab-url="'.admin_url('tools.php?page=mdw-cms&tab=post_types').'" data-page-action="add" data-action="update_cpt" data-item-type="cpt">';
+	endif;
 
+	echo $html;
+}
 
 
 

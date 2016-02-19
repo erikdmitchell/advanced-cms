@@ -1,11 +1,4 @@
 <?php
-function mdwcms_admin_page($slug=false) {
-	if (!$slug)
-		return false;
-
-	include(plugin_dir_path(__FILE__).'adminpages/'.$slug.'.php');
-}
-
 function mdwcms_get_post_types_list($selected_pt=false,$output='checkbox') {
 	$html=null;
 	$args=array(

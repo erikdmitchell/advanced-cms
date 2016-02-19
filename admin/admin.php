@@ -12,8 +12,8 @@ class MDWCMSgui {
 	 * @return void
 	 */
 	public function __construct() {
-		include_once('admin/main.php');
-		include_once('admin/post-types.php');
+		include_once('main.php');
+		include_once('post-types.php');
 		//include_once('admin/taxonomies.php');
 		//include_once('admin/metaboxes.php');
 
@@ -123,7 +123,7 @@ class MDWCMSgui {
 
 //print_r($mdw_cms_admin_pages);
 echo '<pre>';
-print_r($mdw_cms_options);
+//print_r($mdw_cms_options);
 echo '</pre>';
 
 		$notice=null;

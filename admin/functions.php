@@ -145,6 +145,33 @@ function mdw_cms_options_legacy_update() {
 }
 
 /**
+ * mdw_cms_load_admin_page function.
+ *
+ * @access public
+ * @param bool $page_name (default: false)
+ * @param mixed $attributes (default: null)
+ * @return void
+ */
+function mdw_cms_load_admin_page($page_name=false,$attributes=null) {
+	if (!$page_name)
+		return false;
+
+	ob_start();
+
+	do_action('mdw_cms_before_load_admin_page'.$page_name);
+
+	include_once('pages/'.$page_name.'.php');
+
+	do_action('mdw_cms_after_load_admin_page'.$page_name);
+
+	$html=ob_get_contents();
+
+	ob_end_clean();
+
+	echo $html;
+}
+
+/**
  * get_post_types_list function.
  *
  * @access public

@@ -1,24 +1,5 @@
-/**
- * cms options (main)
- */
-.mdw-cms-options {
-	margin: 10px 0;
-}
-.mdw-cms-options .description {
-	font-style: italic;
-}
-.mdw-cms-options input[type=checkbox] {
-	margin: 0;
-}
-
-
 /* general
 ---------- */
-.tools_page_mdw-cms label {
-	font-weight: bold;
-	display: inline-block;
-	vertical-align: top;
-}
 .tools_page_mdw-cms label.required {
 	color: #000;
 }
@@ -27,45 +8,25 @@
 	content: "*";
 	padding-left: 3px;
 }
-
-/* mb */
-.post-type-list-admin .post-types-cbs {
-	padding-left: 0;
+.tools_page_mdw-cms form .description {
+	margin: 2px 0 5px;
+  color: #666;
+  font-size: 14px;
+}
+.tools_page_mdw-cms form .description.right {
+	margin-left: 5px;
 }
 
-.mdw-cms-wrap .form-table .description {
+/**
+ * Post Types
+ */
+.custom-post-types {
+	width: 75%;
 	float: left;
 }
-.tools_page_mdw-cms .description-ext {
-	font-weight: bold;
-	padding-left: 0;
-}
-
-.custom-taxonomies .form-row,
-.custom-metabox .form-row,
-.custom-post-types .form-row {
-	margin-bottom: 15px;
-}
-.custom-post-types .form-row > div {
-	padding-left: 0;
-}
-
-.add-fields .field-options .type {
-	display: none;
-	overflow: hidden;
-}
-
-
-
-.mdw-cms-wrap .form-row div.input {
-	padding: 0;
-}
-.mdw-cms-wrap .form-row div.input > input {
-	width: 100%;
-}
-.mdw-cms-wrap .fd > input,
-.mdw-cms-wrap .gen-field-id > input {
-	width: 50%;
+.custom-post-types-list {
+	width: 25%;
+	float: left;
 }
 
 /* errors */
@@ -155,39 +116,4 @@ p.submit > #clear-files {
 
 #mdwcms-updater-notices > .primary {
 	display: none;
-}
-
-/* metabox display
------------------- */
-.mdw-cms-meta-box .type-textarea button.duplicate,
-.mdw-cms-meta-box .type-textarea button.delete {
-	float: right;
-	margin-right: 7%;
-}
-.mdw-cms-meta-box .field_description {
-	font-style: italic;
-	margin-left: 135px;
-	padding: 3px 0;
-}
-.mdw-cms-meta-box .mdw-cms-meta-box-thumb {
-	clear: left;
-	text-align: center;
-	padding: 5px 0;
-}
-.mdw-cms-meta-box .format {
-	margin-left: 5px;
-	font-style: italic;
-}
-
-/*
-.ui-datepicker-calendar {
-	display: none;
-}
-*/
-
-/**
- * custom post types
- */
-.mdw-cms-admin .ui-widget-overlay {
-	background: #aaaaaa;
 }
