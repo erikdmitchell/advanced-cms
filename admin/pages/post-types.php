@@ -1,7 +1,4 @@
-<?php
-extract(mdw_cms_setup_post_type_page_values());
-
-?>
+<?php extract(mdw_cms_setup_post_type_page_values()); ?>
 
 <div class="wrap">
 	<h2>Add New Custom Post Type</h2>

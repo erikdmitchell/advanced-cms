@@ -1,18 +1,9 @@
 <?php
 class adminTax {
 
-	public $wp_option='mdw_cms_taxonomies';
-	public $options=array();
-
-	protected $tab_url='';
-
-	function __construct() {
-		$this->tab_url=admin_url('tools.php?page=mdw-cms&tab=tax');
-
+	public function __construct() {
 		add_action('admin_enqueue_scripts',array($this,'admin_scripts_styles'));
-
-		add_filter('mdw_cms_options_tabs',array($this,'setup_tab'));
-		add_filter('mdw_cms_default_options',array($this,'add_options'));
+		add_action('init',array($this,'add_page'));
 	}
 
 	public function admin_scripts_styles($hook) {
@@ -33,107 +24,19 @@ class adminTax {
 		wp_enqueue_script('mdw-cms-admin-custom-taxonomies-script');
 	}
 
-	public function setup_tab($tabs) {
-		$tabs['tax']=array(
+	public function add_page() {
+		mdw_cms_add_admin_page(array(
+			'id' => 'tax',
 			'name' => 'Taxonomies',
 			'function' => array($this,'admin_page'),
 			'order' => 2
-		);
-		return $tabs;
-	}
-
-	public function add_options($options) {
-		$this->options=get_option($this->wp_option);
-		$options['taxonomies']=$this->options;
-
-		return $options;
+		));
 	}
 
 	public function admin_page() {
-		$notices=$this->update_options();
-		$btn_text='Create';
-		$name=null;
-		$label=null;
-		$object_type=null;
-		$hierarchical=1;
-		$show_ui=1;
-		$show_admin_col=1;
-		$id=-1;
-
-
-		$label_class='col-md-3';
-		$input_class='col-md-3';
-		$description_class='col-md-6';
-		$description_ext_class='col-md-9 col-md-offset-3';
-		$error_class='col-md-12';
-		$existing_label_class='col-md-5';
-		$edit_class='col-md-2';
-		$delete_class='col-md-2';
-
-		// edit custom taxonomy //
-		if (isset($_GET['edit']) && $_GET['edit']=='tax') :
-			foreach ($this->options as $key => $tax) :
-				if ($tax['name']==$_GET['slug']) :
-					extract($this->options[$key]);
-					$label=$args['label'];
-					$id=$key;
-				endif;
-			endforeach;
-		endif;
-
-		if ($id!=-1)
-			$btn_text='Update';
-
-		$html=null;
-
-		$html.='<div class="taxonomy-notices">'.$notices.'</div>';
-
-		$html.='<div class="row">';
-
-			$html.='<form class="custom-taxonomies col-md-8" method="post">';
-				$html.='<h3>Add New Custom Taxonomy</h3>';
-				$html.='<div class="form-row row">';
-					$html.='<label for="name" class="required '.$label_class.'">Name</label>';
-					$html.='<div class="input '.$input_class.'">';
-						$html.='<input type="text" name="name" id="name" value="'.$name.'" />';
-					$html.='</div>';
-					$html.='<span class="description '.$description_class.'">(e.g. brands)</span>';
-					$html.='<div id="mdw-cms-name-error" class="'.$error_class.'"></div>';
-					$html.='<div class="description-ext '.$description_ext_class.'">Max 20 characters, can not contain capital letters or spaces. Cannot be the same name as a (custom) post type.</div>';
-				$html.='</div>';
-
-				$html.='<div class="form-row row">';
-					$html.='<label for="label" class="'.$label_class.'">Label</label>';
-					$html.='<div class="input '.$input_class.'">';
-						$html.='<input type="text" name="label" id="label" value="'.$label.'" />';
-					$html.='</div>';
-					$html.='<span class="description '.$description_class.'">(e.g. Brands)</span>';
-				$html.='</div>';
-
-				$html.=get_post_types_list($object_type);
-
-				$html.='<p class="submit"><input type="submit" name="add-tax" id="submit" class="button button-primary" value="'.$btn_text.'"></p>';
-				$html.='<input type="hidden" name="tax-id" id="tax-id" value='.$id.' />';
-			$html.='</form>';
-
-			$html.='<div class="custom-taxonomies-list col-md-4">';
-				$html.='<h3>Custom Taxonomies</h3>';
-
-				if ($this->options) :
-					foreach ($this->options as $tax) :
-						$html.='<div class="tax-row row">';
-							$html.='<span class="tax '.$existing_label_class.'">'.$tax['args']['label'].'</span><span class="edit '.$edit_class.'">[<a href="'.$this->tab_url.'&edit=tax&slug='.$tax['name'].'">Edit</a>]</span><span class="delete '.$delete_class.'">[<a href="'.$this->tab_url.'&delete=tax&slug='.$tax['name'].'">Delete</a>]</span>';
-						$html.='</div>';
-					endforeach;
-				endif;
-
-			$html.='</div><!-- .custom-taxonomies-list -->';
-
-		$html.='</div><!-- .row -->';
-
-		echo $html;
+		mdw_cms_load_admin_page('taxonomies');
 	}
-
+	/*
 	protected function update_options() {
 		$notices=null;
 
@@ -173,7 +76,7 @@ class adminTax {
 
 		return $notices;
 	}
-
+	*/
 	/**
 	 * update_taxonomies function.
 	 *
@@ -181,6 +84,7 @@ class adminTax {
 	 * @param array $data (default: array())
 	 * @return void
 	 */
+	/*
 	public function update_taxonomies($data=array()) {
 		$option_exists=false;
 		$taxonomies=get_option($this->wp_option);
@@ -227,8 +131,63 @@ class adminTax {
 			return false;
 		endif;
 	}
+	*/
 
 }
 
 new adminTax();
+
+
+function mdw_cms_taxonomies_submit_button($id=-1) {
+	if ($id!=-1) :
+		$html='<input type="button" name="add-tax" id="submit" class="button button-primary submit-button" value="Update">';
+	else :
+		$html='<input type="button" name="add-tax" id="submit" class="button button-primary submit-button" value="Create">';
+	endif;
+
+	echo $html;
+}
+
+function mdw_cms_get_taxonomy_id($id=-1) {
+	if (isset($_GET['edit']) && $_GET['edit']=='tax')
+		$id=$_GET['id'];
+
+	return apply_filters('mdw_cms_admin_taxonomy_id',$id);
+}
+
+function mdw_cms_setup_taxonomy_page_values() {
+	global $mdw_cms_options;
+
+	$id=mdw_cms_get_taxonomy_id();
+	$default_args=array(
+		'id' => $id,
+		'name' => null,
+		'label' => null,
+		'object_type' => null,
+		'hierarchical' => 1,
+		'show_ui' => 1,
+		'show_admin_col' => 1,
+	);
+	$tax_args=array();
+
+	// load tax args if we have one //
+	if ($id!=-1 && isset($mdw_cms_options['tax'][$id]))
+		$tax_args=$mdw_cms_options['tax'][$id];
+
+	$args=wp_parse_args($tax_args,$default_args);
+
+	return $args;
+}
+
+function mdw_cms_get_existing_taxonomies() {
+	global $mdw_cms_options;
+
+	if (isset($mdw_cms_options['tax']) && !empty($mdw_cms_options['tax'])) :
+		foreach ($mdw_cms_options['tax'] as $tax) :
+			echo '<div class="tax-row">';
+				echo '<span class="tax">'.$tax['args']['label'].'</span><span class="edit">[<a href="'.mdw_cms_tab_url('post_types',array('edit' => 'tax', 'slug' => $tax['name']),false).'">Edit</a>]</span><span class="delete">[<a href="'.mdw_cms_tab_url('post_types',array('delete' => 'tax', 'slug' => $tax['name']),false).'">Delete</a>]</span>';
+			echo '</div>';
+		endforeach;
+	endif;
+}
 ?>

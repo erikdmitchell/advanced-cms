@@ -37,6 +37,18 @@
 	float: left;
 }
 
+/**
+ * Taxonomy
+ */
+.custom-taxonomies {
+	width: 75%;
+	float: left;
+}
+.custom-taxonomies-list {
+	width: 25%;
+	float: left;
+}
+
 /* errors */
 #mdw-cms-name-error,
 .mdw-cms-name-error {

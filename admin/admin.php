@@ -14,7 +14,7 @@ class MDWCMSgui {
 	public function __construct() {
 		include_once('main.php');
 		include_once('post-types.php');
-		//include_once('admin/taxonomies.php');
+		include_once('taxonomies.php');
 		//include_once('admin/metaboxes.php');
 
 		//$this->update_mdw_cms_settings(); // will be removed soon

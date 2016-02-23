@@ -413,6 +413,13 @@ function mdw_cms_existing_post_types() {
 	endif;
 }
 
+/**
+ * mdw_cms_get_post_type_name function.
+ *
+ * @access public
+ * @param float $id (default: -1)
+ * @return void
+ */
 function mdw_cms_get_post_type_name($id=-1) {
 	global $mdw_cms_options;
 
