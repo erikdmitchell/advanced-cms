@@ -10,8 +10,6 @@ class adminCPT {
 	 * @return void
 	 */
 	public function __construct() {
-		$this->tab_url=admin_url('tools.php?page=mdw-cms&tab=cpt');
-
 		add_action('admin_enqueue_scripts',array($this,'admin_scripts_styles'));
 		add_action('init',array($this,'add_page'));
 		add_action('wp_ajax_update_cpt',array($this,'ajax_update_cpt'));
@@ -69,7 +67,7 @@ class adminCPT {
 		$response=array();
 
 		extract($_POST);
-
+print_r($_POST);
 		if ($page_action=='edit') :
 			$response['content']=$this->admin_page_core($id);
 			$response['notice']=null;
@@ -178,22 +176,6 @@ class adminCPT {
 		return update_option($this->wp_option,$post_types);
 	}
 
-}
-
-new adminCPT();
-
-function mdw_cms_post_types_submit_button($id=-1) {
-	if ($id!=-1) :
-		$html='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Update" data-type="cpt" data-tab-url="'.admin_url('tools.php?page=mdw-cms&tab=post_types').'" data-page-action="update" data-action="update_cpt" data-item-type="cpt">';
-	else :
-		$html='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Create" disabled data-type="cpt" data-tab-url="'.admin_url('tools.php?page=mdw-cms&tab=post_types').'" data-page-action="add" data-action="update_cpt" data-item-type="cpt">';
-	endif;
-
-	echo $html;
-}
-
-
-
 	/**
 	 * update_cpt_name function.
 	 *
@@ -203,7 +185,6 @@ function mdw_cms_post_types_submit_button($id=-1) {
 	 * @param bool $new (default: false)
 	 * @return void
 	 */
-	 /*
 	protected static function update_cpt_name($old=false,$new=false) {
 		global $wpdb;
 
@@ -222,5 +203,18 @@ function mdw_cms_post_types_submit_button($id=-1) {
 
 		return true;
 	}
-	*/
+
+}
+
+new adminCPT();
+
+function mdw_cms_post_types_submit_button($id=-1) {
+	if ($id!=-1) :
+		$html='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Update" data-type="cpt" data-tab-url="'.admin_url('tools.php?page=mdw-cms&tab=post_types').'" data-page-action="update" data-action="update_cpt" data-item-type="cpt">';
+	else :
+		$html='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Create" disabled data-type="cpt" data-tab-url="'.admin_url('tools.php?page=mdw-cms&tab=post_types').'" data-page-action="add" data-action="update_cpt" data-item-type="cpt">';
+	endif;
+
+	echo $html;
+}
 ?>

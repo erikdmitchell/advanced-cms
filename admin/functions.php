@@ -1,11 +1,12 @@
 <?php
-global $mdw_cms_admin_pages,$mdw_cms_admin_page_hooks,$mdw_cms_options,$mdw_cms_wp_option_name,$mdw_cms_version;
+global $mdw_cms_admin_pages,$mdw_cms_admin_page_hooks,$mdw_cms_options,$mdw_cms_wp_option_name,$mdw_cms_version,$mdw_cms_admin_url;
 
 $mdw_cms_admin_pages=array();
 $mdw_cms_admin_page_hooks=array();
 $mdw_cms_wp_option_name='mdw_cms_options';
 $mdw_cms_version='2.2.0';
 $mdw_cms_options=get_option($mdw_cms_wp_option_name,array());
+$mdw_cms_admin_url=admin_url('tools.php?page=mdw-cms');
 
 // update cms version //
 $stored_mdw_cms_version=get_option('mdw_cms_version','1.1.1');
@@ -169,6 +170,19 @@ function mdw_cms_load_admin_page($page_name=false,$attributes=null) {
 	ob_end_clean();
 
 	echo $html;
+}
+
+function mdw_cms_tab_url($tab_id='') {
+	global $mdw_cms_admin_pages,$mdw_cms_admin_url;
+
+	$tab_url=null;
+
+	foreach ($mdw_cms_admin_pages as $page) :
+		if ($tab_id==$page['id'])
+			$tab_url=$mdw_cms_admin_url.'&tab='.$tab_id;
+	endforeach;
+
+	echo $tab_url;
 }
 
 /**

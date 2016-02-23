@@ -147,9 +147,9 @@ endif;
 		<?php if (isset($mdw_cms_options['post_types'])) : ?>
 			<?php foreach ($mdw_cms_options['post_types'] as $key => $cpt) : ?>
 				<div id="cpt-list-<?php echo $key; ?>" class="cpt-row row mdw-cms-edit-delete-list">
-					<span class="cpt "><?php echo $cpt['label']; ?></span>
-					<span class="edit">[<a href="" data-tab-url="<?php echo $this->tab_url; ?>" data-item-type="cpt" data-slug="<?php echo $cpt['name']; ?>" data-page-action="edit" data-action="update_cpt" data-id="<?php echo $key; ?>" data-title="Custom Post Type">Edit</a>]</span>
-					<span class="delete <?php echo $delete_class; ?>">[<a href="" data-tab-url="<?php echo $this->tab_url; ?>" data-item-type="cpt" data-slug="<?php echo $cpt['name']; ?>" data-page-action="delete" data-action="update_cpt" data-id="<?php echo $key; ?>" data-title="Custom Post Type">Delete</a>]</span>
+					<span class="cpt"><?php echo $cpt['label']; ?></span>
+					<span class="edit">[<a href="" data-tab-url="<?php mdw_cms_tab_url('post_types'); ?>" data-item-type="cpt" data-slug="<?php echo $cpt['name']; ?>" data-page-action="edit" data-action="update_cpt" data-id="<?php echo $key; ?>" data-title="Custom Post Type">Edit</a>]</span>
+					<span class="delete <?php echo $delete_class; ?>">[<a href="" data-tab-url="<?php mdw_cms_tab_url('post_types'); ?>" data-item-type="cpt" data-slug="<?php echo $cpt['name']; ?>" data-page-action="delete" data-action="update_cpt" data-id="<?php echo $key; ?>" data-title="Custom Post Type">Delete</a>]</span>
 				</div>
 			<?php endforeach; ?>
 		<?php endif; ?>
