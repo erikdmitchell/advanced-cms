@@ -12,11 +12,10 @@ class MDWCMSPostTypes {
 	public function __construct() {
 		add_action('admin_enqueue_scripts',array($this,'admin_scripts_styles'));
 		add_action('init',array($this,'add_page'));
+		add_action('init',array($this,'create_post_types'));
 		add_action('wp_ajax_confirm_delete_cpt',array($this,'ajax_confirm_delete_cpt'));
 		add_action('wp_ajax_delete_cpt',array($this,'ajax_delete_cpt'));
 		add_action('wp_ajax_update_cpt',array($this,'ajax_update_cpt'));
-
-
 	}
 
 	/**
@@ -56,6 +55,81 @@ class MDWCMSPostTypes {
 	 */
 	public function admin_page() {
 		mdw_cms_load_admin_page('post-types');
+	}
+
+	/**
+	 * create_post_types function.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function create_post_types() {
+		global $mdw_cms_options;
+
+		// check we have post types //
+		if (!isset($mdw_cms_options['post_types']) || empty($mdw_cms_options['post_types']))
+			return false;
+
+		// spit out our post types //
+		foreach ($mdw_cms_options['post_types'] as $post_type) :
+			$default_args=array(
+				'supports' => array(),
+				'taxonomies' => 'post_tag',
+				'title' => false,
+				'thumbnail' => false,
+				'editor' => false,
+				'revisions' => false,
+				'page_attributes' => false,
+				'hierarchical' => false,
+			);
+			$args=wp_parse_args($post_type,$default_args);
+
+			extract($args);
+
+			// check for custom 'args' //
+			if ($title)
+				$supports[]='title';
+
+			if ($thumbnail)
+				$supports[]='thumbnail';
+
+			if ($editor)
+				$supports[]='editor';
+
+			if ($revisions)
+				$supports[]='revisions';
+
+			if ($page_attributes)
+				$supports[]='page-attributes';
+
+			register_post_type($post_type['name'],
+				array(
+					'labels' => array(
+						'name' => _x($label,$label,$name),
+						'singular_name' => _x($singular_label,$name),
+						'add_new' => _x('Add New',$name),
+						'add_new_item' => __('Add New '.$singular_label),
+						'edit_item' => __('Edit '.$singular_label),
+						'new_item' => __('New '.$singular_label),
+						'all_items' => __('All '.$label),
+						'view_item' => __('View '.$singular_label),
+						'search_items' => __('Search '.$label),
+						'not_found' =>  __('No '.$label.' found'),
+						'not_found_in_trash' => __('No '.$label.' found in Trash'),
+						'parent_item_colon' => '',
+						'menu_name' => $label
+					),
+					'public' => true,
+					'has_archive' => false,
+					'show_in_menu' => true,
+					'menu_position'=> 5,
+					'supports' => $supports,
+					'taxonomies' => array($taxonomies),
+					'hierarchical' => $hierarchical
+				)
+			);
+
+		endforeach;
 	}
 
 	/**
@@ -100,11 +174,15 @@ class MDWCMSPostTypes {
 		wp_die();
 	}
 
-
+	/**
+	 * ajax_update_cpt function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	public function ajax_update_cpt() {
 		global $mdw_cms_options;
 
-		//$post_types=$mdw_cms_options['post_types'];
 		$response=array();
 
 		extract($_POST);

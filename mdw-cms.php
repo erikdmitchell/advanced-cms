@@ -18,10 +18,7 @@ require_once(plugin_dir_path(__FILE__).'functions.php'); // general stand alone 
 
 require_once(plugin_dir_path(__FILE__).'classes/admin-columns.php'); // custom admin columns class
 require_once(plugin_dir_path(__FILE__).'classes/custom-taxonomy.php'); // calls custom taxonomies
-require_once(plugin_dir_path(__FILE__).'classes/custom-post-types.php'); // calls custom post types
-require_once(plugin_dir_path(__FILE__).'classes/inflector.php'); // our pluralizing/singular functions
 require_once(plugin_dir_path(__FILE__).'classes/social-media.php'); // our social media page
-
 
 require_once(plugin_dir_path(__FILE__).'widgets/init.php'); // our widgets
 
