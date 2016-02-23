@@ -117,3 +117,22 @@ p.submit > #clear-files {
 #mdwcms-updater-notices > .primary {
 	display: none;
 }
+
+#ajax-loader {
+	background-color: rgba(255, 255, 255, 0.80);
+	width: 105%;
+	margin-left: -20px;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: none;
+}
+#ajax-image {
+	position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+	background-image: url('/wp-admin/images/spinner-2x.gif');
+	width: 40px;
+	height: 40px;
+}

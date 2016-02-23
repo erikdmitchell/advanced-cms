@@ -104,21 +104,12 @@ class MDWCMSPostTypes {
 	public function ajax_update_cpt() {
 		global $mdw_cms_options;
 
-		$post_types=$mdw_cms_options['post_types'];
+		//$post_types=$mdw_cms_options['post_types'];
 		$response=array();
 
 		extract($_POST);
-		//if ($page_action=='edit') :
-			//add_filter('mdw_cms_admin_post_type_id',function($_id) { return $id; });
-		/*
-		if ($page_action=='delete') : // remove post type and update option //
-			unset($post_types[$id]);
-			$post_types=array_values($post_types);
-			update_option($this->wp_option,$post_types);
 
-			$response=true; // reload page //
-		*/
-		if ($page_action=='add') :
+		if ($page_action=='add') : // NEED TO CHECK
 			$form_data_final=array();
 
 			foreach ($form_data as $input) :
@@ -142,20 +133,11 @@ class MDWCMSPostTypes {
 				$response['notice']='<div class="error">There was an issue creating the post type "'.$slug.'</div>';
 			endif;
 		elseif ($page_action=='update') :
-			$form_data_final=array();
+			$slug=mdw_cms_get_post_type_name($cpt_id);
 
-			foreach ($form_data as $input) :
-				$form_data_final[$input['name']]=$input['value'];
-			endforeach;
-
-			$id=$form_data_final['cpt-id'];
-			$slug=$form_data_final['name'];
-
-			if ($this->update_custom_post_types($form_data_final)) :
-				$response['content']=$this->admin_page_core($id);
+			if ($this->update_custom_post_types()) :
 				$response['notice']='<div class="updated">Post type "'.$slug.'" has been updated.</div>';
 			else :
-				$response['content']=$this->admin_page_core($id);
 				$response['notice']='<div class="error">There was an issue updating the post type "'.$slug.'</div>';
 			endif;
 		endif;
@@ -165,14 +147,30 @@ class MDWCMSPostTypes {
 		wp_die();
 	}
 
-
+	/**
+	 * update_custom_post_types function.
+	 *
+	 * @access protected
+	 * @param array $data (default: array())
+	 * @return void
+	 */
 	protected function update_custom_post_types($data=array()) {
-		$post_types=get_option($this->wp_option);
-		$post_types_s=serialize($post_types);
+		global $mdw_cms_options;
 
+		$org_post_types_s=serialize($mdw_cms_options['post_types']);
+
+		// get $_POST if not directly passed //
+		if (empty($data) && isset($_POST['form_data'])) :
+			foreach ($_POST['form_data'] as $arrays) :
+				$data[$arrays['name']]=$arrays['value'];
+			endforeach;
+		endif;
+
+		// check we have a name //
 		if (!isset($data['name']) || $data['name']=='')
 			return false;
 
+			// build array for storing //
 		$arr=array(
 			'name' => $data['name'],
 			'label' => $data['label'],
@@ -190,7 +188,7 @@ class MDWCMSPostTypes {
 		if ($data['cpt-id']!=-1) :
 			// if we change the name, clean up the db //
 			if ($data['name']!=$data['cpt-prev-name']) :
-				self::update_cpt_name($data['cpt-prev-name'],$data['name']);
+				$this->update_cpt_name($data['cpt-prev-name'],$data['name']);
 			endif;
 
 			$post_types[$data['cpt-id']]=$arr;
@@ -205,14 +203,25 @@ class MDWCMSPostTypes {
 		endif;
 
 		// we are simply updating the same info -- force true //
-		if ($post_types_s==serialize($post_types))
+		if ($org_post_types_s==serialize($post_types))
 			return true;
 
-		return update_option($this->wp_option,$post_types);
+		// update global var, then store via function //
+		$mdw_cms_options['post_types']=$post_types;
+		mdw_cms_update_options();
+
+		return true;
 	}
 
-
-	protected static function update_cpt_name($old=false,$new=false) {
+	/**
+	 * update_cpt_name function.
+	 *
+	 * @access protected
+	 * @param bool $old (default: false)
+	 * @param bool $new (default: false)
+	 * @return void
+	 */
+	protected function update_cpt_name($old=false,$new=false) {
 		global $wpdb;
 
 		if (!$old || !$new)
@@ -321,5 +330,14 @@ function mdw_cms_existing_post_types() {
 	else :
 		echo 'No post types yet.';
 	endif;
+}
+
+function mdw_cms_get_post_type_name($id=-1) {
+	global $mdw_cms_options;
+
+	if (isset($mdw_cms_options['post_types'][$id]))
+		return $mdw_cms_options['post_types'][$id]['name'];
+
+	return false;
 }
 ?>

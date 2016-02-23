@@ -6,6 +6,8 @@ extract(mdw_cms_setup_post_type_page_values());
 <div class="wrap">
 	<h2>Add New Custom Post Type</h2>
 
+	<div id="post-type-admin-notices"></div>
+
 	<form action="" method="post" class="custom-post-types">
 		<input type="hidden" name="update_mdw_cms_post_type" value="1">
 		<input type="hidden" name="cpt-id" id="cpt-id" value=<?php echo $id; ?> />

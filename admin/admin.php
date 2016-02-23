@@ -122,9 +122,9 @@ class MDWCMSgui {
 		global $mdw_cms_admin_pages,$mdw_cms_admin_page_hooks,$mdw_cms_options;
 
 //print_r($mdw_cms_admin_pages);
-echo '<pre>';
+//echo '<pre>';
 //print_r($mdw_cms_options);
-echo '</pre>';
+//echo '</pre>';
 
 		$notice=null;
 		$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'main';
@@ -171,9 +171,9 @@ echo '</pre>';
 
 			echo '</div><!-- #mdw-cms-form-wrap -->';
 
-			echo '<div id="ajax-loader"><div id="ajax-image"></div></div>';
-
 		echo '</div><!-- /.wrap -->';
+
+		echo '<div id="ajax-loader"><div id="ajax-image"></div></div>';
 	}
 
 	/**

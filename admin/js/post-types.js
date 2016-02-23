@@ -2,7 +2,7 @@ jQuery(document).ready(function($) {
 
 	var $formWrap=$('#mdw-cms-form-wrap');
 	var $ajaxLoader=$('#ajax-loader');
-	var $adminNotices=$('#mdw-cms-admin-notices');
+	var $adminNotices=$('#post-type-admin-notices');
 
 	/**
 	 * attach name check to cpt
@@ -66,12 +66,14 @@ jQuery(document).ready(function($) {
 			'tab_url' : $(this).data('tab-url'),
 			'form_data' : $form.serializeArray(),
 			'page_action' : $(this).data('page-action'),
-			'item_type' : $(this).data('item-type')
+			'item_type' : $(this).data('item-type'),
+			'cpt_id' : $('#cpt-id').val()
 		};
 
 		$.post(ajaxurl,data,function(response) {
+console.log(response);
 			var results=$.parseJSON(response);
-
+console.log(results);
 			if (data.page_action=='add') {
 				var form='';
 				// build fake form to add to page reload
@@ -82,7 +84,7 @@ jQuery(document).ready(function($) {
 				form+='</form>';
 				$(form).appendTo('body').submit();
 			} else {
-				$formWrap.html('').html(results.content); // clear and push content to our wrapper
+				//$formWrap.html('').html(results.content); // clear and push content to our wrapper
 				$adminNotices.html('').html(results.notice); // clear and post notice
 			}
 
