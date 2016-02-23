@@ -1,26 +1,8 @@
 <?php
-global $mdw_cms_options;
-
-$id=mdw_cms_get_post_type_id();
-
-$name=null;
-$label=null;
-$singular_label=null;
-$description=null;
-$title=1;
-$thumbnail=1;
-$editor=1;
-$revisions=1;
-$excerpt=0;
-$hierarchical=0;
-$page_attributes=0;
-
-// load cpt if we have one //
-if ($id!=-1 && isset($mdw_cms_options['post_types'][$id]))
-	extract($mdw_cms_options['post_types'][$id]);
+extract(mdw_cms_setup_post_type_page_values());
 
 ?>
-ID: <?php echo $id; ?>
+
 <div class="wrap">
 	<h2>Add New Custom Post Type</h2>
 
@@ -134,22 +116,14 @@ ID: <?php echo $id; ?>
 			</tbody>
 		</table>
 
-		<p class="submit"><?php mdw_cms_post_types_submit_button(); ?></p>
+		<p class="submit"><?php mdw_cms_post_types_submit_button($id); ?></p>
 
 	</form>
 
-	<div class="custom-post-types-list col-md-4">
+	<div class="custom-post-types-list">
 		<h2>Custom Post Types</h2>
 
-		<?php if (isset($mdw_cms_options['post_types'])) : ?>
-			<?php foreach ($mdw_cms_options['post_types'] as $key => $cpt) : ?>
-				<div id="cpt-list-<?php echo $key; ?>" class="cpt-row row mdw-cms-edit-delete-list">
-					<span class="cpt"><?php echo $cpt['label']; ?></span>
-					<span class="edit">[<a href="<?php mdw_cms_tab_url('post_types',array('action' => 'edit', 'slug' => $cpt['name'], 'id' => $key)); ?>">Edit</a>]</span>
-					<span class="delete <?php echo $delete_class; ?>">[<a href="" data-slug="<?php echo $cpt['name']; ?>" data-id="<?php echo $key; ?>">Delete</a>]</span>
-				</div>
-			<?php endforeach; ?>
-		<?php endif; ?>
+		<?php mdw_cms_existing_post_types(); ?>
 	</div>
 
 </div><!-- .wrap -->

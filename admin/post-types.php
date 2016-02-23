@@ -235,6 +235,13 @@ class MDWCMSPostTypes {
 
 new MDWCMSPostTypes();
 
+/**
+ * mdw_cms_post_types_submit_button function.
+ *
+ * @access public
+ * @param float $id (default: -1)
+ * @return void
+ */
 function mdw_cms_post_types_submit_button($id=-1) {
 	if ($id!=-1) :
 		$html='<input type="button" name="add-cpt" id="submit" class="button button-primary submit-button" value="Update" data-type="cpt" data-tab-url="'.admin_url('tools.php?page=mdw-cms&tab=post_types').'" data-page-action="update" data-action="update_cpt" data-item-type="cpt">';
@@ -245,10 +252,74 @@ function mdw_cms_post_types_submit_button($id=-1) {
 	echo $html;
 }
 
+/**
+ * mdw_cms_get_post_type_id function.
+ *
+ * @access public
+ * @param float $id (default: -1)
+ * @return void
+ */
 function mdw_cms_get_post_type_id($id=-1) {
 	if (isset($_GET['id']) && isset($_GET['action']))
 		$id=$_GET['id'];
 
 	return apply_filters('mdw_cms_admin_post_type_id',$id);
+}
+
+/**
+ * mdw_cms_setup_post_type_page_values function.
+ *
+ * @access public
+ * @return void
+ */
+function mdw_cms_setup_post_type_page_values() {
+	global $mdw_cms_options;
+
+	$id=mdw_cms_get_post_type_id();
+	$default_args=array(
+		'id' => $id,
+		'name' => null,
+		'label' => null,
+		'singular_label' => null,
+		'description' => null,
+		'title' => 1,
+		'thumbnail' => 1,
+		'editor' => 1,
+		'revisions' => 1,
+		'excerpt' => 0,
+		'hierarchical' => 0,
+		'page_attributes' => 0
+	);
+	$post_type_args=array();
+
+	// load cpt args if we have one //
+	if ($id!=-1 && isset($mdw_cms_options['post_types'][$id]))
+		$post_type_args=$mdw_cms_options['post_types'][$id];
+
+	$args=wp_parse_args($post_type_args,$default_args);
+
+	return $args;
+}
+
+/**
+ * mdw_cms_existing_post_types function.
+ *
+ * @access public
+ * @return void
+ */
+function mdw_cms_existing_post_types() {
+	global $mdw_cms_options;
+
+	if (isset($mdw_cms_options['post_types'])) :
+		foreach ($mdw_cms_options['post_types'] as $key => $cpt) :
+			echo '<div id="cpt-list-'.$key.'" class="cpt-row row mdw-cms-edit-delete-list">';
+				echo '<span class="cpt">'.$cpt['label'].'</span>';
+				echo '<span class="edit">[<a href="'.mdw_cms_tab_url('post_types',array('action' => 'edit', 'slug' => $cpt['name'], 'id' => $key),false).'">Edit</a>]</span>';
+				echo '<span class="delete">[<a href="" data-slug="'.$cpt['name'].'" data-id="'.$key.'>">Delete</a>]</span>';
+			echo '</div>';
+		endforeach;
+	else :
+		echo 'No post types yet.';
+	endif;
 }
 ?>

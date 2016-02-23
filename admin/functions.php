@@ -179,9 +179,10 @@ function mdw_cms_load_admin_page($page_name=false,$attributes=null) {
  * @access public
  * @param string $tab_id (default: '')
  * @param array $args (default: array())
+ * @param bool $echo (default: true)
  * @return void
  */
-function mdw_cms_tab_url($tab_id='',$args=array()) {
+function mdw_cms_tab_url($tab_id='',$args=array(),$echo=true) {
 	global $mdw_cms_admin_pages,$mdw_cms_admin_url;
 
 	$tab_url=null;
@@ -192,7 +193,10 @@ function mdw_cms_tab_url($tab_id='',$args=array()) {
 			$tab_url=esc_url(add_query_arg($args,$mdw_cms_admin_url.'&tab='.$tab_id));
 	endforeach;
 
-	echo $tab_url;
+	if ($echo)
+		echo $tab_url;
+
+	return $tab_url;
 }
 
 /**
