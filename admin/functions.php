@@ -172,14 +172,15 @@ function mdw_cms_load_admin_page($page_name=false,$attributes=null) {
 	echo $html;
 }
 
-function mdw_cms_tab_url($tab_id='') {
+function mdw_cms_tab_url($tab_id='',$args=array()) {
 	global $mdw_cms_admin_pages,$mdw_cms_admin_url;
 
 	$tab_url=null;
 
+	// sort of a double check tabid exists //
 	foreach ($mdw_cms_admin_pages as $page) :
 		if ($tab_id==$page['id'])
-			$tab_url=$mdw_cms_admin_url.'&tab='.$tab_id;
+			$tab_url=esc_url(add_query_arg($args,$mdw_cms_admin_url.'&tab='.$tab_id));
 	endforeach;
 
 	echo $tab_url;

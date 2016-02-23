@@ -48,7 +48,6 @@ class adminCPT {
 	 * @return void
 	 */
 	public function admin_page() {
-		//echo $this->admin_page_core();
 		mdw_cms_load_admin_page('post-types');
 	}
 
@@ -67,10 +66,8 @@ class adminCPT {
 		$response=array();
 
 		extract($_POST);
-print_r($_POST);
 		if ($page_action=='edit') :
-			$response['content']=$this->admin_page_core($id);
-			$response['notice']=null;
+			add_filter('mdw_cms_admin_post_type_id',function($_id) { return $id; });
 		elseif ($page_action=='delete') : // remove post type and update option //
 			unset($post_types[$id]);
 			$post_types=array_values($post_types);
@@ -216,5 +213,12 @@ function mdw_cms_post_types_submit_button($id=-1) {
 	endif;
 
 	echo $html;
+}
+
+function mdw_cms_get_post_type_id($id=-1) {
+	if (isset($_GET['id']) && isset($_GET['action']))
+		$id=$_GET['id'];
+
+	return apply_filters('mdw_cms_admin_post_type_id',$id);
 }
 ?>

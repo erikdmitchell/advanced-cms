@@ -18,6 +18,7 @@ jQuery(document).ready(function($) {
 	/**
 	 * edit link click
 	 */
+/*
 	$('.mdw-cms-edit-delete-list > span.edit > a').live('click',function(e) {
 		e.preventDefault();
 
@@ -40,6 +41,7 @@ jQuery(document).ready(function($) {
 			$ajaxLoader.hide();
 		});
 	});
+*/
 
 	/**
 	 * delete link click

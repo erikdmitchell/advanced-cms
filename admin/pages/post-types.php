@@ -1,7 +1,8 @@
 <?php
 global $mdw_cms_options;
 
-$id=-1;
+$id=mdw_cms_get_post_type_id();
+
 $name=null;
 $label=null;
 $singular_label=null;
@@ -14,16 +15,12 @@ $excerpt=0;
 $hierarchical=0;
 $page_attributes=0;
 
-// when a cpt is created is runs a fake form so the page refreshes properly //
-if (isset($_POST['create-cpt']) && $_POST['create-cpt'])
-	$id=$_POST['id'];
-
 // load cpt if we have one //
-if ($id!=-1) :
+if ($id!=-1 && isset($mdw_cms_options['post_types'][$id]))
 	extract($mdw_cms_options['post_types'][$id]);
-endif;
-?>
 
+?>
+ID: <?php echo $id; ?>
 <div class="wrap">
 	<h2>Add New Custom Post Type</h2>
 
@@ -148,7 +145,7 @@ endif;
 			<?php foreach ($mdw_cms_options['post_types'] as $key => $cpt) : ?>
 				<div id="cpt-list-<?php echo $key; ?>" class="cpt-row row mdw-cms-edit-delete-list">
 					<span class="cpt"><?php echo $cpt['label']; ?></span>
-					<span class="edit">[<a href="" data-tab-url="<?php mdw_cms_tab_url('post_types'); ?>" data-item-type="cpt" data-slug="<?php echo $cpt['name']; ?>" data-page-action="edit" data-action="update_cpt" data-id="<?php echo $key; ?>" data-title="Custom Post Type">Edit</a>]</span>
+					<span class="edit">[<a href="<?php mdw_cms_tab_url('post_types',array('action' => 'edit', 'slug' => $cpt['name'], 'id' => $key)); ?>">Edit</a>]</span>
 					<span class="delete <?php echo $delete_class; ?>">[<a href="" data-tab-url="<?php mdw_cms_tab_url('post_types'); ?>" data-item-type="cpt" data-slug="<?php echo $cpt['name']; ?>" data-page-action="delete" data-action="update_cpt" data-id="<?php echo $key; ?>" data-title="Custom Post Type">Delete</a>]</span>
 				</div>
 			<?php endforeach; ?>
