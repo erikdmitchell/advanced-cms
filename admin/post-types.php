@@ -141,14 +141,18 @@ class MDWCMSPostTypes {
 	public function ajax_delete_cpt() {
 		$html=null;
 
-		if (isset($_GET['action']) && isset($_GET['id']) && isset($_GET['slug']) && $_GET['id']!=-1 && $_GET['action']=='delete_cpt') :
-			$html.='<p>This will delete the '.$_GET['slug'].' post type. Are you sure?</p>';
-			$html.='<input id="mdw_cms_delete_cpt_submit" class="button button-primary button-large" value="Delete" data-id='.$_GET['id'].'></input>';
-		else :
-			$html.='Error';
-		endif;
+		$html.='<div class="mdw-cms-thickbox">';
 
-    $html.='<a id="mdw_cms_delete_cpt_cancel" class="button button-large" href="#">Cancel</a>';
+			if (isset($_GET['action']) && isset($_GET['id']) && isset($_GET['slug']) && $_GET['id']!=-1 && $_GET['action']=='delete_cpt') :
+				$html.='<p>This will delete the '.$_GET['slug'].' post type. Are you sure?</p>';
+				$html.='<button id="mdw_cms_delete_cpt_submit" class="button button-primary button-large" data-id="'.$_GET['id'].'">Delete</button>';
+			else :
+				$html.='Error';
+			endif;
+
+	    $html.='<button id="mdw_cms_delete_cpt_cancel" class="button button-large">Cancel</button>';
+
+    $html.='</div>';
 
 		echo $html;
 
@@ -401,7 +405,7 @@ function mdw_cms_existing_post_types() {
 			echo '<div id="cpt-list-'.$key.'" class="cpt-row row mdw-cms-edit-delete-list">';
 				echo '<span class="cpt">'.$cpt['label'].'</span>';
 				echo '<span class="edit">[<a href="'.mdw_cms_tab_url('post_types',array('action' => 'edit', 'slug' => $cpt['name'], 'id' => $key),false).'">Edit</a>]</span>';
-				echo '<span class="delete">[<a href="" data-slug="'.$cpt['name'].'" data-id="'.$key.'>">Delete</a>]</span>';
+				echo '<span class="delete">[<a href="" data-slug="'.$cpt['name'].'" data-id="'.$key.'">Delete</a>]</span>';
 			echo '</div>';
 		endforeach;
 	else :

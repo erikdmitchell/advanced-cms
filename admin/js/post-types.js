@@ -21,7 +21,7 @@ jQuery(document).ready(function($) {
 	$('.mdw-cms-edit-delete-list > span.delete > a').live('click',function(e) {
 		e.preventDefault();
 
-		var tb_show_url=ajaxurl+'?action=delete_cpt&id='+$(this).data('id')+'&slug='+$(this).data('slug');
+		var tb_show_url=ajaxurl+'?action=delete_cpt&id='+$(this).data('id')+'&slug='+$(this).data('slug')+'&width=350&height=175';
 		tb_show('',tb_show_url);
 	});
 

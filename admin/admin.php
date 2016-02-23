@@ -235,7 +235,7 @@ class MDWCMSgui {
 	 * @param string $message (default: '')
 	 * @return void
 	 */
-	function admin_notices($class='error',$message='') {
+	public function admin_notices($class='error',$message='') {
 		$this->admin_notices_output[]='<div class="'.$class.'"><p>'.$message.'</p></div>';
 	}
 

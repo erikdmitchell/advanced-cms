@@ -16,6 +16,14 @@
 .tools_page_mdw-cms form .description.right {
 	margin-left: 5px;
 }
+.mdw-cms-edit-delete-list .cpt {
+	display: inline-block;
+	width: 75px;
+}
+.mdw-cms-edit-delete-list .edit,
+.mdw-cms-edit-delete-list .delete {
+	margin-left: 10px;
+}
 
 /**
  * Post Types
@@ -118,6 +126,9 @@ p.submit > #clear-files {
 	display: none;
 }
 
+/**
+ * AJAX loader
+ */
 #ajax-loader {
 	background-color: rgba(255, 255, 255, 0.80);
 	width: 105%;
