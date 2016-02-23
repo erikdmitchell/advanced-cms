@@ -110,26 +110,9 @@ class MDWCMSPostTypes {
 		extract($_POST);
 
 		if ($page_action=='add') : // NEED TO CHECK
-			$form_data_final=array();
-
-			foreach ($form_data as $input) :
-				$form_data_final[$input['name']]=$input['value'];
-			endforeach;
-
-			if ($this->update_custom_post_types($form_data_final)) :
-				$post_types=get_option($this->wp_option);
-				foreach ($post_types as $key => $post_type) :
-					if ($post_type['name']==$form_data_final['name']) :
-						$id=$key;
-						$slug=$post_type['name'];
-					endif;
-				endforeach;
-
-				// b/c we do a page reload, this hides some vars so that we can load with the edit screen up //
-				$response['id']=$id;
-				$response['notice']=urlencode('<div class="updated">Post type "'.$slug.'" has been created.</div>');
+			if ($slug=$this->add_custom_post_type($form_data)) :
+				$response['notice']='<div class="updated">Post type "'.$slug.'" has been created.</div>';
 			else :
-				$response['content']=$this->admin_page_core();
 				$response['notice']='<div class="error">There was an issue creating the post type "'.$slug.'</div>';
 			endif;
 		elseif ($page_action=='update') :
@@ -145,6 +128,20 @@ class MDWCMSPostTypes {
 		echo json_encode($response);
 
 		wp_die();
+	}
+
+	protected function add_custom_post_type($data=array()) {
+		$form_data_final=array();
+
+		// make it a cleaner arra with a name => value setup //
+		foreach ($data as $input) :
+			$form_data_final[$input['name']]=$input['value'];
+		endforeach;
+
+		if ($this->update_custom_post_types($form_data_final))
+			return $form_data_final['name']; // we may need to get the id
+
+		return false;
 	}
 
 	/**

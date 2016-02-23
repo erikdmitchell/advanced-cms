@@ -71,22 +71,9 @@ jQuery(document).ready(function($) {
 		};
 
 		$.post(ajaxurl,data,function(response) {
-console.log(response);
 			var results=$.parseJSON(response);
-console.log(results);
-			if (data.page_action=='add') {
-				var form='';
-				// build fake form to add to page reload
-				form+='<form action="'+data.tab_url+'" method="post">';
-					form+='<input type="hidden" name="create-cpt" value="1">';
-					form+='<input type="hidden" name="id" value="'+results.id+'">';
-					form+='<input type="hidden" name="notice" value="'+results.notice+'">';
-				form+='</form>';
-				$(form).appendTo('body').submit();
-			} else {
-				//$formWrap.html('').html(results.content); // clear and push content to our wrapper
-				$adminNotices.html('').html(results.notice); // clear and post notice
-			}
+
+			$adminNotices.html('').html(results.notice); // clear and post notice
 
 			$ajaxLoader.hide();
 		});
