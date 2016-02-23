@@ -1,5 +1,5 @@
 <?php
-class adminCPT {
+class MDWCMSPostTypes {
 
 	protected $tab_url=null;
 
@@ -12,7 +12,11 @@ class adminCPT {
 	public function __construct() {
 		add_action('admin_enqueue_scripts',array($this,'admin_scripts_styles'));
 		add_action('init',array($this,'add_page'));
+		add_action('wp_ajax_confirm_delete_cpt',array($this,'ajax_confirm_delete_cpt'));
+		add_action('wp_ajax_delete_cpt',array($this,'ajax_delete_cpt'));
 		add_action('wp_ajax_update_cpt',array($this,'ajax_update_cpt'));
+
+
 	}
 
 	/**
@@ -23,7 +27,10 @@ class adminCPT {
 	 * @return void
 	 */
 	public function admin_scripts_styles($hook) {
+		wp_enqueue_script('thickbox');
 		wp_enqueue_script('mdw-cms-admin-custom-post-types-script',plugins_url('/js/post-types.js',__FILE__),array('namecheck-script'));
+
+		wp_enqueue_style('thickbox');
 	}
 
 	/**
@@ -52,13 +59,48 @@ class adminCPT {
 	}
 
 	/**
-	 * ajax_update_cpt function.
-	 *
-	 * edit/delete custom post type
+	 * ajax_delete_cpt function.
 	 *
 	 * @access public
 	 * @return void
 	 */
+	public function ajax_delete_cpt() {
+		$html=null;
+
+		if (isset($_GET['action']) && isset($_GET['id']) && isset($_GET['slug']) && $_GET['id']!=-1 && $_GET['action']=='delete_cpt') :
+			$html.='<p>This will delete the '.$_GET['slug'].' post type. Are you sure?</p>';
+			$html.='<input id="mdw_cms_delete_cpt_submit" class="button button-primary button-large" value="Delete" data-id='.$_GET['id'].'></input>';
+		else :
+			$html.='Error';
+		endif;
+
+    $html.='<a id="mdw_cms_delete_cpt_cancel" class="button button-large" href="#">Cancel</a>';
+
+		echo $html;
+
+		wp_die();
+	}
+
+	/**
+	 * ajax_confirm_delete_cpt function.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function ajax_confirm_delete_cpt() {
+		global $mdw_cms_options;
+
+		if (isset($_POST['id']) && isset($mdw_cms_options['post_types'][$_POST['id']])) :
+			unset($mdw_cms_options['post_types'][$_POST['id']]);
+			$mdw_cms_options['post_types']=array_values($mdw_cms_options['post_types']);
+
+			mdw_cms_update_options();
+		endif;
+
+		wp_die();
+	}
+
+
 	public function ajax_update_cpt() {
 		global $mdw_cms_options;
 
@@ -66,15 +108,17 @@ class adminCPT {
 		$response=array();
 
 		extract($_POST);
-		if ($page_action=='edit') :
-			add_filter('mdw_cms_admin_post_type_id',function($_id) { return $id; });
-		elseif ($page_action=='delete') : // remove post type and update option //
+		//if ($page_action=='edit') :
+			//add_filter('mdw_cms_admin_post_type_id',function($_id) { return $id; });
+		/*
+		if ($page_action=='delete') : // remove post type and update option //
 			unset($post_types[$id]);
 			$post_types=array_values($post_types);
 			update_option($this->wp_option,$post_types);
 
 			$response=true; // reload page //
-		elseif ($page_action=='add') :
+		*/
+		if ($page_action=='add') :
 			$form_data_final=array();
 
 			foreach ($form_data as $input) :
@@ -121,13 +165,7 @@ class adminCPT {
 		wp_die();
 	}
 
-	/**
-	 * update_custom_post_types function.
-	 *
-	 * @access protected
-	 * @param array $data (default: array())
-	 * @return void
-	 */
+
 	protected function update_custom_post_types($data=array()) {
 		$post_types=get_option($this->wp_option);
 		$post_types_s=serialize($post_types);
@@ -173,15 +211,7 @@ class adminCPT {
 		return update_option($this->wp_option,$post_types);
 	}
 
-	/**
-	 * update_cpt_name function.
-	 *
-	 * @access protected
-	 * @static
-	 * @param bool $old (default: false)
-	 * @param bool $new (default: false)
-	 * @return void
-	 */
+
 	protected static function update_cpt_name($old=false,$new=false) {
 		global $wpdb;
 
@@ -203,7 +233,7 @@ class adminCPT {
 
 }
 
-new adminCPT();
+new MDWCMSPostTypes();
 
 function mdw_cms_post_types_submit_button($id=-1) {
 	if ($id!=-1) :

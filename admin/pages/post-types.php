@@ -146,7 +146,7 @@ ID: <?php echo $id; ?>
 				<div id="cpt-list-<?php echo $key; ?>" class="cpt-row row mdw-cms-edit-delete-list">
 					<span class="cpt"><?php echo $cpt['label']; ?></span>
 					<span class="edit">[<a href="<?php mdw_cms_tab_url('post_types',array('action' => 'edit', 'slug' => $cpt['name'], 'id' => $key)); ?>">Edit</a>]</span>
-					<span class="delete <?php echo $delete_class; ?>">[<a href="" data-tab-url="<?php mdw_cms_tab_url('post_types'); ?>" data-item-type="cpt" data-slug="<?php echo $cpt['name']; ?>" data-page-action="delete" data-action="update_cpt" data-id="<?php echo $key; ?>" data-title="Custom Post Type">Delete</a>]</span>
+					<span class="delete <?php echo $delete_class; ?>">[<a href="" data-slug="<?php echo $cpt['name']; ?>" data-id="<?php echo $key; ?>">Delete</a>]</span>
 				</div>
 			<?php endforeach; ?>
 		<?php endif; ?>

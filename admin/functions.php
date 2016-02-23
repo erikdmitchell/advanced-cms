@@ -74,8 +74,9 @@ function mdw_cms_add_options($id=false,$options=array()) {
 }
 
 function mdw_cms_update_options() {
-	global $mdw_cms_options;
+	global $mdw_cms_options,$mdw_cms_wp_option_name;
 
+	update_option($mdw_cms_wp_option_name,$mdw_cms_options);
 }
 
 
@@ -172,6 +173,14 @@ function mdw_cms_load_admin_page($page_name=false,$attributes=null) {
 	echo $html;
 }
 
+/**
+ * mdw_cms_tab_url function.
+ *
+ * @access public
+ * @param string $tab_id (default: '')
+ * @param array $args (default: array())
+ * @return void
+ */
 function mdw_cms_tab_url($tab_id='',$args=array()) {
 	global $mdw_cms_admin_pages,$mdw_cms_admin_url;
 

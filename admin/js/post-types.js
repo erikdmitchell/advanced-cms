@@ -16,84 +16,40 @@ jQuery(document).ready(function($) {
 	});
 
 	/**
-	 * edit link click
-	 */
-/*
-	$('.mdw-cms-edit-delete-list > span.edit > a').live('click',function(e) {
-		e.preventDefault();
-
-		$ajaxLoader.show();
-
-		var data={
-			'action' : $(this).data('action'),
-			'tab_url' : $(this).data('tab-url'),
-			'item_type' : $(this).data('item-type'),
-			'slug' : $(this).data('slug'),
-			'page_action' : $(this).data('page-action'),
-			'id' : $(this).data('id')
-		};
-
-		$.post(ajaxurl,data,function(response) {
-			var results=$.parseJSON(response);
-
-			$formWrap.html('').html(results.content); // clear and push content to our wrapper
-			$adminNotices.html('').html(results.notice); // clear and post notice
-			$ajaxLoader.hide();
-		});
-	});
-*/
-
-	/**
 	 * delete link click
 	 */
 	$('.mdw-cms-edit-delete-list > span.delete > a').live('click',function(e) {
 		e.preventDefault();
 
-		var data={
-			'action' : $(this).data('action'),
-			'tab_url' : $(this).data('tab-url'),
-			'item_type' : $(this).data('item-type'),
-			'slug' : $(this).data('slug'),
-			'page_action' : $(this).data('page-action'),
-			'id' : $(this).data('id'),
-			'title' : $(this).data('title')
-		};
-		var pageAction=data.page_action.toLowerCase().replace(/^[\u00C0-\u1FFF\u2C00-\uD7FF\w]|\s[\u00C0-\u1FFF\u2C00-\uD7FF\w]/g, function(letter) {
-    	return letter.toUpperCase();
-		});
-		var dialogBoxID='dialog-confirm';
-		var $dialogBox='';
-
-		// generate dialog box //
-		$dialogBox+='<div id="'+dialogBoxID+'" title="'+pageAction+' '+data.title+'?">';
-			$dialogBox+='<p>This will delete the '+data.title+' "'+data.slug+'". Are you sure?</p>';
-		$dialogBox+='</div>';
-
-		$('body').append($dialogBox); // append box
-
-		// launch dialog box //
-		$('#'+dialogBoxID).dialog({
-			resizable: false,
-			modal: true,
-			buttons: {
-				"Delete": function() {
-					$ajaxLoader.show();
-					$.post(ajaxurl,data,function(response) {
-						$ajaxLoader.hide();
-						if (response) {
-							location.reload();
-						}
-					});
-					$(this).dialog('close');
-				},
-				Cancel: function() {
-					$(this).dialog('close');
-					$('#'+dialogBoxID).remove();
-				}
-			}
-		});
-
+		var tb_show_url=ajaxurl+'?action=delete_cpt&id='+$(this).data('id')+'&slug='+$(this).data('slug');
+		tb_show('',tb_show_url);
 	});
+
+	/**
+	 * delete cpt confirm
+	 */
+	$('#mdw_cms_delete_cpt_submit').live('click',function(e) {
+		e.preventDefault();
+
+		var data={
+			'action': 'confirm_delete_cpt',
+			'id' : $(this).data('id')
+		};
+
+		$.post(ajaxurl,data,function(response) {
+			location.reload();
+		});
+	});
+
+	/**
+	 * cancel delete cpt
+	 */
+	$('#mdw_cms_delete_cpt_cancel').live('click',function(e) {
+		e.preventDefault();
+
+		tb_remove();
+	});
+
 	/**
 	 * submit button (cpt for now)
 	 */
