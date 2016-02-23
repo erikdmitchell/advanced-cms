@@ -155,6 +155,7 @@ class MDWCMSPostTypes {
 		global $mdw_cms_options;
 
 		$org_post_types_s=serialize($mdw_cms_options['post_types']);
+		$post_types=$mdw_cms_options['post_types'];
 
 		// get $_POST if not directly passed //
 		if (empty($data) && isset($_POST['form_data'])) :
@@ -191,6 +192,7 @@ class MDWCMSPostTypes {
 			$post_types[$data['cpt-id']]=$arr;
 		else :
 			if (!empty($post_types)) :
+				// we do a name check and return false if already found //
 				foreach ($post_types as $cpt) :
 					if ($cpt['name']==$data['name'])
 						return false;
