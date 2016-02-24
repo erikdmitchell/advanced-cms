@@ -7,7 +7,7 @@ class adminTax {
 	}
 
 	public function admin_scripts_styles($hook) {
-		wp_register_script('mdw-cms-admin-custom-taxonomies-script',plugins_url('/js/admin-custom-taxonomies.js',__FILE__),array('namecheck-script'));
+		wp_register_script('mdw-cms-admin-custom-taxonomies-script',plugins_url('/js/taxonomies.js',__FILE__),array('namecheck-script'));
 
 		$post_types=get_post_types();
 		$types=array();
