@@ -162,11 +162,15 @@ function mdw_cms_setup_taxonomy_page_values() {
 	$default_args=array(
 		'id' => $id,
 		'name' => null,
-		'label' => null,
-		'object_type' => null,
-		'hierarchical' => 1,
-		'show_ui' => 1,
-		'show_admin_col' => 1,
+		'object_type' => array(),
+		'args' => array(
+			'hierarchical' => 1,
+			'label' => null,
+			'query_var' => 1,
+			'rewrite' => 1,
+			'show_ui' => 1,
+			'show_admin_col' => 1,
+		),
 	);
 	$tax_args=array();
 
@@ -183,9 +187,9 @@ function mdw_cms_get_existing_taxonomies() {
 	global $mdw_cms_options;
 
 	if (isset($mdw_cms_options['taxonomies']) && !empty($mdw_cms_options['taxonomies'])) :
-		foreach ($mdw_cms_options['taxonomies'] as $tax) :
+		foreach ($mdw_cms_options['taxonomies'] as $key => $tax) :
 			echo '<div class="tax-row mdw-cms-edit-delete-list">';
-				echo '<span class="tax">'.$tax['args']['label'].'</span><span class="edit">[<a href="'.mdw_cms_tab_url('post_types',array('edit' => 'tax', 'slug' => $tax['name']),false).'">Edit</a>]</span><span class="delete">[<a href="'.mdw_cms_tab_url('post_types',array('delete' => 'tax', 'slug' => $tax['name']),false).'">Delete</a>]</span>';
+				echo '<span class="tax">'.$tax['args']['label'].'</span><span class="edit">[<a href="'.mdw_cms_tab_url('taxonomies',array('edit' => 'tax', 'slug' => $tax['name'], 'id' => $key),false).'">Edit</a>]</span><span class="delete">[<a href="'.mdw_cms_tab_url('taxonomies',array('delete' => 'tax', 'slug' => $tax['name']),false).'">Delete</a>]</span>';
 			echo '</div>';
 		endforeach;
 	endif;

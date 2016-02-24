@@ -18,20 +18,13 @@
 						<input name="name" type="text" id="name" value="<?php echo $name; ?>" class="regular-text">
 						<div id="mdw-cms-name-error" class="<?php echo $error_class; ?>"></div>
 						<span class="description right">(e.g. brands)</span>
-						<div class="description-ext '.$description_ext_class; ?>">Max 20 characters, can not contain capital letters or spaces. Cannot be the same name as a (custom) post type.</div>
+						<div class="description-ext">Max 20 characters, can not contain capital letters or spaces. Cannot be the same name as a (custom) post type.</div>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row"><label for="label" class="">Label</label></th>
 					<td>
-						<input name="label" type="text" id="label" value="<?php echo $label; ?>" class="regular-text">
-						<span class="description right">(e.g. Brands)</span>
-					</td>
-				</tr>
-				<tr>
-					<th scope="row"><label for="label" class="">Label</label></th>
-					<td>
-						<input name="label" type="text" id="label" value="<?php echo $label; ?>" class="regular-text">
+						<input name="label" type="text" id="label" value="<?php echo $args['label']; ?>" class="regular-text">
 						<span class="description right">(e.g. Brands)</span>
 					</td>
 				</tr>
