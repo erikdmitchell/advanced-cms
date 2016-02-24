@@ -26,7 +26,7 @@ class adminTax {
 
 	public function add_page() {
 		mdw_cms_add_admin_page(array(
-			'id' => 'tax',
+			'id' => 'taxonomies',
 			'name' => 'Taxonomies',
 			'function' => array($this,'admin_page'),
 			'order' => 2
@@ -171,8 +171,8 @@ function mdw_cms_setup_taxonomy_page_values() {
 	$tax_args=array();
 
 	// load tax args if we have one //
-	if ($id!=-1 && isset($mdw_cms_options['tax'][$id]))
-		$tax_args=$mdw_cms_options['tax'][$id];
+	if ($id!=-1 && isset($mdw_cms_options['taxonomies'][$id]))
+		$tax_args=$mdw_cms_options['taxonomies'][$id];
 
 	$args=wp_parse_args($tax_args,$default_args);
 
@@ -182,9 +182,9 @@ function mdw_cms_setup_taxonomy_page_values() {
 function mdw_cms_get_existing_taxonomies() {
 	global $mdw_cms_options;
 
-	if (isset($mdw_cms_options['tax']) && !empty($mdw_cms_options['tax'])) :
-		foreach ($mdw_cms_options['tax'] as $tax) :
-			echo '<div class="tax-row">';
+	if (isset($mdw_cms_options['taxonomies']) && !empty($mdw_cms_options['taxonomies'])) :
+		foreach ($mdw_cms_options['taxonomies'] as $tax) :
+			echo '<div class="tax-row mdw-cms-edit-delete-list">';
 				echo '<span class="tax">'.$tax['args']['label'].'</span><span class="edit">[<a href="'.mdw_cms_tab_url('post_types',array('edit' => 'tax', 'slug' => $tax['name']),false).'">Edit</a>]</span><span class="delete">[<a href="'.mdw_cms_tab_url('post_types',array('delete' => 'tax', 'slug' => $tax['name']),false).'">Delete</a>]</span>';
 			echo '</div>';
 		endforeach;

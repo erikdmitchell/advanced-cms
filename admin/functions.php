@@ -120,7 +120,7 @@ function mdw_cms_update_options() {
  * @access public
  * @return void
  */
-function mdw_cms_options_legacy_update() {
+function mdw_cms_options_legacy_update($delete=false) {
 	global $mdw_cms_wp_option_name;
 
 	$options=array();
@@ -130,17 +130,26 @@ function mdw_cms_options_legacy_update() {
 
 	if ($post_types) :
 		$options['post_types']=$post_types;
-		delete_option('mdw_cms_post_types');
+
+		if ($delete) :
+			delete_option('mdw_cms_post_types');
+		endif;
 	endif;
 
 	if ($taxonomies) :
 		$options['taxonomies']=$taxonomies;
-		delete_option('mdw_cms_taxonomies');
+
+		if ($delete) :
+			delete_option('mdw_cms_taxonomies');
+		endif;
 	endif;
 
 	if ($metaboxes) :
 		$options['metaboxes']=$metaboxes;
-		delete_option('mdw_cms_metaboxes');
+
+		if ($delete) :
+			delete_option('mdw_cms_metaboxes');
+		endif;
 	endif;
 
 	update_option($mdw_cms_wp_option_name,$options);
