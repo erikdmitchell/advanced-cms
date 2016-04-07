@@ -223,6 +223,7 @@ class MDWCMSgui {
 		$page_attributes=0;
 		$id=-1;
 		$btn_disabled='disabled';
+		$comments=0;
 
 		$label_class='col-md-3';
 		$input_class='col-md-3';
@@ -337,6 +338,7 @@ class MDWCMSgui {
 						$html.='<span class="description '.$description_class.'">(default False)</span>';
 						$html.='<div class="description-ext '.$description_ext_class.'">Whether the post type is hierarchical (e.g. page). Allows Parent to be specified. Note: "page-attributes" must be set to true to show the parent select box.</div>';
 					$html.='</div>';
+
 					$html.='<div class="form-row row">';
 						$html.='<label for="page_attributes" class="'.$label_class.'">Page Attributes</label>';
 						$html.='<div class="'.$select_class.'">';
@@ -347,6 +349,18 @@ class MDWCMSgui {
 						$html.='</div>';
 						$html.='<span class="description '.$description_class.'">(default False)</span>';
 					$html.='</div>';
+
+					$html.='<div class="form-row row">';
+						$html.='<label for="comments" class="'.$label_class.'">'.__('Comments').'</label>';
+						$html.='<div class="'.$select_class.'">';
+							$html.='<select name="comments" id="comments">';
+								$html.='<option value="1" '.selected($comments,1,false).'>True</option>';
+								$html.='<option value="0" '.selected($comments,0,false).'>False</option>';
+							$html.='</select>';
+						$html.='</div>';
+						$html.='<span class="description '.$description_class.'">(default False)</span>';
+					$html.='</div>';
+
 				$html.='</div>';
 				$html.='<p class="submit"><input type="submit" name="add-cpt" id="submit" class="button button-primary" value="'.$btn_text.'" '.$btn_disabled.'></p>';
 				$html.='<input type="hidden" name="cpt-id" id="cpt-id" value='.$id.' />';
@@ -884,7 +898,8 @@ class MDWCMSgui {
 			'editor' => $data['editor'],
 			'revisions' => $data['revisions'],
 			'hierarchical' => $data['hierarchical'],
-			'page_attributes' => $data['page_attributes']
+			'page_attributes' => $data['page_attributes'],
+			'comments' => $data['comments']
 		);
 
 		if ($data['cpt-id']!=-1) :

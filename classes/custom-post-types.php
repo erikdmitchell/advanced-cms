@@ -25,6 +25,7 @@ class MDWCustomPostTypes {
 			$revisions=false;
 			$page_attributes=false;
 			$hierarchical=false;
+			$comments=false;
 
 			extract($post_type);
 
@@ -43,6 +44,9 @@ class MDWCustomPostTypes {
 
 			if ($page_attributes)
 				$supports[]='page-attributes';
+
+			if ($comments)
+				$supports[]='comments';
 
 			register_post_type($post_type['name'],
 				array(
