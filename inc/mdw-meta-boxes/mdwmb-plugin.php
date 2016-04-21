@@ -429,7 +429,7 @@ class MDWMetaboxes {
 		wp_enqueue_style('mdwmb-admin-css',plugins_url('/css/admin.css',__FILE__));
 		wp_enqueue_style('jquery-ui-style','//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css',array(),'1.10.4');
 		wp_enqueue_style('colpick-css',plugins_url('/css/colpick.css',__FILE__));
-		wp_enqueue_style('jq-timepicker-style',plugins_url('/css/jquery.ui.timepicker.css',__FILE__));
+		//wp_enqueue_style('jq-timepicker-style',plugins_url('/css/jquery.ui.timepicker.css',__FILE__));
 		//wp_enqueue_style('aja-meta-boxes-css',plugins_url('css/ajax-meta-boxes.css',__FILE__),array(),'1.0.0','all');
 
 		wp_enqueue_script('jquery');
