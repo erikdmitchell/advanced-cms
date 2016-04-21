@@ -11,6 +11,10 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 Changelog
 ===========
 
+= 2.1.8 =
+
+ * Removed timepicker js from metaboxes
+
 ### 2.1.7
 
 	Added "comments" as an option for custom post types/
