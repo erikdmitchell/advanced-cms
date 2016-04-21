@@ -15,9 +15,11 @@ Changelog
 
  * Removed timepicker js from metaboxes
 
-### 2.1.7
+= 2.1.7 =
 
-	Added "comments" as an option for custom post types/
+ * Added delete box notification and page reload to smooth out minor issues on add/delete custom post types.
+ * Added "comments" as an option for custom post types
+ * Added mdw-cms-admin class to admin body.
 
 ### 2.1.6.4
 
