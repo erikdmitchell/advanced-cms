@@ -28,47 +28,49 @@
 
 <h3>Add New Custom Taxonomy</h3>
 
-<form class="custom-taxonomies" method="post">
-	<input type="hidden" name="tax-id" id="tax-id" value=<?php echo $id; ?> />
-	<?php wp_nonce_field('update_taxonomies', 'mdw_cms_admin'); ?>
+<div class="left-col">
+	<form class="custom-taxonomies" method="post">
+		<input type="hidden" name="tax-id" id="tax-id" value=<?php echo $id; ?> />
+		<?php wp_nonce_field('update_taxonomies', 'mdw_cms_admin'); ?>
 
-	<table class="form-table">
-		<tbody>
+		<table class="form-table">
+			<tbody>
 
-			<tr>
-				<th scope="row">
-					<label for="name" class="required">Name</label>
-				</th>
-				<td>
-					<input type="text" name="name" id="name" value="<?php echo $name; ?>" /><span class="example">(e.g. brands)</span>
-					<div id="mdw-cms-name-error" class=""></div>
-					<p class="description">
-						Max 20 characters, can not contain capital letters or spaces. Cannot be the same name as a (custom) post type.
-					</p>
-				</td>
-			</tr>
+				<tr>
+					<th scope="row">
+						<label for="name" class="required">Name</label>
+					</th>
+					<td>
+						<input type="text" name="name" id="name" value="<?php echo $name; ?>" /><span class="example">(e.g. brands)</span>
+						<div id="mdw-cms-name-error" class=""></div>
+						<p class="description">
+							Max 20 characters, can not contain capital letters or spaces. Cannot be the same name as a (custom) post type.
+						</p>
+					</td>
+				</tr>
 
-			<tr>
-				<th scope="row">
-					<label for="label" class="<?php echo $label_class; ?>">Label</label>
-				</th>
-				<td>
-					<input type="text" name="label" id="label" value="<?php echo $label; ?>" /><span class="example">(e.g. Brands)</span>
-				</td>
-			</tr>
+				<tr>
+					<th scope="row">
+						<label for="label" class="<?php echo $label_class; ?>">Label</label>
+					</th>
+					<td>
+						<input type="text" name="label" id="label" value="<?php echo $label; ?>" /><span class="example">(e.g. Brands)</span>
+					</td>
+				</tr>
 
-			<?php echo $mdw_cms_admin->get_post_types_list($object_type); ?>
+				<?php echo $mdw_cms_admin->get_post_types_list($object_type); ?>
 
-		</tbody>
-	</table>
+			</tbody>
+		</table>
 
-	<p class="submit">
-		<input type="submit" name="add-tax" id="submit" class="button button-primary" value="<?php echo $btn_text; ?>">
-	</p>
+		<p class="submit">
+			<input type="submit" name="add-tax" id="submit" class="button button-primary" value="<?php echo $btn_text; ?>">
+		</p>
 
-</form>
+	</form>
+</div>
 
-<div class="custom-taxonomies-list">
+<div class="custom-taxonomies-list right-col">
 	<h3>Custom Taxonomies</h3>
 
 	<?php if ($mdw_cms_admin->options['taxonomies']) : ?>

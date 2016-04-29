@@ -27,68 +27,70 @@
 
 <h3>Add Metabox</h3>
 
-<form class="custom-metabox" method="post">
-	<?php wp_nonce_field('update_metaboxes', 'mdw_cms_admin'); ?>
+<div class="left-col">
+	<form class="custom-metabox" method="post">
+		<?php wp_nonce_field('update_metaboxes', 'mdw_cms_admin'); ?>
 
-	<table class="form-table">
-		<tbody>
+		<table class="form-table">
+			<tbody>
 
-			<tr>
-				<th scope="row">
-					<label for="mb_id" class="required ">Metabox ID</label>
-				</th>
-				<td>
-					<input type="text" name="mb_id" id="mb_id" class="" value="<?php echo $mb_id; ?>" /><span class="example">(e.g. movie_details)</span>
-					<div class="mdw-cms-name-error" class=""></div>
-				</td>
-			</tr>
+				<tr>
+					<th scope="row">
+						<label for="mb_id" class="required ">Metabox ID</label>
+					</th>
+					<td>
+						<input type="text" name="mb_id" id="mb_id" class="" value="<?php echo $mb_id; ?>" /><span class="example">(e.g. movie_details)</span>
+						<div class="mdw-cms-name-error" class=""></div>
+					</td>
+				</tr>
 
-			<tr>
-				<th scope="row">
-					<label for="title" class="">Title</label>
-				</th>
-				<td>
-					<input type="text" name="title" id="title" class="" value="<?php echo $title; ?>" /><span class="example">(e.g. Movie Details)</span>
-				</td>
-			</tr>
+				<tr>
+					<th scope="row">
+						<label for="title" class="">Title</label>
+					</th>
+					<td>
+						<input type="text" name="title" id="title" class="" value="<?php echo $title; ?>" /><span class="example">(e.g. Movie Details)</span>
+					</td>
+				</tr>
 
-			<tr>
-				<th scope="row">
-					<label for="prefix" class="">Prefix</label>
-				</th>
-				<td>
-					<input type="text" name="prefix" id="prefix" class="" value="<?php echo $prefix; ?>" /><span class="example">(e.g. movies)</span>
-				</td>
-			</tr>
+				<tr>
+					<th scope="row">
+						<label for="prefix" class="">Prefix</label>
+					</th>
+					<td>
+						<input type="text" name="prefix" id="prefix" class="" value="<?php echo $prefix; ?>" /><span class="example">(e.g. movies)</span>
+					</td>
+				</tr>
 
-			<?php echo $mdw_cms_admin->get_post_types_list($post_types); ?>
+				<?php echo $mdw_cms_admin->get_post_types_list($post_types); ?>
 
-			<tr>
-				<td colspan="2" class="add-fields sortable-div <?php echo $edit_class_v; ?>">
-					<h3>Metabox Fields</h3>
+				<tr>
+					<td colspan="2" class="add-fields sortable-div <?php echo $edit_class_v; ?>">
+						<h3>Metabox Fields</h3>
 
-					<?php if ($fields) : ?>
-						<?php foreach ($fields as $field_id => $field) : ?>
-							<?php $mdw_cms_admin->build_field_rows($field_id,$field,$field_counter); ?>
-							<?php $field_counter++; ?>
-						<?php endforeach; ?>
-					<?php endif; ?>
+						<?php if ($fields) : ?>
+							<?php foreach ($fields as $field_id => $field) : ?>
+								<?php $mdw_cms_admin->build_field_rows($field_id,$field,$field_counter); ?>
+								<?php $field_counter++; ?>
+							<?php endforeach; ?>
+						<?php endif; ?>
 
-					<?php if ($field_counter==0) : // 0 is default ie no fields exist ?>
-						<?php $mdw_cms_admin->build_field_rows($field_id, '', $field_counter); // add 'default' field // ?>
-					<?php endif; ?>
-				</td>
-			</tr>
-		</tbody>
-	</table>
+						<?php if ($field_counter==0) : // 0 is default ie no fields exist ?>
+							<?php $mdw_cms_admin->build_field_rows($field_id, '', $field_counter); // add 'default' field // ?>
+						<?php endif; ?>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 
-	<p class="submit">
-		<input type="submit" name="update-metabox" id="submit" class="button button-primary" value="<?php echo $btn_text; ?>">
-		<input type="button" name="add-field" id="add-field-btn" class="button button-primary add-field" value="Add Field">
-	</p>
-</form>
+		<p class="submit">
+			<input type="submit" name="update-metabox" id="submit" class="button button-primary" value="<?php echo $btn_text; ?>">
+			<input type="button" name="add-field" id="add-field-btn" class="button button-primary add-field" value="Add Field">
+		</p>
+	</form>
+</div>
 
-<div class="custom-metabox-list">
+<div class="custom-metabox-list right-col">
 	<h3>Custom Metaboxes</h3>
 
 	<?php if ($mdw_cms_admin->options['metaboxes']) : ?>

@@ -27,6 +27,15 @@
 	content: "*";
 	padding-left: 3px;
 }
+.mdw-cms-wrap .left-col {
+	float: left;
+	width: 70%;
+}
+.mdw-cms-wrap .right-col {
+	float: left;
+	width: 29%;
+	margin-left: 1%;
+}
 
 /* mb */
 .add-fields .field-options .type {
