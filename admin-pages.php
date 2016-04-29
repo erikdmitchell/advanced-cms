@@ -8,6 +8,7 @@ class MDWCMSgui {
 		add_action('admin_menu',array($this,'build_admin_menu'));
 		add_action('admin_enqueue_scripts',array($this,'scripts_styles'));
 		add_action('admin_init','MDWCMSlegacy::setup_legacy_updater');
+		add_action('admin_init', array($this, 'update_post_types'));
 		add_action('admin_notices','MDWCMSlegacy::legacy_admin_notices');
 
 		//$this->update_mdw_cms_settings();
@@ -216,38 +217,6 @@ class MDWCMSgui {
 		$metaboxes=get_option('mdw_cms_metaboxes');
 		$taxonomies=get_option('mdw_cms_taxonomies');
 
-		// create custom post type //
-		if (isset($_POST['add-cpt']) && $_POST['add-cpt']=='Create') :
-			if ($this->update_custom_post_types($_POST)) :
-				$this->admin_notices('updated','Post type has been created.');
-			else :
-				$this->admin_notices('error','There was an issue creating the post type.');
-			endif;
-		endif;
-
-		// update/edit custom post type //
-		if (isset($_POST['add-cpt']) && $_POST['add-cpt']=='Update') :
-			if ($this->update_custom_post_types($_POST)) :
-				$this->admin_notices('updated','Post type has been updated.');
-			else :
-				$this->admin_notices('error','There was an issue updating the post type.');
-			endif;
-		endif;
-
-		// remove custom post type //
-		if (isset($_GET['delete']) && $_GET['delete']=='cpt') :
-			foreach ($post_types as $key => $cpt) :
-				if ($cpt['name']==$_GET['slug']) :
-					unset($post_types[$key]);
-					$this->admin_notices('updated','Post type has been deleted.');
-				endif;
-			endforeach;
-
-			$post_types=array_values($post_types);
-
-			update_option('mdw_cms_post_types',$post_types);
-		endif;
-
 		// add metabox //
 		if (isset($_POST['update-metabox']) && $_POST['update-metabox']=='Create') :
 			if ($this->update_metaboxes($_POST)) :
@@ -318,54 +287,6 @@ class MDWCMSgui {
 
 			update_option('mdw_cms_taxonomies',$taxonomies);
 		endif;
-	}
-
-	/**
-	 * update_custom_post_types function.
-	 *
-	 * @access public
-	 * @static
-	 * @param array $data (default: array())
-	 * @return void
-	 */
-	public static function update_custom_post_types($data=array()) {
-		$post_types=get_option('mdw_cms_post_types');
-		$post_types_s=serialize($post_types);
-
-		if (!isset($data['name']) || $data['name']=='')
-			return false;
-
-		$arr=array(
-			'name' => $data['name'],
-			'label' => $data['label'],
-			'singular_label' => $data['singular_label'],
-			'description' => $data['description'],
-			'title' => $data['title'],
-			'thumbnail' => $data['thumbnail'],
-			'editor' => $data['editor'],
-			'revisions' => $data['revisions'],
-			'hierarchical' => $data['hierarchical'],
-			'page_attributes' => $data['page_attributes'],
-			'comments' => $data['comments']
-		);
-
-		if ($data['cpt-id']!=-1) :
-			$post_types[$data['cpt-id']]=$arr;
-		else :
-			if (!empty($post_types)) :
-				foreach ($post_types as $cpt) :
-					if ($cpt['name']==$data['name'])
-						return false;
-				endforeach;
-			endif;
-			$post_types[]=$arr;
-		endif;
-
-		// we are simply updating the same info -- force true //
-		if ($post_types_s==serialize($post_types))
-			return true;
-
-		return update_option('mdw_cms_post_types',$post_types);
 	}
 
 	/**
@@ -541,6 +462,68 @@ class MDWCMSgui {
 		$html.='</tr>';
 
 		return $html;
+	}
+
+	public function update_post_types() {
+		if (!isset($_POST['mdw_cms_admin']) || !wp_verify_nonce($_POST['mdw_cms_admin'], 'update_cpts'))
+			return false;
+
+		$data=$_POST;
+		$post_types=get_option('mdw_cms_post_types');
+		$post_types_s=serialize($post_types);
+
+		if (!isset($data['name']) || $data['name']=='')
+			return false;
+
+		$arr=array(
+			'name' => $data['name'],
+			'label' => $data['label'],
+			'singular_label' => $data['singular_label'],
+			'description' => $data['description'],
+			'title' => $data['title'],
+			'thumbnail' => $data['thumbnail'],
+			'editor' => $data['editor'],
+			'revisions' => $data['revisions'],
+			'hierarchical' => $data['hierarchical'],
+			'page_attributes' => $data['page_attributes'],
+			'comments' => $data['comments']
+		);
+
+		if ($data['cpt-id']!=-1) :
+			$post_types[$data['cpt-id']]=$arr;
+		else :
+			if (!empty($post_types)) :
+				foreach ($post_types as $cpt) :
+					if ($cpt['name']==$data['name'])
+						return false;
+				endforeach;
+			endif;
+			$post_types[]=$arr;
+		endif;
+
+		// we are simply updating the same info -- force true //
+		if ($post_types_s==serialize($post_types))
+			return true;
+
+		$this->options['post_types']=$post_types; // set var
+
+		return update_option('mdw_cms_post_types', $post_types);
+
+/*
+		// remove custom post type //
+		if (isset($_GET['delete']) && $_GET['delete']=='cpt') :
+			foreach ($post_types as $key => $cpt) :
+				if ($cpt['name']==$_GET['slug']) :
+					unset($post_types[$key]);
+					$this->admin_notices('updated','Post type has been deleted.');
+				endif;
+			endforeach;
+
+			$post_types=array_values($post_types);
+
+			update_option('mdw_cms_post_types',$post_types);
+		endif;
+*/
 	}
 
 	/**

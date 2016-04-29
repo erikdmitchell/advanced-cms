@@ -86,8 +86,8 @@
 				</th>
 				<td>
 					<select name="title" id="title">
-						<option value="1" <?php selected ($title,1,false); ?>>True</option>
-						<option value="0" <?php selected ($title,0,false); ?>>False</option>
+						<option value="1" <?php selected($title,1); ?>>True</option>
+						<option value="0" <?php selected($title,0); ?>>False</option>
 					</select>
 					<span class="example">(default True)</span>
 				</td>
@@ -99,8 +99,8 @@
 				</th>
 				<td>
 					<select name="thumbnail" id="thumbnaill">
-						<option value="1" <?php selected ($thumbnail,1,false); ?>>True</option>
-						<option value="0" <?php selected ($thumbnail,0,false); ?>>False</option>
+						<option value="1" <?php selected($thumbnail,1); ?>>True</option>
+						<option value="0" <?php selected($thumbnail,0); ?>>False</option>
 					</select>
 					<span class="example">(default True)</span>
 				</td>
@@ -112,8 +112,8 @@
 				</th>
 				<td>
 				<select name="editor" id="editor" >
-					<option value="1" <?php selected ($editor,1,false); ?>>True</option>
-					<option value="0" <?php selected ($editor,0,false); ?>>False</option>
+					<option value="1" <?php selected($editor,1); ?>>True</option>
+					<option value="0" <?php selected($editor,0); ?>>False</option>
 				</select>
 				<span class="example">(default True)</span>
 				</td>
@@ -125,8 +125,8 @@
 				</th>
 				<td>
 					<select name="revisions" id="revisions">
-						<option value="1" <?php selected ($revisions,1,false); ?>>True</option>
-						<option value="0" <?php selected ($revisions,0,false); ?>>False</option>
+						<option value="1" <?php selected($revisions,1); ?>>True</option>
+						<option value="0" <?php selected($revisions,0); ?>>False</option>
 					</select>
 					<span class="example">(default True)</span>
 				</td>
@@ -138,8 +138,8 @@
 				</th>
 				<td>
 					<select name="hierarchical" id="hierarchical">
-						<option value="1" <?php selected ($hierarchical,1,false); ?>>True</option>
-						<option value="0" <?php selected ($hierarchical,0,false); ?>>False</option>
+						<option value="1" <?php selected($hierarchical,1); ?>>True</option>
+						<option value="0" <?php selected($hierarchical,0); ?>>False</option>
 					</select>
 					<span class="example">(default False)</span>
 					<p class="description">
@@ -155,8 +155,8 @@
 				</th>
 				<td>
 					<select name="page_attributes" id="page_attributes">
-						<option value="1" <?php selected ($page_attributes,1,false); ?>>True</option>
-						<option value="0" <?php selected ($page_attributes,0,false); ?>>False</option>
+						<option value="1" <?php selected($page_attributes,1); ?>>True</option>
+						<option value="0" <?php selected($page_attributes,0); ?>>False</option>
 					</select>
 
 					<span class="example">(default False)</span>
@@ -169,8 +169,8 @@
 				</th>
 				<td>
 					<select name="comments" id="comments">
-						<option value="1" <?php selected ($comments,1,false); ?>>True</option>
-						<option value="0" <?php selected ($comments,0,false); ?>>False</option>
+						<option value="1" <?php selected($comments,1); ?>>True</option>
+						<option value="0" <?php selected($comments,0); ?>>False</option>
 					</select>
 
 					<span class="example">(default False)</span>
