@@ -8,5 +8,5 @@
 		access the wiki. If you need access please contact us.
 	</p>
 
-	<?php echo MDWCMSlegacy::get_legacy_page(); ?>
+	<?php //echo MDWCMSlegacy::get_legacy_page(); ?>
 </div><!-- .mdw-cms-default -->

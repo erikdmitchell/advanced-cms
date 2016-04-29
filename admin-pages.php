@@ -112,6 +112,7 @@ class MDWCMSgui {
 	 * @return void
 	 */
 	public function mdw_cms_page() {
+		$active_tab='cms-main';
 		$tabs=array(
 			'cms-main' => 'Main',
 			'mdw-cms-cpt' => 'Custom Post Types',
@@ -119,11 +120,8 @@ class MDWCMSgui {
 			'mdw-cms-tax' => 'Custom Taxonomies'
 		);
 
-		if (isset( $_GET[ 'tab' ] )) :
-			$active_tab=$_GET[ 'tab' ];
-		else :
-			$active_tab='cms-main';
-		endif;
+		if (isset( $_GET[ 'tab' ] ))
+			$active_tab=$_GET['tab'];
 		?>
 
 		<div class="wrap mdw-cms-wrap">
@@ -146,7 +144,7 @@ class MDWCMSgui {
 			<?php
 			switch ($active_tab) :
 				case 'cms-main':
-					$html.=mdw_cms_get_template('main');
+					echo mdw_cms_get_template('main');
 					break;
 				case 'mdw-cms-cpt':
 					echo mdw_cms_get_template('custom-post-types');
