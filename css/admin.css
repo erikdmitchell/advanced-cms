@@ -67,12 +67,14 @@
 	float: left;
 	margin-top: 3px;
 }
-.mdw-cms-fields-wrapper .field-row {
+.mdw-cms-fields-wrapper .field-row,
+.mdw-cms-fields-wrapper .field-options {
 	margin-bottom: 5px;
 	overflow: hidden;
 	margin-left: 30px;
 }
-.mdw-cms-fields-wrapper .field-row label {
+.mdw-cms-fields-wrapper .field-row label,
+.mdw-cms-fields-wrapper .field-options .option-row label {
 	vertical-align: middle;
 	font-weight: bold;
 	color: #23282d;
@@ -81,11 +83,31 @@
 	float: left;
 	margin-top: 3px;
 }
-.mdw-cms-fields-wrapper .field-row .field_type {
+.mdw-cms-fields-wrapper .field-options .option-row label {
+	width: 50px;
+	margin-top: 5px;
+}
+.mdw-cms-fields-wrapper .field-row .field_type,
+.mdw-cms-fields-wrapper .field-options .option-row .options-item {
 	float: left;
+}
+.mdw-cms-fields-wrapper .field-options .option-row .options-item {
+	margin-right: 15px;
 }
 .mdw-cms-fields-wrapper .field-row .long-text {
 	width: 250px;
+}
+.mdw-cms-fields-wrapper .field-options .option-row {
+	margin-left: 150px;
+	overflow: hidden;
+	margin-bottom: 3px;
+}
+.mdw-cms-fields-wrapper .field-options .add-option-field {
+	overflow: hidden;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	height: 30px;
+	margin-left: 150px;
 }
 .wp-core-ui .button-primary.remove-field {
 	background: #d64e07;
@@ -94,43 +116,6 @@
 .wp-core-ui .button-primary.add-field {
 	background: #9ebaa0;
 	border-color: #90ab92;
-}
-
-.add-fields .fields-wrapper .field-options {
-	margin-top: 5px;
-/* 	margin-bottom: 5px; */
-}
-.add-fields .fields-wrapper .field-options .field-repeatable-label label {
-	margin-top: -2px;
-	padding-right: 5px;
-}
-
-.add-fields .fields-wrapper .description,
-.add-fields .fields-wrapper .field-id,
-.add-fields .fields-wrapper .remove,
-.add-fields .fields-wrapper .field-label {
-	margin-top: 5px;
-}
-
-#add-field-btn {
-	margin-left: 10px;
-}
-/* field options */
-.field.options .option-row:nth-child(odd) {
-	background: #e1e1e1;
-}
-.field.options .option-row.default {
-	display: none;
-}
-.field.options label {
-	margin-bottom: 5px;
-}
-.field.options .option-row {
-	margin: 5px 0;
-	padding: 5px;
-}
-.field.options .option-row > input {
-	margin: 0 10px 0 5px;
 }
 
 
