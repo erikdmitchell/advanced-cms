@@ -2,24 +2,23 @@
 class MDWCMSgui {
 
 	public $options=array();
-	protected $admin_notices_output=array();
+	public $version='2.1.8';
 
-	function __construct() {
+	public function __construct() {
 		add_action('admin_menu',array($this,'build_admin_menu'));
 		add_action('admin_enqueue_scripts',array($this,'scripts_styles'));
-		//add_action('admin_notices',array($this,'admin_notices')); // may not be needed
-		//add_filter('mdw_cms_admin_notices',array($this,'admin_notices'));
-
 		add_action('admin_init','MDWCMSlegacy::setup_legacy_updater');
+		add_action('admin_init', array($this, 'update_main'));
 		add_action('admin_notices','MDWCMSlegacy::legacy_admin_notices');
 
-		$this->update_mdw_cms_settings();
-
-		$this->options['version']=get_option('mdw_cms_version');
-		$this->options['options']=get_option('mdw_cms_options');
-		$this->options['metaboxes']=get_option('mdw_cms_metaboxes');
-		$this->options['post_types']=get_option('mdw_cms_post_types');
-		$this->options['taxonomies']=get_option('mdw_cms_taxonomies');
+		//$this->update_mdw_cms_settings();
+		$this->check_version();
+		$this->cleanup_old_options();
+print_r(get_option('mdw_cms_options'));
+		//$this->options['options']=get_option('mdw_cms_options');
+		//$this->options['metaboxes']=get_option('mdw_cms_metaboxes');
+		//$this->options['post_types']=get_option('mdw_cms_post_types');
+		//$this->options['taxonomies']=get_option('mdw_cms_taxonomies');
 	}
 
 	/**
@@ -28,7 +27,7 @@ class MDWCMSgui {
 	 * @access public
 	 * @return void
 	 */
-	function build_admin_menu() {
+	public function build_admin_menu() {
 		add_management_page('MDW CMS','MDW CMS','administrator','mdw-cms',array($this,'mdw_cms_page'));
 	}
 
@@ -39,7 +38,7 @@ class MDWCMSgui {
 	 * @param mixed $hook
 	 * @return void
 	 */
-	function scripts_styles($hook) {
+	public function scripts_styles($hook) {
 		$disable_bootstrap=false;
 
 		wp_enqueue_style('mdw-cms-gui-style',plugins_url('/css/admin.css',__FILE__));
@@ -94,6 +93,19 @@ class MDWCMSgui {
 	}
 
 	/**
+	 * check_version function.
+	 *
+	 * @access protected
+	 * @return void
+	 */
+	protected function check_version() {
+		$stored_version=get_option('mdw_cms_version');
+
+		if ($stored_version!=$this->version || !$stored_version)
+			update_option('mdw_cms_version', $this->version);
+	}
+
+	/**
 	 * mdw_cms_page function.
 	 *
 	 * our primary admin page, utlaizes tabs for internal navigation
@@ -101,7 +113,7 @@ class MDWCMSgui {
 	 * @access public
 	 * @return void
 	 */
-	function mdw_cms_page() {
+	public function mdw_cms_page() {
 		$html=null;
 		$tabs=array(
 			'cms-main' => 'Main',
@@ -318,16 +330,23 @@ class MDWCMSgui {
 		return $html;
 	}
 
-	function update_options($options) {
+	/**
+	 * update_options function.
+	 *
+	 * @access public
+	 * @param mixed $options
+	 * @return void
+	 */
+	public function update_options($options) {
 		if (!$options['update'])
 			return false;
 
 		$new_options=$options;
 		unset($new_options['update']); // a temp var passed, remove it
 
-		update_option('mdw_cms_options',$new_options);
+		update_option('mdw_cms_options', $new_options);
 
-		return get_option('mdw_cms_options');
+		$this->options=get_option('mdw_cms_options');
 	}
 
 	/**
@@ -679,6 +698,15 @@ class MDWCMSgui {
 		$html.='</div>';
 
 		return $html;
+	}
+
+	public function update_main() {
+		if (!isset($_POST['mdw_cms_admin']) || !wp_verify_nonce($_POST['mdw_cms_admin'], 'update_main'))
+			return false;
+echo '<pre>';
+print_r($_POST);
+print_r($this->options);
+echo '</pre>';
 	}
 
 }
