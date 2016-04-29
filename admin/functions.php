@@ -32,4 +32,30 @@ function mdw_cms_get_template($template_name=false, $attributes=null) {
 
 	return $html;
 }
+
+/**
+ * mdw_cms_parse_args function.
+ *
+ * Similar to wp_parse_args() just a bit extended to work with multidimensional arrays :)
+ * credit: http://mekshq.com/recursive-wp-parse-args-wordpress-function/
+ *
+ * @access public
+ * @param mixed &$a
+ * @param mixed $b
+ * @return void
+ */
+function mdw_cms_parse_args( &$a, $b ) {
+	$a = (array) $a;
+	$b = (array) $b;
+	$result = $b;
+	foreach ( $a as $k => &$v ) {
+		if ( is_array( $v ) && isset( $result[ $k ] ) ) {
+			$result[ $k ] = meks_wp_parse_args( $v, $result[ $k ] );
+		} else {
+			$result[ $k ] = $v;
+		}
+	}
+
+	return $result;
+}
 ?>
