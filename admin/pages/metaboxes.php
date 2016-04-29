@@ -28,7 +28,7 @@
 <h3>Add Metabox</h3>
 
 <form class="custom-metabox" method="post">
-	<?php wp_nonce_field('update_taxonomies', 'mdw_cms_admin'); ?>
+	<?php wp_nonce_field('update_metaboxes', 'mdw_cms_admin'); ?>
 
 	<table class="form-table">
 		<tbody>

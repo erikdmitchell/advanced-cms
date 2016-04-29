@@ -30,7 +30,7 @@
 
 <form class="custom-taxonomies" method="post">
 	<input type="hidden" name="tax-id" id="tax-id" value=<?php echo $id; ?> />
-	<?php wp_nonce_field('upadte_taxonomies', 'mdw_cms_admin'); ?>
+	<?php wp_nonce_field('update_taxonomies', 'mdw_cms_admin'); ?>
 
 	<table class="form-table">
 		<tbody>
@@ -63,7 +63,7 @@
 	</table>
 
 	<p class="submit">
-		<input type="submit" name="add-tax" id="submit" class="button button-primary" value="<?php echo $btn_text; ?>" disabled>
+		<input type="submit" name="add-tax" id="submit" class="button button-primary" value="<?php echo $btn_text; ?>">
 	</p>
 
 </form>

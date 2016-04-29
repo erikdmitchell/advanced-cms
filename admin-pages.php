@@ -10,6 +10,7 @@ class MDWCMSgui {
 		add_action('admin_init','MDWCMSlegacy::setup_legacy_updater');
 		add_action('admin_init', array($this, 'update_post_types'));
 		add_action('admin_init', array($this, 'update_metaboxes'));
+		add_action('admin_init', array($this, 'update_taxonomies'));
 		add_action('admin_notices','MDWCMSlegacy::legacy_admin_notices');
 
 		//$this->update_mdw_cms_settings();
@@ -188,66 +189,13 @@ class MDWCMSgui {
 	}
 
 	/**
-	 * update_options function.
-	 *
-	 * @access public
-	 * @param mixed $options
-	 * @return void
-	 */
-	public function update_options($options) {
-		if (!$options['update'])
-			return false;
-
-		$new_options=$options;
-		unset($new_options['update']); // a temp var passed, remove it
-
-		update_option('mdw_cms_options', $new_options);
-
-		$this->options=get_option('mdw_cms_options');
-	}
-
-	function update_mdw_cms_settings() {
-		// create custom taxonomy //
-		if (isset($_POST['add-tax']) && $_POST['add-tax']=='Create') :
-			if ($this->update_taxonomies($_POST)) :
-				$this->admin_notices('updated','Taxonomy has been created.');
-			else :
-				$this->admin_notices('error','There was an issue creating the taxonomy.');
-			endif;
-		endif;
-
-		// update/edit taxonomy //
-		if (isset($_POST['add-tax']) && $_POST['add-tax']=='Update') :
-			if ($this->update_taxonomies($_POST)) :
-				$this->admin_notices('updated','Taxonomy has been updated.');
-			else :
-				$this->admin_notices('error','There was an issue updating the taxonomy.');
-			endif;
-		endif;
-
-		// remove taxonomy //
-		if (isset($_GET['delete']) && $_GET['delete']=='tax') :
-			foreach ($taxonomies as $key => $tax) :
-				if ($tax['name']==$_GET['slug']) :
-					unset($taxonomies[$key]);
-					$this->admin_notices('updated','Taxonomy has been deleted.');
-				endif;
-			endforeach;
-
-			$taxonomies=array_values($taxonomies);
-
-			update_option('mdw_cms_taxonomies',$taxonomies);
-		endif;
-	}
-
-	/**
 	 * update_metaboxes function.
 	 *
 	 * @access public
 	 * @return void
 	 */
 	public function update_metaboxes() {
-		if (!isset($_POST['mdw_cms_admin']) || !wp_verify_nonce($_POST['mdw_cms_admin'], 'update_taxonomies'))
+		if (!isset($_POST['mdw_cms_admin']) || !wp_verify_nonce($_POST['mdw_cms_admin'], 'update_metaboxes'))
 			return false;
 
 		global $MDWMetaboxes;
@@ -321,7 +269,17 @@ class MDWCMSgui {
 		return update_option('mdw_cms_metaboxes', $metaboxes);
 	}
 
-	function update_taxonomies($data=array()) {
+	/**
+	 * update_taxonomies function.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function update_taxonomies() {
+		if (!isset($_POST['mdw_cms_admin']) || !wp_verify_nonce($_POST['mdw_cms_admin'], 'update_taxonomies'))
+			return false;
+
+		$data=$_POST;
 		$option_exists=false;
 		$taxonomies=get_option('mdw_cms_taxonomies');
 
@@ -353,6 +311,8 @@ class MDWCMSgui {
 
 		if (get_option('mdw_cms_taxonomies'))
 			$option_exists=true;
+
+		$this->options['taxonomies']=$taxonomies; // set var
 
 		$update=update_option('mdw_cms_taxonomies',$taxonomies);
 
