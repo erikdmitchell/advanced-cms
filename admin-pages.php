@@ -42,7 +42,7 @@ class MDWCMSgui {
 	public function scripts_styles($hook) {
 		$disable_bootstrap=false;
 
-		wp_enqueue_style('mdw-cms-gui-style',plugins_url('/css/admin.css',__FILE__));
+		wp_enqueue_style('mdw-cms-gui-style',plugins_url('/admin/css/admin.css',__FILE__));
 
 		wp_register_script('mdw-cms-admin-metaboxes-script',plugins_url('/js/admin-metaboxes.js',__FILE__),array('metabox-id-check-script'));
 
