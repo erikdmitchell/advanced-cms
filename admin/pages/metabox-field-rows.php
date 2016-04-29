@@ -42,36 +42,25 @@ if (!isset($field['field_label']))
 	$field['field_label']='';
 ?>
 
-<div class="row sortable fields-wrapper <?php echo $classes; ?>" id="fields-wrapper-<?php echo $field_id; ?>">
-	<div class="fields-wrapper-border">
-		<div class="">
-			<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
-		</div>
+<div class="sortable mdw-cms-fields-wrapper <?php echo $classes; ?>" id="fields-wrapper-<?php echo $field_id; ?>">
+	<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
 
+	<div class="field-row">
+		<label for="field_type">Field Type</label>
 
-				<div class="field-type-label">
-					<label for="field_type">Field Type</label>
-				</div>
-				<div class="">
-					<select class="field_type name-item" name="fields[<?php echo $field_id; ?>][field_type]">
-						<option value=0>Select One</option>
-						<?php foreach ($MDWMetaboxes->fields as $field_type => $setup) : ?>
-							<option value="<?php echo $field_type; ?>" <?php selected($field['field_type'], $field_type); ?>><?php echo $field_type; ?></option>
-						<?php endforeach; ?>
-					</select>
-				</div>
+		<select class="field_type name-item" name="fields[<?php echo $field_id; ?>][field_type]">
+			<option value=0>Select One</option>
+			<?php foreach ($MDWMetaboxes->fields as $field_type => $setup) : ?>
+				<option value="<?php echo $field_type; ?>" <?php selected($field['field_type'], $field_type); ?>><?php echo $field_type; ?></option>
+			<?php endforeach; ?>
+		</select>
+	</div>
 
+	<div class="field-row">
+		<label for="field_label">Label</label>
 
-		<div class="field-label">
-			<div class="">
-				<div class="field-label-label">
-					<label for="field_label">Label</label>
-				</div>
-				<div class="label-input">
-					<input type="text" name="fields[<?php echo $field_id; ?>][field_label]" class="field_label name-item" value="<?php echo $field['field_label']; ?>" />
-				</div>
-			</div>
-		</div>
+		<input type="text" name="fields[<?php echo $field_id; ?>][field_label]" class="field_type name-item" value="<?php echo $field['field_label']; ?>" />
+	</div>
 
 		<div class="field-options" id="">
 			<?php foreach ($MDWMetaboxes->fields as $field_type => $setup) : ?>
@@ -127,32 +116,24 @@ if (!isset($field['field_label']))
 			<?php endforeach; ?>
 		</div><!-- .field-options -->
 
-		<div class="description">
-			<div class="">
-				<div class="file-description-label">
-					<label for="field_description">Field Description</label>
-				</div>
-				<div class="fd">
-					<input type="text" name="fields[<?php echo $field_id; ?>][field_description]" class="field_description name-item" value="<?php echo $field_description; ?>" />
-				</div>
-			</div>
-		</div><!-- .description -->
+	<div class="field-row">
+		<label for="field_description">Field Description</label>
 
-		<div class="field-id">
-			<div class="">
-				<div class="field-id-label">
-					<label for="field_id">Field ID</label>
-				</div>
-				<div class="field-id-id">
-					<div class="gen-field-id"><input type="text" readonly="readonly" value="<?php echo $MDWMetaboxes->generate_field_id($prefix, $field['field_label'], $field_id); ?>" /> <span class="description">(use as meta key)</span></div>
-				</div>
-			</div>
-		</div><!-- .description -->
+		<input type="text" name="fields[<?php echo $field_id; ?>][field_description]" class="field_type long-text name-item" value="<?php echo $field_description; ?>" />
+	</div>
+
+	<div class="field-row">
+		<label for="field_id">Field ID</label>
+
+		<div class="gen-field-id">
+			<input type="text" readonly="readonly" class="field_type long-text" value="<?php echo $MDWMetaboxes->generate_field_id($prefix, $field['field_label'], $field_id); ?>" /> <span class="description">(use as meta key)</span>
+		</div>
+	</div>
 
 		<div class="remove">
 			<input type="button" name="remove-field" id="remove-field-btn" class="button button-primary remove-field" data-id="fields-wrapper-<?php echo $field_id; ?>" value="Remove">
 		</div>
 
 		<input type="hidden" name="fields[<?php echo $field_id; ?>][order]" class="order name-item" value="<?php echo $order; ?>" />
-	</div>
-</div><!-- .fields-wrapper -->
+
+</div>

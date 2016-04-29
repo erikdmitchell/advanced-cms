@@ -64,7 +64,7 @@
 			<?php echo $mdw_cms_admin->get_post_types_list($post_types); ?>
 
 			<tr>
-				<td class="add-fields sortable-div <?php echo $edit_class_v; ?>">
+				<td colspan="2" class="add-fields sortable-div <?php echo $edit_class_v; ?>">
 					<h3>Metabox Fields</h3>
 
 					<?php if ($fields) : ?>

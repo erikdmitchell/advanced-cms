@@ -55,11 +55,6 @@ class MDWCMSgui {
 		if (isset($this->options['options']) && is_array($this->options['options']))
 			extract($this->options['options']);
 
-		if (!$disable_bootstrap) :
-			wp_enqueue_style('mdw-cms-bootstrap-custom-script',plugins_url('admin/css/bootstrap.css',__FILE__));
-			//wp_enqueue_style('mdw-cms-bootstrap-theme-custom-script',plugins_url('/css/bootstrap-theme.min.css',__FILE__));
-		endif;
-
 		$post_types=get_post_types();
 		$types=array();
 		foreach ($post_types as $post_type) :

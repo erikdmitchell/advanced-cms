@@ -60,17 +60,32 @@
 
 /* meta box fields
 ------------------ */
-form.custom-metabox .add-fields {
-}
-form.custom-metabox .add-fields.visible {
-}
-.add-fields .fields-wrapper {
+.mdw-cms-fields-wrapper {
 	margin-bottom: 20px;
 }
-.add-fields .fields-wrapper .fields-wrapper-border {
-}
-.add-fields .fields-wrapper .ui-icon-arrowthick-2-n-s {
+.mdw-cms-fields-wrapper .ui-icon {
 	float: left;
+	margin-top: 3px;
+}
+.mdw-cms-fields-wrapper .field-row {
+	margin-bottom: 5px;
+	overflow: hidden;
+	margin-left: 30px;
+}
+.mdw-cms-fields-wrapper .field-row label {
+	vertical-align: middle;
+	font-weight: bold;
+	color: #23282d;
+	width: 150px;
+	display: inline-block;
+	float: left;
+	margin-top: 3px;
+}
+.mdw-cms-fields-wrapper .field-row .field_type {
+	float: left;
+}
+.mdw-cms-fields-wrapper .field-row .long-text {
+	width: 250px;
 }
 .wp-core-ui .button-primary.remove-field {
 	background: #d64e07;
@@ -80,10 +95,7 @@ form.custom-metabox .add-fields.visible {
 	background: #9ebaa0;
 	border-color: #90ab92;
 }
-.add-fields .fields-wrapper label,
-.add-fields .fields-wrapper .ui-icon  {
-	margin-top: 3px;
-}
+
 .add-fields .fields-wrapper .field-options {
 	margin-top: 5px;
 /* 	margin-bottom: 5px; */
@@ -92,19 +104,14 @@ form.custom-metabox .add-fields.visible {
 	margin-top: -2px;
 	padding-right: 5px;
 }
-.add-fields .fields-wrapper .description .fd {
-}
-.add-fields .fields-wrapper .description .field_description {
-	/* width: 101%; */
-}
+
 .add-fields .fields-wrapper .description,
 .add-fields .fields-wrapper .field-id,
 .add-fields .fields-wrapper .remove,
 .add-fields .fields-wrapper .field-label {
 	margin-top: 5px;
 }
-.add-fields .fields-wrapper .field-id .field-id-id {
-}
+
 #add-field-btn {
 	margin-left: 10px;
 }
