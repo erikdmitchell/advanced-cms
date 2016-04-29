@@ -137,7 +137,7 @@ class MDWCMSgui {
 					$html.=$this->cpt_admin_page();
 					break;
 				case 'mdw-cms-metaboxes':
-					$html.=$this->metaboxes_admin_page();
+					mdw_cms_get_template('metaboxes');
 					break;
 				case 'mdw-cms-tax':
 					$html.=$this->custom_taxonomies_admin_page();
@@ -384,117 +384,6 @@ class MDWCMSgui {
 
 		$html.='</div><!-- .row -->';
 
-
-		return $html;
-	}
-
-	/**
-	 * metaboxes_admin_page function.
-	 *
-	 * @access public
-	 * @return void
-	 */
-	function metaboxes_admin_page() {
-		global $MDWMetaboxes;
-
-		$base_url=admin_url('tools.php?page=mdw-cms&tab=mdw-cms-metaboxes');
-		$btn_text='Create';
-		$html=null;
-		$mb_id=null;
-		$title=null;
-		$prefix=null;
-		$post_types=null;
-		$edit_class_v='';
-		$fields=false;
-		$field_counter=0;
-		$field_id=0;
-
-		$label_class='col-md-3';
-		$input_class='col-md-3';
-		$description_class='col-md-6';
-		$select_class='col-md-3';
-		$existing_label_class='col-md-5';
-		$edit_class='col-md-2';
-		$delete_class='col-md-2';
-
-		// edit //
-		if (isset($_GET['edit']) && $_GET['edit']=='mb') :
-			foreach ($this->options['metaboxes'] as $key => $mb) :
-				if ($mb['mb_id']==$_GET['mb_id']) :
-					extract($this->options['metaboxes'][$key]);
-					$edit_class_v='visible';
-					$btn_text='Update';
-				endif;
-			endforeach;
-		endif;
-
-		$html.='<div class="row">';
-
-			$html.='<form class="custom-metabox col-md-8" method="post">';
-				$html.='<h3>Add Metabox</h3>';
-				$html.='<div class="form-row row">';
-					$html.='<label for="mb_id" class="required '.$label_class.'">Metabox ID</label>';
-					$html.='<div class="input '.$input_class.'">';
-						$html.='<input type="text" name="mb_id" id="mb_id" class="" value="'.$mb_id.'" />';
-					$html.='</div>';
-					$html.='<span class="description '.$description_class.'">(e.g. movie_details)</span>';
-					$html.='<div class="mdw-cms-name-error col-md-6 col-md-offset-3"></div>';
-				$html.='</div>';
-
-				$html.='<div class="form-row row">';
-					$html.='<label for="title" class="'.$label_class.'">Title</label>';
-					$html.='<div class="input '.$input_class.'">';
-						$html.='<input type="text" name="title" id="title" class="" value="'.$title.'" />';
-					$html.='</div>';
-					$html.='<span class="description '.$description_class.'">(e.g. Movie Details)</span>';
-				$html.='</div>';
-
-				$html.='<div class="form-row row">';
-					$html.='<label for="prefix" class="'.$label_class.'">Prefix</label>';
-					$html.='<div class="input '.$input_class.'">';
-						$html.='<input type="text" name="prefix" id="prefix" class="" value="'.$prefix.'" />';
-					$html.='</div>';
-					$html.='<span class="description '.$description_class.'">(e.g. movies)</span>';
-				$html.='</div>';
-
-				$html.=$this->get_post_types_list($post_types);
-
-				$html.='<div class="add-fields sortable-div '.$edit_class_v.'">';
-
-					$html.='<h3>Metabox Fields</h3>';
-
-					if ($fields) :
-						foreach ($fields as $field_id => $field) :
-							$html.=$this->build_field_rows($field_id,$field,$field_counter);
-							$field_counter++;
-						endforeach;
-					endif;
-
-					// 0 is default ie no fields exist //
-					if ($field_counter==0)
-						$html.=$this->build_field_rows($field_id,null,$field_counter); // add 'default' field //
-
-				$html.='</div><!-- .add-fields -->';
-				$html.='<p class="submit">';
-					$html.='<input type="submit" name="update-metabox" id="submit" class="button button-primary" value="'.$btn_text.'">';
-					$html.='<input type="button" name="add-field" id="add-field-btn" class="button button-primary add-field" value="Add Field">';
-				$html.='</p>';
-			$html.='</form>';
-
-			$html.='<div class="custom-metabox-list col-md-4">';
-				$html.='<h3>Custom Metaboxes</h3>';
-
-				if ($this->options['metaboxes']) :
-					foreach ($this->options['metaboxes'] as $mb) :
-						$html.='<div class="metabox-row row">';
-							$html.='<span class="mb '.$existing_label_class.'">'.$mb['title'].'</span><span class="edit '.$edit_class.'">[<a href="'.$base_url.'&edit=mb&mb_id='.$mb['mb_id'].'">Edit</a>]</span><span class="delete '.$delete_class.'">[<a href="'.$base_url.'&delete=mb&mb_id='.$mb['mb_id'].'">Delete</a>]</span>';
-						$html.='</div>';
-					endforeach;
-				endif;
-
-			$html.='</div>';
-
-		$html.='</div><!-- .row -->';
 
 		return $html;
 	}

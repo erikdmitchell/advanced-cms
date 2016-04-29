@@ -64,17 +64,17 @@ function mdw_cms_get_template($template_name=false, $attributes=null) {
 
 	ob_start();
 
-	do_action('ulm_before_'.$template_name);
+	do_action('mdw_cms_before_'.$template_name);
 
-	if (file_exists(get_stylesheet_directory().'/ultimate-league-management/templates/'.$template_name.'.php')) :
-		include(get_stylesheet_directory().'/ultimate-league-management/templates/'.$template_name.'.php');
-	elseif (file_exists(get_template_directory().'/ultimate-league-management/templates/'.$template_name.'.php')) :
-		include(get_template_directory().'/ultimate-league-management/templates/'.$template_name.'.php');
+	if (file_exists(get_stylesheet_directory().'/ultimate-league-management/pages/'.$template_name.'.php')) :
+		include(get_stylesheet_directory().'/ultimate-league-management/pages/'.$template_name.'.php');
+	elseif (file_exists(get_template_directory().'/ultimate-league-management/pages/'.$template_name.'.php')) :
+		include(get_template_directory().'/ultimate-league-management/pages/'.$template_name.'.php');
 	else :
-		include(ULM_PATH.'/templates/'.$template_name.'.php');
+		include(MDW_CMS_PATH.'/pages/'.$template_name.'.php');
 	endif;
 
-	do_action('ulm_after_'.$template_name);
+	do_action('mdw_cms_after_'.$template_name);
 
 	$html=ob_get_contents();
 

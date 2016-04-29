@@ -9,6 +9,7 @@ License: GPL2
 @erikdmitchell
 */
 
+define('MDW_CMS_PATH', plugin_dir_path(__FILE__));
 
 require_once(plugin_dir_path(__FILE__).'inc/admin-columns.php');
 require_once(plugin_dir_path(__FILE__).'inc/custom-widgets.php');
@@ -16,6 +17,7 @@ require_once(plugin_dir_path(__FILE__).'inc/legacy.php');
 require_once(plugin_dir_path(__FILE__).'inc/mdw-meta-boxes/countries-states.php');
 require_once(plugin_dir_path(__FILE__).'inc/mdw-meta-boxes/mdwmb-plugin.php');
 
+require_once(MDW_CMS_PATH.'admin/functions.php');
 require_once(plugin_dir_path(__FILE__).'admin-pages.php'); // our new visual gui
 
 require_once(plugin_dir_path(__FILE__).'classes/custom-taxonomy.php'); // calls custom taxonomies
