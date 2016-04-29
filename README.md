@@ -13,8 +13,8 @@ Changelog
 
 = 2.1.8 =
 
+ * Added $mdw_cms_countries and $mdw_cms_states as global variables.
  * Removed timepicker js from metaboxes
- 
  * Fixed empty config errors on initial plugin activation and setup.
 
 = 2.1.7 =
@@ -23,16 +23,16 @@ Changelog
  * Added "comments" as an option for custom post types
  * Added mdw-cms-admin class to admin body.
 
-### 2.1.6.4
+= 2.1.6.4 =
 
 	Fixed issue where double quotes were being chopped off on metabox save.
 
-### 2.1.6.3
+= 2.1.6.3 =
 
 	Added 'button' as metabox option.
 	Added metaboxes to the wp global variable
 
-### 2.1.6.2
+= 2.1.6.2 =
 
 	Changed the way our widgets are organized and called. See widgets/init.php file for more.
 	
@@ -40,11 +40,11 @@ Changelog
 	
 	Fixed minor glitches in Social Media widget.
 
-### 2.1.6.1
+= 2.1.6.1 =
 
 	Fixed glitch when updating Post Types for metaboxes.
 
-### 2.1.6
+= 2.1.6 =
 
 	Added option for excerpt in Custom Post Types.
 	
@@ -54,11 +54,11 @@ Changelog
 	
 	Extended the metabox ids that are reserved to prevent odd conflicts.
 	
-### 2.1.5.5
+= 2.1.5.5 =
 
 	Fixed issue with bootstrap.css where the display property of .hidden was set to !important.
 
-### 2.1.5.4
+= 2.1.5.4 =
 
 	Added admin-metaboxes.js and jquery.metabox-id-check.js to help with our metaboxes in the admin panel.
 	Added check for post type when saving metabox.
@@ -67,7 +67,7 @@ Changelog
 	Fixed glitch with post_fields on initial metabox creation.
 	Fixed glitch where data was not being reset properly for each field on a metabox save.
 
-### 2.1.5.3
+= 2.1.5.3 =
 
 	Added get_gallery_image_ids() to help with our load attached images function.
 	Added mdw_cms_get_gallery_image_ids filter to allow more control over get_gallery_image_ids().
@@ -76,7 +76,7 @@ Changelog
 	
 	Removed the gallery init override for getting gallery images and ids. The filters can be utilized to do that.
 
-### 2.1.5.2
+= 2.1.5.2
 
 	Add two filters to position the meta boxes: 		      
 		mdw_cms_add_metabox_context_{$config['mb_id']}
@@ -84,7 +84,7 @@ Changelog
 		
 	Tweaked styling for custom metabox admin panel.
 
-### 2.1.5.1
+= 2.1.5.1
 
 	Added Remove Gallery button.
 
