@@ -69,13 +69,13 @@
 
 					<?php if ($fields) : ?>
 						<?php foreach ($fields as $field_id => $field) : ?>
-							<?php echo $mdw_cms_admin->build_field_rows($field_id,$field,$field_counter); ?>
+							<?php $mdw_cms_admin->build_field_rows($field_id,$field,$field_counter); ?>
 							<?php $field_counter++; ?>
 						<?php endforeach; ?>
 					<?php endif; ?>
 
 					<?php if ($field_counter==0) : // 0 is default ie no fields exist ?>
-						<?php echo $mdw_cms_admin->build_field_rows($field_id,null,$field_counter); // add 'default' field // ?>
+						<?php $mdw_cms_admin->build_field_rows($field_id, '', $field_counter); // add 'default' field // ?>
 					<?php endif; ?>
 				</td>
 			</tr>

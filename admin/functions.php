@@ -28,7 +28,7 @@ function mdw_cms_get_template($template_name=false, $attributes=null) {
 
 	$html=ob_get_contents();
 
-	ob_end_clean();
+	if (ob_get_length()) ob_end_clean();
 
 	return $html;
 }

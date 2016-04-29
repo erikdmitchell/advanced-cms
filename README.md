@@ -16,6 +16,8 @@ Changelog
  * Added $mdw_cms_countries and $mdw_cms_states as global variables.
  * Removed timepicker js from metaboxes
  * Fixed empty config errors on initial plugin activation and setup.
+ * Admin layout uses core WordPress styles, no more bootstrap and conflicts/
+ * Added a migrator to clean up old cms options fields in the db.
 
 = 2.1.7 =
 

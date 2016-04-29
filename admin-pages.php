@@ -8,7 +8,6 @@ class MDWCMSgui {
 		add_action('admin_menu',array($this,'build_admin_menu'));
 		add_action('admin_enqueue_scripts',array($this,'scripts_styles'));
 		add_action('admin_init','MDWCMSlegacy::setup_legacy_updater');
-		add_action('admin_init', array($this, 'update_main'));
 		add_action('admin_notices','MDWCMSlegacy::legacy_admin_notices');
 
 		//$this->update_mdw_cms_settings();
@@ -174,167 +173,24 @@ class MDWCMSgui {
 	}
 
 	/**
+	 * build_field_rows function.
 	 *
+	 * @access public
+	 * @param string $field_id (default: '')
+	 * @param string $field (default: '')
+	 * @param int $order (default: 0)
+	 * @param string $classes (default: '')
+	 * @return void
 	 */
-	function build_field_rows($field_id,$field,$order=0,$classes='') {
-		global $MDWMetaboxes;
+	function build_field_rows($field_id='', $field='', $order=0, $classes='') {
+		// prep vars to pass //
+		$attributes=array();
+		$attributes['field_id']=$field_id;
+		$attributes['field']=$field;
+		$attributes['order']=$order;
+		$attributes['classes']=$classes;
 
-		$html=null;
-		$field_description=null;
-		$prefix=null;
-
-		$label_class='col-md-3';
-		$input_class='col-md-3';
-		$description_class='col-md-6';
-		//$description_ext_class='col-md-9 col-md-offset-3';
-		//$error_class='col-md-12';
-		$select_class='col-md-3';
-		//$existing_label_class='col-md-5';
-		//$edit_class='col-md-2';
-		//$delete_class='col-md-2';
-
-		if (isset($_GET['edit']) && $_GET['edit']=='mb') :
-			foreach ($this->options['metaboxes'] as $key => $mb) :
-				if ($mb['mb_id']==$_GET['mb_id']) :
-					extract($this->options['metaboxes'][$key]);
-				endif;
-			endforeach;
-		endif;
-
-		if (isset($field['repeatable']) && $field['repeatable']) :
-			$repeatable_checked='checked="checked"';
-		else :
-			$repeatable_checked=null;
-		endif;
-
-		if (isset($field['format']['value'])) :
-			$format=$field['format']['value'];
-		else :
-			$format=null;
-		endif;
-
-		if (isset($field['field_description']) && !empty($field['field_description']))
-			$field_description=$field['field_description'];
-
-		$html.='<div class="row sortable fields-wrapper '.$classes.'" id="fields-wrapper-'.$field_id.'">';
-			$html.='<div class="fields-wrapper-border">';
-				$html.='<div class="col-md-1">';
-					$html.='<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>';
-				$html.='</div>';
-
-				$html.='<div class="col-md-11">';
-					$html.='<div class="row">';
-						$html.='<div class="col-md-3 field-type-label">';
-							$html.='<label for="field_type">Field Type</label>';
-						$html.='</div>';
-						$html.='<div class="col-md-9">';
-							$html.='<select class="field_type name-item" name="fields['.$field_id.'][field_type]">';
-								$html.='<option value=0>Select One</option>';
-								foreach ($MDWMetaboxes->fields as $field_type => $setup) :
-									$html.='<option value="'.$field_type.'" '.selected($field['field_type'],$field_type,false).'>'.$field_type.'</option>';
-								endforeach;
-							$html.='</select>';
-						$html.='</div>';
-					$html.='</div><!-- .row -->';
-				$html.='</div>';
-
-				$html.='<div class="field-label col-md-11 col-md-offset-1">';
-					$html.='<div class="row">';
-						$html.='<div class="col-md-3 field-label-label">';
-							$html.='<label for="field_label">Label</label>';
-						$html.='</div>';
-						$html.='<div class="col-md-9 label-input">';
-							$html.='<input type="text" name="fields['.$field_id.'][field_label]" class="field_label name-item" value="'.$field['field_label'].'" />';
-						$html.='</div>';
-					$html.='</div>';
-				$html.='</div>';
-
-				$html.='<div class="field-options col-md-11 col-md-offset-1" id="">';
-					foreach ($MDWMetaboxes->fields as $field_type => $setup) :
-						$html.='<div class="type" data-field-type="'.$field_type.'">';
-							if ($setup['repeatable']) :
-								$html.='<div class="field repeatable row">';
-									$html.='<div class="col-md-3 field-repeatable-label">';
-										$html.='<label for="repeatable">Repeatable</label>';
-									$html.='</div>';
-									$html.='<div class="col-md-9 field-repeatable-check">';
-										$html.='<input type="checkbox" name="fields['.$field_id.'][repeatable]" value="1" class="repeatable-box name-item" '.$repeatable_checked.' />';
-									$html.='</div>';
-								$html.='</div>';
-							endif;
-
-							if ($setup['options']) :
-								$html.='<div class="field options" id="field-options-'.$field_id.'">';
-									$html.='<label for="options">Options</label>';
-									// get options //
-									if (isset($field['options']) && !empty($field['options'])) :
-										foreach ($field['options'] as $key => $option) :
-											$html.='<div class="option-row" id="option-row-'.$key.'">';
-												$html.='<label for="options-default-name">Name</label>';
-												$html.='<input type="text" name="fields['.$field_id.'][options]['.$key.'][name]" class="options-item name" value="'.$option['name'].'" />';
-												$html.='<label for="options-default-value">Value</label>';
-												$html.='<input type="text" name="fields['.$field_id.'][options]['.$key.'][value]" class="options-item value" value="'.$option['value'].'" />';
-											$html.='</div><!-- .option-row -->';
-										endforeach;
-									endif;
-
-									// blank option //
-									$html.='<div class="option-row default" id="option-row-default">';
-										$html.='<label for="options-default-name">Name</label>';
-										$html.='<input type="text" name="fields['.$field_id.'][options][default][name]" class="options-item name" value="" />';
-										$html.='<label for="options-default-value">Value</label>';
-										$html.='<input type="text" name="fields['.$field_id.'][options][default][value]" class="options-item value" value="" />';
-									$html.='</div><!-- .option-row -->';
-
-									$html.='<div class="add-option-field"><input type="button" name="add-option-field" class="add-option-field-btn button button-primary" value="Add Option"></div>';
-								$html.='</div>';
-							endif;
-
-							if ($setup['format']) :
-								$html.='<div class="field format row">';
-									$html.='<div class="col-md-3 field-format-label">';
-										$html.='<label for="format">Format</label>';
-									$html.='</div>';
-									$html.='<div class="col-md-9 field-format-check">';
-										$html.='<input type="text" name="fields['.$field_id.'][format][value]" class="options-item value" value="'.$format.'" />';
-									$html.='</div>';
-								$html.='</div>';
-							endif;
-						$html.='</div>';
-					endforeach;
-				$html.='</div><!-- .field-options -->';
-
-				$html.='<div class="description col-md-11 col-md-offset-1">';
-					$html.='<div class="row">';
-						$html.='<div class="col-md-3 file-description-label">';
-							$html.='<label for="field_description">Field Description</label>';
-						$html.='</div>';
-						$html.='<div class="col-md-9 fd">';
-							$html.='<input type="text" name="fields['.$field_id.'][field_description]" class="field_description name-item" value="'.$field_description.'" />';
-						$html.='</div>';
-					$html.='</div>';
-				$html.='</div><!-- .description -->';
-
-				$html.='<div class="field-id col-md-11 col-md-offset-1">';
-					$html.='<div class="row">';
-						$html.='<div class="col-md-3 field-id-label">';
-							$html.='<label for="field_id">Field ID</label>';
-						$html.='</div>';
-						$html.='<div class="col-md-9 field-id-id">';
-							$html.='<div class="gen-field-id"><input type="text" readonly="readonly" value="'.$MDWMetaboxes->generate_field_id($prefix,$field['field_label'],$field_id).'" /> <span class="description">(use as meta key)</span></div>';
-						$html.='</div>';
-					$html.='</div>';
-				$html.='</div><!-- .description -->';
-
-				$html.='<div class="remove col-md-11 col-md-offset-1">';
-					$html.='<input type="button" name="remove-field" id="remove-field-btn" class="button button-primary remove-field" data-id="fields-wrapper-'.$field_id.'" value="Remove">';
-				$html.='</div>';
-
-				$html.='<input type="hidden" name="fields['.$field_id.'][order]" class="order name-item" value="'.$order.'" />';
-			$html.='</div>';
-		$html.='</div><!-- .fields-wrapper -->';
-
-		return $html;
+		echo mdw_cms_get_template('metabox-field-rows', $attributes);
 	}
 
 	/**
@@ -648,18 +504,6 @@ class MDWCMSgui {
 	}
 
 	/**
-	 * admin_notices function.
-	 *
-	 * @access public
-	 * @param string $class (default: 'error')
-	 * @param string $message (default: '')
-	 * @return void
-	 */
-	function admin_notices($class='error',$message='') {
-		$this->admin_notices_output[]='<div class="'.$class.'"><p>'.$message.'</p></div>';
-	}
-
-	/**
 	 * get_post_types_list function.
 	 *
 	 * @access public
@@ -702,15 +546,6 @@ class MDWCMSgui {
 		$html.='</tr>';
 
 		return $html;
-	}
-
-	public function update_main() {
-		if (!isset($_POST['mdw_cms_admin']) || !wp_verify_nonce($_POST['mdw_cms_admin'], 'update_main'))
-			return false;
-echo '<pre>';
-print_r($_POST);
-print_r($this->options);
-echo '</pre>';
 	}
 
 	/**
