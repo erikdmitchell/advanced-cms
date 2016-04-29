@@ -10,7 +10,7 @@
 
 <h3>Options</h3>
 
-<div class="mdw-cms-default">
+<div class="mdw-cms-default container">
 
 	<form class="mdw-cms-options" method="post">
 

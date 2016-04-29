@@ -48,7 +48,7 @@
 			<span class="description">(e.g. Brands)</span>
 		</div>
 
-		<?php echo get_post_types_list($object_type); ?>
+		<?php echo $mdw_cms_admin->get_post_types_list($object_type); ?>
 
 		<p class="submit"><input type="submit" name="add-tax" id="submit" class="button button-primary" value="<?php echo $btn_text; ?>" disabled></p>
 		<input type="hidden" name="tax-id" id="tax-id" value=<?php echo $id; ?> />
