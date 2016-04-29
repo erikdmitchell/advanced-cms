@@ -14,6 +14,8 @@ Changelog
 = 2.1.8 =
 
  * Removed timepicker js from metaboxes
+ 
+ * Fixed empty config errors on initial plugin activation and setup.
 
 = 2.1.7 =
 
