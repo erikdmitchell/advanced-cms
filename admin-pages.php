@@ -59,7 +59,7 @@ class MDWCMSgui {
 			extract($this->options['options']);
 
 		if (!$disable_bootstrap) :
-			wp_enqueue_style('mdw-cms-bootstrap-custom-script',plugins_url('/css/bootstrap.css',__FILE__));
+			wp_enqueue_style('mdw-cms-bootstrap-custom-script',plugins_url('admin/css/bootstrap.css',__FILE__));
 			//wp_enqueue_style('mdw-cms-bootstrap-theme-custom-script',plugins_url('/css/bootstrap-theme.min.css',__FILE__));
 		endif;
 
