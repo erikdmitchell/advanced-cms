@@ -674,12 +674,12 @@ class MDWCMSgui {
 		);
 		$post_types_arr=get_post_types($args);
 
-		$label_class='col-md-3';
-		$input_class='col-md-3';
+		$html.='<tr class="post-type-list-admin">';
+			$html.='<th scope="row">';
+				$html.='<label for="post_type">Post Type</label>';
+			$html.='</th>';
 
-		$html.='<div class="form-row row post-type-list-admin">';
-			$html.='<label for="post_type" class="'.$label_class.'">Post Type</label>';
-			$html.='<div class="post-types-cbs '.$input_class.'">';
+			$html.='<td class="post-types-cbs">';
 				$counter=0;
 				foreach ($post_types_arr as $type) :
 					if ($counter==0) :
@@ -694,15 +694,12 @@ class MDWCMSgui {
 						$checked=null;
 					endif;
 
-
-					$html.='<div class="col-md-12">';
-						$html.='<input type="checkbox" name="post_types[]" value="'.$type.'" '.$checked.'>'.$type.'<br />';
-					$html.='</div>';
+					$html.='<input type="checkbox" name="post_types[]" value="'.$type.'" '.$checked.'>'.$type.'<br />';
 
 					$counter++;
 				endforeach;
-			$html.='</div>';
-		$html.='</div>';
+			$html.='</td>';
+		$html.='</tr>';
 
 		return $html;
 	}

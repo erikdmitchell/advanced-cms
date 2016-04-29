@@ -29,27 +29,6 @@
 }
 
 /* mb */
-.post-type-list-admin .post-types-cbs {
-	padding-left: 0;
-}
-
-.mdw-cms-wrap .form-table .description {
-	float: left;
-}
-.tools_page_mdw-cms .description-ext {
-	font-weight: bold;
-	padding-left: 0;
-}
-
-.custom-taxonomies .form-row,
-.custom-metabox .form-row,
-.custom-post-types .form-row {
-	margin-bottom: 15px;
-}
-.custom-post-types .form-row > div {
-	padding-left: 0;
-}
-
 .add-fields .field-options .type {
 	display: none;
 	overflow: hidden;

@@ -26,45 +26,58 @@
 		$btn_text='Update';
 ?>
 
-<div class="row">
+<h3>Add New Custom Taxonomy</h3>
 
-	<form class="custom-taxonomies col-md-8" method="post">
-		<h3>Add New Custom Taxonomy</h3>
-		<div class="form-row row">
-			<label for="name" class="required">Name</label>
-			<div class="input">
-				<input type="text" name="name" id="name" value="<?php echo $name; ?>" />
+<form class="custom-taxonomies" method="post">
+	<input type="hidden" name="tax-id" id="tax-id" value=<?php echo $id; ?> />
+	<?php wp_nonce_field('upadte_taxonomies', 'mdw_cms_admin'); ?>
+
+	<table class="form-table">
+		<tbody>
+
+			<tr>
+				<th scope="row">
+					<label for="name" class="required">Name</label>
+				</th>
+				<td>
+					<input type="text" name="name" id="name" value="<?php echo $name; ?>" /><span class="example">(e.g. brands)</span>
+					<div id="mdw-cms-name-error" class=""></div>
+					<p class="description">
+						Max 20 characters, can not contain capital letters or spaces. Cannot be the same name as a (custom) post type.
+					</p>
+				</td>
+			</tr>
+
+			<tr>
+				<th scope="row">
+					<label for="label" class="<?php echo $label_class; ?>">Label</label>
+				</th>
+				<td>
+					<input type="text" name="label" id="label" value="<?php echo $label; ?>" /><span class="example">(e.g. Brands)</span>
+				</td>
+			</tr>
+
+			<?php echo $mdw_cms_admin->get_post_types_list($object_type); ?>
+
+		</tbody>
+	</table>
+
+	<p class="submit">
+		<input type="submit" name="add-tax" id="submit" class="button button-primary" value="<?php echo $btn_text; ?>" disabled>
+	</p>
+
+</form>
+
+<div class="custom-taxonomies-list">
+	<h3>Custom Taxonomies</h3>
+
+	<?php if ($mdw_cms_admin->options['taxonomies']) : ?>
+		<?php foreach ($mdw_cms_admin->options['taxonomies'] as $tax) : ?>
+			<div class="tax-row">
+				<span class="tax"><?php echo $tax['args']['label']; ?></span><span class="edit">[<a href="<?php echo $base_url; ?>&edit=tax&slug=<?php echo $tax['name']; ?>">Edit</a>]</span><span class="delete">[<a href="<?php echo $base_url; ?>&delete=tax&slug=<?php echo $tax['name']; ?>">Delete</a>]</span>
 			</div>
-			<span class="description">(e.g. brands)</span>
-			<div id="mdw-cms-name-error" class=""></div>
-			<div class="description-ext">Max 20 characters, can not contain capital letters or spaces. Cannot be the same name as a (custom) post type.</div>
-		</div>
+		<?php endforeach; ?>
+	<?php endif; ?>
 
-		<div class="form-row row">
-			<label for="label" class="<?php echo $label_class; ?>">Label</label>
-			<div class="input">
-				<input type="text" name="label" id="label" value="<?php echo $label; ?>" />
-			</div>
-			<span class="description">(e.g. Brands)</span>
-		</div>
+</div><!-- .custom-taxonomies-list -->
 
-		<?php echo $mdw_cms_admin->get_post_types_list($object_type); ?>
-
-		<p class="submit"><input type="submit" name="add-tax" id="submit" class="button button-primary" value="<?php echo $btn_text; ?>" disabled></p>
-		<input type="hidden" name="tax-id" id="tax-id" value=<?php echo $id; ?> />
-	</form>
-
-	<div class="custom-taxonomies-list col-md-4">
-		<h3>Custom Taxonomies</h3>
-
-		<?php if ($mdw_cms_admin->options['taxonomies']) : ?>
-			<?php foreach ($mdw_cms_admin->options['taxonomies'] as $tax) : ?>
-				<div class="tax-row row">
-					<span class="tax"><?php echo $tax['args']['label']; ?></span><span class="edit">[<a href="<?php echo $base_url; ?>&edit=tax&slug=<?php echo $tax['name']; ?>">Edit</a>]</span><span class="delete">[<a href="<?php echo $base_url; ?>&delete=tax&slug=<?php echo $tax['name']; ?>">Delete</a>]</span>
-				</div>
-			<?php endforeach; ?>
-		<?php endif; ?>
-
-	</div><!-- .custom-taxonomies-list -->
-
-</div><!-- .row -->
