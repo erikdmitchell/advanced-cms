@@ -1552,16 +1552,18 @@ print_r($option_arr);
 		$post_type=get_post_type($post);
 
 		// cycle through all fields and find our gallery field ids //
-		foreach ($this->config as $config) :
-			if (!in_array($post_type,$config['post_types']))
-				continue;
+		if (!empty($this->config)) :
+			foreach ($this->config as $config) :
+				if (!in_array($post_type,$config['post_types']))
+					continue;
 
-			foreach ($config['fields'] as $fields) :
-				if ($fields['field_type']=='gallery') :
-					$gallery_field_ids[]=$fields['field_id'];
-				endif;
+				foreach ($config['fields'] as $fields) :
+					if ($fields['field_type']=='gallery') :
+						$gallery_field_ids[]=$fields['field_id'];
+					endif;
+				endforeach;
 			endforeach;
-		endforeach;
+		endif;
 
 		// build our shortcodes // NEEDS WORK FOR MULTIPILE GALLERIES
 		foreach ($gallery_field_ids as $field_id) :
