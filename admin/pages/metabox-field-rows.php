@@ -1,5 +1,5 @@
 <?php
-global $MDWMetaboxes;
+global $MDWMetaboxes, $mdw_cms_admin;
 
 extract($attributes);
 
@@ -8,9 +8,9 @@ $prefix=null;
 
 // if we are editing, get values //
 if (isset($_GET['edit']) && $_GET['edit']=='mb') :
-	foreach ($this->options['metaboxes'] as $key => $mb) :
+	foreach ($mdw_cms_admin->options['metaboxes'] as $key => $mb) :
 		if ($mb['mb_id']==$_GET['mb_id']) :
-			extract($this->options['metaboxes'][$key]);
+			extract($mdw_cms_admin->options['metaboxes'][$key]);
 		endif;
 	endforeach;
 endif;

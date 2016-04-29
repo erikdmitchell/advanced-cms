@@ -14,7 +14,7 @@
 	$hierarchical=0;
 	$page_attributes=0;
 	$id=-1;
-	$btn_disabled='disabled';
+	$btn_disabled='';
 	$comments=0;
 
 	// edit custom post type //

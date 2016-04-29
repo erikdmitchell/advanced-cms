@@ -1,6 +1,6 @@
 <?php
 	global $MDWMetaboxes, $mdw_cms_admin;
-//print_r($mdw_cms_admin);
+
 	$base_url=admin_url('tools.php?page=mdw-cms&tab=mdw-cms-metaboxes');
 	$btn_text='Create';
 	$html=null;
@@ -15,9 +15,9 @@
 
 	// edit //
 	if (isset($_GET['edit']) && $_GET['edit']=='mb') :
-		foreach ($this->options['metaboxes'] as $key => $mb) :
+		foreach ($mdw_cms_admin->options['metaboxes'] as $key => $mb) :
 			if ($mb['mb_id']==$_GET['mb_id']) :
-				extract($this->options['metaboxes'][$key]);
+				extract($mdw_cms_admin->options['metaboxes'][$key]);
 				$edit_class_v='visible';
 				$btn_text='Update';
 			endif;
@@ -28,7 +28,7 @@
 <h3>Add Metabox</h3>
 
 <form class="custom-metabox" method="post">
-	<?php wp_nonce_field('upadte_taxonomies', 'mdw_cms_admin'); ?>
+	<?php wp_nonce_field('update_taxonomies', 'mdw_cms_admin'); ?>
 
 	<table class="form-table">
 		<tbody>

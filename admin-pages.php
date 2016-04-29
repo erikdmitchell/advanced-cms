@@ -9,6 +9,7 @@ class MDWCMSgui {
 		add_action('admin_enqueue_scripts',array($this,'scripts_styles'));
 		add_action('admin_init','MDWCMSlegacy::setup_legacy_updater');
 		add_action('admin_init', array($this, 'update_post_types'));
+		add_action('admin_init', array($this, 'update_metaboxes'));
 		add_action('admin_notices','MDWCMSlegacy::legacy_admin_notices');
 
 		//$this->update_mdw_cms_settings();
@@ -49,9 +50,6 @@ class MDWCMSgui {
 		wp_enqueue_script('mdw-cms-gui-mb-script',plugins_url('/js/mb.js',__FILE__),array('jquery'),'1.0.0',true);
 		wp_enqueue_script('namecheck-script',plugins_url('/js/jquery.namecheck.js',__FILE__),array('jquery'));
 		wp_enqueue_script('metabox-id-check-script',plugins_url('/js/jquery.metabox-id-check.js',__FILE__),array('jquery'));
-		wp_enqueue_script('mdw-cms-admin-custom-post-types-script',plugins_url('/js/admin-custom-post-types.js',__FILE__),array('namecheck-script'));
-		wp_enqueue_script('mdw-cms-admin-custom-taxonomies-script',plugins_url('/js/admin-custom-taxonomies.js',__FILE__),array('namecheck-script'));
-
 
 		if (isset($this->options['options']) && is_array($this->options['options']))
 			extract($this->options['options']);
@@ -208,54 +206,7 @@ class MDWCMSgui {
 		$this->options=get_option('mdw_cms_options');
 	}
 
-	/**
-	 * runs all of our update and edit functions
-	 * called in __construct and run before everything so that our options are updated before page load
-	 */
 	function update_mdw_cms_settings() {
-		$post_types=get_option('mdw_cms_post_types');
-		$metaboxes=get_option('mdw_cms_metaboxes');
-		$taxonomies=get_option('mdw_cms_taxonomies');
-
-		// add metabox //
-		if (isset($_POST['update-metabox']) && $_POST['update-metabox']=='Create') :
-			if ($this->update_metaboxes($_POST)) :
-				$this->admin_notices('updated','Metabox has been created.');
-				// redirect ?? //
-				if (!function_exists('wp_get_current_user')) :
-					include(ABSPATH . "wp-includes/pluggable.php");
-				endif;
-
-				wp_redirect(admin_url('tools.php?page=mdw-cms&tab=mdw-cms-metaboxes&edit=mb&mb_id='.$_POST['mb_id']));
-				exit;
-			else :
-				$this->admin_notices('error','There was an issue creating the metabox.');
-			endif;
-		endif;
-
-		// update/edit metabox //
-		if (isset($_POST['update-metabox']) && $_POST['update-metabox']=='Update') :
-			if ($this->update_metaboxes($_POST)) :
-				$this->admin_notices('updated','Metabox has been updated.');
-			else :
-				$this->admin_notices('error','There was an issue updating the metabox.');
-			endif;
-		endif;
-
-		// remove metabox //
-		if (isset($_GET['delete']) && $_GET['delete']=='mb') :
-			foreach ($metaboxes as $key => $mb) :
-				if ($mb['mb_id']==$_GET['mb_id']) :
-					unset($metaboxes[$key]);
-					$this->admin_notices('updated','Metabox has been removed.');
-				endif;
-			endforeach;
-
-			$metaboxes=array_values($metaboxes);
-
-			update_option('mdw_cms_metaboxes',$metaboxes);
-		endif;
-
 		// create custom taxonomy //
 		if (isset($_POST['add-tax']) && $_POST['add-tax']=='Create') :
 			if ($this->update_taxonomies($_POST)) :
@@ -292,16 +243,16 @@ class MDWCMSgui {
 	/**
 	 * update_metaboxes function.
 	 *
-	 * updates our metabox settings and its fields
-	 *
 	 * @access public
-	 * @static
-	 * @param array $data (default: array())
 	 * @return void
 	 */
-	public static function update_metaboxes($data=array()) {
+	public function update_metaboxes() {
+		if (!isset($_POST['mdw_cms_admin']) || !wp_verify_nonce($_POST['mdw_cms_admin'], 'update_taxonomies'))
+			return false;
+
 		global $MDWMetaboxes;
 
+		$data=$_POST;
 		$metaboxes=get_option('mdw_cms_metaboxes');
 		$edit_key=-1;
 
@@ -365,16 +316,11 @@ class MDWCMSgui {
 			$metaboxes[]=$arr;
 		endif;
 
-		return update_option('mdw_cms_metaboxes',$metaboxes);
+		$this->options['metaboxes']=$metaboxes; // set var
+
+		return update_option('mdw_cms_metaboxes', $metaboxes);
 	}
 
-	/**
-	 * update_taxonomies function.
-	 *
-	 * @access public
-	 * @param array $data (default: array())
-	 * @return void
-	 */
 	function update_taxonomies($data=array()) {
 		$option_exists=false;
 		$taxonomies=get_option('mdw_cms_taxonomies');
@@ -441,6 +387,7 @@ class MDWCMSgui {
 
 			$html.='<td class="post-types-cbs">';
 				$counter=0;
+
 				foreach ($post_types_arr as $type) :
 					if ($counter==0) :
 						$class='first';
@@ -448,7 +395,7 @@ class MDWCMSgui {
 						$class='';
 					endif;
 
-					if ($selected_pt && in_array($type,$selected_pt)) :
+					if ($selected_pt && in_array($type, $selected_pt)) :
 						$checked='checked=checked';
 					else :
 						$checked=null;
@@ -464,6 +411,12 @@ class MDWCMSgui {
 		return $html;
 	}
 
+	/**
+	 * update_post_types function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	public function update_post_types() {
 		if (!isset($_POST['mdw_cms_admin']) || !wp_verify_nonce($_POST['mdw_cms_admin'], 'update_cpts'))
 			return false;
@@ -508,22 +461,6 @@ class MDWCMSgui {
 		$this->options['post_types']=$post_types; // set var
 
 		return update_option('mdw_cms_post_types', $post_types);
-
-/*
-		// remove custom post type //
-		if (isset($_GET['delete']) && $_GET['delete']=='cpt') :
-			foreach ($post_types as $key => $cpt) :
-				if ($cpt['name']==$_GET['slug']) :
-					unset($post_types[$key]);
-					$this->admin_notices('updated','Post type has been deleted.');
-				endif;
-			endforeach;
-
-			$post_types=array_values($post_types);
-
-			update_option('mdw_cms_post_types',$post_types);
-		endif;
-*/
 	}
 
 	/**
