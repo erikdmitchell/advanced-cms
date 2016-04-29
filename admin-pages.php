@@ -14,11 +14,10 @@ class MDWCMSgui {
 		//$this->update_mdw_cms_settings();
 		$this->check_version();
 		$this->cleanup_old_options();
-//print_r(get_option('mdw_cms_options'));
-		//$this->options['options']=get_option('mdw_cms_options');
-		//$this->options['metaboxes']=get_option('mdw_cms_metaboxes');
-		//$this->options['post_types']=get_option('mdw_cms_post_types');
-		//$this->options['taxonomies']=get_option('mdw_cms_taxonomies');
+
+		$this->options['metaboxes']=get_option('mdw_cms_metaboxes');
+		$this->options['post_types']=get_option('mdw_cms_post_types');
+		$this->options['taxonomies']=get_option('mdw_cms_taxonomies');
 	}
 
 	/**
@@ -28,7 +27,7 @@ class MDWCMSgui {
 	 * @return void
 	 */
 	public function build_admin_menu() {
-		add_management_page('MDW CMS','MDW CMS','administrator','mdw-cms',array($this,'mdw_cms_page'));
+		add_management_page('MDW CMS','MDW CMS','manage_options','mdw-cms', array($this, 'mdw_cms_page'));
 	}
 
 	/**
@@ -119,20 +118,23 @@ class MDWCMSgui {
 	 * @return void
 	 */
 	public function mdw_cms_page() {
-		$html=null;
 		$tabs=array(
 			'cms-main' => 'Main',
 			'mdw-cms-cpt' => 'Custom Post Types',
 			'mdw-cms-metaboxes' => 'Metaboxes',
 			'mdw-cms-tax' => 'Custom Taxonomies'
 		);
-		$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'cms-main';
+
+		if (isset( $_GET[ 'tab' ] )) :
+			$active_tab=$_GET[ 'tab' ];
+		else :
+			$active_tab='cms-main';
+		endif;
 		?>
+
 		<div class="wrap mdw-cms-wrap">
 
 			<h1>MDW CMS</h1>
-
-			<?php echo implode('',$this->admin_notices_output); ?>
 
 			<h2 class="nav-tab-wrapper">
 				<?php
