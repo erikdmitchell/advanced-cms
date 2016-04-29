@@ -13,6 +13,7 @@ License: GPL2
 require_once(plugin_dir_path(__FILE__).'inc/admin-columns.php');
 require_once(plugin_dir_path(__FILE__).'inc/custom-widgets.php');
 require_once(plugin_dir_path(__FILE__).'inc/legacy.php');
+require_once(plugin_dir_path(__FILE__).'inc/mdw-meta-boxes/countries-states.php');
 require_once(plugin_dir_path(__FILE__).'inc/mdw-meta-boxes/mdwmb-plugin.php');
 
 require_once(plugin_dir_path(__FILE__).'admin-pages.php'); // our new visual gui
