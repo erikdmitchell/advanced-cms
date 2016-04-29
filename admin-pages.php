@@ -77,9 +77,12 @@ class MDWCMSgui {
 
 		$metaboxes=$this->options['metaboxes'];
 		$mb_arr=array();
-		foreach ($metaboxes as $metabox) :
-			$mb_arr[]=$metabox['mb_id'];
-		endforeach;
+
+		if ($metaboxes && !empty($metaboxes)) :
+			foreach ($metaboxes as $metabox) :
+				$mb_arr[]=$metabox['mb_id'];
+			endforeach;
+		endif;
 
 		$metabox_options=array(
 			'reserved' => $mb_arr

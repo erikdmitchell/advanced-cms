@@ -1614,6 +1614,7 @@ print_r($option_arr);
 		// cycle through metaboxes //
 		if (!$this->config || empty($this->config))
 			return false;
+
 		foreach ($this->config as $metabox) :
 			$callback=array();
 
