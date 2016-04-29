@@ -1,6 +1,6 @@
 <?php
-	global $MDWMetaboxes;
-
+	global $MDWMetaboxes, $mdw_cms_admin;
+//print_r($mdw_cms_admin);
 	$base_url=admin_url('tools.php?page=mdw-cms&tab=mdw-cms-metaboxes');
 	$btn_text='Create';
 	$html=null;
@@ -18,8 +18,8 @@
 		foreach ($this->options['metaboxes'] as $key => $mb) :
 			if ($mb['mb_id']==$_GET['mb_id']) :
 				extract($this->options['metaboxes'][$key]);
-				$edit_class_v='visible
-				$btn_text='Update
+				$edit_class_v='visible';
+				$btn_text='Update';
 			endif;
 		endforeach;
 	endif;
@@ -32,7 +32,7 @@
 		<div class="form-row row">
 			<label for="mb_id" class="required ">Metabox ID</label>
 			<div class="input">
-				<input type="text" name="mb_id" id="mb_id" class="" value="'.$mb_id.'" />
+				<input type="text" name="mb_id" id="mb_id" class="" value="<?php echo $mb_id; ?>" />
 			</div>
 			<span class="description">(e.g. movie_details)</span>
 			<div class="mdw-cms-name-error col-md-6 col-md-offset-3"></div>
@@ -41,7 +41,7 @@
 		<div class="form-row row">
 			<label for="title" class="">Title</label>
 			<div class="input">
-				<input type="text" name="title" id="title" class="" value="'.$title.'" />
+				<input type="text" name="title" id="title" class="" value="<?php echo $title; ?>" />
 			</div>
 			<span class="description">(e.g. Movie Details)</span>
 		</div>
@@ -49,14 +49,14 @@
 		<div class="form-row row">
 			<label for="prefix" class="">Prefix</label>
 			<div class="input">
-				<input type="text" name="prefix" id="prefix" class="" value="'.$prefix.'" />
+				<input type="text" name="prefix" id="prefix" class="" value="<?php echo $prefix; ?>" />
 			</div>
 			<span class="description">(e.g. movies)</span>
 		</div>
 
 		<?php echo get_post_types_list($post_types); ?>
 
-		<div class="add-fields sortable-div '.$edit_class_v.'">
+		<div class="add-fields sortable-div <?php echo $edit_class_v; ?>">
 
 			<h3>Metabox Fields</h3>
 
@@ -68,12 +68,12 @@
 			<?php endif; ?>
 
 			<?php if ($field_counter==0) : // 0 is default ie no fields exist ?>
-				<?php echo $this->build_field_rows($field_id,null,$field_counter); // add 'default' field // ?>
+				<?php echo $mdw_cms_admin->build_field_rows($field_id,null,$field_counter); // add 'default' field // ?>
 			<?php endif; ?>
 
 		</div><!-- .add-fields -->
 		<p class="submit">
-			<input type="submit" name="update-metabox" id="submit" class="button button-primary" value="'.$btn_text.'">
+			<input type="submit" name="update-metabox" id="submit" class="button button-primary" value="<?php echo $btn_text; ?>s">
 			<input type="button" name="add-field" id="add-field-btn" class="button button-primary add-field" value="Add Field">
 		</p>
 	</form>
@@ -81,10 +81,10 @@
 	<div class="custom-metabox-list col-md-4">
 		<h3>Custom Metaboxes</h3>
 
-		<?php if ($this->options['metaboxes']) : ?>
-			<?php foreach ($this->options['metaboxes'] as $mb) : ?>
+		<?php if ($mdw_cms_admin->options['metaboxes']) : ?>
+			<?php foreach ($mdw_cms_admin->options['metaboxes'] as $mb) : ?>
 				<div class="metabox-row row">
-					<span class="mb '.$existing_label_class.'">'.$mb['title'].'</span><span class="edit '.$edit_class.'">[<a href="'.$base_url.'&edit=mb&mb_id='.$mb['mb_id'].'">Edit</a>]</span><span class="delete '.$delete_class.'">[<a href="'.$base_url.'&delete=mb&mb_id='.$mb['mb_id'].'">Delete</a>]</span>
+					<span class="mb"><?php echo $mb['title']; ?></span><span class="edit">[<a href="<?php echo $base_url;?>&edit=mb&mb_id=<?php echo $mb['mb_id']; ?>">Edit</a>]</span><span class="delete">[<a href="<?php echo $base_url; ?>&delete=mb&mb_id=<?php echo $mb['mb_id']; ?>">Delete</a>]</span>
 				</div>
 			<?php endforeach; ?>
 		<?php endif; ?>

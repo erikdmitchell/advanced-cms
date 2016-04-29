@@ -1,7 +1,7 @@
 <?php
 class MDWCMSgui {
 
-	protected $options=array();
+	public $options=array();
 	protected $admin_notices_output=array();
 
 	function __construct() {
@@ -137,7 +137,7 @@ class MDWCMSgui {
 					$html.=$this->cpt_admin_page();
 					break;
 				case 'mdw-cms-metaboxes':
-					mdw_cms_get_template('metaboxes');
+					$html.=mdw_cms_get_template('metaboxes');
 					break;
 				case 'mdw-cms-tax':
 					$html.=$this->custom_taxonomies_admin_page();
@@ -1005,5 +1005,5 @@ class MDWCMSgui {
 
 }
 
-new MDWCMSgui();
+$mdw_cms_admin=new MDWCMSgui();
 ?>

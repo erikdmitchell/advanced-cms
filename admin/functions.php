@@ -62,8 +62,6 @@ function mdw_cms_get_template($template_name=false, $attributes=null) {
 	if (!$template_name)
 		return false;
 
-	ob_start();
-
 	do_action('mdw_cms_before_'.$template_name);
 
 	if (file_exists(get_stylesheet_directory().'/ultimate-league-management/pages/'.$template_name.'.php')) :
@@ -71,7 +69,7 @@ function mdw_cms_get_template($template_name=false, $attributes=null) {
 	elseif (file_exists(get_template_directory().'/ultimate-league-management/pages/'.$template_name.'.php')) :
 		include(get_template_directory().'/ultimate-league-management/pages/'.$template_name.'.php');
 	else :
-		include(MDW_CMS_PATH.'/pages/'.$template_name.'.php');
+		include(MDW_CMS_PATH.'admin/pages/'.$template_name.'.php');
 	endif;
 
 	do_action('mdw_cms_after_'.$template_name);
