@@ -46,7 +46,7 @@
 
 				<tr>
 					<th scope="row">
-						<label for="title" class="">Title</label>
+						<label for="title" class="required">Title</label>
 					</th>
 					<td>
 						<input type="text" name="title" id="title" class="" value="<?php echo $title; ?>" /><span class="example">(e.g. Movie Details)</span>
