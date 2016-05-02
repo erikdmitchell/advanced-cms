@@ -1,5 +1,18 @@
 jQuery(document).ready(function($) {
 
+	$('form.custom-metabox').requiredFields();
+
+	/**
+	 * metabox id check
+	 */
+	$('.custom-metabox #mb_id').change(function() {
+		if ($(this).metaboxIDcheck($(this), $(this).val())) {
+			$('.custom-post-types #submit').prop('disabled',false);
+		} else {
+			$('.custom-post-types #submit').prop('disabled',true);
+		}
+	});
+
 	/**
 	 * delete link click
 	 */

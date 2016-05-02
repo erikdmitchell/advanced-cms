@@ -18,6 +18,9 @@ Changelog
  * Fixed empty config errors on initial plugin activation and setup.
  * Admin layout uses core WordPress styles, no more bootstrap and conflicts
  * Added a migrator to clean up old cms options fields in the db.
+ * Added a required fields js check to our settings forms.
+ * Major behind the scenes rework with admin pages (templates) and functionality.
+ * "Delete" is now AJAX based.
 
 = 2.1.7 =
 

@@ -4,7 +4,7 @@
  * @since 2.1.8
  */
 (function($) {
-	$.fn.metaboxIDcheck=function($this,value,options) {
+	$.fn.metaboxIDcheck=function($this, value, options) {
 		var settings=$.extend({
 			maxLength : 20,
 			reserved : [],

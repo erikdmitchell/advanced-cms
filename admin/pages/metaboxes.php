@@ -39,7 +39,7 @@
 						<label for="mb_id" class="required ">Metabox ID</label>
 					</th>
 					<td>
-						<input type="text" name="mb_id" id="mb_id" class="" value="<?php echo $mb_id; ?>" /><span class="example">(e.g. movie_details)</span>
+						<input type="text" name="mb_id" id="mb_id" class="required" value="<?php echo $mb_id; ?>" /><span class="example">(e.g. movie_details)</span>
 						<div class="mdw-cms-name-error" class=""></div>
 					</td>
 				</tr>
@@ -49,7 +49,7 @@
 						<label for="title" class="required">Title</label>
 					</th>
 					<td>
-						<input type="text" name="title" id="title" class="" value="<?php echo $title; ?>" /><span class="example">(e.g. Movie Details)</span>
+						<input type="text" name="title" id="title" class="required" value="<?php echo $title; ?>" /><span class="example">(e.g. Movie Details)</span>
 					</td>
 				</tr>
 
