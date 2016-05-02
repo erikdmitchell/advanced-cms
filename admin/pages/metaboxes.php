@@ -90,13 +90,15 @@
 	</form>
 </div>
 
-<div class="custom-metabox-list right-col">
+<div class="custom-metabox-list mdw-cms-edit-list right-col">
 	<h3>Custom Metaboxes</h3>
 
 	<?php if ($mdw_cms_admin->options['metaboxes']) : ?>
 		<?php foreach ($mdw_cms_admin->options['metaboxes'] as $mb) : ?>
-			<div class="metabox-row">
-				<span class="mb"><?php echo $mb['title']; ?></span><span class="edit">[<a href="<?php echo $base_url;?>&edit=mb&mb_id=<?php echo $mb['mb_id']; ?>">Edit</a>]</span><span class="delete">[<a href="<?php echo $base_url; ?>&delete=mb&mb_id=<?php echo $mb['mb_id']; ?>">Delete</a>]</span>
+			<div class="metabox-row mdw-cms-edit-list-row">
+				<div class="mb label"><?php echo $mb['title']; ?></div>
+				<div class="edit">[<a href="<?php echo $base_url;?>&edit=mb&mb_id=<?php echo $mb['mb_id']; ?>">Edit</a>]</div>
+				<div class="delete">[<a href="#">Delete</a>]</div>
 			</div>
 		<?php endforeach; ?>
 	<?php endif; ?>

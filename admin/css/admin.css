@@ -36,6 +36,18 @@
 	width: 29%;
 	margin-left: 1%;
 }
+.mdw-cms-edit-list .mdw-cms-edit-list-row {
+	overflow: hidden;
+}
+.mdw-cms-edit-list .mdw-cms-edit-list-row > div {
+	margin-right: 5px;
+	float: left;
+}
+.mdw-cms-edit-list .mdw-cms-edit-list-row .label {
+	font-weight: bold;
+  vertical-align: top;
+  color: #23282d;
+}
 
 /* mb */
 .add-fields .field-options .type {

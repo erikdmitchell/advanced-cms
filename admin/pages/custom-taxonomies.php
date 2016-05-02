@@ -70,13 +70,15 @@
 	</form>
 </div>
 
-<div class="custom-taxonomies-list right-col">
+<div class="custom-taxonomies-list mdw-cms-edit-list right-col">
 	<h3>Custom Taxonomies</h3>
 
 	<?php if ($mdw_cms_admin->options['taxonomies']) : ?>
 		<?php foreach ($mdw_cms_admin->options['taxonomies'] as $tax) : ?>
-			<div class="tax-row">
-				<span class="tax"><?php echo $tax['args']['label']; ?></span><span class="edit">[<a href="<?php echo $base_url; ?>&edit=tax&slug=<?php echo $tax['name']; ?>">Edit</a>]</span><span class="delete">[<a href="<?php echo $base_url; ?>&delete=tax&slug=<?php echo $tax['name']; ?>">Delete</a>]</span>
+			<div class="tax-row mdw-cms-edit-list-row">
+				<div class="label"><?php echo $tax['args']['label']; ?></div>
+				<div class="edit">[<a href="<?php echo $base_url; ?>&edit=tax&slug=<?php echo $tax['name']; ?>">Edit</a>]</div>
+				<div class="delete">[<a href="#">Delete</a>]</div>
 			</div>
 		<?php endforeach; ?>
 	<?php endif; ?>
