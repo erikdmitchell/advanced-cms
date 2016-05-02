@@ -12,6 +12,8 @@ class MDWCMSgui {
 		add_action('admin_init', array($this, 'update_metaboxes'));
 		add_action('admin_init', array($this, 'update_taxonomies'));
 		add_action('admin_notices','MDWCMSlegacy::legacy_admin_notices');
+		add_action('wp_ajax_mdw_cms_get_metabox', array($this, 'ajax_get_metabox'));
+		add_action('wp_ajax_mdw_cms_delete_metabox', array($this, 'ajax_delete_metabox'));
 		add_action('wp_ajax_mdw_cms_get_post_type', array($this, 'ajax_get_post_type'));
 		add_action('wp_ajax_mdw_cms_delete_post_type', array($this, 'ajax_delete_post_type'));
 
@@ -53,7 +55,9 @@ class MDWCMSgui {
 		wp_enqueue_script('namecheck-script',plugins_url('/js/jquery.namecheck.js',__FILE__),array('jquery'));
 		wp_enqueue_script('metabox-id-check-script',plugins_url('/js/jquery.metabox-id-check.js',__FILE__),array('jquery'));
 
+wp_enqueue_script('mdw-cms-admin-functions', plugins_url('/admin/js/functions.js', __FILE__), array('jquery'), '0.1.0');
 wp_enqueue_script('mdw-cms-admin-custom-post-types', plugins_url('/admin/js/custom-post-types.js', __FILE__), array('jquery'), '0.1.0');
+wp_enqueue_script('mdw-cms-admin-metaboxes', plugins_url('/admin/js/metaboxes.js', __FILE__), array('jquery'), '0.1.0');
 
 /*
 		if (isset($this->options['options']) && is_array($this->options['options']))
@@ -447,11 +451,17 @@ wp_enqueue_script('mdw-cms-admin-custom-post-types', plugins_url('/admin/js/cust
 		wp_die();
 	}
 
+	/**
+	 * ajax_delete_post_type function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	public function ajax_delete_post_type() {
 		if (!isset($_POST['name']))
 			return false;
 
-		if ($this->mdw_cms_delete_post_type($_POST['name']))
+		if ($this->delete_post_type($_POST['name']))
 			return true;
 
 		return false;
@@ -466,7 +476,7 @@ wp_enqueue_script('mdw-cms-admin-custom-post-types', plugins_url('/admin/js/cust
 	 * @param string $name (default: '')
 	 * @return void
 	 */
-	public function mdw_cms_delete_post_type($name='') {
+	public function delete_post_type($name='') {
 		$post_types=array();
 
 		// build clean array //
@@ -478,6 +488,69 @@ wp_enqueue_script('mdw-cms-admin-custom-post-types', plugins_url('/admin/js/cust
 		$this->options['post_types']=$post_types; // set var
 
 		update_option('mdw_cms_post_types', $post_types); // update option
+
+		return false;
+	}
+
+	/**
+	 * ajax_get_metabox function.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function ajax_get_metabox() {
+		if (!isset($_POST['id']))
+			return false;
+
+		// find matching post type //
+		foreach ($this->options['metaboxes'] as $metabox) :
+			if ($metabox['mb_id']==$_POST['id']) :
+				echo json_encode($metabox);
+				break;
+			endif;
+		endforeach;
+
+		wp_die();
+	}
+
+	/**
+	 * ajax_delete_metabox function.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function ajax_delete_metabox() {
+
+		if (!isset($_POST['id']))
+			return;
+
+		if ($this->delete_metabox($_POST['id']))
+			return true;
+
+		return;
+
+		wp_die();
+	}
+
+	/**
+	 * delete_metabox function.
+	 *
+	 * @access public
+	 * @param string $id (default: '')
+	 * @return void
+	 */
+	public function delete_metabox($id='') {
+		$metaboxes=array();
+
+		// build clean array //
+		foreach ($this->options['metaboxes'] as $key => $metabox) :
+			if ($metabox['mb_id']!=$id)
+				$metaboxes[]=$metabox;
+		endforeach;
+
+		$this->options['metaboxes']=$post_types; // set var
+
+		update_option('mdw_cms_metaboxes', $metaboxes); // update option
 
 		return false;
 	}

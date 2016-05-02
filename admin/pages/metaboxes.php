@@ -95,7 +95,7 @@
 
 	<?php if ($mdw_cms_admin->options['metaboxes']) : ?>
 		<?php foreach ($mdw_cms_admin->options['metaboxes'] as $mb) : ?>
-			<div class="metabox-row mdw-cms-edit-list-row">
+			<div class="metabox-row mdw-cms-edit-list-row" data-id="<?php echo $mb['mb_id']; ?>">
 				<div class="mb label"><?php echo $mb['title']; ?></div>
 				<div class="edit">[<a href="<?php echo $base_url;?>&edit=mb&mb_id=<?php echo $mb['mb_id']; ?>">Edit</a>]</div>
 				<div class="delete">[<a href="#">Delete</a>]</div>
