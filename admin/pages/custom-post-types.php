@@ -15,6 +15,7 @@
 	$page_attributes=0;
 	$id=-1;
 	$comments=0;
+	$title='Add New Custom Post Type';
 
 	// edit custom post type //
 	if (isset($_GET['edit']) && $_GET['edit']=='cpt') :
@@ -22,6 +23,7 @@
 			if ($cpt['name']==$_GET['slug']) :
 				extract($mdw_cms_admin->options['post_types'][$key]);
 				$id=$key;
+				$title='Edit Post Type';
 			endif;
 		endforeach;
 	endif;
@@ -30,7 +32,7 @@
 		$btn_text='Update';
 ?>
 
-<h3>Add New Custom Post Type</h3>
+<h3><?php echo $title; ?></h3>
 
 <div class="left-col">
 	<form class="custom-post-types" method="post">

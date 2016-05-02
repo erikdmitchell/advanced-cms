@@ -12,6 +12,7 @@
 	$fields=false;
 	$field_counter=0;
 	$field_id=0;
+	$title='Add Metabox';
 
 	// edit //
 	if (isset($_GET['edit']) && $_GET['edit']=='mb') :
@@ -20,12 +21,13 @@
 				extract($mdw_cms_admin->options['metaboxes'][$key]);
 				$edit_class_v='visible';
 				$btn_text='Update';
+				$title='Edit Metabox';
 			endif;
 		endforeach;
 	endif;
 ?>
 
-<h3>Add Metabox</h3>
+<h3><?php echo $title; ?></h3>
 
 <div class="left-col">
 	<form class="custom-metabox" method="post">

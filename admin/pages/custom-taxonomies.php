@@ -10,6 +10,7 @@
 	$show_ui=1;
 	$show_admin_col=1;
 	$id=-1;
+	$title='Add New Custom Taxonomy';
 
 	// edit custom taxonomy //
 	if (isset($_GET['edit']) && $_GET['edit']=='tax') :
@@ -18,6 +19,7 @@
 				extract($mdw_cms_admin->options['taxonomies'][$key]);
 				$label=$args['label'];
 				$id=$key;
+				$title='Edit Custom Taxonomy';
 			endif;
 		endforeach;
 	endif;
@@ -26,7 +28,7 @@
 		$btn_text='Update';
 ?>
 
-<h3>Add New Custom Taxonomy</h3>
+<h3><?php echo $title; ?></h3>
 
 <div class="left-col">
 	<form class="custom-taxonomies" method="post">
