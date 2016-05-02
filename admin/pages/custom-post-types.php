@@ -14,7 +14,6 @@
 	$hierarchical=0;
 	$page_attributes=0;
 	$id=-1;
-	$btn_disabled='';
 	$comments=0;
 
 	// edit custom post type //
@@ -25,7 +24,6 @@
 				$id=$key;
 			endif;
 		endforeach;
-		$btn_disabled=null;
 	endif;
 
 	if ($id!=-1)
@@ -182,7 +180,7 @@
 		</table>
 
 		<p class="submit">
-			<input type="submit" name="add-cpt" id="submit" class="button button-primary" value="<?php echo $btn_text; ?>" <?php echo $btn_disabled; ?>>
+			<input type="submit" name="add-cpt" id="submit" class="button button-primary" value="<?php echo $btn_text; ?>" disabled="disabled">
 		</p>
 
 		<input type="hidden" name="cpt-id" id="cpt-id" value=<?php echo $id; ?> />
