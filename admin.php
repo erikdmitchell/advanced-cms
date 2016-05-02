@@ -4,6 +4,12 @@ class MDWCMSgui {
 	public $options=array();
 	public $version='2.1.8';
 
+	/**
+	 * __construct function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	public function __construct() {
 		add_action('admin_menu',array($this,'build_admin_menu'));
 		add_action('admin_enqueue_scripts',array($this,'scripts_styles'));
@@ -19,7 +25,6 @@ class MDWCMSgui {
 		add_action('wp_ajax_mdw_cms_get_taxonomy', array($this, 'ajax_get_taxonomy'));
 		add_action('wp_ajax_mdw_cms_delete_taxonomy', array($this, 'ajax_delete_taxonomy'));
 
-		//$this->update_mdw_cms_settings();
 		$this->check_version();
 		$this->cleanup_old_options();
 
@@ -35,7 +40,7 @@ class MDWCMSgui {
 	 * @return void
 	 */
 	public function build_admin_menu() {
-		add_management_page('MDW CMS','MDW CMS','manage_options','mdw-cms', array($this, 'mdw_cms_page'));
+		add_management_page('MDW CMS','MDW CMS','manage_options','mdw-cms', array($this, 'admin_page'));
 	}
 
 	/**
@@ -48,11 +53,12 @@ class MDWCMSgui {
 	public function scripts_styles($hook) {
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-sortable');
-		wp_enqueue_script('mdw-cms-gui-mb-script',plugins_url('/js/mb.js',__FILE__),array('jquery'),'1.0.0',true);
-		wp_enqueue_script('namecheck-script',plugins_url('/js/jquery.namecheck.js',__FILE__),array('jquery'));
-		wp_enqueue_script('metabox-id-check-script',plugins_url('/js/jquery.metabox-id-check.js',__FILE__),array('jquery'));
+		wp_enqueue_script('mdw-cms-gui-mb-script',plugins_url('/js/mb.js',__FILE__), array('jquery'),'1.0.0',true);
+		wp_enqueue_script('namecheck-script',plugins_url('/js/jquery.namecheck.js',__FILE__), array('jquery'), '0.1.0');
+		wp_enqueue_script('metabox-id-check-script',plugins_url('/js/jquery.metabox-id-check.js',__FILE__), array('jquery'), '0.1.0');
+		wp_enqueue_script('requiredFields-script',plugins_url('/js/jquery.requiredFields.js',__FILE__), array('jquery'), '0.1.0');
 		wp_enqueue_script('mdw-cms-admin-functions', plugins_url('/admin/js/functions.js', __FILE__), array('jquery'), '0.1.0');
-		wp_enqueue_script('mdw-cms-admin-custom-post-types', plugins_url('/admin/js/custom-post-types.js', __FILE__), array('jquery'), '0.1.0');
+		wp_enqueue_script('mdw-cms-admin-post-types', plugins_url('/admin/js/post-types.js', __FILE__), array('jquery'), '0.1.0');
 		wp_enqueue_script('mdw-cms-admin-metaboxes', plugins_url('/admin/js/metaboxes.js', __FILE__), array('jquery'), '0.1.0');
 		wp_enqueue_script('mdw-cms-admin-taxonomies', plugins_url('/admin/js/taxonomies.js', __FILE__), array('jquery'), '0.1.0');
 
@@ -73,14 +79,14 @@ class MDWCMSgui {
 	}
 
 	/**
-	 * mdw_cms_page function.
+	 * admin_page function.
 	 *
 	 * our primary admin page, utlaizes tabs for internal navigation
 	 *
 	 * @access public
 	 * @return void
 	 */
-	public function mdw_cms_page() {
+	public function admin_page() {
 		$active_tab='cms-main';
 		$tabs=array(
 			'cms-main' => 'Main',
