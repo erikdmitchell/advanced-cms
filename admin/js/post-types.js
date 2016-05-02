@@ -1,5 +1,7 @@
 jQuery(document).ready(function($) {
 
+	$('form.custom-post-types').requiredFields();
+
 	/**
 	 * name check
 	 */

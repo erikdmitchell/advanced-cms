@@ -48,6 +48,9 @@
   vertical-align: top;
   color: #23282d;
 }
+.mdw-cms-wrap {
+	overflow: hidden;
+}
 
 /* mb */
 .add-fields .field-options .type {

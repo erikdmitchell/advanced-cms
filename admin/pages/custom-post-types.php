@@ -44,7 +44,7 @@
 						<label for="name" class="required ">Post Type Name</label>
 					</th>
 					<td>
-						<input type="text" name="name" id="name" value="<?php echo $name; ?>" /><span class="example">(e.g. movie)</span>
+						<input type="text" name="name" id="name" class="required" value="<?php echo $name; ?>" /><span class="example">(e.g. movie)</span>
 						<div id="mdw-cms-name-error" class="<?php echo $error_class; ?>"></div>
 						<p class="description">
 							Max 20 characters, can not contain capital letters or spaces. Reserved post types: post, page, attachment, revision, nav_menu_item.
@@ -57,7 +57,7 @@
 						<label for="label" class="required">Label</label>
 					</th>
 					<td>
-						<input type="text" name="label" id="label" value="<?php echo $label; ?>" /><span class="example">(e.g. Movies)</span>
+						<input type="text" name="label" id="label" class="required" value="<?php echo $label; ?>" /><span class="example">(e.g. Movies)</span>
 					</td>
 				</tr>
 
@@ -180,7 +180,7 @@
 		</table>
 
 		<p class="submit">
-			<input type="submit" name="add-cpt" id="submit" class="button button-primary" value="<?php echo $btn_text; ?>" disabled="disabled">
+			<input type="submit" name="add-cpt" id="submit" class="button button-primary" value="<?php echo $btn_text; ?>">
 		</p>
 
 		<input type="hidden" name="cpt-id" id="cpt-id" value=<?php echo $id; ?> />
