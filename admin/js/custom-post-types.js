@@ -18,6 +18,7 @@ jQuery(document).ready(function($) {
 	/**
 	 * edit link click
 	 */
+/*
 	$('.mdw-cms-edit-delete-list > span.edit > a').live('click',function(e) {
 		e.preventDefault();
 
@@ -40,61 +41,29 @@ jQuery(document).ready(function($) {
 			$ajaxLoader.hide();
 		});
 	});
+*/
 
 	/**
 	 * delete link click
 	 */
-	$('.mdw-cms-edit-delete-list > span.delete > a').live('click',function(e) {
+	$('.mdw-cms-custom-post-types-list .cpt-row .delete a').live('click',function(e) {
 		e.preventDefault();
 
 		var data={
-			'action' : $(this).data('action'),
-			'tab_url' : $(this).data('tab-url'),
-			'item_type' : $(this).data('item-type'),
-			'slug' : $(this).data('slug'),
-			'page_action' : $(this).data('page-action'),
-			'id' : $(this).data('id'),
-			'title' : $(this).data('title')
+			'action' : 'mdw_cms_get_post_type',
+			'slug' : $(this).parents('.cpt-row').data('slug')
 		};
-		var pageAction=data.page_action.toLowerCase().replace(/^[\u00C0-\u1FFF\u2C00-\uD7FF\w]|\s[\u00C0-\u1FFF\u2C00-\uD7FF\w]/g, function(letter) {
-    	return letter.toUpperCase();
+
+		$.post(ajaxurl, data, function(response) {
+			var data=$.parseJSON(response);
+
+			setupDialogBox(data);
 		});
-		var dialogBoxID='dialog-confirm';
-		var $dialogBox='';
-
-		// generate dialog box //
-		$dialogBox+='<div id="'+dialogBoxID+'" title="'+pageAction+' '+data.title+'?">';
-			$dialogBox+='<p>This will delete the '+data.title+' "'+data.slug+'". Are you sure?</p>';
-		$dialogBox+='</div>';
-
-		$('body').append($dialogBox); // append box
-
-		// launch dialog box //
-		$('#'+dialogBoxID).dialog({
-			resizable: false,
-			modal: true,
-			buttons: {
-				"Delete": function() {
-					$ajaxLoader.show();
-					$.post(ajaxurl,data,function(response) {
-						$ajaxLoader.hide();
-						if (response) {
-							location.reload();
-						}
-					});
-					$(this).dialog('close');
-				},
-				Cancel: function() {
-					$(this).dialog('close');
-					$('#'+dialogBoxID).remove();
-				}
-			}
-		});
-
 	});
 	/**
 	 * submit button (cpt for now)
 	 */
+/*
 	$('.submit-button').live('click',function(e) {
 		e.preventDefault();
 
@@ -131,5 +100,43 @@ jQuery(document).ready(function($) {
 			$ajaxLoader.hide();
 		});
 	});
+*/
 
 });
+
+function setupDialogBox(data) {
+	var dialogBoxID='dialog-confirm';
+	var $dialogBox='';
+	var delete_data={
+		'action' : 'mdw_cms_delete_post_type',
+		'name' : data.name
+	}
+
+	// generate dialog box //
+	$dialogBox+='<div id="'+dialogBoxID+'" title="'+data.label+'">';
+		$dialogBox+='<p>This will delete the '+data.label+' ('+data.name+') custom post type. Are you sure?</p>';
+	$dialogBox+='</div>';
+
+	jQuery('body').append($dialogBox); // append box
+
+	// launch dialog box //
+	jQuery('#'+dialogBoxID).dialog({
+		resizable: false,
+		modal: true,
+		buttons: {
+			"Delete": function() {
+				jQuery.post(ajaxurl, delete_data, function(response) {
+					if (response) {
+						location.reload();
+					}
+				});
+				jQuery(this).dialog('close');
+			},
+			Cancel: function() {
+				jQuery(this).dialog('close');
+				jQuery('#'+dialogBoxID).remove();
+			}
+		}
+	});
+
+}

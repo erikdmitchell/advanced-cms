@@ -12,6 +12,8 @@ class MDWCMSgui {
 		add_action('admin_init', array($this, 'update_metaboxes'));
 		add_action('admin_init', array($this, 'update_taxonomies'));
 		add_action('admin_notices','MDWCMSlegacy::legacy_admin_notices');
+		add_action('wp_ajax_mdw_cms_get_post_type', array($this, 'ajax_get_post_type'));
+		add_action('wp_ajax_mdw_cms_delete_post_type', array($this, 'ajax_delete_post_type'));
 
 		//$this->update_mdw_cms_settings();
 		$this->check_version();
@@ -40,11 +42,10 @@ class MDWCMSgui {
 	 * @return void
 	 */
 	public function scripts_styles($hook) {
-		$disable_bootstrap=false;
-
-		wp_enqueue_style('mdw-cms-gui-style',plugins_url('/admin/css/admin.css',__FILE__));
 
 		wp_register_script('mdw-cms-admin-metaboxes-script',plugins_url('/js/admin-metaboxes.js',__FILE__),array('metabox-id-check-script'));
+
+		wp_enqueue_style('mdw-cms-admin-style',plugins_url('/admin/css/admin.css',__FILE__));
 
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-sortable');
@@ -52,6 +53,9 @@ class MDWCMSgui {
 		wp_enqueue_script('namecheck-script',plugins_url('/js/jquery.namecheck.js',__FILE__),array('jquery'));
 		wp_enqueue_script('metabox-id-check-script',plugins_url('/js/jquery.metabox-id-check.js',__FILE__),array('jquery'));
 
+wp_enqueue_script('mdw-cms-admin-custom-post-types', plugins_url('/admin/js/custom-post-types.js', __FILE__), array('jquery'), '0.1.0');
+
+/*
 		if (isset($this->options['options']) && is_array($this->options['options']))
 			extract($this->options['options']);
 
@@ -88,6 +92,7 @@ class MDWCMSgui {
 		wp_localize_script('mdw-cms-admin-metaboxes-script','wp_metabx_options',$metabox_options);
 
 		wp_enqueue_script('mdw-cms-admin-metaboxes-script');
+*/
 	}
 
 	/**
@@ -419,6 +424,62 @@ class MDWCMSgui {
 		$this->options['post_types']=$post_types; // set var
 
 		return update_option('mdw_cms_post_types', $post_types);
+	}
+
+	/**
+	 * ajax_get_post_type function.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function ajax_get_post_type() {
+		if (!isset($_POST['slug']))
+			return false;
+
+		// find matching post type //
+		foreach ($this->options['post_types'] as $post_type) :
+			if ($post_type['name']==$_POST['slug']) :
+				echo json_encode($post_type);
+				break;
+			endif;
+		endforeach;
+
+		wp_die();
+	}
+
+	public function ajax_delete_post_type() {
+		if (!isset($_POST['name']))
+			return false;
+
+		if ($this->mdw_cms_delete_post_type($_POST['name']))
+			return true;
+
+		return false;
+
+		wp_die();
+	}
+
+	/**
+	 * mdw_cms_delete_post_type function.
+	 *
+	 * @access public
+	 * @param string $name (default: '')
+	 * @return void
+	 */
+	public function mdw_cms_delete_post_type($name='') {
+		$post_types=array();
+
+		// build clean array //
+		foreach ($this->options['post_types'] as $key => $post_type) :
+			if ($post_type['name']!=$name)
+				$post_types[]=$post_type;
+		endforeach;
+
+		$this->options['post_types']=$post_types; // set var
+
+		update_option('mdw_cms_post_types', $post_types); // update option
+
+		return false;
 	}
 
 	/**

@@ -56,7 +56,7 @@
 
 				<tr>
 					<th scope="row">
-						<label for="label" class="">Label</label>
+						<label for="label" class="required">Label</label>
 					</th>
 					<td>
 						<input type="text" name="label" id="label" value="<?php echo $label; ?>" /><span class="example">(e.g. Movies)</span>
@@ -189,13 +189,13 @@
 	</form>
 </div>
 
-<div class="custom-post-types-list right-col">
+<div class="mdw-cms-custom-post-types-list right-col">
 	<h3>Custom Post Types</h3>
 
 	<?php if ($mdw_cms_admin->options['post_types']) : ?>
 		<?php foreach ($mdw_cms_admin->options['post_types'] as $cpt) : ?>
-			<div class="cpt-row">
-				<span class="cpt>"><?php echo $cpt['label']; ?></span><span class="edit">[<a href="<?php echo $base_url; ?>&edit=cpt&slug=<?php echo $cpt['name']; ?>">Edit</a>]</span><span class="delete">[<a href="<?php echo $base_url; ?>&delete=cpt&slug=<?php echo $cpt['name']; ?>">Delete</a>]</span>
+			<div class="cpt-row" data-slug="<?php echo $cpt['name']; ?>">
+				<span class="label>"><?php echo $cpt['label']; ?></span><span class="edit">[<a href="<?php echo $base_url; ?>&edit=cpt&slug=<?php echo $cpt['name']; ?>">Edit</a>]</span><span class="delete">[<a href="<?php echo $base_url; ?>&delete=cpt&slug=<?php echo $cpt['name']; ?>">Delete</a>]</span>
 			</div>
 		<?php endforeach; ?>
 	<?php endif; ?>
