@@ -1,9 +1,7 @@
 /**
- * validates our custom post type name
- * paramaters: max char, reserved post types, etc
+ * validates our metabox id
  *
- * @since 1.1.6
- * @updated v2 - 2.0.9
+ * @since 2.1.8
  */
 (function($) {
 	$.fn.metaboxIDcheck=function($this,value,options) {
