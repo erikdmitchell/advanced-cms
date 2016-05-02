@@ -16,6 +16,8 @@ class MDWCMSgui {
 		add_action('wp_ajax_mdw_cms_delete_metabox', array($this, 'ajax_delete_metabox'));
 		add_action('wp_ajax_mdw_cms_get_post_type', array($this, 'ajax_get_post_type'));
 		add_action('wp_ajax_mdw_cms_delete_post_type', array($this, 'ajax_delete_post_type'));
+		add_action('wp_ajax_mdw_cms_get_taxonomy', array($this, 'ajax_get_taxonomy'));
+		add_action('wp_ajax_mdw_cms_delete_taxonomy', array($this, 'ajax_delete_taxonomy'));
 
 		//$this->update_mdw_cms_settings();
 		$this->check_version();
@@ -44,59 +46,17 @@ class MDWCMSgui {
 	 * @return void
 	 */
 	public function scripts_styles($hook) {
-
-		wp_register_script('mdw-cms-admin-metaboxes-script',plugins_url('/js/admin-metaboxes.js',__FILE__),array('metabox-id-check-script'));
-
-		wp_enqueue_style('mdw-cms-admin-style',plugins_url('/admin/css/admin.css',__FILE__));
-
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-sortable');
 		wp_enqueue_script('mdw-cms-gui-mb-script',plugins_url('/js/mb.js',__FILE__),array('jquery'),'1.0.0',true);
 		wp_enqueue_script('namecheck-script',plugins_url('/js/jquery.namecheck.js',__FILE__),array('jquery'));
 		wp_enqueue_script('metabox-id-check-script',plugins_url('/js/jquery.metabox-id-check.js',__FILE__),array('jquery'));
+		wp_enqueue_script('mdw-cms-admin-functions', plugins_url('/admin/js/functions.js', __FILE__), array('jquery'), '0.1.0');
+		wp_enqueue_script('mdw-cms-admin-custom-post-types', plugins_url('/admin/js/custom-post-types.js', __FILE__), array('jquery'), '0.1.0');
+		wp_enqueue_script('mdw-cms-admin-metaboxes', plugins_url('/admin/js/metaboxes.js', __FILE__), array('jquery'), '0.1.0');
+		wp_enqueue_script('mdw-cms-admin-taxonomies', plugins_url('/admin/js/taxonomies.js', __FILE__), array('jquery'), '0.1.0');
 
-wp_enqueue_script('mdw-cms-admin-functions', plugins_url('/admin/js/functions.js', __FILE__), array('jquery'), '0.1.0');
-wp_enqueue_script('mdw-cms-admin-custom-post-types', plugins_url('/admin/js/custom-post-types.js', __FILE__), array('jquery'), '0.1.0');
-wp_enqueue_script('mdw-cms-admin-metaboxes', plugins_url('/admin/js/metaboxes.js', __FILE__), array('jquery'), '0.1.0');
-
-/*
-		if (isset($this->options['options']) && is_array($this->options['options']))
-			extract($this->options['options']);
-
-		$post_types=get_post_types();
-		$types=array();
-		foreach ($post_types as $post_type) :
-			$types[]=$post_type;
-		endforeach;
-
-		$taxonomy_options=array(
-			'reservedPostTypes' => $types
-		);
-
-		wp_localize_script('mdw-cms-admin-custom-taxonomies-script','wp_options',$taxonomy_options);
-
-		if (isset($this->options['metaboxes'])) :
-			$metaboxes=$this->options['metaboxes'];
-		else :
-			$metaboxes=array();
-		endif;
-
-		$mb_arr=array();
-
-		if ($metaboxes && !empty($metaboxes)) :
-			foreach ($metaboxes as $metabox) :
-				$mb_arr[]=$metabox['mb_id'];
-			endforeach;
-		endif;
-
-		$metabox_options=array(
-			'reserved' => $mb_arr
-		);
-
-		wp_localize_script('mdw-cms-admin-metaboxes-script','wp_metabx_options',$metabox_options);
-
-		wp_enqueue_script('mdw-cms-admin-metaboxes-script');
-*/
+		wp_enqueue_style('mdw-cms-admin-style',plugins_url('/admin/css/admin.css',__FILE__));
 	}
 
 	/**
@@ -548,9 +508,58 @@ wp_enqueue_script('mdw-cms-admin-metaboxes', plugins_url('/admin/js/metaboxes.js
 				$metaboxes[]=$metabox;
 		endforeach;
 
-		$this->options['metaboxes']=$post_types; // set var
+		$this->options['metaboxes']=$metaboxes; // set var
 
 		update_option('mdw_cms_metaboxes', $metaboxes); // update option
+
+		return false;
+	}
+
+	/**
+	 * ajax_get_taxonomy function.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function ajax_get_taxonomy() {
+		if (!isset($_POST['name']))
+			return false;
+
+		// find matching post type //
+		foreach ($this->options['taxonomies'] as $taxonomy) :
+			if ($taxonomy['name']==$_POST['name']) :
+				echo json_encode($taxonomy);
+				break;
+			endif;
+		endforeach;
+
+		wp_die();
+	}
+
+	public function ajax_delete_taxonomy() {
+		if (!isset($_POST['id']))
+			return;
+
+		if ($this->delete_taxonomy($_POST['id']))
+			return true;
+
+		return;
+
+		wp_die();
+	}
+
+	public function delete_taxonomy($name='') {
+		$taxonomies=array();
+
+		// build clean array //
+		foreach ($this->options['taxonomies'] as $key => $taxonomy) :
+			if ($taxonomy['name']!=$name)
+				$taxonomies[]=$taxonomy;
+		endforeach;
+
+		$this->options['taxonomies']=$taxonomies; // set var
+
+		update_option('mdw_cms_taxonomies', $taxonomies); // update option
 
 		return false;
 	}

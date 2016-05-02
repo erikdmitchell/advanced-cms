@@ -6,7 +6,7 @@ function setupDialogBox(data, delete_data, description) {
 	$dialogBox+='<div id="'+dialogBoxID+'" title="'+data.label+'">';
 		$dialogBox+='<p>This will delete the '+data.label+' ('+data.id+') '+description+'. Are you sure?</p>';
 	$dialogBox+='</div>';
-console.log(delete_data);
+
 	jQuery('body').append($dialogBox); // append box
 
 	// launch dialog box //
@@ -16,7 +16,6 @@ console.log(delete_data);
 		buttons: {
 			"Delete": function() {
 				jQuery.post(ajaxurl, delete_data, function(response) {
-console.log(response);
 					if (response) {
 						location.reload();
 					}

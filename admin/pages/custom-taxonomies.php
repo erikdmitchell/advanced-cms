@@ -51,7 +51,7 @@
 
 				<tr>
 					<th scope="row">
-						<label for="label" class="<?php echo $label_class; ?>">Label</label>
+						<label for="label" class="required">Label</label>
 					</th>
 					<td>
 						<input type="text" name="label" id="label" value="<?php echo $label; ?>" /><span class="example">(e.g. Brands)</span>
@@ -75,7 +75,7 @@
 
 	<?php if ($mdw_cms_admin->options['taxonomies']) : ?>
 		<?php foreach ($mdw_cms_admin->options['taxonomies'] as $tax) : ?>
-			<div class="tax-row mdw-cms-edit-list-row">
+			<div class="tax-row mdw-cms-edit-list-row" data-name="<?php echo $tax['name']; ?>">
 				<div class="label"><?php echo $tax['args']['label']; ?></div>
 				<div class="edit">[<a href="<?php echo $base_url; ?>&edit=tax&slug=<?php echo $tax['name']; ?>">Edit</a>]</div>
 				<div class="delete">[<a href="#">Delete</a>]</div>
