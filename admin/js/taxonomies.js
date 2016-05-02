@@ -1,5 +1,7 @@
 jQuery(document).ready(function($) {
 
+	$('form.custom-taxonomies').requiredFields();
+
 	/**
 	 * delete link click
 	 */

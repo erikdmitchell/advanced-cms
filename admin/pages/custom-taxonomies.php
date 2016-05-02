@@ -41,7 +41,7 @@
 						<label for="name" class="required">Name</label>
 					</th>
 					<td>
-						<input type="text" name="name" id="name" value="<?php echo $name; ?>" /><span class="example">(e.g. brands)</span>
+						<input type="text" name="name" id="name" class="required" value="<?php echo $name; ?>" /><span class="example">(e.g. brands)</span>
 						<div id="mdw-cms-name-error" class=""></div>
 						<p class="description">
 							Max 20 characters, can not contain capital letters or spaces. Cannot be the same name as a (custom) post type.
@@ -54,7 +54,7 @@
 						<label for="label" class="required">Label</label>
 					</th>
 					<td>
-						<input type="text" name="label" id="label" value="<?php echo $label; ?>" /><span class="example">(e.g. Brands)</span>
+						<input type="text" name="label" id="label" class="required" value="<?php echo $label; ?>" /><span class="example">(e.g. Brands)</span>
 					</td>
 				</tr>
 
