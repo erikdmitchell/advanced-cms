@@ -10,16 +10,19 @@
 function mdw_cms_gallery_shortcode($atts) {
 	global $post;
 
-  extract(shortcode_atts(array(
-    'id' => ''
-  ), $atts));
+  $atts=shortcode_atts(array(
+    'id' => '',
+    'size' => 'full',
+		'show_indicators' => true,
+		'show_controls' => true,
+  ), $atts);
 
-  if (empty($id))
+  if (empty($atts['id']))
   	return false;
 
-  $image_ids=get_post_meta($post->ID, $id, true);
+  $atts['image_ids']=get_post_meta($post->ID, $atts['id'], true);
 
-	$gallery=new MDWCMSGallery(array('id' => $id, 'image_ids' => $image_ids));
+	$gallery=new MDWCMSGallery($atts);
 
   return mdw_cms_get_template_part('gallery');
 }
@@ -39,6 +42,10 @@ class MDWCMSGallery {
 	public $image;
 
 	public $id;
+
+	public $show_indicators;
+
+	public $show_controls;
 
 	/**
 	 * __construct function.
@@ -65,6 +72,8 @@ class MDWCMSGallery {
 			'id' => 'gallery',
 			'image_ids' => '',
 			'size' => 'full',
+			'show_indicators' => true,
+			'show_controls' => true,
 		);
 
 		return $array;
@@ -82,6 +91,18 @@ class MDWCMSGallery {
 
 		if (!empty($args['image_ids']) && !is_array($args['image_ids']))
 			$args['image_ids']=explode(',', $args['image_ids']);
+
+		if ($args['show_indicators']) :
+			$this->show_indicators=true;
+		else :
+			$this->show_indicators=false;
+		endif;
+
+		if ($args['show_controls']) :
+			$this->show_controls=true;
+		else :
+			$this->show_controls=false;
+		endif;
 
 		return $args;
 	}
@@ -358,7 +379,7 @@ function mdw_cms_gallery_get_indicators() {
 
 	$html=null;
 
-	if (!$mdw_cms_gallery->image_count)
+	if (!$mdw_cms_gallery->image_count || !$mdw_cms_gallery->show_indicators)
 		return false;
 
 	$html.='<ol class="carousel-indicators">';
@@ -372,6 +393,42 @@ function mdw_cms_gallery_get_indicators() {
 	  	$html.='<li data-target="#mdw-cms-carousel-'.mdw_cms_gallery_get_id().'" data-slide-to="'.$key.'" class="'.$class.'"></li>';
 		endforeach;
 	$html.='</ol>';
+
+	return $html;
+}
+
+/**
+ * mdw_cms_gallery_controls function.
+ *
+ * @access public
+ * @return void
+ */
+function mdw_cms_gallery_controls() {
+	echo mdw_cms_gallery_get_controls();
+}
+
+/**
+ * mdw_cms_gallery_get_controls function.
+ *
+ * @access public
+ * @return void
+ */
+function mdw_cms_gallery_get_controls() {
+	global $mdw_cms_gallery;
+
+	$html=null;
+
+	if (!$mdw_cms_gallery->image_count || !$mdw_cms_gallery->show_controls)
+		return false;
+
+  $html.='<a class="left carousel-control" href="#mdw-cms-carousel-'.mdw_cms_gallery_get_id().'" role="button" data-slide="prev">';
+    $html.='<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>';
+    $html.='<span class="sr-only">Previous</span>';
+  $html.='</a>';
+  $html.='<a class="right carousel-control" href="#mdw-cms-carousel-'.mdw_cms_gallery_get_id().'" role="button" data-slide="next">';
+    $html.='<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>';
+    $html.='<span class="sr-only">Next</span>';
+  $html.='</a>';
 
 	return $html;
 }
