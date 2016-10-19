@@ -12,7 +12,7 @@
 	$fields=false;
 	$field_counter=0;
 	$field_id=0;
-	$title='Add Metabox';
+	$title='';
 
 	// edit //
 	if (isset($_GET['edit']) && $_GET['edit']=='mb') :
