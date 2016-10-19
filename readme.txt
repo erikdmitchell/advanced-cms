@@ -1,4 +1,4 @@
-=== Fantasy Cycling ===
+=== MDW CMS ===
 Contributors: erikdmitchell
 Tags: cms, metaboxes, post type, custom, taxonomy
 Requires at least: 4.0
@@ -30,11 +30,14 @@ Coming soon.
 
 Coming soon.
 
+See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
+
 == Changelog ==
 
 = 2.1.9 =
 
 * Added gallery shortcode.
+* Fixed metabox Title bug.
 
 = 2.1.8 =
 
