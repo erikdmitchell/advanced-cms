@@ -17,227 +17,186 @@ function mdw_cms_gallery_shortcode($atts) {
   if (empty($id))
   	return false;
 
-  $atts=new stdClass();
-  $atts->id=$id;
-  $atts->image_ids=get_post_meta($post->ID, $id, true);
+  $image_ids=get_post_meta($post->ID, $id, true);
 
-  return mdw_cms_get_template_part('gallery', $atts);
+	$gallery=new MDWCMSGallery(array('image_ids' => $image_ids));
+
+  return mdw_cms_get_template_part('gallery');
 }
 add_shortcode('mdw-cms-gallery', 'mdw_cms_gallery_shortcode');
 
-/**
- * mdw_cms_setup_gallery_images function.
- *
- * @access public
- * @param string $image_ids (default: '')
- * @return void
- */
-function mdw_cms_setup_gallery_images($image_ids='') {
-	if (empty($image_ids))
-		return false;
-
-	$images=array();
-	$size='full';
-
-	if (!is_array($image_ids))
-		$image_ids=explode(',', $image_ids);
-
-	foreach ($image_ids as $image_id) :
-		$metadata=wp_get_attachment_metadata($image_id);
-
-		$image=new stdClass();
-		$image->image=wp_get_attachment_image($image_id, $size);
-		$image->caption=$metadata['image_meta']['caption'];
-
-		$images[]=$image;
-	endforeach;
-
-	return $images;
-}
-
-function mdw_cms_gallery_item_classes($classes='') {
-	global $image;
-
-print_r($image);
-}
-
 global $mdw_cms_gallery;
+global $mdw_cms_image;
 
 class MDWCMSGallery {
 
-	public $posts;
+	public $images;
 
 	public $query;
 
-	public $current_post=-1;
+	public $current_image=-1;
 
-	public $post_count=0;
+	public $image_count=0;
 
-	public $post;
+	public $image;
 
-	public $found_posts=0;
-
-	public function __construct($image_ids='') {
+	/**
+	 * __construct function.
+	 *
+	 * @access public
+	 * @param string $args (default: '')
+	 * @return void
+	 */
+	public function __construct($args='') {
 		global $mdw_cms_gallery;
 
-		if (!empty($image_ids))
-			$mdw_cms_gallery=$this->query($image_ids);
+		if (!empty($args))
+			$mdw_cms_gallery=$this->query($args);
 	}
 
-/*
+	/**
+	 * default_query_vars function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	public function default_query_vars() {
 		$array=array(
-			'per_page' => 30,
-			'order_by' => '', // date (races) -- name (riders)
-			'order' => 'DESC', // DESC (races -- ASC (riders))
-			'class' => false, // races
-			'season' => false, // races, rider ranks
-			'nat' => false,
-			'name' => false, // riders
-			'search' => false,
-			'rider_id' => 0, // riders
-			'start_date' => false, // races
-			'end_date' => false, // races
-			'paged' => get_query_var('page'),
-			'type' => 'races',
-			'rankings' => false, // riders
-			'results' => false, // riders
-			'meta' => array()
+			'image_ids' => '',
+			'size' => 'full',
 		);
-
-		// for our admin, we pass a get var //
-		if (is_admin() && empty($array['paged']) && isset($_GET['paged']))
-			$array['paged']=$_GET['paged'];
 
 		return $array;
 	}
-*/
-/*
+
+	/**
+	 * set_query_vars function.
+	 *
+	 * @access public
+	 * @param string $query (default: '')
+	 * @return void
+	 */
 	public function set_query_vars($query='') {
 		$args=wp_parse_args($query, $this->default_query_vars());
 
-		// set default order by type if need be //
-		if (empty($args['order_by'])) :
-			switch ($args['type']) :
-				case 'races':
-					$args['order_by']='date';
-
-					if (empty($args['order']))
-						$args['order']='DESC';
-					break;
-				case 'riders':
-					break;
-			endswitch;
-		endif;
-
-		// setup some defaults for rankings //
-		if ($args['rankings']) :
-			if (!$args['season'] || empty($args['season'])) :
-				$args['season']=uci_results_get_default_rider_ranking_season();
-				$args['week']=uci_results_get_default_rider_ranking_week();
-			endif;
-		endif;
-
-		// check for search //
-		if (isset($_GET['search']) || (isset($query['search']) && $query['search']))
-			$this->is_search=true;
-
-		// due to a weird api pagination issue //
-		if (isset($args['api_page']))
-			$args['paged']=$args['api_page'];
-
-		// check if paged //
-		if ($args['paged'])
-			$this->is_paged=true;
+		if (!empty($args['image_ids']) && !is_array($args['image_ids']))
+			$args['image_ids']=explode(',', $args['image_ids']);
 
 		return $args;
 	}
-*/
 
+	/**
+	 * query function.
+	 *
+	 * @access public
+	 * @param string $query (default: '')
+	 * @return void
+	 */
+	public function query($query='') {
+		$this->query_vars=$this->set_query_vars($query);
 
-	public function query($image_ids='') {
-		//$this->query_vars=$this->set_query_vars($query);
-		//$q=$this->query_vars;
-
-
-		$this->get_images();
-
+		$this->get_images($this->query_vars);
 
 		return $this;
 	}
 
-	public function get_images() {
-		global $wpdb;
+	public function get_images($vars='') {
+		$images=array();
 
-		$posts=$wpdb->get_results($this->query);
+		foreach ($vars['image_ids'] as $image_id) :
+			$metadata=wp_get_attachment_metadata($image_id);
 
-		// set total number of posts found //
-		$this->found_posts = $wpdb->get_var('SELECT FOUND_ROWS()');
+			$image=new stdClass();
+			$image->image=wp_get_attachment_image($image_id, $vars['size']);
+			$image->caption=$metadata['image_meta']['caption'];
 
-		$this->posts=$posts;
-		$this->post_count=count($posts);
+			$images[]=$image;
+		endforeach;
 
-		return $this->posts;
+		$this->images=$images;
+		$this->image_count=count($images);
+
+		return $this->images;
 	}
 
-
-
-
 	/**
-	 * have_posts function.
+	 * have_images function.
 	 *
 	 * @access public
 	 * @return void
 	 */
-	public function have_posts() {
-		if ($this->current_post + 1 < $this->post_count) :
+	public function have_images() {
+		if ($this->current_image + 1 < $this->image_count) :
 			return true;
-		elseif ( $this->current_post + 1 == $this->post_count && $this->post_count > 0 ) :
-			$this->rewind_posts();
+		elseif ( $this->current_image + 1 == $this->image_count && $this->image_count > 0 ) :
+			$this->rewind_images();
 		endif;
 
 		return false;
 	}
 
 	/**
-	 * the_post function.
+	 * the_image function.
 	 *
 	 * @access public
 	 * @return void
 	 */
-	public function the_post() {
-		global $uci_results_post;
+	public function the_image() {
+		global $mdw_cms_image;
 
-		$uci_results_post = $this->next_post();
+		$mdw_cms_image = $this->next_image();
 	}
 
   /**
-   * next_post function.
+   * next_image function.
    *
    * @access public
    * @return void
    */
-  public function next_post() {
-		$this->current_post++;
+  public function next_image() {
+		$this->current_image++;
 
-		$this->post = $this->posts[$this->current_post];
+		$this->image = $this->images[$this->current_image];
 
-		return $this->post;
+		return $this->image;
 	}
 
 	/**
-	 * rewind_posts function.
+	 * rewind_images function.
 	 *
 	 * @access public
 	 * @return void
 	 */
-	public function rewind_posts() {
-		$this->current_post = -1;
+	public function rewind_images() {
+		$this->current_image = -1;
 
-		if ( $this->post_count > 0 )
-			$this->post = $this->posts[0];
+		if ( $this->image_count > 0 )
+			$this->image = $this->images[0];
 	}
 
+}
 
+/**
+ * mdw_cms_gallery_have_images function.
+ *
+ * @access public
+ * @return void
+ */
+function mdw_cms_gallery_have_images() {
+	global $mdw_cms_gallery;
+
+	return $mdw_cms_gallery->have_images();
+}
+
+/**
+ * mdw_cms_gallery_the_image function.
+ *
+ * @access public
+ * @return void
+ */
+function mdw_cms_gallery_the_image() {
+	global $mdw_cms_gallery;
+
+	$mdw_cms_gallery->the_image();
 }
 ?>
