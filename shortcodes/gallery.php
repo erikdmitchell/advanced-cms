@@ -337,10 +337,22 @@ function mdw_cms_gallery_get_image_caption() {
 	return $mdw_cms_image->caption;
 }
 
+/**
+ * mdw_cms_gallery_indicators function.
+ *
+ * @access public
+ * @return void
+ */
 function mdw_cms_gallery_indicators() {
 	echo mdw_cms_gallery_get_indicators();
 }
 
+/**
+ * mdw_cms_gallery_get_indicators function.
+ *
+ * @access public
+ * @return void
+ */
 function mdw_cms_gallery_get_indicators() {
 	global $mdw_cms_gallery;
 
@@ -349,12 +361,15 @@ function mdw_cms_gallery_get_indicators() {
 	if (!$mdw_cms_gallery->image_count)
 		return false;
 
-
 	$html.='<ol class="carousel-indicators">';
 		foreach ($mdw_cms_gallery->images as $key => $image) :
-	    <li data-target="#mdw-cms-carousel-<?php mdw_cms_gallery_id(); ?>" data-slide-to="0" class="active"></li>
-	    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-	    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+			if ($key==0) :
+				$class='active';
+			else :
+				$class='';
+			endif;
+
+	  	$html.='<li data-target="#mdw-cms-carousel-'.mdw_cms_gallery_get_id().'" data-slide-to="'.$key.'" class="'.$class.'"></li>';
 		endforeach;
 	$html.='</ol>';
 
