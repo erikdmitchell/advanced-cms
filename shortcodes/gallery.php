@@ -27,4 +27,35 @@ function mdw_cms_gallery_shortcode($atts) {
   return mdw_cms_get_template_part('gallery');
 }
 add_shortcode('mdw-cms-gallery', 'mdw_cms_gallery_shortcode');
+
+/**
+ * mdw_cms_gallery_output function.
+ *
+ * @access public
+ * @param string $args (default: '')
+ * @return void
+ */
+function mdw_cms_gallery_output($args='') {
+	global $post;
+
+  $default_args=array(
+	  'post_id' => '',
+    'id' => '',
+    'size' => 'full',
+		'show_indicators' => true,
+		'show_controls' => true,
+  );
+  $args=wp_parse_args($args, $default_args);
+
+	extract($args);
+
+  if (epmty($post_id))
+  	$post_id=$post->ID;
+
+  $atts['image_ids']=get_post_meta($post_id, $id, true);
+
+	$gallery=new MDWCMSGallery($atts);
+
+  return mdw_cms_get_template_part('gallery');
+}
 ?>
