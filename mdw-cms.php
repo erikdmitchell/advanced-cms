@@ -28,6 +28,7 @@ require_once(plugin_dir_path(__FILE__).'classes/inflector.php'); // our pluraliz
 require_once(plugin_dir_path(__FILE__).'widgets/init.php'); // our widgets
 
 require_once(MDW_CMS_PATH.'shortcodes/init.php'); // our shortcodes
+require_once(MDW_CMS_PATH.'functions.php'); // contains misc functions
 
 /**
  * runs our update functions
