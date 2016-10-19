@@ -27,6 +27,8 @@ require_once(plugin_dir_path(__FILE__).'classes/inflector.php'); // our pluraliz
 
 require_once(plugin_dir_path(__FILE__).'widgets/init.php'); // our widgets
 
+require_once(MDW_CMS_PATH.'shortcodes/init.php'); // our shortcodes
+
 /**
  * runs our update functions
  * updater json: http://www.millerdesignworks.com/mdw-wp-plugins/mdw-cms-metadata.json
