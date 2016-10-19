@@ -5,5 +5,6 @@
  * @since 2.1.9
 */
 
+require_once(MDW_CMS_PATH.'shortcodes/gallery-class.php'); // gallery class
 require_once(MDW_CMS_PATH.'shortcodes/gallery.php'); // gallery
 ?>
