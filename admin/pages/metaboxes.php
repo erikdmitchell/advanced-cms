@@ -1,30 +1,42 @@
 <?php
-	global $MDWMetaboxes, $mdw_cms_admin;
+global $MDWMetaboxes, $mdw_cms_admin;
 
-	$base_url=admin_url('tools.php?page=mdw-cms&tab=mdw-cms-metaboxes');
-	$btn_text='Create';
-	$html=null;
-	$mb_id=null;
-	$title=null;
-	$prefix=null;
-	$post_types=null;
-	$edit_class_v='';
-	$fields=false;
-	$field_counter=0;
-	$field_id=0;
-	$title='';
+$base_url=admin_url('tools.php?page=mdw-cms&tab=mdw-cms-metaboxes');
+$btn_text='Create';
+$html=null;
+$mb_id=null;
+$title=null;
+$prefix=null;
+$post_types=null;
+$edit_class_v='';
+$fields=false;
+$field_counter=0;
+$field_id=0;
+$title='';
 
-	// edit //
-	if (isset($_GET['edit']) && $_GET['edit']=='mb') :
-		foreach ($mdw_cms_admin->options['metaboxes'] as $key => $mb) :
-			if ($mb['mb_id']==$_GET['mb_id']) :
-				extract($mdw_cms_admin->options['metaboxes'][$key]);
-				$edit_class_v='visible';
-				$btn_text='Update';
-				$title='Edit Metabox';
-			endif;
-		endforeach;
-	endif;
+// edit //
+if (isset($_GET['edit']) && $_GET['edit']=='mb') :
+	$default_args=array(
+		'mb_id' => '',
+		'title' => '',
+		'prefix' => '',
+		'post_types' => null,
+		'fields' => false,
+		'edit_class_v' => 'visible',
+		'btn_text' => 'Update',
+	);
+	$args=array();
+
+	foreach ($mdw_cms_admin->options['metaboxes'] as $key => $mb) :
+		if ($mb['mb_id']==$_GET['mb_id']) :
+			$args=$mdw_cms_admin->options['metaboxes'][$key];
+		endif;
+	endforeach;
+
+	$args=wp_parse_args($args, $default_args);
+
+	extract($args);
+endif;
 ?>
 
 <h3><?php echo $title; ?></h3>
