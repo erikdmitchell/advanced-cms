@@ -1,23 +1,24 @@
 <?php
-function mdw_cms_template_loader($template) {
-	global $post;
+function mdw_cms_get_template_part($template_name='') {
+	if (empty($template_name))
+		return false;
 
-	$located=false;
-echo $template;
-	// check theme(s), then plugin //
-	if (file_exists(get_stylesheet_directory().'/fantasy-cycling/'.$template.'.php')) :
-		$located=get_stylesheet_directory().'/fantasy-cycling/'.$template.'.php';
-	elseif (file_exists(get_template_directory().'/fantasy-cycling/'.$template.'.php')) :
-		$located=get_template_directory().'/fantasy-cycling/'.$template.'.php';
-	elseif (file_exists(FANTASY_CYCLING_PATH.'templates/'.$template.'.php')) :
-		$located=FANTASY_CYCLING_PATH.'templates/'.$template.'.php';
+	ob_start();
+
+	do_action('mdw_cms_get_template_part'.$template_name);
+
+	if (file_exists(get_stylesheet_directory().'/mdw-cms/'.$template_name.'.php')) :
+		include(get_stylesheet_directory().'/mdw-cms/'.$template_name.'.php');
+	elseif (file_exists(get_template_directory().'/mdw-cms/'.$template_name.'.php')) :
+		include(get_template_directory().'/mdw-cms/'.$template_name.'.php');
+	elseif (file_exists(MDW_CMS_PATH.'templates/'.$template_name.'.php')) :
+		include(MDW_CMS_PATH.'templates/'.$template_name.'.php');
 	endif;
 
-	// we found a template //
-	if ($located)
-		$template=$located;
+	$html=ob_get_contents();
 
-	return $template;
+	ob_end_clean();
+
+	return $html;
 }
-add_filter('template_include', 'mdw_cms_template_loader');
 ?>

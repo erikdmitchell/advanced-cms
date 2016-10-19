@@ -11,9 +11,7 @@ function mdw_cms_gallery_shortcode($atts) {
 
   $image_ids=get_post_meta($post->ID, $id, true);
 
-
-
-  return "the ids: $image_ids";
+  return mdw_cms_get_template_part('gallery');
 }
 add_shortcode('mdw-cms-gallery', 'mdw_cms_gallery_shortcode');
 ?>
