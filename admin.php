@@ -2,7 +2,8 @@
 class MDWCMSgui {
 
 	public $options=array();
-	public $version='2.1.8';
+
+	public $version='2.2.0';
 
 	/**
 	 * __construct function.
@@ -17,7 +18,8 @@ class MDWCMSgui {
 		add_action('admin_init', array($this, 'update_post_types'));
 		add_action('admin_init', array($this, 'update_metaboxes'));
 		add_action('admin_init', array($this, 'update_taxonomies'));
-		add_action('admin_notices','MDWCMSlegacy::legacy_admin_notices');
+		add_action('admin_notices', 'MDWCMSlegacy::legacy_admin_notices');
+		add_action('admin_notices', array($this, 'admin_notices'));
 		add_action('wp_ajax_mdw_cms_get_metabox', array($this, 'ajax_get_metabox'));
 		add_action('wp_ajax_mdw_cms_delete_metabox', array($this, 'ajax_delete_metabox'));
 		add_action('wp_ajax_mdw_cms_get_post_type', array($this, 'ajax_get_post_type'));
@@ -65,6 +67,22 @@ class MDWCMSgui {
 		wp_enqueue_script('mdw-cms-admin-taxonomies', plugins_url('/admin/js/taxonomies.js', __FILE__), array('jquery'), '0.1.0');
 
 		wp_enqueue_style('mdw-cms-admin-style',plugins_url('/admin/css/admin.css',__FILE__));
+	}
+
+	/**
+	 * admin_notices function.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function admin_notices() {
+		if (isset($_GET['updated'])) :
+			if ($_GET['updated']) :
+				echo '<div class="notice notice-success is-dismissible"><p>Metabox was updated</p></div>';
+			else :
+				echo '<div class="notice notice-error is-dismissible"><p>Metabox was not updated</p></div>';
+			endif;
+		endif;
 	}
 
 	/**
@@ -241,7 +259,19 @@ class MDWCMSgui {
 
 		$this->options['metaboxes']=$metaboxes; // set var
 
-		return update_option('mdw_cms_metaboxes', $metaboxes);
+		update_option('mdw_cms_metaboxes', $metaboxes);
+
+		$url=$this->admin_url(array(
+			'tab' => 'mdw-cms-metaboxes',
+			'edit' => 'mb',
+			'mb_id' => $data['mb_id'],
+			'updated' => 1
+		));
+
+		wp_redirect($url);
+		exit();
+
+		return;
 	}
 
 	/**
@@ -733,6 +763,23 @@ class MDWCMSgui {
 		endforeach;
 
 		return $meta_box_slugs;
+	}
+
+	/**
+	 * admin_url function.
+	 *
+	 * @access protected
+	 * @param string $args (default: '')
+	 * @return void
+	 */
+	protected function admin_url($args='') {
+		$default_args=array(
+			'page' => 'mdw-cms'
+		);
+		$args=wp_parse_args($args, $default_args);
+		$admin_url=add_query_arg($args, admin_url('/tools.php'));
+
+		return $admin_url;
 	}
 
 }
