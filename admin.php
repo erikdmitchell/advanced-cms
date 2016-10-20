@@ -430,9 +430,10 @@ class MDWCMSgui {
 			'revisions' => $data['revisions'],
 			'hierarchical' => $data['hierarchical'],
 			'page_attributes' => $data['page_attributes'],
-			'comments' => $data['comments']
+			'comments' => $data['comments'],
+			'icon' => $data['icon'],
 		);
-
+print_r($arr);
 		if ($data['cpt-id']!=-1) :
 			$post_types[$data['cpt-id']]=$arr;
 		else :

@@ -184,7 +184,7 @@
 						<label for="icon" class=""><?php echo __('Icon'); ?></label>
 					</th>
 					<td>
-						<input type="hidden" id="selected-dashicon" name="dashicon" value="<?php echo $icon; ?>" />
+						<input type="hidden" id="selected-dashicon" name="icon" value="<?php echo $icon; ?>" />
 						<div class="selected-icon"><span class="dashicons <?php echo $icon; ?>"></span></div>
 						<div class="change-text">Click icon to change:</div>
 						<?php mdw_cms_dashicon_grid(); ?>
