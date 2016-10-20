@@ -322,12 +322,22 @@ class MDWCMSgui {
 		$update=update_option('mdw_cms_taxonomies',$taxonomies);
 
 		if ($update) :
-			return true;
+			$update=true;
 		elseif ($option_exists) :
-			return true;
+			$update=true;
 		else :
-			return false;
+			$update=false;
 		endif;
+
+		$url=$this->admin_url(array(
+			'tab' => 'mdw-cms-metaboxes',
+			'edit' => 'mb',
+			'mb_id' => $data['mb_id'],
+			'updated' => $update
+		));
+
+		wp_redirect($url);
+		exit();
 	}
 
 	/**
