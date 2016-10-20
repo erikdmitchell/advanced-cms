@@ -76,11 +76,27 @@ class MDWCMSgui {
 	 * @return void
 	 */
 	public function admin_notices() {
+		if (isset($_GET['edit'])) :
+			switch ($_GET['edit']) :
+				case 'cpt' :
+					$type='Post Type';
+					break;
+				case 'mb' :
+					$type='MEtabox';
+					break;
+				case 'tax':
+					$type='Taxonomy';
+					break;
+				default :
+					$type='';
+			endswitch;
+		endif;
+
 		if (isset($_GET['updated'])) :
 			if ($_GET['updated']) :
-				echo '<div class="notice notice-success is-dismissible"><p>Metabox was updated</p></div>';
+				echo '<div class="notice notice-success is-dismissible"><p>'.$type.' was updated</p></div>';
 			else :
-				echo '<div class="notice notice-error is-dismissible"><p>Metabox was not updated</p></div>';
+				echo '<div class="notice notice-error is-dismissible"><p>'.$type.' was not updated</p></div>';
 			endif;
 		endif;
 	}
