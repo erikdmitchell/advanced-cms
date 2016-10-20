@@ -178,6 +178,16 @@
 					</td>
 				</tr>
 
+				<tr>
+					<th scope="row">
+						<label for="icon" class=""><?php echo __('Icon'); ?></label>
+					</th>
+					<td>
+						<?php mdw_cms_dashicons_dropdown(); ?>
+						<span id="icon-preview" class="example"></span>
+					</td>
+				</tr>
+
 			</tbody>
 		</table>
 
