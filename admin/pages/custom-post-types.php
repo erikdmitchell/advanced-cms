@@ -16,6 +16,7 @@
 	$id=-1;
 	$comments=0;
 	$title='Add New Custom Post Type';
+	$icon='dashicons-admin-post';
 
 	// edit custom post type //
 	if (isset($_GET['edit']) && $_GET['edit']=='cpt') :
@@ -183,8 +184,10 @@
 						<label for="icon" class=""><?php echo __('Icon'); ?></label>
 					</th>
 					<td>
-						<?php mdw_cms_dashicons_dropdown(); ?>
-						<span id="icon-preview" class="example"></span>
+						<input type="hidden" id="selected-dashicon" name="dashicon" value="<?php echo $icon; ?>" />
+						<div class="selected-icon"><span class="dashicons <?php echo $icon; ?>"></span></div>
+						<div class="change-text">Click icon to change:</div>
+						<?php mdw_cms_dashicon_grid(); ?>
 					</td>
 				</tr>
 

@@ -38,4 +38,20 @@ jQuery(document).ready(function($) {
 		});
 	});
 
+	/**
+	 * dashicon click
+	 */
+	$('.custom-post-types .mdw-cms-dashicon-grid .dashicons').click(function(e) {
+		e.preventDefault();
+
+		var iconClass=$(this).data('icon');
+
+		// replace icon image //
+		$('.custom-post-types .selected-icon > span').removeClass();
+		$('.custom-post-types .selected-icon > span').addClass('dashicons '+iconClass);
+
+		// replace hidden input //
+		$('.custom-post-types #selected-dashicon').val(iconClass);
+	});
+
 });

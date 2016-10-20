@@ -32,6 +32,35 @@ function mdw_cms_get_template_part($template_name='', $atts='') {
 }
 
 function mdw_cms_dashicons_dropdown($name='', $selected='') {
+
+}
+
+/**
+ * mdw_cms_dashicon_grid function.
+ *
+ * @access public
+ * @return void
+ */
+function mdw_cms_dashicon_grid() {
+	$dashicons=mdw_cms_get_dashicons();
+	$html=null;
+
+	$html.='<div class="mdw-cms-dashicon-grid">';
+		foreach ($dashicons as $dashicon) :
+			$html.='<a href="#" class="dashicons '.$dashicon.'" data-icon="'.$dashicon.'"></a>';
+		endforeach;
+	$html.='</div>';
+
+	echo $html;
+}
+
+/**
+ * mdw_cms_get_dashicons function.
+ *
+ * @access public
+ * @return void
+ */
+function mdw_cms_get_dashicons() {
 	$dashicons=array(
 		'dashicons-admin-site',
 		'dashicons-dashboard',
@@ -271,6 +300,7 @@ function mdw_cms_dashicons_dropdown($name='', $selected='') {
 		'dashicons-layout',
 		'dashicons-paperclip',
 	);
-print_r($dashicons);
+
+	return $dashicons;
 }
 ?>
