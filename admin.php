@@ -24,6 +24,7 @@ class MDWCMSgui {
 		add_action('wp_ajax_mdw_cms_delete_post_type', array($this, 'ajax_delete_post_type'));
 		add_action('wp_ajax_mdw_cms_get_taxonomy', array($this, 'ajax_get_taxonomy'));
 		add_action('wp_ajax_mdw_cms_delete_taxonomy', array($this, 'ajax_delete_taxonomy'));
+		add_action('wp_ajax_mdw_cms_reserved_names', array($this, 'ajax_reserved_names'));
 
 		$this->check_version();
 		$this->cleanup_old_options();
@@ -56,6 +57,7 @@ class MDWCMSgui {
 		wp_enqueue_script('mdw-cms-gui-mb-script',plugins_url('/js/mb.js',__FILE__), array('jquery'),'1.0.0',true);
 		wp_enqueue_script('namecheck-script',plugins_url('/js/jquery.namecheck.js',__FILE__), array('jquery'), '0.1.0');
 		wp_enqueue_script('metabox-id-check-script',plugins_url('/js/jquery.metabox-id-check.js',__FILE__), array('jquery'), '0.1.0');
+		wp_enqueue_script('taxonomy-id-check-script',plugins_url('/js/jquery.taxonomy-id-check.js',__FILE__), array('jquery'), '0.1.0');
 		wp_enqueue_script('requiredFields-script',plugins_url('/js/jquery.requiredFields.js',__FILE__), array('jquery'), '0.1.0');
 		wp_enqueue_script('mdw-cms-admin-functions', plugins_url('/admin/js/functions.js', __FILE__), array('jquery'), '0.1.0');
 		wp_enqueue_script('mdw-cms-admin-post-types', plugins_url('/admin/js/post-types.js', __FILE__), array('jquery'), '0.1.0');
@@ -663,6 +665,44 @@ class MDWCMSgui {
 
 			update_option('mdw_cms_options_clean_up', true); // no need to run again
 		endif;
+	}
+
+	/**
+	 * ajax_reserved_names function.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function ajax_reserved_names() {
+		if (empty($_POST['type']))
+			return;
+
+		$reserved_names=array();
+		$types=$_POST['type'];
+
+		if (!is_array($types))
+			$types=explode(',', $types);
+
+		foreach ($types as $type) :
+			switch ($type) :
+				case 'post' :
+					$post_types=get_post_types(array(), 'names');
+					foreach ($post_types as $post_type) :
+						$reserved_names[]=$post_type;
+					endforeach;
+					break;
+				case 'taxonomy' :
+					$taxonomies=get_taxonomies();
+					foreach ($taxonomies as $taxonomy) :
+						$reserved_names[]=$taxonomy;
+					endforeach;
+					break;
+			endswitch;
+		endforeach;
+
+		echo json_encode($reserved_names);
+
+		wp_die();
 	}
 
 }

@@ -16,10 +16,10 @@ function mdw_cms_get_template($template_name=false, $attributes=null) {
 
 	do_action('mdw_cms_before_'.$template_name);
 
-	if (file_exists(get_stylesheet_directory().'/ultimate-league-management/pages/'.$template_name.'.php')) :
-		include(get_stylesheet_directory().'/ultimate-league-management/pages/'.$template_name.'.php');
-	elseif (file_exists(get_template_directory().'/ultimate-league-management/pages/'.$template_name.'.php')) :
-		include(get_template_directory().'/ultimate-league-management/pages/'.$template_name.'.php');
+	if (file_exists(get_stylesheet_directory().'/mdw-cms/admin-pages/'.$template_name.'.php')) :
+		include(get_stylesheet_directory().'/mdw-cms/admin-pages/'.$template_name.'.php');
+	elseif (file_exists(get_template_directory().'/mdw-cms/admin-pages/'.$template_name.'.php')) :
+		include(get_template_directory().'/mdw-cms/admin-pages/'.$template_name.'.php');
 	else :
 		include(MDW_CMS_PATH.'admin/pages/'.$template_name.'.php');
 	endif;

@@ -3,6 +3,17 @@ jQuery(document).ready(function($) {
 	$('form.custom-taxonomies').requiredFields();
 
 	/**
+	 * metabox id check
+	 */
+	$('.custom-taxonomies #name').change(function() {
+		if ($(this).taxonomyIDcheck($(this), $(this).val())) {
+			$('.custom-taxonomies #submit').prop('disabled',false);
+		} else {
+			$('.custom-taxonomies #submit').prop('disabled',true);
+		}
+	});
+
+	/**
 	 * delete link click
 	 */
 	$('.custom-taxonomies-list .tax-row .delete a').live('click',function(e) {

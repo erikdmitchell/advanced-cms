@@ -5,33 +5,97 @@
  */
 (function($) {
 	$.fn.taxonomyIDcheck=function($this, value, options) {
-		var settings=$.extend({
-			maxLength : 20,
-			reserved : [],
-			errorField : $('.mdw-cms-name-error')
-		}, options);
-console.log(settings);
-		settings.errorField.text(''); // clear errors
+		var data={
+			'action' : 'mdw_cms_reserved_names',
+			'type' : 'post,taxonomy'
+		};
 
-		// strip spaces and set to lowercase //
-		value=value.replace(/\s+/g, '').toLowerCase();
+		$.post(ajaxurl, data, function(reserved_names) {
+			var settings=$.extend({
+				maxLength : 20,
+				reserved : reserved_names,
+				errorField : $('#mdw-cms-name-error')
+			}, options);
 
-		$this.val(value); // set value to clean one
+			clearErrors(settings.errorField); // clear errors
 
-		// check if name is reserved //
-		if ($.inArray(value,settings.reserved)!=-1) {
-			settings.errorField.text('Can not use a reserved post type.');
-			return false;
-		}
+			$this.val(cleanValue(value)); // clean value and set
 
-		// check length //
-		if (value.length>settings.maxLength) {
-			settings.errorField.text('Name length is too long.');
-			return false;
-		}
+			// check if name is reserved
+			if (isReserved(value, settings.reserved)) {
+				settings.errorField.text('Name is already used.');
 
-		settings.errorField.text(''); // clear errors
+				return false;
+			}
 
-		return true;
+			// check length //
+			if (tooLong(value, settings.maxLength)) {
+				settings.errorField.text('Name length is too long.');
+
+				return false;
+			}
+
+			clearErrors(settings.errorField); // clear errors
+
+			return true;
+		});
+
+		return;
 	};
 }(jQuery));
+
+/**
+ * clearErrors function.
+ *
+ * @access public
+ * @param mixed $field
+ * @return void
+ */
+function clearErrors($field) {
+	$field.text('');
+}
+
+/**
+ * cleanValue function.
+ *
+ * @access public
+ * @param mixed value
+ * @return void
+ */
+function cleanValue(value) {
+	value=value.replace(/\s+/g, '').toLowerCase(); // strip spaces and set to lowercase
+
+	return value;
+}
+
+/**
+ * isReserved function.
+ *
+ * @access public
+ * @param mixed value
+ * @param mixed reserved
+ * @return void
+ */
+function isReserved(value, reserved) {
+	if (reserved.indexOf(value) != -1) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * tooLong function.
+ *
+ * @access public
+ * @param mixed value
+ * @param mixed maxLength
+ * @return void
+ */
+function tooLong(value, maxLength) {
+	if (value.length > maxLength) {
+		return true;
+	}
+
+	return false;
+}
