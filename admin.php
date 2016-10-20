@@ -330,9 +330,9 @@ class MDWCMSgui {
 		endif;
 
 		$url=$this->admin_url(array(
-			'tab' => 'mdw-cms-metaboxes',
-			'edit' => 'mb',
-			'mb_id' => $data['mb_id'],
+			'tab' => 'mdw-cms-tax',
+			'edit' => 'tax',
+			'slug' => $data['name'],
 			'updated' => $update
 		));
 
@@ -435,7 +435,17 @@ class MDWCMSgui {
 
 		$this->options['post_types']=$post_types; // set var
 
-		return update_option('mdw_cms_post_types', $post_types);
+		$update=update_option('mdw_cms_post_types', $post_types);
+
+		$url=$this->admin_url(array(
+			'tab' => 'mdw-cms-cpt',
+			'edit' => 'cpt',
+			'slug' => $data['name'],
+			'updated' => 1
+		));
+
+		wp_redirect($url);
+		exit();
 	}
 
 	/**
