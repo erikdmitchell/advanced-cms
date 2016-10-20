@@ -691,6 +691,12 @@ class MDWCMSgui {
 						$reserved_names[]=$post_type;
 					endforeach;
 					break;
+				case 'metabox' :
+					$metaboxes=$this->get_wp_metabox_slugs();
+					foreach ($metaboxes as $metabox) :
+						$reserved_names[]=$metabox;
+					endforeach;
+					break;
 				case 'taxonomy' :
 					$taxonomies=get_taxonomies();
 					foreach ($taxonomies as $taxonomy) :
@@ -703,6 +709,30 @@ class MDWCMSgui {
 		echo json_encode($reserved_names);
 
 		wp_die();
+	}
+
+	/**
+	 * get_wp_metabox_slugs function.
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function get_wp_metabox_slugs() {
+		global $wp_meta_boxes;
+
+		$meta_box_slugs=array();
+
+		foreach ($wp_meta_boxes as $screen) :
+			foreach ($screen as $context) :
+				foreach ($context as $priority) :
+					foreach ($priority as $slug => $metabox) :
+						$meta_box_slugs[]=$slug;
+					endforeach;
+				endforeach;
+			endforeach;
+		endforeach;
+
+		return $meta_box_slugs;
 	}
 
 }

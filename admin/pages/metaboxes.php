@@ -54,7 +54,7 @@ endif;
 					</th>
 					<td>
 						<input type="text" name="mb_id" id="mb_id" class="required" value="<?php echo $mb_id; ?>" /><span class="example">(e.g. movie_details)</span>
-						<div class="mdw-cms-name-error" class=""></div>
+						<div id="mdw-cms-name-error" class=""></div>
 					</td>
 				</tr>
 
