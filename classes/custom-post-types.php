@@ -67,6 +67,7 @@ class MDWCustomPostTypes {
 					),
 					'public' => true,
 					'has_archive' => false,
+					'menu_icon' => $icon,
 					'show_in_menu' => true,
 					'menu_position'=> 5,
 					'supports' => $supports,
