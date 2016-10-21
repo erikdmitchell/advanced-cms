@@ -108,11 +108,16 @@ class MDWCMSGallery {
 		foreach ($vars['image_ids'] as $key => $image_id) :
 
 			$metadata=wp_get_attachment_metadata($image_id);
+			$image_post=get_post($image_id);
+
+			if (!$metadata || !$image_post)
+				continue;
 
 			$image=new stdClass();
 			$image->id='image-'.$key;
 			$image->image=wp_get_attachment_image($image_id, $vars['size']);
-			$image->caption=$metadata['image_meta']['caption'];
+			$image->caption=$image_post->post_excerpt;
+			$image->description=$image_post->post_content;
 
 			$images[]=$image;
 		endforeach;
