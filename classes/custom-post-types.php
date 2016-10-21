@@ -26,6 +26,7 @@ class MDWCustomPostTypes {
 			$page_attributes=false;
 			$hierarchical=false;
 			$comments=false;
+			$icon='dashicons-admin-post';
 
 			extract($post_type);
 
