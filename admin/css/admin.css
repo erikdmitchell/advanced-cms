@@ -98,6 +98,7 @@
 	margin-left: 30px;
 }
 .mdw-cms-fields-wrapper .field-row label,
+.mdw-cms-fields-wrapper .field-options label,
 .mdw-cms-fields-wrapper .field-options .option-row label {
 	vertical-align: middle;
 	font-weight: bold;
@@ -120,7 +121,8 @@
 	margin-top: 5px;
 }
 .mdw-cms-fields-wrapper .field-row .field_type,
-.mdw-cms-fields-wrapper .field-options .option-row .options-item {
+.mdw-cms-fields-wrapper .field-options .option-row .options-item,
+.mdw-cms-fields-wrapper .field-options .field-repeatable-check {
 	float: left;
 }
 .mdw-cms-fields-wrapper .field-options .option-row .options-item {
