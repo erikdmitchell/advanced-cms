@@ -40,9 +40,10 @@ jQuery(document).ready(function($) {
 
 	// display field data on load //
 	$('.mdw-cms-fields-wrapper').each(function() {
-		var ddValue=$(this).find('.field_type').val();
-console.log(ddValue);
+		var ddValue=$(this).find('.field-type').val();
+
 		$(this).find('.type').each(function() {
+
 			if ($(this).data('field-type')==ddValue) {
 				$(this).show();
 			} else {
