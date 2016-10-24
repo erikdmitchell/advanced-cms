@@ -82,7 +82,7 @@ class MDWCMSgui {
 					$type='Post Type';
 					break;
 				case 'mb' :
-					$type='MEtabox';
+					$type='Metabox';
 					break;
 				case 'tax':
 					$type='Taxonomy';
