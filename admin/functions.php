@@ -115,4 +115,36 @@ function mdw_cms_admin_metabox_fields($fields='') {
 		endforeach;
 	endif;
 }
+
+/**
+ * mdw_cms_setup_metabox_row function.
+ *
+ * @access public
+ * @param string $args (default: '')
+ * @return void
+ */
+function mdw_cms_setup_metabox_row($args='') {
+	$default_args=array(
+		'field_id' => 0,
+		'order' => 0,
+		'classes' => '',
+		'repeatable' => '',
+		'field_description' => '',
+		'field_type' => '',
+		'field_label' => '',
+		'repeatable_checked' => '',
+		'clean_format' => '',
+	);
+	$args=wp_parse_args($args, $default_args);
+
+	// is field repeatable? //
+	if (isset($args['repeatable']) && $args['repeatable'])
+		$args['repeatable_checked']='checked="checked"';
+
+	// setup field format if found //
+	if (isset($args['format']['value']))
+		$args['clean_format']=$args['format']['value'];
+
+	return $args;
+}
 ?>

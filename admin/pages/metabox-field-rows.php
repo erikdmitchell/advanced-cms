@@ -1,30 +1,7 @@
 <?php
 global $MDWMetaboxes, $mdw_cms_admin, $mdw_cms_metabox_args;
 
-$default_args=array(
-	'field_id' => 0,
-	'order' => 0,
-	'classes' => '',
-	'repeatable' => '',
-	'field_description' => '',
-	'field_type' => '',
-	'field_label' => '',
-);
-$args=wp_parse_args($attributes, $default_args);
-
-// is field repeatable? //
-if (isset($args['repeatable']) && $args['repeatable']) :
-	$repeatable_checked='checked="checked"';
-else :
-	$repeatable_checked='';
-endif;
-
-// setup field format if found //
-if (isset($args['format']['value'])) :
-	$format=$args['format']['value'];
-else :
-	$format='';
-endif;
+$args=mdw_cms_setup_metabox_row($attributes);
 ?>
 
 <div class="sortable mdw-cms-fields-wrapper <?php echo $args['classes']; ?>" id="fields-wrapper-<?php echo $args['field_id']; ?>">
@@ -56,7 +33,7 @@ endif;
 								<label for="repeatable">Repeatable</label>
 							</div>
 							<div class="field-repeatable-check">
-								<input type="checkbox" name="fields[<?php echo $args['field_id']; ?>][repeatable]" value="1" class="repeatable-box name-item" <?php echo $repeatable_checked; ?> />
+								<input type="checkbox" name="fields[<?php echo $args['field_id']; ?>][repeatable]" value="1" class="repeatable-box name-item" <?php echo $args['repeatable_checked']; ?> />
 							</div>
 						</div>
 					<?php endif; ?>
@@ -93,7 +70,7 @@ endif;
 								<label for="format">Format</label>
 							</div>
 							<div class="field-format-check">
-								<input type="text" name="fields[<?php echo $args['field_id']; ?>][format][value]" class="options-item value" value="<?php echo $format; ?>" />
+								<input type="text" name="fields[<?php echo $args['field_id']; ?>][format][value]" class="options-item value" value="<?php echo $args['clean_format']; ?>" />
 							</div>
 						</div>
 					<?php endif; ?>
