@@ -56,7 +56,6 @@ class MDWCMSgui {
 	public function scripts_styles($hook) {
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-sortable');
-		wp_enqueue_script('mdw-cms-gui-mb-script',plugins_url('/js/mb.js',__FILE__), array('jquery'),'1.0.0',true);
 		wp_enqueue_script('namecheck-script',plugins_url('/js/jquery.namecheck.js',__FILE__), array('jquery'), '0.1.0');
 		wp_enqueue_script('metabox-id-check-script',plugins_url('/js/jquery.metabox-id-check.js',__FILE__), array('jquery'), '0.1.0');
 		wp_enqueue_script('taxonomy-id-check-script',plugins_url('/js/jquery.taxonomy-id-check.js',__FILE__), array('jquery'), '0.1.0');

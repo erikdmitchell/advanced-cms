@@ -102,10 +102,18 @@
 	vertical-align: middle;
 	font-weight: bold;
 	color: #23282d;
-	width: 150px;
+	width: 200px;
 	display: inline-block;
 	float: left;
 	margin-top: 3px;
+}
+.mdw-cms-fields-wrapper input.field-label,
+.mdw-cms-fields-wrapper select.field-type,
+.mdw-cms-fields-wrapper input.field-description {
+	width: 502px;
+}
+.mdw-cms-fields-wrapper input.field-id {
+	width: 394px;
 }
 .mdw-cms-fields-wrapper .field-options .option-row label {
 	width: 50px;

@@ -8,9 +8,15 @@ $args=mdw_cms_setup_metabox_row($attributes);
 	<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
 
 	<div class="field-row">
+		<label for="field_label">Field Label</label>
+
+		<input type="text" name="fields[<?php echo $args['field_id']; ?>][field_label]" class="field_type field-label" value="<?php echo $args['field_label']; ?>" />
+	</div>
+
+	<div class="field-row">
 		<label for="field_type">Field Type</label>
 
-		<select class="field_type name-item" name="fields[<?php echo $args['field_id']; ?>][field_type]">
+		<select class="field_type field-type" name="fields[<?php echo $args['field_id']; ?>][field_type]">
 			<option value=0>Select One</option>
 			<?php foreach ($MDWMetaboxes->fields as $field_type => $setup) : ?>
 				<option value="<?php echo $field_type; ?>" <?php selected($args['field_type'], $field_type); ?>><?php echo $field_type; ?></option>
@@ -18,15 +24,11 @@ $args=mdw_cms_setup_metabox_row($attributes);
 		</select>
 	</div>
 
-	<div class="field-row">
-		<label for="field_label">Label</label>
-
-		<input type="text" name="fields[<?php echo $args['field_id']; ?>][field_label]" class="field_type name-item" value="<?php echo $args['field_label']; ?>" />
-	</div>
-
 		<div class="field-options" id="">
 			<?php foreach ($MDWMetaboxes->fields as $field_type => $setup) : ?>
+<?php //print_r($setup); ?>
 				<div class="type" data-field-type="<?php echo $field_type; ?>">
+
 					<?php if ($setup['repeatable']) : ?>
 						<div class="field repeatable row">
 							<div class="field-repeatable-label">
@@ -81,14 +83,14 @@ $args=mdw_cms_setup_metabox_row($attributes);
 	<div class="field-row">
 		<label for="field_description">Field Description</label>
 
-		<input type="text" name="fields[<?php echo $args['field_id']; ?>][field_description]" class="field_type long-text name-item" value="<?php echo $args['field_description']; ?>" />
+		<input type="text" name="fields[<?php echo $args['field_id']; ?>][field_description]" class="field_type field-description" value="<?php echo $args['field_description']; ?>" />
 	</div>
 
 	<div class="field-row">
 		<label for="field_id">Field ID</label>
 
 		<div class="gen-field-id">
-			<input type="text" readonly="readonly" class="field_type long-text" value="<?php echo $MDWMetaboxes->generate_field_id($mdw_cms_metabox_args['prefix'], $args['field_label'], $args['field_id']); ?>" /> <span class="description">(use as meta key)</span>
+			<input type="text" readonly="readonly" class="field_type field-id" value="<?php echo $MDWMetaboxes->generate_field_id($mdw_cms_metabox_args['prefix'], $args['field_label'], $args['field_id']); ?>" /> <span class="description">(use as meta key)</span>
 		</div>
 	</div>
 
