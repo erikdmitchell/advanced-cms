@@ -24,6 +24,7 @@ class MDWCustomPostTypes {
 			$editor=false;
 			$revisions=false;
 			$page_attributes=false;
+			$excerpt=false;
 			$hierarchical=false;
 			$comments=false;
 			$icon='dashicons-admin-post';
@@ -45,6 +46,9 @@ class MDWCustomPostTypes {
 
 			if ($page_attributes)
 				$supports[]='page-attributes';
+
+			if ($excerpt)
+				$supports[]='excerpt';
 
 			if ($comments)
 				$supports[]='comments';

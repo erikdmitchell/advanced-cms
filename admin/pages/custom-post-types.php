@@ -1,39 +1,44 @@
 <?php
-	global $mdw_cms_admin;
+global $mdw_cms_admin;
 
-	$base_url=admin_url('tools.php?page=mdw-cms&tab=mdw-cms-cpt');
-	$btn_text='Create';
-	$name=null;
-	$label=null;
-	$singular_label=null;
-	$description=null;
-	$title=1;
-	$thumbnail=1;
-	$editor=1;
-	$revisions=1;
-	$hierarchical=0;
-	$page_attributes=0;
-	$id=-1;
-	$comments=0;
-	$title='Add New Custom Post Type';
-	$icon='dashicons-admin-post';
+$default_args=array(
+	'base_url' => admin_url('tools.php?page=mdw-cms&tab=mdw-cms-cpt'),
+	'btn_text' => 'Create',
+	'name' => '',
+	'label' => '',
+	'singular_label' => '',
+	'description' => '',
+	'title' => 1,
+	'thumbnail' => 1,
+	'editor' => 1,
+	'revisions' => 1,
+	'hierarchical' => 0,
+	'page_attributes' => 0,
+	'excerpt' => 0,
+	'id' => -1,
+	'comments' => 0,
+	'title' => 'Add New Custom Post Type',
+	'icon' => 'dashicons-admin-post',
+);
 
-	// edit custom post type //
-	if (isset($_GET['edit']) && $_GET['edit']=='cpt') :
-		foreach ($mdw_cms_admin->options['post_types'] as $key => $cpt) :
-			if ($cpt['name']==$_GET['slug']) :
-				extract($mdw_cms_admin->options['post_types'][$key]);
-				$id=$key;
-				$title='Edit Post Type';
-			endif;
-		endforeach;
-	endif;
+extract($default_args);
 
-	if ($id!=-1)
-		$btn_text='Update';
+// edit custom post type //
+if (isset($_GET['edit']) && $_GET['edit']=='cpt') :
+	foreach ($mdw_cms_admin->options['post_types'] as $key => $cpt) :
+		if ($cpt['name']==$_GET['slug']) :
+			extract($mdw_cms_admin->options['post_types'][$key]);
+			$id=$key;
+			$title='Edit Post Type';
+		endif;
+	endforeach;
+endif;
+
+if ($id!=-1)
+	$btn_text='Update';
 ?>
 
-<h3><?php echo $title; ?></h3>
+<h3><?php echo $title; ?> <a href="<?php echo $base_url; ?>" class="page-title-action">Add New</a></h3>
 
 <div class="left-col">
 	<form class="custom-post-types" method="post">
@@ -114,8 +119,8 @@
 					</th>
 					<td>
 					<select name="editor" id="editor" >
-						<option value="1" <?php selected($editor,1); ?>>True</option>
-						<option value="0" <?php selected($editor,0); ?>>False</option>
+						<option value="1" <?php selected($editor, 1); ?>>True</option>
+						<option value="0" <?php selected($editor, 0); ?>>False</option>
 					</select>
 					<span class="example">(default True)</span>
 					</td>
@@ -127,8 +132,8 @@
 					</th>
 					<td>
 						<select name="revisions" id="revisions">
-							<option value="1" <?php selected($revisions,1); ?>>True</option>
-							<option value="0" <?php selected($revisions,0); ?>>False</option>
+							<option value="1" <?php selected($revisions, 1); ?>>True</option>
+							<option value="0" <?php selected($revisions, 0); ?>>False</option>
 						</select>
 						<span class="example">(default True)</span>
 					</td>
@@ -140,8 +145,8 @@
 					</th>
 					<td>
 						<select name="hierarchical" id="hierarchical">
-							<option value="1" <?php selected($hierarchical,1); ?>>True</option>
-							<option value="0" <?php selected($hierarchical,0); ?>>False</option>
+							<option value="1" <?php selected($hierarchical, 1); ?>>True</option>
+							<option value="0" <?php selected($hierarchical, 0); ?>>False</option>
 						</select>
 						<span class="example">(default False)</span>
 						<p class="description">
@@ -157,8 +162,22 @@
 					</th>
 					<td>
 						<select name="page_attributes" id="page_attributes">
-							<option value="1" <?php selected($page_attributes,1); ?>>True</option>
-							<option value="0" <?php selected($page_attributes,0); ?>>False</option>
+							<option value="1" <?php selected($page_attributes, 1); ?>>True</option>
+							<option value="0" <?php selected($page_attributes, 0); ?>>False</option>
+						</select>
+
+						<span class="example">(default False)</span>
+					</td>
+				</tr>
+
+				<tr>
+					<th scope="row">
+						<label for="excerpt" class="">Excerpt</label>
+					</th>
+					<td>
+						<select name="excerpt" id="has_excerpt">
+							<option value="1" <?php selected($excerpt, 1); ?>>True</option>
+							<option value="0" <?php selected($excerpt, 0); ?>>False</option>
 						</select>
 
 						<span class="example">(default False)</span>
@@ -171,8 +190,8 @@
 					</th>
 					<td>
 						<select name="comments" id="comments">
-							<option value="1" <?php selected($comments,1); ?>>True</option>
-							<option value="0" <?php selected($comments,0); ?>>False</option>
+							<option value="1" <?php selected($comments, 1); ?>>True</option>
+							<option value="0" <?php selected($comments, 0); ?>>False</option>
 						</select>
 
 						<span class="example">(default False)</span>
