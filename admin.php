@@ -127,7 +127,7 @@ class MDWCMSgui {
 		$tabs=array(
 			'cms-main' => 'Main',
 			'mdw-cms-cpt' => 'Custom Post Types',
-			'mdw-cms-metaboxes' => 'Metaboxes',
+			'metaboxes' => 'Metaboxes',
 			'mdw-cms-tax' => 'Custom Taxonomies'
 		);
 
@@ -160,7 +160,7 @@ class MDWCMSgui {
 				case 'mdw-cms-cpt':
 					echo mdw_cms_get_template('custom-post-types');
 					break;
-				case 'mdw-cms-metaboxes':
+				case 'metaboxes':
 					echo mdw_cms_get_template('metaboxes');
 					break;
 				case 'mdw-cms-tax':

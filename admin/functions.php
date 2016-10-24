@@ -58,4 +58,30 @@ function mdw_cms_parse_args( &$a, $b ) {
 
 	return $result;
 }
+
+/**
+ * is_mdw_cms_admin_page function.
+ *
+ * @access public
+ * @return void
+ */
+function is_mdw_cms_admin_page() {
+	if (isset($_GET['page']) && $_GET['page']=='mdw-cms')
+		return true;
+
+	return false;
+}
+
+/**
+ * get_mdw_cms_admin_tab function.
+ *
+ * @access public
+ * @return void
+ */
+function get_mdw_cms_admin_tab() {
+	if (isset($_GET['page']) && $_GET['page']=='mdw-cms' && isset($_GET['tab']))
+		return $_GET['tab'];
+
+	return false;
+}
 ?>

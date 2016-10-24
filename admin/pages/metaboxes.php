@@ -1,7 +1,7 @@
 <?php
 global $MDWMetaboxes, $mdw_cms_admin;
 
-$base_url=admin_url('tools.php?page=mdw-cms&tab=mdw-cms-metaboxes');
+$base_url=admin_url('tools.php?page=mdw-cms&tab=metaboxes');
 $btn_text='Create';
 $html=null;
 $mb_id=null;

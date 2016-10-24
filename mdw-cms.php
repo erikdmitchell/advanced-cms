@@ -29,6 +29,7 @@ require_once(plugin_dir_path(__FILE__).'widgets/init.php'); // our widgets
 
 require_once(MDW_CMS_PATH.'shortcodes/init.php'); // our shortcodes
 require_once(MDW_CMS_PATH.'functions.php'); // contains misc functions
+require_once(MDW_CMS_PATH.'init.php'); // init type functions
 
 /**
  * runs our update functions
