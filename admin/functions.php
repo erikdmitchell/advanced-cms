@@ -97,17 +97,22 @@ function mdw_cms_admin_metabox_fields($fields='') {
 
 	$field_counter=0;
 	$field_id=0;
+	$field='';
 
-	foreach ($fields as $field_id => $field) :
-		if (isset($field['field_id'])) :
-			$field_id=$field['field_id'];
-		else :
-			$field_id=0;
-		endif;
-
+	if (empty($fields)) :
 		$mdw_cms_admin->build_field_rows($field_id, $field, $field_counter);
+	else :
+		foreach ($fields as $field_id => $field) :
+			if (isset($field['field_id'])) :
+				$field_id=$field['field_id'];
+			else :
+				$field_id=0;
+			endif;
 
-		$field_counter++;
-	endforeach;
+			$mdw_cms_admin->build_field_rows($field_id, $field, $field_counter);
+
+			$field_counter++;
+		endforeach;
+	endif;
 }
 ?>
