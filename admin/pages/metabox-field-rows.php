@@ -85,7 +85,7 @@ echo '</pre>';
 								<label for="format">Format</label>
 							</div>
 							<div class="field-format-check">
-								<input type="text" name="fields[<?php echo $args['field_id']; ?>][format][value]" class="options-item value" value="<?php echo $format; ?>" />
+								<input type="text" name="fields[<?php echo $args['field_id']; ?>][format][value]" class="options-item value" value="<?php echo $args['format']; ?>" />
 							</div>
 						</div>
 					<?php endif; ?>
