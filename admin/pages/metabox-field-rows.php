@@ -25,10 +25,6 @@ if (isset($args['format']['value'])) :
 else :
 	$format='';
 endif;
-
-echo '<pre>';
-print_r($args);
-echo '</pre>';
 ?>
 
 <div class="sortable mdw-cms-fields-wrapper <?php echo $args['classes']; ?>" id="fields-wrapper-<?php echo $args['field_id']; ?>">

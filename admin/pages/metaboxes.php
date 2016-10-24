@@ -1,7 +1,5 @@
 <?php global $mdw_cms_admin, $mdw_cms_metabox_args; ?>
-<pre>
-	<?php print_r($mdw_cms_metabox_args); ?>
-</pre>
+
 <h3><?php echo $mdw_cms_metabox_args['title']; ?></h3>
 
 <div class="left-col">
