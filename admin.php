@@ -188,13 +188,11 @@ class MDWCMSgui {
 	 */
 	function build_field_rows($field_id='', $field='', $order=0, $classes='') {
 		// prep vars to pass //
-		$attributes=array();
-		$attributes['field_id']=$field_id;
-		$attributes['field']=$field;
-		$attributes['order']=$order;
-		$attributes['classes']=$classes;
+		$field['field_id']=$field_id;
+		$field['order']=$order;
+		$field['classes']=$classes;
 
-		echo mdw_cms_get_template('metabox-field-rows', $attributes);
+		echo mdw_cms_get_template('metabox-field-rows', $field);
 	}
 
 	/**
@@ -204,6 +202,7 @@ class MDWCMSgui {
 	 * @return void
 	 */
 	public function update_metaboxes() {
+
 		if (!isset($_POST['mdw_cms_admin']) || !wp_verify_nonce($_POST['mdw_cms_admin'], 'update_metaboxes'))
 			return false;
 
@@ -239,7 +238,7 @@ class MDWCMSgui {
 				if (!$field['field_type']) :
 					unset($data['fields'][$key]);
 				else :
-					$data['fields'][$key]['field_id']=$MDWMetaboxes->generate_field_id($prefix,$field['field_label']); // add id
+					$data['fields'][$key]['field_id']=$MDWMetaboxes->generate_field_id($prefix, $field['field_label']); // add id
 					// remove empty options fields //
 					if (isset($field['options'])) :
 						unset($data['fields'][$key]['options']['default']);
@@ -278,7 +277,7 @@ class MDWCMSgui {
 		update_option('mdw_cms_metaboxes', $metaboxes);
 
 		$url=$this->admin_url(array(
-			'tab' => 'mdw-cms-metaboxes',
+			'tab' => 'metaboxes',
 			'edit' => 'mb',
 			'mb_id' => $data['mb_id'],
 			'updated' => 1
@@ -370,6 +369,7 @@ class MDWCMSgui {
 			'public' => true
 		);
 		$post_types_arr=get_post_types($args);
+		$selected_pt=(array) $selected_pt;
 
 		$html.='<tr class="post-type-list-admin">';
 			$html.='<th scope="row">';
@@ -386,7 +386,7 @@ class MDWCMSgui {
 						$class='';
 					endif;
 
-					if ($selected_pt && in_array($type, $selected_pt)) :
+					if ($selected_pt && in_array($type, (array) $selected_pt)) :
 						$checked='checked=checked';
 					else :
 						$checked=null;

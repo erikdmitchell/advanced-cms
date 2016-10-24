@@ -50,7 +50,7 @@ function mdw_cms_parse_args( &$a, $b ) {
 	$result = $b;
 	foreach ( $a as $k => &$v ) {
 		if ( is_array( $v ) && isset( $result[ $k ] ) ) {
-			$result[ $k ] = meks_wp_parse_args( $v, $result[ $k ] );
+			$result[ $k ] = mdw_cms_parse_args( $v, $result[ $k ] );
 		} else {
 			$result[ $k ] = $v;
 		}
@@ -83,5 +83,31 @@ function get_mdw_cms_admin_tab() {
 		return $_GET['tab'];
 
 	return false;
+}
+
+/**
+ * mdw_cms_admin_metabox_fields function.
+ *
+ * @access public
+ * @param string $fields (default: '')
+ * @return void
+ */
+function mdw_cms_admin_metabox_fields($fields='') {
+	global $mdw_cms_admin;
+
+	$field_counter=0;
+	$field_id=0;
+
+	foreach ($fields as $field_id => $field) :
+		if (isset($field['field_id'])) :
+			$field_id=$field['field_id'];
+		else :
+			$field_id=0;
+		endif;
+
+		$mdw_cms_admin->build_field_rows($field_id, $field, $field_counter);
+
+		$field_counter++;
+	endforeach;
 }
 ?>
