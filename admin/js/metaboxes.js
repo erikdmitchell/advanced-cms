@@ -59,9 +59,11 @@ jQuery(document).ready(function($) {
 		var $fieldsWrapper=$(this).closest('.mdw-cms-fields-wrapper');
 		var $fieldOptions=$fieldsWrapper.find('.field-options');
 		var ddValue=$(this).val();
-console.log('field data type change');
+
 		$fieldOptions.find('.type').each(function() {
+
 			if ($(this).data('field-type')==ddValue) {
+				$fieldOptions.show();
 				$(this).show();
 			} else {
 				$(this).hide();
@@ -73,7 +75,6 @@ console.log('field data type change');
 	 * adds a new field to our metabox
 	 */
 	$('#add-field-btn').on('click', function() {
-console.log('add field btn clicked');
 		$(this).duplicateMetaboxField();
 	});
 
