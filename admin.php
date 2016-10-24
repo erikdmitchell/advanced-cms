@@ -201,7 +201,6 @@ class MDWCMSgui {
 	 * @return void
 	 */
 	public function update_metaboxes() {
-
 		if (!isset($_POST['mdw_cms_admin']) || !wp_verify_nonce($_POST['mdw_cms_admin'], 'update_metaboxes'))
 			return false;
 
@@ -282,8 +281,8 @@ class MDWCMSgui {
 			'updated' => 1
 		));
 
-		wp_redirect($url);
-		exit();
+		//wp_redirect($url);
+		//exit();
 
 		return;
 	}
