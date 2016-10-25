@@ -41,7 +41,7 @@ $args=mdw_cms_setup_metabox_row($attributes);
 					<?php endif; ?>
 
 					<?php if ($setup['options']) : ?>
-						<div class="field options" id="field-options-<?php echo $field_id; ?>">
+						<div class="field options" id="field-options-<?php echo $args['order']; ?>">
 							<label for="options">Options</label>
 
 							<?php if (isset($field['options']) && !empty($field['options'])) : ?>
