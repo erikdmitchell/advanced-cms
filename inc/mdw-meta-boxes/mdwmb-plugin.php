@@ -724,7 +724,8 @@ class MDWMetaboxes {
 
 		//$this->build_duplicated_boxes($post_id); // must do here again b/c this action is added before we have all the info
 		$this->add_custom_fields(); // method for adding custom metabox fields outside the cms // -- this is added here as well for proper saving
-
+echo '<pre>';
+print_r($_POST);
 		// cycle through config fields and find matches //
 		$_post_type=get_post_type($post_id);
 		foreach ($this->config as $config) :
@@ -738,14 +739,14 @@ class MDWMetaboxes {
 			foreach ($config['fields'] as $id => $field) :
 				$data=null;
 				$field_id=$prefix.'_'.$id;
-
+//print_r($field);
 				if (isset($field['field_id']))
 					$field_id=$field['field_id'];
 
 				if (isset($_POST[$field_id])):
 					$data=$_POST[$field_id]; // submitted value //
 				endif;
-
+print_r($data);
 				// fix notices on unchecked check boxes //
 				//if (get_post_meta($post_id, $field['id']) == "") :
 				//	add_post_meta($post_id, $field['id'], $data, true);
@@ -780,6 +781,8 @@ class MDWMetaboxes {
 			endif;
 
 		endforeach;
+echo '</pre>';
+//exit;
 	}
 
 	/**

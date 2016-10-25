@@ -326,4 +326,34 @@ function mdw_cms_get_field_template($template_name='', $atts='', $value='') {
 
 	return $html;
 }
+
+/**
+ * mdw_cms_checked_checkbox function.
+ *
+ * @access public
+ * @param mixed $checked
+ * @param bool $current (default: true)
+ * @param bool $echo (default: true)
+ * @return void
+ */
+function mdw_cms_checked_checkbox($checked, $current=true, $echo=true) {
+	$type='checked';
+
+	if (is_serialized($checked))
+		$checked=unserialize($checked);
+
+	if (!is_array($checked))
+		$checked=explode(',', $checked);
+
+	if (in_array($current, $checked)) :
+		$result=" $type='$type'";
+	else :
+		$result='';
+	endif;
+
+	if ($echo)
+		echo $result;
+
+	return $result;
+}
 ?>
