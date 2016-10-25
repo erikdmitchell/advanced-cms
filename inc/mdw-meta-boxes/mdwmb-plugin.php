@@ -243,13 +243,16 @@ class MDWMetaboxes {
 	}
 
 	/**
+	 * mdwmb_add_meta_box function.
+	 *
 	 * creates the actual metabox itself using the id and title from the config file and attaches it to the post type
-	 * callback: generate_meta_box_fields
-	**/
-	function mdwmb_add_meta_box() {
+	 *
+	 * @access public
+	 * @return void
+	 */
+	public function mdwmb_add_meta_box() {
 		global $config_id,$post;
 
-		//$this->build_duplicated_boxes($post->ID); // must do here b/c we need the post id
 		if (empty($this->config))
 			return false;
 
@@ -258,67 +261,43 @@ class MDWMetaboxes {
 		foreach ($this->config as $key => $config) :
 			$config_id=$config['mb_id']; // for use in our classes function
 
-/*
-			if (isset($config['removable'])) :
-				$removable=$config['removable'];
-			else :
-				$removable=false;
-			endif;
-*/
-
 			foreach ($config['post_types'] as $post_type) :
 		    add_meta_box(
 		    	$config['mb_id'],
 		      __($config['title'],'Upload_Meta_Box'),
-		      array($this,'generate_meta_box_fields'),
+		      array($this, 'generate_meta_box_fields'),
 		      $post_type,
-		      apply_filters("mdw_cms_add_metabox_context_{$config['mb_id']}",'normal'), // normal, advanced, side
-		      apply_filters("mdw_cms_add_metabox_priority_{$config['mb_id']}",'high'), // high, core, default, low (prority)
+		      apply_filters("mdw_cms_add_metabox_context_{$config['mb_id']}", 'normal'), // normal, advanced, side
+		      apply_filters("mdw_cms_add_metabox_priority_{$config['mb_id']}", 'high'), // high, core, default, low (prority)
 		      array(
 		      	'config_key' => $key,
-						//'duplicate' => $config['duplicate'],
 						'meta_box_id' => $config['mb_id'],
-						//'removable' => $removable,
 						'post_id' => $post->ID
 		      )
 		    );
-
-		    //if ($config['duplicate'])
-			    //add_filter('postbox_classes_'.$post_type.'_'.$config['id'],array($this,'add_meta_box_classes'));
-
 	    endforeach;
     endforeach;
 	}
 
 	/**
-	 * adds classes to our meta box
-	**/
-/*
-	function add_meta_box_classes($classes=array()) {
-		global $config_id;
-
-		$classes[]='dupable';
-		$classes[]=$config_id.'-meta-box';
-
-		return $classes;
-	}
-*/
-
-	/**
-	 * cycles through the fields (set in add_field)
-	 * calls the generate_field() function
-	**/
-	function generate_meta_box_fields($post,$metabox) {
+	 * generate_meta_box_fields function.
+	 *
+	 * @access public
+	 * @param mixed $post
+	 * @param mixed $metabox
+	 * @return void
+	 */
+	function generate_meta_box_fields($post, $metabox) {
 		$html=null;
 		$this->fields=null; // this needs to be adjusted for legacy v 1.1.8
 		$row_counter=1;
 
-		wp_enqueue_script('umb-admin',plugins_url('/js/metabox-media-uploader.js',__FILE__),array('jquery'));
+		wp_enqueue_script('umb-admin', plugins_url('/js/metabox-media-uploader.js', __FILE__), array('jquery'));
 
-		wp_nonce_field(plugin_basename( __FILE__ ),$this->nonce);
+		wp_nonce_field(plugin_basename( __FILE__ ), $this->nonce);
 
 		// because our legacy and current setups can be different, we need this function to do our post fields //
-		$this->add_post_fields($this,$metabox,$post->ID);
+		$this->add_post_fields($this, $metabox, $post->ID);
 
 		$html.='<div class="mdw-cms-meta-box umb-meta-box">';
 
@@ -364,13 +343,6 @@ class MDWMetaboxes {
 				endforeach;
 			endif;
 
-/*
-			if ($metabox['args']['duplicate'])
-				$html.='<div class="dup-meta-box"><a href="#" data-meta-id="'.$metabox['args']['meta_box_id'].'">Duplicate Box</a></div>';
-
-			if ($metabox['args']['removable'])
-				$html.='<div class="remove-meta-box"><a href="#" data-meta-id="'.$metabox['args']['meta_box_id'].'" data-post-id="'.$post->ID.'">Remove Box</a></div>';
-*/
 			$html.='<input type="hidden" id="mdw-cms-metabox-id" name="mdw-cms-metabox-id" value="'.$metabox['args']['meta_box_id'].'" />';
 			$html.='<input type="hidden" id="mdw-cms-config-key" name="mdw-cms-config-key" value="'.$metabox['args']['config_key'].'" />';
 			$html.='<input type="hidden" id="mdw-cms-post-id" name="mdw-cms-post-id" value="'.$metabox['args']['post_id'].'" />';
@@ -500,14 +472,7 @@ class MDWMetaboxes {
 				//$html.='<input type="radio" class="'.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" '.checked($value,'on',false).' /> '.$value;
 				break;
 			case 'select' :
-				$html.='<select name="'.$args['id'].'" id="'.$args['id'].'">';
-					$html.='<option>Select One</option>';
-					if (isset($args['options']) && is_array($args['options'])) :
-						foreach ($args['options'] as $option) :
-							$html.='<option value="'.$option['value'].'" '.selected($value,$option['value'],false).'>'.$option['name'].'</option>';
-						endforeach;
-					endif;
-				$html.='</select>';
+				$html.=mdw_cms_get_field_template('select', $args, $value);
 				break;
 			case 'text' :
 				$html.='<input type="text" class="'.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.htmlentities($value).'" />';

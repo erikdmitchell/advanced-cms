@@ -31,10 +31,6 @@ function mdw_cms_get_template_part($template_name='', $atts='') {
 	return $html;
 }
 
-function mdw_cms_dashicons_dropdown($name='', $selected='') {
-
-}
-
 /**
  * mdw_cms_dashicon_grid function.
  *
@@ -299,5 +295,35 @@ function mdw_cms_get_dashicons() {
 	);
 
 	return $dashicons;
+}
+
+/**
+ * mdw_cms_get_field_template function.
+ *
+ * @access public
+ * @param string $template_name (default: '')
+ * @param string $atts (default: '')
+ * @param string $value (default: '')
+ * @return void
+ */
+function mdw_cms_get_field_template($template_name='', $atts='', $value='') {
+	if (empty($template_name))
+		return false;
+
+	ob_start();
+
+	if (file_exists(get_stylesheet_directory().'/mdw-cms/metabox-fields/'.$template_name.'.php')) :
+		include(get_stylesheet_directory().'/mdw-cms/metabox-fields/'.$template_name.'.php');
+	elseif (file_exists(get_template_directory().'/mdw-cms/metabox-fields/'.$template_name.'.php')) :
+		include(get_template_directory().'/mdw-cms/metabox-fields/'.$template_name.'.php');
+	elseif (file_exists(MDW_CMS_PATH.'templates/metabox-fields/'.$template_name.'.php')) :
+		include(MDW_CMS_PATH.'templates/metabox-fields/'.$template_name.'.php');
+	endif;
+
+	$html=ob_get_contents();
+
+	ob_end_clean();
+
+	return $html;
 }
 ?>
