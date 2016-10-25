@@ -130,6 +130,9 @@
 .mdw-cms-fields-wrapper .field-options .field-repeatable-check {
 	float: left;
 }
+.mdw-cms-fields-wrapper .field-options .field-repeatable-check > input {
+	margin-top: 0;
+}
 .mdw-cms-fields-wrapper .field-options .add-option-field-btn {
 	float: right;
 }

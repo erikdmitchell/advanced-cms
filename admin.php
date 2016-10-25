@@ -220,7 +220,7 @@ class MDWCMSgui {
 		$data=$_POST;
 		$metaboxes=get_option('mdw_cms_metaboxes');
 		$edit_key=-1;
-print_r($_POST);
+
 		if (!isset($data['mb_id']) || $data['mb_id']=='')
 			return false;
 
@@ -253,13 +253,14 @@ print_r($_POST);
 					// remove empty options fields //
 					if (isset($field['options'])) :
 
-						foreach ($field['options'] as $key => $option) :
-
-							if (empty($option['name']) || empty($option['value']))
-								unset($field['options'][$key]);
+						foreach ($field['options'] as $_key => $option) :
+							if (empty($option['name']) || empty($option['value']) || $option['name']=='') :
+								unset($field['options'][$_key]);
+							endif;
 						endforeach;
 
-						//$data['fields'][$key]['options']=array_values($data['fields'][$key]['options']);
+						$data['fields'][$key]['options']=$field['options'];
+						$data['fields'][$key]['options']=array_values($data['fields'][$key]['options']);
 					endif;
 
 				endif;
@@ -268,7 +269,7 @@ print_r($_POST);
 
 		if (isset($data['fields']))
 			$arr['fields']=array_values($data['fields']);
-//print_r($arr);
+
 		if (!empty($metaboxes)) :
 			foreach ($metaboxes as $key => $mb) :
 				if ($mb['mb_id']==$data['mb_id']) :
