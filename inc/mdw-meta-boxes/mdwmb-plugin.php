@@ -333,10 +333,13 @@ class MDWMetaboxes {
 
 					$html.='<div id="meta-row-'.$row_counter.'" class="meta-row '.$classes.'" data-input-id="'.$field['id'].'" data-field-type="'.$field['type'].'" data-field-order="'.$field['order'].'">';
 						$html.='<label for="'.$field['id'].'">'.$field['label'].'</label>';
-						$html.=$this->generate_field($field);
 
-						if ($field['duplicate'])
-							$html.='<button type="button" class="ajaxmb-field-btn delete">Delete Field</button>'; // add delete btn
+						$html.='<div class="fields-wrap">';
+							$html.=$this->generate_field($field);
+
+							if ($field['duplicate'])
+								$html.='<button type="button" class="ajaxmb-field-btn delete">Delete Field</button>'; // add delete btn
+						$html.='</div>';
 
 					$html.='</div>';
 					$row_counter++;

@@ -182,7 +182,6 @@ p.submit > #clear-files {
 }
 .mdw-cms-meta-box .field_description {
 	font-style: italic;
-	margin-left: 135px;
 	padding: 3px 0;
 }
 .mdw-cms-meta-box .mdw-cms-meta-box-thumb {
@@ -194,7 +193,9 @@ p.submit > #clear-files {
 	margin-left: 5px;
 	font-style: italic;
 }
-
+.mdw-cms-meta-box .fields-wrap {
+	margin-left: 135px;
+}
 /*
 .ui-datepicker-calendar {
 	display: none;
