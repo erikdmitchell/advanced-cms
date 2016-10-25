@@ -147,6 +147,9 @@
 	height: 30px;
 	margin-left: 150px;
 }
+.mdw-cms-fields-wrapper .remove-field {
+	float: right;
+}
 .wp-core-ui .button-primary.remove-field {
 	background: #d64e07;
 	border-color: #b84609;
