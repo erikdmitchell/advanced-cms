@@ -85,21 +85,17 @@ jQuery(document).ready(function($) {
 
 	// adds a new option field to our metabox element //
 	$('.add-option-field-btn').on('click', function() {
-		var newID=0;
-		var lastFieldID='';
 		var wrapperID=$(this).parent().parent().attr('id');
-		var $clonedElement=$('#'+wrapperID+' #option-row-0').clone();
-
-		$('#'+wrapperID+' .option-row').each(function(i) {
-			newID=i+1;
-			lastFieldID=$(this).attr('id');
-		});
+		var $lastElement=$('#'+wrapperID+' .option-row:last');
+		var $clonedElement=$lastElement.clone();
+		var lastElementID=$lastElement.attr('id').replace('option-row-', '');
+		var newID=parseInt(lastElementID) + 1;
 
 		// clean up and configure our cloned element (classes, ids, etc)
 		var cloneID='option-row-'+newID;
 
 		$clonedElement.attr('id', cloneID);
-		$clonedElement.insertAfter('#'+wrapperID+' #'+lastFieldID);
+		$clonedElement.insertAfter('#'+wrapperID+' #option-row-' + lastElementID);
 
 		// change names //
 		$('#'+cloneID+' .options-item').each(function() {
