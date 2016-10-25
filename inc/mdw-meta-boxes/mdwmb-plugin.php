@@ -28,7 +28,7 @@ class MDWMetaboxes {
 			),
 			'checkbox' => array(
 				'repeatable' => 1,
-				'options' => 0,
+				'options' => 1,
 				'format' => 0,
 			),
 			'colorpicker' => array(
@@ -68,7 +68,7 @@ class MDWMetaboxes {
 			),
 			'radio' => array(
 				'repeatable' => 1,
-				'options' => 0,
+				'options' => 1,
 				'format' => 0,
 			),
 			'select' => array(

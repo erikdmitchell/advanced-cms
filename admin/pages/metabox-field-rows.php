@@ -26,13 +26,13 @@ $args=mdw_cms_setup_metabox_row($attributes);
 		</select>
 	</div>
 
-		<div class="field-row field-options" id="">
+		<div class="field-options" id="">
 			<?php foreach ($MDWMetaboxes->fields as $field_type => $setup) : ?>
 
 				<div class="type" data-field-type="<?php echo $field_type; ?>">
 
 					<?php if ($setup['repeatable']) : ?>
-						<div class="field repeatable row">
+						<div class="field repeatable field-row">
 							<div class="field-repeatable-label">
 								<label for="repeatable">Repeatable</label>
 							</div>
@@ -43,7 +43,7 @@ $args=mdw_cms_setup_metabox_row($attributes);
 					<?php endif; ?>
 
 					<?php if ($setup['options']) : ?>
-						<div class="field options" id="field-options-<?php echo $args['order']; ?>">
+						<div class="field options field-row" id="field-options-<?php echo $args['order']; ?>">
 							<label for="options">Options</label>
 
 							<?php mdw_cms_options_rows($args['options'], $args['order']); ?>
@@ -53,7 +53,7 @@ $args=mdw_cms_setup_metabox_row($attributes);
 					<?php endif; ?>
 
 					<?php if ($setup['format']) : ?>
-						<div class="field format">
+						<div class="field format field-row">
 							<div class="field-format-label">
 								<label for="format">Format</label>
 							</div>

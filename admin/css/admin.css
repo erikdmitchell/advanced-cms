@@ -84,6 +84,7 @@
 ------------------ */
 .mdw-cms-fields-wrapper {
 	margin-bottom: 20px;
+	overflow: hidden;
 }
 .mdw-cms-fields-wrapper .ui-icon {
 	float: left;
