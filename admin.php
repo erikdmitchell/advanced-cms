@@ -165,7 +165,11 @@ class MDWCMSgui {
 			<?php
 			switch ($active_tab) :
 				case 'cms-main':
-					echo mdw_cms_get_template('main');
+					if (isset($_GET['documentation']) && !empty($_GET['documentation'])) :
+						echo mdw_cms_get_doc_template($_GET['documentation']);
+					else :
+						echo mdw_cms_get_template('main');
+					endif;
 					break;
 				case 'mdw-cms-cpt':
 					echo mdw_cms_get_template('custom-post-types');
