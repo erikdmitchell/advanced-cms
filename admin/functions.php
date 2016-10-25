@@ -147,4 +147,51 @@ function mdw_cms_setup_metabox_row($args='') {
 
 	return $args;
 }
+
+function mdw_cms_options_rows($options='', $field_key=0) {
+	echo 	mdw_cms_get_options_rows($options, $field_key);
+}
+
+function mdw_cms_get_options_rows($options='', $field_key=0) {
+	$output=null;
+//print_r($options);
+	if (!empty($options)) :
+		foreach ($field['options'] as $key => $option) :
+			$output.=mdw_cms_generate_option_row(array(
+				'row_id' => $key,
+				'field_key' => $field_key,
+				'name' => $option['name'],
+				'value' => $option['value'],
+			));
+		endforeach;
+	else :
+		$output.=mdw_cms_generate_option_row(array(
+			'field_key' => $field_key,
+		));
+	endif;
+
+	return $output;
+}
+
+function mdw_cms_generate_option_row($args='') {
+	$html=null;
+	$default_args=array(
+		'row_id' => 0,
+		'field_key' => 0,
+		'name' => '',
+		'value' => '',
+	);
+	$args=wp_parse_args($args, $default_args);
+//print_r($args);
+	extract($args);
+
+	$html.='<div class="option-row" id="option-row-'.$row_id.'">';
+		$html.='<label for="options-default-name">Name</label>';
+		$html.='<input type="text" name="fields['.$field_key.'][options]['.$row_id.'][name]" class="options-item name" value="'.$name.'" />';
+		$html.='<label for="options-default-value">Value</label>';
+		$html.='<input type="text" name="fields['.$field_key.'>][options]['.$row_id.'][value]" class="options-item value" value="'.$value.'" />';
+	$html.='</div>';
+
+	return $html;
+}
 ?>

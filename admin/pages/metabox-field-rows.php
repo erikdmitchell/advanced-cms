@@ -3,7 +3,9 @@ global $MDWMetaboxes, $mdw_cms_admin, $mdw_cms_metabox_args;
 
 $args=mdw_cms_setup_metabox_row($attributes);
 ?>
-
+<pre>
+	<?php //print_r($MDWMetaboxes); ?>
+</pre>
 <div class="sortable mdw-cms-fields-wrapper <?php echo $args['classes']; ?>" id="fields-wrapper-<?php echo $args['order']; ?>">
 	<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
 
@@ -44,23 +46,7 @@ $args=mdw_cms_setup_metabox_row($attributes);
 						<div class="field options" id="field-options-<?php echo $args['order']; ?>">
 							<label for="options">Options</label>
 
-							<?php if (isset($field['options']) && !empty($field['options'])) : ?>
-								<?php foreach ($field['options'] as $key => $option) : ?>
-									<div class="option-row" id="option-row-<?php echo $key; ?>">
-										<label for="options-default-name">Name</label>
-										<input type="text" name="fields[<?php echo $args['order']; ?>][options][<?php echo $key; ?>][name]" class="options-item name" value="<?php echo $option['name']; ?>" />
-										<label for="options-default-value">Value</label>
-										<input type="text" name="fields[<?php echo $args['order']; ?>][options][<?php echo $key; ?>][value]" class="options-item value" value="<?php echo $option['value']; ?>" />
-									</div><!-- .option-row -->
-								<?php endforeach; ?>
-							<?php endif; ?>
-
-							<div class="option-row default" id="option-row-default">
-								<label for="options-default-name">Name</label>
-								<input type="text" name="fields[<?php echo $args['order']; ?>][options][default][name]" class="options-item name" value="" />
-								<label for="options-default-value">Value</label>
-								<input type="text" name="fields[<?php echo $args['order']; ?>][options][default][value]" class="options-item value" value="" />
-							</div><!-- .option-row -->
+							<?php mdw_cms_options_rows($args['options'], $args['order']); ?>
 
 							<div class="add-option-field"><input type="button" name="add-option-field" class="add-option-field-btn button button-primary" value="Add Option"></div>
 						</div>
