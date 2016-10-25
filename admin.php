@@ -233,23 +233,36 @@ class MDWCMSgui {
 		// clean fields, if any //
 		if (isset($data['fields'])) :
 			foreach ($data['fields'] as $key => $field) :
-print_r($field);
+//print_r($field);
 				if (!$field['field_type']) :
 					unset($data['fields'][$key]);
 				else :
 					$data['fields'][$key]['field_id']=$MDWMetaboxes->generate_field_id($prefix, $field['field_label']); // add id
+
 					// remove empty options fields //
 					if (isset($field['options'])) :
-						unset($data['fields'][$key]['options']['default']);
-						$data['fields'][$key]['options']=array_values($data['fields'][$key]['options']);
+
+						foreach ($field['options'] as $key => $option) :
+
+							if (empty($option['name']) || empty($option['value']))
+								unset($field['options'][$key]);
+//print_r($data['fields'][$key]['options']);
+						//unset($data['fields'][$key]['options']['default']);
+
+						endforeach;
+//print_r($field['options']);
+//print_r($data['fields'][$key]['options']);
+
+						//$data['fields'][$key]['options']=array_values($data['fields'][$key]['options']);
 					endif;
+
 				endif;
 			endforeach;
 		endif;
 
 		if (isset($data['fields']))
 			$arr['fields']=array_values($data['fields']);
-print_r($arr);
+//print_r($arr);
 		if (!empty($metaboxes)) :
 			foreach ($metaboxes as $key => $mb) :
 				if ($mb['mb_id']==$data['mb_id']) :

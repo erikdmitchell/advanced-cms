@@ -156,7 +156,7 @@ function mdw_cms_get_options_rows($options='', $field_key=0) {
 	$output=null;
 //print_r($options);
 	if (!empty($options)) :
-		foreach ($field['options'] as $key => $option) :
+		foreach ($options as $key => $option) :
 			$output.=mdw_cms_generate_option_row(array(
 				'row_id' => $key,
 				'field_key' => $field_key,
@@ -189,7 +189,7 @@ function mdw_cms_generate_option_row($args='') {
 		$html.='<label for="options-default-name">Name</label>';
 		$html.='<input type="text" name="fields['.$field_key.'][options]['.$row_id.'][name]" class="options-item name" value="'.$name.'" />';
 		$html.='<label for="options-default-value">Value</label>';
-		$html.='<input type="text" name="fields['.$field_key.'>][options]['.$row_id.'][value]" class="options-item value" value="'.$value.'" />';
+		$html.='<input type="text" name="fields['.$field_key.'][options]['.$row_id.'][value]" class="options-item value" value="'.$value.'" />';
 	$html.='</div>';
 
 	return $html;
