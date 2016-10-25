@@ -420,7 +420,17 @@ class MDWMetaboxes {
 				//<input name="geocode" type="button" class="button button-primary button-large" id="cce-company-address-geocode" value="Geocode">
 				break;
 			case 'checkbox':
-				$html.='<input type="checkbox" class="'.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" '.checked($value,'on',false).' />';
+				if (isset($args['options']) && !empty($args['options'])) :
+					foreach ($args['options'] as $option) :
+						$atts=array(
+							'id' => $args['id'],
+							'name' => $option['name'],
+							'value' => $option['value'],
+						);
+
+						$html.=mdw_cms_get_field_template('checkbox', $atts, $value);
+					endforeach;
+				endif;
 				break;
 			case 'colorpicker' :
 				$html.='<input type="text" class="colorPicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
@@ -469,7 +479,7 @@ class MDWMetaboxes {
 				$html.='<input type="text" class="phone '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				break;
 			case 'radio':
-				//$html.='<input type="radio" class="'.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" '.checked($value,'on',false).' /> '.$value;
+				$html.='<input type="radio" class="'.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" '.checked($value,'on',false).' /> '.$value;
 				break;
 			case 'select' :
 				$html.=mdw_cms_get_field_template('select', $args, $value);
