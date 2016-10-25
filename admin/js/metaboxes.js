@@ -94,7 +94,8 @@ jQuery(document).ready(function($) {
 		// change names //
 		$clonedElement.find('.options-item').each(function() {
 			var attrName=$(this).attr('name');
-			var attrNewName=attrName.replace('[0]', '[' + newID + ']');
+			var attrNewName=attrName.replace('[options][' + lastElementID + ']', '[options][' + newID + ']');
+
 			$(this).attr('name', attrNewName);
 			$(this).val(''); // clear values
 		});
