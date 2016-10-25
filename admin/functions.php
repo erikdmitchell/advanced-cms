@@ -128,7 +128,8 @@ function mdw_cms_setup_metabox_row($args='') {
 		'field_id' => 0,
 		'order' => 0,
 		'classes' => '',
-		'repeatable' => '',
+		'repeatable' => false,
+		'options' => '',
 		'field_description' => '',
 		'field_type' => '',
 		'field_label' => '',
@@ -148,13 +149,29 @@ function mdw_cms_setup_metabox_row($args='') {
 	return $args;
 }
 
+/**
+ * mdw_cms_options_rows function.
+ *
+ * @access public
+ * @param string $options (default: '')
+ * @param int $field_key (default: 0)
+ * @return void
+ */
 function mdw_cms_options_rows($options='', $field_key=0) {
 	echo 	mdw_cms_get_options_rows($options, $field_key);
 }
 
+/**
+ * mdw_cms_get_options_rows function.
+ *
+ * @access public
+ * @param string $options (default: '')
+ * @param int $field_key (default: 0)
+ * @return void
+ */
 function mdw_cms_get_options_rows($options='', $field_key=0) {
 	$output=null;
-//print_r($options);
+
 	if (!empty($options)) :
 		foreach ($options as $key => $option) :
 			$output.=mdw_cms_generate_option_row(array(
@@ -173,6 +190,13 @@ function mdw_cms_get_options_rows($options='', $field_key=0) {
 	return $output;
 }
 
+/**
+ * mdw_cms_generate_option_row function.
+ *
+ * @access public
+ * @param string $args (default: '')
+ * @return void
+ */
 function mdw_cms_generate_option_row($args='') {
 	$html=null;
 	$default_args=array(
@@ -182,7 +206,7 @@ function mdw_cms_generate_option_row($args='') {
 		'value' => '',
 	);
 	$args=wp_parse_args($args, $default_args);
-//print_r($args);
+
 	extract($args);
 
 	$html.='<div class="option-row" id="option-row-'.$row_id.'">';

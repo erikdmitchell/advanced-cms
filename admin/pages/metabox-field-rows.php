@@ -3,9 +3,7 @@ global $MDWMetaboxes, $mdw_cms_admin, $mdw_cms_metabox_args;
 
 $args=mdw_cms_setup_metabox_row($attributes);
 ?>
-<pre>
-	<?php //print_r($MDWMetaboxes); ?>
-</pre>
+
 <div class="sortable mdw-cms-fields-wrapper <?php echo $args['classes']; ?>" id="fields-wrapper-<?php echo $args['order']; ?>">
 	<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
 
