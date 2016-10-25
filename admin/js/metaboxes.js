@@ -98,7 +98,7 @@ jQuery(document).ready(function($) {
 		$clonedElement.insertAfter('#'+wrapperID+' #option-row-' + lastElementID);
 
 		// change names //
-		$('#'+cloneID+' .options-item').each(function() {
+		$clonedElement.find('.options-item').each(function() {
 			var attrName=$(this).attr('name');
 			var attrNewName=attrName.replace('[0]', '[' + newID + ']');
 			$(this).attr('name', attrNewName);
