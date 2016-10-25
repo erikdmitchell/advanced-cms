@@ -58,8 +58,6 @@
 	overflow: hidden;
 }
 
-
-
 .mdw-cms-wrap .form-row div.input {
 	padding: 0;
 }
@@ -91,15 +89,12 @@
 	float: left;
 	margin-top: 3px;
 }
-.mdw-cms-fields-wrapper .field-row,
-.mdw-cms-fields-wrapper .field-options {
+.mdw-cms-fields-wrapper .field-row {
 	margin-bottom: 5px;
 	overflow: hidden;
 	margin-left: 30px;
 }
-.mdw-cms-fields-wrapper .field-row label,
-.mdw-cms-fields-wrapper .field-options label,
-.mdw-cms-fields-wrapper .field-options .option-row label {
+.mdw-cms-fields-wrapper .field-row label {
 	vertical-align: middle;
 	font-weight: bold;
 	color: #23282d;
@@ -116,30 +111,39 @@
 .mdw-cms-fields-wrapper input.field-id {
 	width: 394px;
 }
+.mdw-cms-fields-wrapper .field-options .option-row > div {
+	float: left;
+	width: 50%;
+}
+.mdw-cms-fields-wrapper .field-options .option-row .value-field label {
+	margin-left: 10px;
+}
 .mdw-cms-fields-wrapper .field-options .option-row label {
 	width: 50px;
-	margin-top: 5px;
+}
+.mdw-cms-fields-wrapper .field-options .option-row input {
+	width: 190px;
 }
 .mdw-cms-fields-wrapper .field-row .field_type,
 .mdw-cms-fields-wrapper .field-options .option-row .options-item,
 .mdw-cms-fields-wrapper .field-options .field-repeatable-check {
 	float: left;
 }
-.mdw-cms-fields-wrapper .field-options .option-row .options-item {
-	margin-right: 15px;
+.mdw-cms-fields-wrapper .field-options .add-option-field-btn {
+	float: right;
 }
 .mdw-cms-fields-wrapper .field-row .long-text {
 	width: 250px;
 }
 .mdw-cms-fields-wrapper .field-options .option-row {
-	margin-left: 150px;
+	margin-left: 200px;
 	overflow: hidden;
 	margin-bottom: 3px;
 }
 .mdw-cms-fields-wrapper .field-options .add-option-field {
 	overflow: hidden;
-	margin-bottom: 5px;
-	margin-top: 5px;
+	margin-bottom: 10px;
+	margin-top: 10px;
 	height: 30px;
 	margin-left: 150px;
 }

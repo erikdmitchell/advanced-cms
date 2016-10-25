@@ -26,7 +26,7 @@ $args=mdw_cms_setup_metabox_row($attributes);
 		</select>
 	</div>
 
-		<div class="field-options" id="">
+		<div class="field-row field-options" id="">
 			<?php foreach ($MDWMetaboxes->fields as $field_type => $setup) : ?>
 
 				<div class="type" data-field-type="<?php echo $field_type; ?>">

@@ -186,10 +186,15 @@ function mdw_cms_generate_option_row($args='') {
 	extract($args);
 
 	$html.='<div class="option-row" id="option-row-'.$row_id.'">';
-		$html.='<label for="options-default-name">Name</label>';
-		$html.='<input type="text" name="fields['.$field_key.'][options]['.$row_id.'][name]" class="options-item name" value="'.$name.'" />';
-		$html.='<label for="options-default-value">Value</label>';
-		$html.='<input type="text" name="fields['.$field_key.'][options]['.$row_id.'][value]" class="options-item value" value="'.$value.'" />';
+		$html.='<div class="name-field">';
+			$html.='<label for="options-name">Name</label>';
+			$html.='<input type="text" name="fields['.$field_key.'][options]['.$row_id.'][name]" class="options-item name" value="'.$name.'" />';
+		$html.='</div>';
+
+		$html.='<div class="value-field">';
+			$html.='<label for="options-value">Value</label>';
+			$html.='<input type="text" name="fields['.$field_key.'][options]['.$row_id.'][value]" class="options-item value" value="'.$value.'" />';
+		$html.='</div>';
 	$html.='</div>';
 
 	return $html;
