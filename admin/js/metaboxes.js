@@ -61,7 +61,6 @@ jQuery(document).ready(function($) {
 		var ddValue=$(this).val();
 
 		$fieldOptions.find('.type').each(function() {
-
 			if ($(this).data('field-type')==ddValue) {
 				$fieldOptions.show();
 				$(this).show();
@@ -89,7 +88,7 @@ jQuery(document).ready(function($) {
 		var newID=0;
 		var lastFieldID='';
 		var wrapperID=$(this).parent().parent().attr('id');
-		var $clonedElement=$('#'+wrapperID+' #option-row-default').clone();
+		var $clonedElement=$('#'+wrapperID+' #option-row-0').clone();
 
 		$('#'+wrapperID+' .option-row').each(function(i) {
 			newID=i+1;
@@ -99,15 +98,18 @@ jQuery(document).ready(function($) {
 		// clean up and configure our cloned element (classes, ids, etc)
 		var cloneID='option-row-'+newID;
 
-		$clonedElement.removeClass('default');
-		$clonedElement.attr('id',cloneID);
+		$clonedElement.attr('id', cloneID);
 		$clonedElement.insertAfter('#'+wrapperID+' #'+lastFieldID);
 
+		// change names //
 		$('#'+cloneID+' .options-item').each(function() {
 			var attrName=$(this).attr('name');
-			var attrNewName=attrName.replace('default',newID);
-			$(this).attr('name',attrNewName);
+			var attrNewName=attrName.replace('[0]', '[' + newID + ']');
+			$(this).attr('name', attrNewName);
+			$(this).val(''); // clear values
 		});
+
+
 	});
 
 });
