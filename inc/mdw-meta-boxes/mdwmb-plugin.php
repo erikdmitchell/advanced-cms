@@ -104,18 +104,18 @@ class MDWMetaboxes {
 		);
 		$this->config=$this->setup_config($config); // set our config
 
-		add_action('admin_enqueue_scripts',array($this,'register_admin_scripts_styles'));
-		add_action('wp_enqueue_scripts',array($this,'register_scripts_styles'));
-		add_action('save_post',array($this,'save_custom_meta_data'));
-		add_action('add_meta_boxes',array($this,'mdwmb_add_meta_box'));
+		add_action('admin_enqueue_scripts', array($this, 'register_admin_scripts_styles'));
+		add_action('wp_enqueue_scripts', array($this, 'register_scripts_styles'));
+		add_action('save_post', array($this, 'save_custom_meta_data'));
+		add_action('add_meta_boxes', array($this, 'mdwmb_add_meta_box'));
 
-		add_action('wp_ajax_duplicate_metabox_field',array($this,'ajax_duplicate_metabox_field'));
-		add_action('wp_ajax_remove_duplicate_metabox_field',array($this,'ajax_remove_duplicate_metabox_field'));
-		add_action('wp_ajax_mdw_cms_gallery_update',array($this,'ajax_mdw_cms_gallery_update'));
+		add_action('wp_ajax_duplicate_metabox_field', array($this, 'ajax_duplicate_metabox_field'));
+		add_action('wp_ajax_remove_duplicate_metabox_field' ,array($this, 'ajax_remove_duplicate_metabox_field'));
+		add_action('wp_ajax_mdw_cms_gallery_update', array($this, 'ajax_mdw_cms_gallery_update'));
 
-		add_filter('media_view_settings',array($this,'media_view_settings'),10,2);
+		add_filter('media_view_settings', array($this, 'media_view_settings'), 10, 2);
 
-		add_action('admin_init',array($this,'add_metaboxes_to_global'));
+		add_action('admin_init', array($this, 'add_metaboxes_to_global'));
 	}
 
 	/**
@@ -585,7 +585,7 @@ class MDWMetaboxes {
 	 							value (of field)
 	 * because we allow multiple configs now, we must use legacy support (1 config) and expand to allow for multi configs (pre 1.1.8)
 	**/
-	public function add_field($args,$meta_id=false) {
+	public function add_field($args, $meta_id=false) {
 		if (count($this->config)==1) :
 			$prefix=$this->config[0]['prefix'];
 		else :
@@ -618,7 +618,7 @@ class MDWMetaboxes {
 	 * @param bool $field_id (default: false)
 	 * @return $id
 	 */
-	function generate_field_id($prefix=false,$label=false,$field_id=false) {
+	function generate_field_id($prefix=false, $label=false, $field_id=false) {
 		$id=null;
 
 		if (!$prefix || !$label)
@@ -640,8 +640,9 @@ class MDWMetaboxes {
 	 * this allows us to generate our fields with a passed array
 	 * added 1.1.8
 	**/
-	function add_fields_array($arr,$meta_id) {
+	function add_fields_array($arr, $meta_id) {
 		$fields_counter=0;
+
 		foreach ($arr as $id => $values) :
 			$options=false;
 			$repeatable=0;
@@ -676,7 +677,7 @@ class MDWMetaboxes {
 				'field_description' => $description
 			);
 
-			$this->add_field($args,$meta_id);
+			$this->add_field($args, $meta_id);
 			$fields_counter++;
 		endforeach;
 	}
@@ -818,6 +819,7 @@ class MDWMetaboxes {
 			endif;
 
 			$config['prefix']=$this->check_config_prefix($config['prefix']); // makes sure our prefix starts with '_'
+
 			$configs[$key]=$config;
 		endforeach;
 
