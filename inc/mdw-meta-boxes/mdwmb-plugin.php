@@ -479,7 +479,17 @@ class MDWMetaboxes {
 				$html.='<input type="text" class="phone '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				break;
 			case 'radio':
-				$html.='<input type="radio" class="'.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" '.checked($value,'on',false).' /> '.$value;
+				if (isset($args['options']) && !empty($args['options'])) :
+					foreach ($args['options'] as $option) :
+						$atts=array(
+							'id' => $args['id'],
+							'name' => $option['name'],
+							'value' => $option['value'],
+						);
+
+						$html.=mdw_cms_get_field_template('radio', $atts, $value);
+					endforeach;
+				endif;
 				break;
 			case 'select' :
 				$html.=mdw_cms_get_field_template('select', $args, $value);
