@@ -41,15 +41,9 @@ jQuery(document).ready(function($) {
 	// display field data on load //
 	$('.mdw-cms-fields-wrapper').each(function() {
 		var ddValue=$(this).find('.field-type').val();
+		var fieldData=metaboxData.fields[ddValue];
 
-		$(this).find('.type').each(function() {
-
-			if ($(this).data('field-type')==ddValue) {
-				$(this).show();
-			} else {
-				$(this).hide();
-			}
-		});
+		displayFieldOptions($(this), fieldData);
 	});
 
 	/**
@@ -109,6 +103,26 @@ jQuery(document).ready(function($) {
 	});
 
 });
+
+/**
+ * displayFieldOptions function.
+ *
+ * @access public
+ * @param mixed $wrapper
+ * @param mixed data
+ * @return void
+ */
+function displayFieldOptions($wrapper, data) {
+	$wrapper.find('.field-options .field-row').each(function(e) {
+		var classes=jQuery(this).attr('class').split(/\s+/);
+
+		for (var i in classes) {
+			if (classes[i]!='field-row' && typeof data[classes[i]] !== 'undefined' && data[classes[i]]==1) {
+				$wrapper.find('.' + classes[i]).show();
+			}
+		}
+	});
+}
 
 /**
  * our sortable function for our metabox fields

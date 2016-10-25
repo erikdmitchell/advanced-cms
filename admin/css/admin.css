@@ -53,7 +53,7 @@
 }
 
 /* mb */
-.add-fields .field-options .type {
+.add-fields .field-options > div {
 	display: none;
 	overflow: hidden;
 }

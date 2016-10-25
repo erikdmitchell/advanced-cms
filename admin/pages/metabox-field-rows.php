@@ -3,7 +3,9 @@ global $MDWMetaboxes, $mdw_cms_admin, $mdw_cms_metabox_args;
 
 $args=mdw_cms_setup_metabox_row($attributes);
 ?>
-
+<pre>
+	<?php //print_r($args); ?>
+</pre>
 <div class="sortable mdw-cms-fields-wrapper <?php echo $args['classes']; ?>" id="fields-wrapper-<?php echo $args['order']; ?>">
 	<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
 
@@ -24,45 +26,35 @@ $args=mdw_cms_setup_metabox_row($attributes);
 		</select>
 	</div>
 
-		<div class="field-options" id="">
-			<?php foreach ($MDWMetaboxes->fields as $field_type => $setup) : ?>
+	<div class="field-options">
 
-				<div class="type" data-field-type="<?php echo $field_type; ?>">
+		<div class="repeatable field-row">
+			<div class="field-repeatable-label">
+				<label for="repeatable">Repeatable</label>
+			</div>
+			<div class="field-repeatable-check">
+				<input type="checkbox" name="fields[<?php echo $args['order']; ?>][repeatable]" value="1" class="repeatable-box name-item" <?php echo $args['repeatable_checked']; ?> />
+			</div>
+		</div>
 
-					<?php if ($setup['repeatable']) : ?>
-						<div class="field repeatable field-row">
-							<div class="field-repeatable-label">
-								<label for="repeatable">Repeatable</label>
-							</div>
-							<div class="field-repeatable-check">
-								<input type="checkbox" name="fields[<?php echo $args['order']; ?>][repeatable]" value="1" class="repeatable-box name-item" <?php echo $args['repeatable_checked']; ?> />
-							</div>
-						</div>
-					<?php endif; ?>
+		<div class="options field-row" id="field-options-<?php echo $args['order']; ?>">
+			<label for="options">Options</label>
 
-					<?php if ($setup['options']) : ?>
-						<div class="field options field-row" id="field-options-<?php echo $args['order']; ?>">
-							<label for="options">Options</label>
+			<?php mdw_cms_options_rows($args['options'], $args['order']); ?>
 
-							<?php mdw_cms_options_rows($args['options'], $args['order']); ?>
+			<div class="add-option-field"><input type="button" name="add-option-field" class="add-option-field-btn button button-primary" value="Add Option"></div>
+		</div>
 
-							<div class="add-option-field"><input type="button" name="add-option-field" class="add-option-field-btn button button-primary" value="Add Option"></div>
-						</div>
-					<?php endif; ?>
+		<div class="format field-row">
+			<div class="field-format-label">
+				<label for="format">Format</label>
+			</div>
+			<div class="field-format-check">
+				<input type="text" name="fields[<?php echo $args['order']; ?>][format][value]" class="options-item value" value="<?php echo $args['clean_format']; ?>" />
+			</div>
+		</div>
 
-					<?php if ($setup['format']) : ?>
-						<div class="field format field-row">
-							<div class="field-format-label">
-								<label for="format">Format</label>
-							</div>
-							<div class="field-format-check">
-								<input type="text" name="fields[<?php echo $args['order']; ?>][format][value]" class="options-item value" value="<?php echo $args['clean_format']; ?>" />
-							</div>
-						</div>
-					<?php endif; ?>
-				</div>
-			<?php endforeach; ?>
-		</div><!-- .field-options -->
+	</div><!-- .field-options -->
 
 	<div class="field-row">
 		<label for="field_description">Field Description</label>

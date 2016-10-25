@@ -12,7 +12,7 @@ class MDWCMSgui {
 	 * @return void
 	 */
 	public function __construct() {
-		add_action('admin_menu',array($this,'build_admin_menu'));
+		add_action('admin_menu', array($this, 'build_admin_menu'));
 		add_action('admin_enqueue_scripts',array($this,'scripts_styles'));
 		add_action('admin_init','MDWCMSlegacy::setup_legacy_updater');
 		add_action('admin_init', array($this, 'update_post_types'));
@@ -54,6 +54,17 @@ class MDWCMSgui {
 	 * @return void
 	 */
 	public function scripts_styles($hook) {
+		global $MDWMetaboxes;
+
+		wp_register_script('mdw-cms-admin-metaboxes', plugins_url('/admin/js/metaboxes.js', __FILE__), array('jquery'), '0.2.0');
+
+		// localize scripts //
+		$metaboxes_arr=array(
+			'fields' => $MDWMetaboxes->fields,
+		);
+
+		wp_localize_script('mdw-cms-admin-metaboxes', 'metaboxData', $metaboxes_arr);
+
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-sortable');
 		wp_enqueue_script('namecheck-script',plugins_url('/js/jquery.namecheck.js',__FILE__), array('jquery'), '0.1.0');
@@ -62,8 +73,8 @@ class MDWCMSgui {
 		wp_enqueue_script('requiredFields-script',plugins_url('/js/jquery.requiredFields.js',__FILE__), array('jquery'), '0.1.0');
 		wp_enqueue_script('mdw-cms-admin-functions', plugins_url('/admin/js/functions.js', __FILE__), array('jquery'), '0.1.0');
 		wp_enqueue_script('mdw-cms-admin-post-types', plugins_url('/admin/js/post-types.js', __FILE__), array('jquery'), '0.1.0');
-		wp_enqueue_script('mdw-cms-admin-metaboxes', plugins_url('/admin/js/metaboxes.js', __FILE__), array('jquery'), '0.1.0');
 		wp_enqueue_script('mdw-cms-admin-taxonomies', plugins_url('/admin/js/taxonomies.js', __FILE__), array('jquery'), '0.1.0');
+		wp_enqueue_script('mdw-cms-admin-metaboxes');
 
 		wp_enqueue_style('mdw-cms-admin-style',plugins_url('/admin/css/admin.css',__FILE__));
 	}
@@ -209,7 +220,7 @@ class MDWCMSgui {
 		$data=$_POST;
 		$metaboxes=get_option('mdw_cms_metaboxes');
 		$edit_key=-1;
-
+print_r($_POST);
 		if (!isset($data['mb_id']) || $data['mb_id']=='')
 			return false;
 
@@ -257,7 +268,7 @@ class MDWCMSgui {
 
 		if (isset($data['fields']))
 			$arr['fields']=array_values($data['fields']);
-
+//print_r($arr);
 		if (!empty($metaboxes)) :
 			foreach ($metaboxes as $key => $mb) :
 				if ($mb['mb_id']==$data['mb_id']) :
