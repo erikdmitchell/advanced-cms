@@ -11,7 +11,7 @@
 		</li>
 		<li>
 			<div class="field">Label</div>
-			<div class="description"><span class="type">(icon)</span> the label shown in the admin area</div>
+			<div class="description"><span class="type">(string)</span> the label shown in the admin area</div>
 		</li>
 		<li>
 			<div class="field">Post Type</div>
