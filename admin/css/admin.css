@@ -275,3 +275,7 @@ p.submit > #clear-files {
 .mdw-cms-documentation .custom-post-type-list li .default {
 	font-style: italic;
 }
+.mdw-cms-doc-version {
+	float: right;
+	font-style: italic;
+}

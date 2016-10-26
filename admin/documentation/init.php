@@ -1,4 +1,7 @@
 <?php
+global $mdw_cms_doc_version;
+
+$mdw_cms_doc_version='0.1.1';
 
 /**
  * mdw_cms_load_documentation function.
@@ -161,9 +164,13 @@ function mdw_cms_doc_header($classes='') {
  * @return void
  */
 function mdw_cms_doc_footer() {
+	global $mdw_cms_doc_version;
+
 	$html=null;
 
 	$html.='</div>';
+
+	$html.='<div class="mdw-cms-doc-version">Doc Version '.$mdw_cms_doc_version.'</div>';
 
 	echo $html;
 }
