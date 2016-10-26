@@ -172,7 +172,7 @@ class MDWCMSgui {
 					endif;
 					break;
 				case 'mdw-cms-cpt':
-					echo mdw_cms_get_template('custom-post-types');
+					echo mdw_cms_get_template('post-types');
 					break;
 				case 'metaboxes':
 					echo mdw_cms_get_template('metaboxes');
