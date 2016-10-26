@@ -123,26 +123,30 @@ function mdw_cms_get_doc_template($template_name='', $atts='') {
 	return $html;
 }
 
-function mdw_cms_docs_breadcrumb() {
-	$html=null;
-	$current_page=isset($_GET['documentation']) ? $_GET['documentation'] : '';
-
-	$html.='<span><a href="">Documentation</a></span>';
-	$html.=$current_page;
-
-	return $html;
-}
-
 /**
- * mdw_cms_doc_header function.
+ * mdw_cms_docs_breadcrumb function.
  *
  * @access public
  * @return void
  */
-function mdw_cms_doc_header() {
+function mdw_cms_docs_breadcrumb() {
+	$html=null;
+	$current_page=isset($_GET['documentation']) ? $_GET['documentation'] : '';
+	$doc_url=add_query_arg(array('page' => 'mdw-cms'), admin_url('tools.php'));
+
+	$html.='<div class="mdw-cms-doc-breadcrumb">';
+		$html.='<span class="first"><a href="'.$doc_url.'">Documentation</a></span>';
+		$html.='<span class="sep">&rsaquo;</span>';
+		$html.='<span class="last">'.mdw_cms_docs_page_name($current_page).'</span>';
+	$html.='</div>';
+
+	return $html;
+}
+
+function mdw_cms_doc_header($classes='') {
 	$html=null;
 
-	$html.='<div class="mdw-cms-documentation">';
+	$html.='<div class="mdw-cms-documentation '.$classes.'">';
 		$html.='<h2>Documentation</h2>';
 
 		$html.=mdw_cms_docs_breadcrumb();

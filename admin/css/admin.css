@@ -226,6 +226,13 @@ p.submit > #clear-files {
 /**
  * documentation
  */
+.mdw-cms-doc-breadcrumb a {
+	text-decoration: none;
+}
+.mdw-cms-doc-breadcrumb .sep {
+	padding-left: 5px;
+	padding-right: 5px;
+}
 .mdw-cms-documentation pre {
   font-family: "Courier 10 Pitch", Courier, monospace;
   font-size: 95%;
@@ -235,7 +242,6 @@ p.submit > #clear-files {
   white-space: -moz-pre-wrap;
   white-space: -o-pre-wrap;
 }
-
 .mdw-cms-documentation code {
   font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
   font-size: 95%;
@@ -246,9 +252,26 @@ p.submit > #clear-files {
   white-space: -o-pre-wrap;
   background: #faf8f0;
 }
-
 .mdw-cms-documentation code {
   display: block;
   padding: 0.5em 1em;
   border: 1px solid #bebab0;
+}
+.mdw-cms-documentation .custom-post-type-list {
+
+}
+.mdw-cms-documentation .custom-post-type-list li {
+	margin-bottom: 10px;
+}
+.mdw-cms-documentation .custom-post-type-list li .field {
+	font-weight: bold;
+}
+.mdw-cms-documentation .custom-post-type-list li .type {
+	font-style: italic;
+}
+.mdw-cms-documentation .custom-post-type-list li .description {
+
+}
+.mdw-cms-documentation .custom-post-type-list li .default {
+	font-style: italic;
 }

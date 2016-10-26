@@ -1,9 +1,8 @@
-<div class="mdw-cms-documentation">
-	<h2>Documentation > Metaboxes</h2>
+<?php mdw_cms_doc_header(); ?>
 
 	<p>
 		Coming soon
 	</p>
 
 	<a href="http://api.jqueryui.com/datepicker/" target="_blank">jQuery Datepicker (date formatting)</a>
-</div>
+<?php mdw_cms_doc_footer(); ?>
