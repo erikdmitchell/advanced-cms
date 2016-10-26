@@ -35,6 +35,90 @@
 		<li>
 			<div class="field">Field Type</div>
 			<div class="description"><span class="type">(dropdown)</span> the type of field</div>
+
+			<p><strong>Field Types:</strong></p>
+
+			<ul class="doc-sub-list metabox-fields-list">
+				<li>
+					<span class="field-type">address</span>:
+					<span class="field-description">creates an address field</span>
+					<span class="field-options">(repeatable)</span>
+				</li>
+				<li>
+					<span class="field-type">button</span>:
+					<span class="field-description">Creates a button in the metabox. This would be useful to link an external script/action.</span>
+				</li>
+				<li>
+					<span class="field-type">checkbox</span>:
+					<span class="field-description">creates a check box list</span>
+					<span class="field-options">(repeatable|options)</span>
+				</li>
+				<li>
+					<span class="field-type">colorpicker</span>:
+					<span class="field-description">Generates a field with a jQuery colorpicker. This field contains the hex code for the color.</span>
+				</li>
+				<li>
+					<span class="field-type">date</span>:
+					<span class="field-description">displays a jQuery date box (<a href="http://api.jqueryui.com/datepicker/" target="_blank">date formatting</a>)</span>
+					<span class="field-options">(format)</span>
+				</li>
+				<li>
+					<span class="field-type">gallery</span>:
+					<span class="field-description">allows you to create a gallery using the media uploader</span>
+				</li>
+				<li>
+					<span class="field-type">email</span>:
+					<span class="field-description">a field for entering an email address</span>
+					<span class="field-options">(repeatable)</span>
+				</li>
+				<li>
+					<span class="field-type">media</span>:
+					<span class="field-description">uses the media uploader to input the url of a media item (also shows a thumbnail)</span>
+				</li>
+				<li>
+					<span class="field-type">media_images</span>:
+					<span class="field-description">creates a multi select box of all media library images - it returns an array of image ids</span>
+				</li>
+				<li>
+					<span class="field-type">phone</span>:
+					<span class="field-description">creates a pre-formatted box for a phone number</span>
+					<span class="field-options">(repeatable)</span>
+				</li>
+				<li>
+					<span class="field-type">radio</span>:
+					<span class="field-description">creates a radio button list</span>
+					<span class="field-options">(repeatable|options)</span>
+				</li>
+				<li>
+					<span class="field-type">select</span>:
+					<span class="field-description">creates a select (dropdown) menu</span>
+					<span class="field-options">(options)</span>
+				</li>
+				<li>
+					<span class="field-type">text</span>:
+					<span class="field-description">displays a text input box</span>
+					<span class="field-options">(repeatable)</span>
+				</li>
+				<li>
+					<span class="field-type">textarea</span>:
+					<span class="field-description">displays a textarea input box</span>
+					<span class="field-options">(repeatable)</span>
+				</li>
+				<li>
+					<span class="field-type">timepicker</span>:
+					<span class="field-description">displays a jQuery time picker</span>
+				</li>
+				<li>
+					<span class="field-type">url</span>:
+					<span class="field-description">a field for entering a url</span>
+					<span class="field-options">(repeatable)</span>
+				</li>
+				<li>
+					<span class="field-type">wysiwyg</span>:
+					<span class="field-description">displays a wordpress content editor</span>
+				</li>
+			</ul>
+
 		</li>
 		<li>
 			<div class="field">Field Description</div>
@@ -46,94 +130,4 @@
 		</li>
 	</ul>
 
-	<a href="http://api.jqueryui.com/datepicker/" target="_blank">jQuery Datepicker (date formatting)</a>
-
 <?php mdw_cms_doc_footer(); ?>
-
-
-
-			'address' => array(
-				'repeatable' => 1,
-				'options' => 0,
-				'format' => 0,
-			),
-			'button' => array(
-				'repeatable' => 0,
-				'options' => 0,
-				'format' => 0,
-			),
-			'checkbox' => array(
-				'repeatable' => 1,
-				'options' => 1,
-				'format' => 0,
-			),
-			'colorpicker' => array(
-				'repeatable' => 0,
-				'options' => 0,
-				'format' => 0,
-			),
-			'date' => array(
-				'repeatable' => 0,
-				'options' => 0,
-				'format' => 1,
-			),
-			'gallery' => array(
-				'repeatable' => 0,
-				'options' => 0,
-				'format' => 0,
-			),
-			'email' => array(
-				'repeatable' => 1,
-				'options' => 0,
-				'format' => 0,
-			),
-			'media' => array(
-				'repeatable' => 0,
-				'options' => 0,
-				'format' => 0,
-			),
-			'media_images' => array(
-				'repeatable' => 0,
-				'options' => 0,
-				'format' => 0,
-			),
-			'phone' => array(
-				'repeatable' => 1,
-				'options' => 0,
-				'format' => 0,
-			),
-			'radio' => array(
-				'repeatable' => 1,
-				'options' => 1,
-				'format' => 0,
-			),
-			'select' => array(
-				'repeatable' => 0,
-				'options' => 1,
-				'format' => 0,
-			),
-			'text' => array(
-				'repeatable' => 1,
-				'options' => 0,
-				'format' => 0,
-			),
-			'textarea' => array(
-				'repeatable' => 1,
-				'options' => 0,
-				'format' => 0,
-			),
-			'timepicker' => array(
-				'repeatable' => 0,
-				'options' => 0,
-				'format' => 0,
-			),
-			'url'	 => array(
-				'repeatable' => 1,
-				'options' => 0,
-				'format' => 0,
-			),
-			'wysiwyg' => array(
-				'repeatable' => 0,
-				'options' => 0,
-				'format' => 0,
-			)

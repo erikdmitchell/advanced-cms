@@ -306,8 +306,8 @@ class MDWCMSgui {
 			'updated' => 1
 		));
 
-		//wp_redirect($url);
-		//exit();
+		wp_redirect($url);
+		exit();
 
 		return;
 	}

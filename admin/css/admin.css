@@ -260,19 +260,34 @@ p.submit > #clear-files {
 .mdw-cms-documentation .doc-list {
 
 }
-.mdw-cms-documentation .doc-list li {
+.mdw-cms-documentation .doc-list > li {
 	margin-bottom: 10px;
 }
-.mdw-cms-documentation .doc-list li .field {
+.mdw-cms-documentation .doc-list > li .field {
 	font-weight: bold;
 }
-.mdw-cms-documentation .doc-list li .type {
+.mdw-cms-documentation .doc-list > li .type {
 	font-style: italic;
 }
-.mdw-cms-documentation .doc-list li .description {
+.mdw-cms-documentation .doc-list > li .description {
 
 }
-.mdw-cms-documentation .doc-list li .default {
+.mdw-cms-documentation .doc-list > li .default {
+	font-style: italic;
+}
+.mdw-cms-documentation .doc-sub-list {
+	margin: 10px 0 15px 30px;
+}
+.mdw-cms-documentation .doc-sub-list > li {
+
+}
+.mdw-cms-documentation .doc-sub-list > li .field-type {
+	font-weight: bold;
+}
+.mdw-cms-documentation .doc-sub-list > li .field-description {
+
+}
+.mdw-cms-documentation .doc-sub-list > li .field-options {
 	font-style: italic;
 }
 .mdw-cms-doc-version {
