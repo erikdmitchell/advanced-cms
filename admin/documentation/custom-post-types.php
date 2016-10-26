@@ -4,7 +4,7 @@
 	Below is a detailed description of each field (aka settings) for each custom post type:
 </p>
 
-<ul class="custom-post-type-list">
+<ul class="doc-list custom-post-type-list">
 	<li>
 		<div class="field">Post Type Name</div>
 		<div class="description"><span class="type">(string)</span> The post type name. It will be used in the admin menus as well.</div>

@@ -257,22 +257,22 @@ p.submit > #clear-files {
   padding: 0.5em 1em;
   border: 1px solid #bebab0;
 }
-.mdw-cms-documentation .custom-post-type-list {
+.mdw-cms-documentation .doc-list {
 
 }
-.mdw-cms-documentation .custom-post-type-list li {
+.mdw-cms-documentation .doc-list li {
 	margin-bottom: 10px;
 }
-.mdw-cms-documentation .custom-post-type-list li .field {
+.mdw-cms-documentation .doc-list li .field {
 	font-weight: bold;
 }
-.mdw-cms-documentation .custom-post-type-list li .type {
+.mdw-cms-documentation .doc-list li .type {
 	font-style: italic;
 }
-.mdw-cms-documentation .custom-post-type-list li .description {
+.mdw-cms-documentation .doc-list li .description {
 
 }
-.mdw-cms-documentation .custom-post-type-list li .default {
+.mdw-cms-documentation .doc-list li .default {
 	font-style: italic;
 }
 .mdw-cms-doc-version {
