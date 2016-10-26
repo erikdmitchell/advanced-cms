@@ -16,7 +16,7 @@
 
 	<p>
 		Sample using the metabox Trail Head Details (trail_head_details)
-		<pre>
+		<pre><code>
 			function custom_meta_fields($extra_fields,$prefix) {
 			    global $MDWMetaboxes;
 
@@ -30,12 +30,12 @@
 			    return $extra_fields;
 			}
 			add_filter('add_mdw_cms_metabox_custom_fields-trail_head_details','custom_meta_fields',10,2);
-		</pre>
+		</code></pre>
 	</p>
 
 	<p>
 		Sample with multiple fields (amenity_details)
-		<pre>
+		<pre><code>
 			function custom_meta_fields_amenity_details($extra_fields,$prefix) {
 			    global $MDWMetaboxes;
 
@@ -55,7 +55,7 @@
 			    return $extra_fields;
 			}
 			add_filter('add_mdw_cms_metabox_custom_fields-amenity_details','custom_meta_fields_amenity_details',10,2);
-		</pre>
+		</code></pre>
 	</p>
 </section>
 
@@ -73,7 +73,7 @@
 
 	<p>
 		Sample using our field created above for the Trails field in the Trail Head Details metabox
-		<pre>
+		<pre><code>
 			function trails_select_box($id,$values) {
 			    $html=null;
 			    $trails=get_all_trails();
@@ -81,7 +81,7 @@
 			    if (!count($trails))
 			        return false;
 
-			    $html.='<select multiple size="6" name="'.$id.'[]" id="'.$id.'">';
+			    $html.='&lt;select multiple size="6" name="'.$id.'[]" id="'.$id.'"&gt;';
 
 			            foreach ($trails as $trail) :
 			                $selected=null;
@@ -89,15 +89,15 @@
 			                if (is_array($values) && !empty($values) && in_array($trail->ID,$values))
 			                    $selected='selected="selected"';
 
-			                $html.='<option value="'.$trail->ID.'" '.$selected.'>'.$trail->post_title.'</option>';
+			                $html.='&lt;option value="'.$trail->ID.'" '.$selected.'&gt;'.$trail->post_title.'&lt;/option&gt;';
 			            endforeach;
 
-			    $html.='</select>';
+			    $html.='&lt;/select&gt;';
 
 			    return $html;
 			}
 			add_filter('add_mdw_cms_metabox_custom_input-_trail_head_details_trails','trails_select_box',10,2);
-		</pre>
+		</code></pre>
 	</p>
 </section>
 
