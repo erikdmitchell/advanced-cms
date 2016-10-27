@@ -423,6 +423,7 @@ function mdw_cms_setup_post_type_args() {
 				$args=$post_type;
 				$args['header']='Edit Post Type';
 				$args['btn_text']='Update';
+				$args['id']=$key;
 			endif;
 		endforeach;
 	endif;

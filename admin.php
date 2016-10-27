@@ -461,6 +461,11 @@ class MDWCMSgui {
 			'comments' => $data['comments'],
 			'icon' => $data['icon'],
 		);
+		$url=add_query_arg(array(
+			'updated' => 1,
+			'edit' => 'cpt'
+			), $data['_wp_http_referer']
+		);
 
 		if ($data['cpt-id']!=-1) :
 			$post_types[$data['cpt-id']]=$arr;
@@ -475,19 +480,14 @@ class MDWCMSgui {
 		endif;
 
 		// we are simply updating the same info -- force true //
-		if ($post_types_s==serialize($post_types))
-			return true;
+		if ($post_types_s==serialize($post_types)) :
+			wp_redirect($url);
+			exit();
+		endif;
 
 		$this->options['post_types']=$post_types; // set var
 
 		$update=update_option('mdw_cms_post_types', $post_types);
-
-		$url=$this->admin_url(array(
-			'tab' => 'post-types',
-			'action' => 'update',
-			'slug' => $data['name'],
-			'updated' => 1
-		));
 
 		wp_redirect($url);
 		exit();
