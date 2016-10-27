@@ -483,8 +483,8 @@ class MDWCMSgui {
 		$update=update_option('mdw_cms_post_types', $post_types);
 
 		$url=$this->admin_url(array(
-			'tab' => 'mdw-cms-cpt',
-			'edit' => 'cpt',
+			'tab' => 'post-types',
+			'action' => 'update',
 			'slug' => $data['name'],
 			'updated' => 1
 		));

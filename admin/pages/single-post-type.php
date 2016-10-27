@@ -1,9 +1,5 @@
 <?php $mdw_cms_post_type_args=mdw_cms_setup_post_type_args(); ?>
 
-<pre>
-	<?php print_r($mdw_cms_post_type_args); ?>
-</pre>
-
 <h3><?php echo $mdw_cms_post_type_args['header']; ?> <a href="<?php mdw_cms_admin_link(array('tab' => 'post-types', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h3>
 
 <div class="mdw-cms-admin-page single-post-type-page">
