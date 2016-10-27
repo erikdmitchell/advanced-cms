@@ -136,7 +136,7 @@ class MDWCMSgui {
 		$active_tab='cms-main';
 		$tabs=array(
 			'cms-main' => 'Main',
-			'post-types' => 'Custom Post Types',
+			'post-types' => 'Post Types',
 			'metaboxes' => 'Metaboxes',
 			'mdw-cms-tax' => 'Custom Taxonomies'
 		);
