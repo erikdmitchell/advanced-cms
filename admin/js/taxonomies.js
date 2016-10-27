@@ -16,12 +16,12 @@ jQuery(document).ready(function($) {
 	/**
 	 * delete link click
 	 */
-	$('.custom-taxonomies-list .tax-row .delete a').live('click',function(e) {
+	$('.mdw-cms-taxonomies .taxonomies-list td a .dashicons-trash').on('click', function(e) {
 		e.preventDefault();
 
 		var data={
 			'action' : 'mdw_cms_get_taxonomy',
-			'name' : $(this).parents('.tax-row').data('name')
+			'name' : $(this).data('name')
 		};
 
 		$.post(ajaxurl, data, function(response) {

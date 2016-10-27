@@ -13,16 +13,16 @@
 			<th scope="col" id="actions" class="actions">&nbsp;</th>
 		</thead>
 
-		<tbody class="metaboxes-list">
+		<tbody class="taxonomies-list">
 			<?php if (count($mdw_cms_admin->options['taxonomies'])) : ?>
 				<?php foreach($mdw_cms_admin->options['taxonomies'] as $taxonomy) : ?>
-					<tr id="metabox-<?php echo $id; ?>" class="id">
+					<tr id="taxonomy-<?php echo $taxonomy['name']; ?>">
 						<td class="id" data-colname="ID"><?php echo $taxonomy['name']; ?></td>
 						<td class="metabox" data-colname="Metabox">
 							<strong><a class="row-title" href="<?php mdw_cms_admin_link(array('tab' => 'taxonomies', 'action' => 'update', 'id' => $taxonomy['name'])); ?>"><?php echo $taxonomy['args']['label']; ?></a></strong>
 						</td>
 						<td class="object-types" data-colname="Object Types"><?php mdw_cms_metabox_post_types_list($taxonomy['object_type']); ?></td>
-						<td class="actions" data-colname="Actions"><a href="<?php mdw_cms_admin_link(); ?>"><span class="dashicons dashicons-trash"></span></a></td>
+						<td class="actions" data-colname="Actions"><a href="<?php mdw_cms_admin_link(); ?>"><span class="dashicons dashicons-trash" data-name="<?php echo $taxonomy['name']; ?>"></span></a></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php else : ?>
