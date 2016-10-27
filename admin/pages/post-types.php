@@ -18,7 +18,7 @@
 		<tbody class="post-type-list">
 			<?php if (count($mdw_cms_admin->options['post_types'])) : ?>
 				<?php foreach($mdw_cms_admin->options['post_types'] as $id => $post_type) : ?>
-					<tr id="item-<?php echo $id; ?>" class="item">
+					<tr id="post-type-<?php echo $id; ?>" class="post-type">
 						<td class="post-type" data-colname="Post Type">
 							<strong><a class="row-title" href="<?php mdw_cms_admin_link(array('tab' => 'post-types', 'action' => 'update', 'slug' => $post_type['name'])); ?>"><?php echo $post_type['label']; ?></a></strong>
 						</td>
