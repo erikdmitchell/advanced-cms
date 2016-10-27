@@ -381,10 +381,11 @@ class MDWCMSgui {
 		endif;
 
 		$url=$this->admin_url(array(
-			'tab' => 'mdw-cms-tax',
-			'edit' => 'tax',
-			'slug' => $data['name'],
-			'updated' => $update
+			'tab' => 'taxonomies',
+			'action' => 'update',
+			'id' => $data['name'],
+			'updated' => $update,
+			'edit' => 'tax'
 		));
 
 		wp_redirect($url);

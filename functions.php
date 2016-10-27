@@ -486,4 +486,44 @@ function mdw_cms_metabox_post_types_list($post_types='') {
 
 	echo $post_types_list;
 }
+
+/**
+ * mdw_cms_setup_taxonomy_args function.
+ *
+ * @access public
+ * @return void
+ */
+function mdw_cms_setup_taxonomy_args() {
+	global $mdw_cms_admin;
+
+	$default_args=array(
+		'btn_text' => 'Create',
+		'name' => null,
+		'label' => null,
+		'object_type' => null,
+		'hierarchical' => 1,
+		'show_ui' => 1,
+		'show_admin_col' => 1,
+		'id' => -1,
+		'header' => 'Add New Taxonomy',
+	);
+
+	// edit custom taxonomy //
+	if (isset($_GET['id']) && $_GET['id']) :
+		foreach ($mdw_cms_admin->options['taxonomies'] as $key => $taxonomy) :
+			if ($taxonomy['name']==$_GET['id']) :
+				$args=$taxonomy['args'];
+				$args['name']=$taxonomy['name'];
+				$args['object_type']=$taxonomy['object_type'];
+				$args['id']=$key;
+				$args['btn_text']='Update';
+				$args['header']='Update Taxonomy';
+			endif;
+		endforeach;
+	endif;
+
+	$args=mdw_cms_parse_args($args, $default_args);
+
+	return $args;
+}
 ?>
