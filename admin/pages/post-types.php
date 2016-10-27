@@ -24,7 +24,7 @@
 						</td>
 						<td class="singular-label" data-colname="Singular Label"><?php echo $post_type['singular_label']; ?></td>
 						<td class="description" data-colname="Description"><?php echo $post_type['description']; ?></td>
-						<td class="actions" data-colname="Actions"><a href="<?php mdw_cms_admin_link(); ?>"><span class="dashicons dashicons-trash"></span></a></td>
+						<td class="actions" data-colname="Actions"><a href="<?php mdw_cms_admin_link(); ?>"><span class="dashicons dashicons-trash" data-slug="<?php echo $post_type['name']; ?>"></span></a></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php else : ?>

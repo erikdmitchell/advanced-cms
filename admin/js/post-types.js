@@ -16,12 +16,12 @@ jQuery(document).ready(function($) {
 	/**
 	 * delete link click
 	 */
-	$('.mdw-cms-custom-post-types-list .cpt-row .delete a').live('click',function(e) {
+	$('.mdw-cms-post-types .post-type-list td a .dashicons-trash').on('click', function(e) {
 		e.preventDefault();
 
 		var data={
 			'action' : 'mdw_cms_get_post_type',
-			'slug' : $(this).parents('.cpt-row').data('slug')
+			'slug' : $(this).data('slug')
 		};
 
 		$.post(ajaxurl, data, function(response) {
