@@ -179,7 +179,11 @@ class MDWCMSgui {
 					endif;
 					break;
 				case 'metaboxes':
-					echo mdw_cms_get_template('metaboxes');
+					if (isset($_GET['action']) && $_GET['action']=='update') :
+						echo mdw_cms_get_template('single-metabox');
+					else :
+						echo mdw_cms_get_template('metaboxes');
+					endif;
 					break;
 				case 'mdw-cms-tax':
 					echo mdw_cms_get_template('custom-taxonomies');

@@ -1,8 +1,12 @@
-<?php global $mdw_cms_admin, $mdw_cms_metabox_args; ?>
+<?php
+global $mdw_cms_admin;
 
-<h3><?php echo $mdw_cms_metabox_args['title']; ?></h3>
+$mdw_cms_metabox_args=mdw_cms_setup_metabox_args();
+?>
 
-<div class="left-col">
+<h3><?php echo $mdw_cms_metabox_args['title']; ?> <a href="<?php mdw_cms_admin_link(array('tab' => 'metaboxes', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h3>
+
+<div class="mdw-cms-admin-page single-metabox-page">
 	<form class="custom-metabox" action="" method="post">
 		<?php wp_nonce_field('update_metaboxes', 'mdw_cms_admin'); ?>
 
@@ -54,19 +58,4 @@
 			<input type="button" name="add-field" id="add-field-btn" class="button button-primary add-field" value="Add Field">
 		</p>
 	</form>
-</div>
-
-<div class="custom-metabox-list mdw-cms-edit-list right-col">
-	<h3>Custom Metaboxes</h3>
-
-	<?php if ($mdw_cms_admin->options['metaboxes']) : ?>
-		<?php foreach ($mdw_cms_admin->options['metaboxes'] as $mb) : ?>
-			<div class="metabox-row mdw-cms-edit-list-row" data-id="<?php echo $mb['mb_id']; ?>">
-				<div class="mb label"><?php echo $mb['title']; ?></div>
-				<div class="edit">[<a href="<?php echo $mdw_cms_metabox_args['base_url'];?>&edit=mb&mb_id=<?php echo $mb['mb_id']; ?>">Edit</a>]</div>
-				<div class="delete">[<a href="#">Delete</a>]</div>
-			</div>
-		<?php endforeach; ?>
-	<?php endif; ?>
-
 </div>

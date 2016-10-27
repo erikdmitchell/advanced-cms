@@ -433,6 +433,12 @@ function mdw_cms_setup_post_type_args() {
 	return $args;
 }
 
+/**
+ * mdw_cms_setup_metabox_args function.
+ *
+ * @access public
+ * @return void
+ */
 function mdw_cms_setup_metabox_args() {
 	global $mdw_cms_admin;
 
@@ -449,10 +455,10 @@ function mdw_cms_setup_metabox_args() {
 	);
 
 	// edit //
-	if (isset($_GET['edit']) && $_GET['edit']=='mb') :
-		foreach ($mdw_cms_admin->options['metaboxes'] as $key => $mb) :
-			if ($mb['mb_id']==$_GET['mb_id']) :
-				$args=$mdw_cms_admin->options['metaboxes'][$key];
+	if (isset($_GET['id']) && $_GET['id']) :
+		foreach ($mdw_cms_admin->options['metaboxes'] as $metabox) :
+			if ($metabox['mb_id']==$_GET['id']) :
+				$args=$metabox;
 				$args['btn_text']='Update';
 			endif;
 		endforeach;
