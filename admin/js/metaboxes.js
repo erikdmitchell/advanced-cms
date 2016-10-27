@@ -16,12 +16,12 @@ jQuery(document).ready(function($) {
 	/**
 	 * delete link click
 	 */
-	$('.custom-metabox-list .metabox-row .delete a').live('click',function(e) {
+	$('.mdw-cms-metaboxes .metaboxes-list td a .dashicons-trash').on('click',function(e) {
 		e.preventDefault();
 
 		var data={
 			'action' : 'mdw_cms_get_metabox',
-			'id' : $(this).parents('.metabox-row').data('id')
+			'id' : $(this).data('id')
 		};
 
 		$.post(ajaxurl, data, function(response) {

@@ -17,7 +17,7 @@
 		<tbody class="metaboxes-list">
 			<?php if (count($mdw_cms_admin->options['metaboxes'])) : ?>
 				<?php foreach($mdw_cms_admin->options['metaboxes'] as $metabox) : ?>
-					<tr id="metabox-<?php echo $id; ?>" class="id">
+					<tr id="metabox-<?php echo $metabox['mb_id']; ?>">
 						<td class="id" data-colname="ID">
 							<?php echo $metabox['mb_id']; ?>
 						</td>
@@ -26,7 +26,7 @@
 						</td>
 						<td class="prefix" data-colname="Prefix"><?php echo $metabox['prefix']; ?></td>
 						<td class="post-types" data-colname="Post Types"><?php mdw_cms_metabox_post_types_list($metabox['post_types']); ?></td>
-						<td class="actions" data-colname="Actions"><a href="<?php mdw_cms_admin_link(); ?>"><span class="dashicons dashicons-trash"></span></a></td>
+						<td class="actions" data-colname="Actions"><a href="<?php mdw_cms_admin_link(); ?>"><span class="dashicons dashicons-trash" data-id="<?php echo $metabox['mb_id']; ?>"></span></a></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php else : ?>
