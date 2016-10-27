@@ -138,7 +138,7 @@ class MDWCMSgui {
 			'cms-main' => 'Main',
 			'post-types' => 'Post Types',
 			'metaboxes' => 'Metaboxes',
-			'mdw-cms-tax' => 'Custom Taxonomies'
+			'taxonomies' => 'Taxonomies'
 		);
 
 		if (isset( $_GET[ 'tab' ] ))
@@ -185,8 +185,12 @@ class MDWCMSgui {
 						echo mdw_cms_get_template('metaboxes');
 					endif;
 					break;
-				case 'mdw-cms-tax':
-					echo mdw_cms_get_template('custom-taxonomies');
+				case 'taxonomies':
+					if (isset($_GET['action']) && $_GET['action']=='update') :
+						echo mdw_cms_get_template('single-taxonomy');
+					else :
+						echo mdw_cms_get_template('taxonomies');
+					endif;
 					break;
 				default:
 					echo mdw_cms_get_template('main');
