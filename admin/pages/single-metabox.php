@@ -4,7 +4,7 @@ global $mdw_cms_admin;
 $mdw_cms_metabox_args=mdw_cms_setup_metabox_args();
 ?>
 
-<h3><?php echo $mdw_cms_metabox_args['title']; ?> <a href="<?php mdw_cms_admin_link(array('tab' => 'metaboxes', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h3>
+<h3><?php echo $mdw_cms_metabox_args['header']; ?> <a href="<?php mdw_cms_admin_link(array('tab' => 'metaboxes', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h3>
 
 <div class="mdw-cms-admin-page single-metabox-page">
 	<form class="custom-metabox" action="" method="post">

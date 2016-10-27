@@ -452,6 +452,7 @@ function mdw_cms_setup_metabox_args() {
 		'edit_class_v' => '',
 		'fields' => '',
 		'title' => '',
+		'header' => 'Add New Metabox',
 	);
 
 	// edit //
@@ -459,6 +460,7 @@ function mdw_cms_setup_metabox_args() {
 		foreach ($mdw_cms_admin->options['metaboxes'] as $metabox) :
 			if ($metabox['mb_id']==$_GET['id']) :
 				$args=$metabox;
+				$args['header']='Edit Metabox';
 				$args['btn_text']='Update';
 			endif;
 		endforeach;

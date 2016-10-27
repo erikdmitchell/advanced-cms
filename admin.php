@@ -232,6 +232,11 @@ class MDWCMSgui {
 		$data=$_POST;
 		$metaboxes=get_option('mdw_cms_metaboxes');
 		$edit_key=-1;
+		$url=add_query_arg(array(
+			'updated' => 1,
+			'edit' => 'mb'
+			), $data['_wp_http_referer']
+		);
 
 		if (!isset($data['mb_id']) || $data['mb_id']=='')
 			return false;
@@ -306,13 +311,6 @@ class MDWCMSgui {
 		$this->options['metaboxes']=$metaboxes; // set var
 
 		update_option('mdw_cms_metaboxes', $metaboxes);
-
-		$url=$this->admin_url(array(
-			'tab' => 'metaboxes',
-			'edit' => 'mb',
-			'mb_id' => $data['mb_id'],
-			'updated' => 1
-		));
 
 		wp_redirect($url);
 		exit();
@@ -495,6 +493,8 @@ class MDWCMSgui {
 
 		wp_redirect($url);
 		exit();
+
+		return;
 	}
 
 	/**
