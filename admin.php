@@ -136,7 +136,7 @@ class MDWCMSgui {
 		$active_tab='cms-main';
 		$tabs=array(
 			'cms-main' => 'Main',
-			'mdw-cms-cpt' => 'Custom Post Types',
+			'post-types' => 'Custom Post Types',
 			'metaboxes' => 'Metaboxes',
 			'mdw-cms-tax' => 'Custom Taxonomies'
 		);
@@ -171,8 +171,12 @@ class MDWCMSgui {
 						echo mdw_cms_get_template('main');
 					endif;
 					break;
-				case 'mdw-cms-cpt':
-					echo mdw_cms_get_template('post-types');
+				case 'post-types':
+					if (isset($_GET['action']) && $_GET['action']=='update') :
+						echo mdw_cms_get_template('single-post-type');
+					else :
+						echo mdw_cms_get_template('post-types');
+					endif;
 					break;
 				case 'metaboxes':
 					echo mdw_cms_get_template('metaboxes');

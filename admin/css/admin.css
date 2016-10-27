@@ -1,19 +1,10 @@
-/**
- * cms options (main)
- */
-.mdw-cms-options {
-	margin: 10px 0;
-}
-.mdw-cms-options .description {
-	font-style: italic;
-}
-.mdw-cms-options input[type=checkbox] {
-	margin: 0;
-}
-
-
 /* general
 ---------- */
+.mdw-cms-admin-page .wp-list-table {
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
 .tools_page_mdw-cms label {
 	font-weight: bold;
 	display: inline-block;

@@ -356,4 +356,79 @@ function mdw_cms_checked_checkbox($checked, $current=true, $echo=true) {
 
 	return $result;
 }
+
+/**
+ * mdw_cms_admin_link function.
+ *
+ * @access public
+ * @param string $args (default: '')
+ * @return void
+ */
+function mdw_cms_admin_link($args='') {
+	echo mdw_cms_get_admin_link($args);
+}
+
+/**
+ * mdw_cms_get_admin_link function.
+ *
+ * @access public
+ * @param string $args (default: '')
+ * @return void
+ */
+function mdw_cms_get_admin_link($args='') {
+	$default_args=array(
+		'page' => 'mdw-cms',
+	);
+	$args=wp_parse_args($args, $default_args);
+
+	$url=add_query_arg($args, admin_url('tools.php'));
+
+	return $url;
+}
+
+/**
+ * mdw_cms_setup_post_type_args function.
+ *
+ * @access public
+ * @return void
+ */
+function mdw_cms_setup_post_type_args() {
+	global $mdw_cms_admin;
+
+	$default_args=array(
+		'base_url' => admin_url('tools.php?page=mdw-cms&tab=post-types'),
+		'btn_text' => 'Create',
+		'name' => '',
+		'label' => '',
+		'singular_label' => '',
+		'description' => '',
+		'title' => 1,
+		'thumbnail' => 1,
+		'editor' => 1,
+		'revisions' => 1,
+		'hierarchical' => 0,
+		'page_attributes' => 0,
+		'excerpt' => 0,
+		'id' => -1,
+		'comments' => 0,
+		'header' => 'Add New Custom Post Type',
+		'icon' => 'dashicons-admin-post',
+		'error_class' => '',
+	);
+
+	// edit custom post type //
+	if (isset($_GET['slug']) && $_GET['slug']) :
+		foreach ($mdw_cms_admin->options['post_types'] as $key => $post_type) :
+			if ($post_type['name']==$_GET['slug']) :
+				$args=$post_type;
+				$args['header']='Edit Post Type';
+				$args['btn_text']='Update';
+			endif;
+		endforeach;
+	endif;
+
+	$args=mdw_cms_parse_args($args, $default_args);
+
+	return $args;
+}
 ?>
