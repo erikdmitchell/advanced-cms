@@ -105,6 +105,9 @@ class MDWCMSGallery {
 	public function get_images($vars='') {
 		$images=array();
 
+		if (!isset($vars['image_ids']) || empty($vars['image_ids']))
+			return false;
+
 		foreach ($vars['image_ids'] as $key => $image_id) :
 
 			$metadata=wp_get_attachment_metadata($image_id);
