@@ -10,6 +10,7 @@ License: GPL2
 */
 
 define('MDW_CMS_PATH', plugin_dir_path(__FILE__));
+define('MDW_CMS_URL', plugin_dir_url(__FILE__));
 
 require_once(plugin_dir_path(__FILE__).'inc/admin-columns.php');
 require_once(plugin_dir_path(__FILE__).'inc/custom-widgets.php');
