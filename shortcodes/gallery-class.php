@@ -338,6 +338,21 @@ function mdw_cms_gallery_get_image_caption() {
 }
 
 /**
+ * mdw_cms_gallery_has_caption function.
+ *
+ * @access public
+ * @return void
+ */
+function mdw_cms_gallery_has_caption() {
+	global $mdw_cms_image;
+
+	if ($mdw_cms_image->caption!='')
+		return true;
+
+	return false;
+}
+
+/**
  * mdw_cms_gallery_indicators function.
  *
  * @access public

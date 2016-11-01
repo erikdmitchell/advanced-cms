@@ -9,9 +9,12 @@
 
 		    <div class="<?php mdw_cms_image_class(); ?>">
 		      <?php mdw_cms_gallery_image(); ?>
-		      <div class="carousel-caption">
-		        <?php mdw_cms_gallery_image_caption(); ?>
-		      </div>
+
+		      <?php if (mdw_cms_gallery_has_caption()) : ?>
+			      <div class="carousel-caption">
+			        <?php mdw_cms_gallery_image_caption(); ?>
+						</div>
+					<?php endif; ?>
 		    </div>
 
 		  <?php endwhile; ?>
