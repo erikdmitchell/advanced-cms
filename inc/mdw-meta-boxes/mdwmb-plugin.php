@@ -445,12 +445,11 @@ class MDWMetaboxes {
 				$html.='<input type="text" class="email validator '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				break;
 			case 'gallery' :
-				$html.='<div class="gallery-wrap">';
-					$html.='<div id="mdw-cms-gallery">'.$this->get_gallery_images($value).'</div>'; // make filterable of sorts
-					$html.='<input class="gallery-uploader button" name="'.$args['id'].'_button" id="'.$args['id'].'_button" value="Edit Gallery" />';
-					$html.='<input class="gallery-remove button" name="'.$args['id'].'_button" id="'.$args['id'].'_button" value="Remove Gallery" />';
-					$html.='<input class="gallery-ids" type="hidden" name="'.$args['id'].'" value="'.$this->get_gallery_image_ids($value).'" />';
-				$html.='</div>';
+				$atts=array(
+					'id' => $args['id'],
+				);
+
+				$html.=mdw_cms_get_field_template('gallery', $atts, $value);
 				break;
 			case 'media':
 				$html.='<input id="'.$args['id'].'" class="uploader-input regular-text" type="text" name="'.$args['id'].'" value="'.$value.'" />';
@@ -1075,11 +1074,11 @@ class MDWMetaboxes {
 	/**
 	 * get_gallery_images function.
 	 *
-	 * @access protected
+	 * @access public
 	 * @param array $ids (default: array())
 	 * @return void
 	 */
-	protected function get_gallery_images($ids=array()) {
+	public function get_gallery_images($ids=array()) {
 		global $post;
 
 		$images=false;
@@ -1099,7 +1098,14 @@ class MDWMetaboxes {
 		return $images;
 	}
 
-	protected function get_gallery_image_ids($ids=false) {
+	/**
+	 * get_gallery_image_ids function.
+	 *
+	 * @access public
+	 * @param bool $ids (default: false)
+	 * @return void
+	 */
+	public function get_gallery_image_ids($ids=false) {
 		global $post;
 
 		if ($ids && !is_array($ids))
