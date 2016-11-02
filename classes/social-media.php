@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * MDWSocialMedia class.
+ */
 class MDWSocialMedia {
 
 	public $version='0.1.1';
@@ -28,7 +32,7 @@ class MDWSocialMedia {
 
 	function admin_scripts_styles() {
 		wp_enqueue_style('font-awesome-css','//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css',array(),'4.2.0');
-		wp_enqueue_style('social-media-admin-style',plugin_dir_url(dirname(__FILE__)).'css/admin-social-media.css');
+		wp_enqueue_style('social-media-admin-style', plugin_dir_url(dirname(__FILE__)).'/admin/css/social-media.css');
 
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-modal-script',plugin_dir_url(dirname(__FILE__)).'js/jquery.modal.min.js',array('jquery'),'0.5.5',true);
