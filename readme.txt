@@ -28,9 +28,7 @@ Coming soon.
 
 == Hooks and Filters ==
 
-Coming soon.
-
-See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
+See documentation (in plugin) for details.
 
 == Changelog ==
 
@@ -38,6 +36,17 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 
 * Cleaned up our metabox class. Moved it from a "sub plugin" to core files within the plugin.
 * Removed: mdwm_display_post_media_meta(), get_media_video_data(), get_media_image_data(). The file containing those functions was never included.
+* Added template system for metabox fields (admin side)
+* Layout of admin tabs is now cleaner and more like core WordPress posts/pages
+* Added documentation and various documentation functionality.
+* Add options row now works properly.
+* Fixed field id issues for options.
+* Fixed file type data on load issue.
+* Reworked admin metaboxes.
+* Added support to custom post types for the excerpt.
+* Added support for a custom icon for custom post types.
+* Added taxonomy id check.
+* Added admin notices.
 
 = 2.1.9 =
 
