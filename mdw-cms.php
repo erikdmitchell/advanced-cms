@@ -12,8 +12,8 @@ License: GPL2
 define('MDW_CMS_PATH', plugin_dir_path(__FILE__));
 define('MDW_CMS_URL', plugin_dir_url(__FILE__));
 
-require_once(MDW_CMS_PATH.'classes/admin-columns.php'); // allows for custom admin columns
-require_once(MDW_CMS_PATH.'inc/custom-widgets.php');
+require_once(MDW_CMS_PATH.'classes/admin-columns.php'); // allows for custom admin columns - CHECK USAGE
+require_once(MDW_CMS_PATH.'classes/custom-widgets.php'); // alows for custom widgets to be built on the fly - CHECK USAGE
 require_once(MDW_CMS_PATH.'inc/legacy.php');
 require_once(MDW_CMS_PATH.'inc/mdw-meta-boxes/countries-states.php');
 require_once(MDW_CMS_PATH.'inc/mdw-meta-boxes/mdwmb-plugin.php');

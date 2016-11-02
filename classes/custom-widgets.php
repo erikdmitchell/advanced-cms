@@ -1,26 +1,43 @@
 <?php
+
+/**
+ * MDW_Widget_Creator class.
+ */
 class MDW_Widget_Creator {
-	
+
+	/**
+	 * __construct function.
+	 *
+	 * @access public
+	 * @param mixed $params
+	 * @return void
+	 */
 	function __construct($params) {
 		$this->params=$params;
-				
+
 		add_action('widgets_init',array($this,'mdw_register_widget'));
 	}
-	
+
+	/**
+	 * mdw_register_widget function.
+	 *
+	 * @access public
+	 * @return void
+	 */
 	function mdw_register_widget() {
 		global $wp_widget_factory;
-		
+
 		$mdw_widget_factory=new MDW_Widget_Factory();
-		
+
 		foreach ($this->params as $params) :
 			$mdw_widget_factory->register('My_Widget_Class',$params);
 		endforeach;
-	
+
 		foreach ($mdw_widget_factory->widgets as $key => $widget) :
 			$wp_widget_factory->widgets[$key]=$widget;
 		endforeach;
 	}
-	
+
 }
 
 /**
@@ -36,7 +53,7 @@ class MDW_Widget_Factory extends WP_Widget_Factory {
   	}
     $this->widgets[$key] = new $widget_class($params);
   }
-  
+
 }
 
 class My_Widget_Class extends WP_Widget {
@@ -53,10 +70,10 @@ class My_Widget_Class extends WP_Widget {
  		);
  		$control_ops = array( 'id_base' => $id );
  		parent::__construct( $id, $params['title'], $widget_ops, $control_ops );
- 		
- 		$this->fields=$params['fields'];		
+
+ 		$this->fields=$params['fields'];
  	}
- 	
+
 	/**
 	 * Outputs the content of the widget
 	 *
@@ -122,7 +139,7 @@ class My_Widget_Class extends WP_Widget {
 
 		return $instance;
 	}
-	
+
 	/**
 	 * HELPER FUNCTIONS FOR OUR DYNAMIC INPUT
 	**/
@@ -135,12 +152,12 @@ class My_Widget_Class extends WP_Widget {
 	**/
 	function get_input_label($id,$label) {
 		$html=null;
-		
+
 		$html.='<label for="'.$this->get_field_id($id).'">'.__( $label ).'</label>';
-		
+
 		return $html;
 	}
-	
+
 	/**
 	 * outputs the correct field type in the admin section
 	 *
@@ -150,7 +167,7 @@ class My_Widget_Class extends WP_Widget {
 	**/
 	function get_input_box($type,$id,$value=null) {
 		$html=null;
-		
+
 		switch ($type) :
 			case 'text' :
 				$html.='<input class="widefat" type="text" name="'.$this->get_field_name($id).'" id="'.$this->get_field_id($id).'" value="'.$value.'" />';
@@ -161,20 +178,20 @@ class My_Widget_Class extends WP_Widget {
 			default :
 				$html.='<input type="text" name="'.$this->get_field_name($id).'" id="'.$this->get_field_id($id).'" value="'.$value.'" />';
 		endswitch;
-		
+
 		return $html;
 	}
 
 	/**
 	 * outputs the field description in the admin section
 	 *
-	 * @param string $description the description of the input	 
+	 * @param string $description the description of the input
 	**/
 	function get_input_description($description) {
 		$html=null;
-		
+
 		$html.='<span class="description">'.$description.'</span>';
-		
+
 		return $html;
 	}
 
