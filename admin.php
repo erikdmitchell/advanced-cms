@@ -1,5 +1,5 @@
 <?php
-class MDWCMSgui {
+class MDWCMSAdmin {
 
 	public $options=array();
 
@@ -77,6 +77,7 @@ class MDWCMSgui {
 		wp_enqueue_script('mdw-cms-admin-metaboxes');
 
 		wp_enqueue_style('mdw-cms-admin-style',plugins_url('/admin/css/admin.css',__FILE__));
+		wp_enqueue_style('mdw-cms-admin-style', plugins_url('/admin/css/metaboxes.css', __FILE__));
 	}
 
 	/**
@@ -860,5 +861,5 @@ class MDWCMSgui {
 
 }
 
-$mdw_cms_admin=new MDWCMSgui();
+$mdw_cms_admin=new MDWCMSAdmin();
 ?>

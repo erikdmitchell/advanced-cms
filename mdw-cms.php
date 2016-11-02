@@ -30,13 +30,9 @@ require_once(MDW_CMS_PATH.'inc/legacy.php');
 
 require_once(MDW_CMS_PATH.'lib/countries-states.php'); // contains global vars/arrays for states and countries
 
-
-
 require_once(MDW_CMS_PATH.'shortcodes/init.php'); // our shortcodes
 
 require_once(MDW_CMS_PATH.'widgets/init.php'); // our widgets
-
-
 
 
 /**
