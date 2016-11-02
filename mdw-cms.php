@@ -15,8 +15,9 @@ define('MDW_CMS_URL', plugin_dir_url(__FILE__));
 require_once(MDW_CMS_PATH.'classes/admin-columns.php'); // allows for custom admin columns - CHECK USAGE
 require_once(MDW_CMS_PATH.'classes/custom-widgets.php'); // alows for custom widgets to be built on the fly - CHECK USAGE
 require_once(MDW_CMS_PATH.'inc/legacy.php');
-require_once(MDW_CMS_PATH.'inc/mdw-meta-boxes/countries-states.php');
-require_once(MDW_CMS_PATH.'inc/mdw-meta-boxes/mdwmb-plugin.php');
+
+require_once(MDW_CMS_PATH.'lib/countries-states.php'); // contains global vars/arrays for states and countries
+require_once(MDW_CMS_PATH.'mdw-meta-boxes/mdwmb-plugin.php');
 
 require_once(MDW_CMS_PATH.'admin/functions.php'); // admin functions
 require_once(MDW_CMS_PATH.'admin.php'); // admin class
