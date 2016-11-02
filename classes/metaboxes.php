@@ -131,17 +131,17 @@ class MDWMetaboxes {
 		global $post;
 
 		wp_enqueue_style('jquery-ui-style', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css', array(), '1.10.4');
-		wp_enqueue_style('colpick-css', plugins_url('/css/colpick.css', __FILE__));
+		wp_enqueue_style('colpick-css',  MDW_CMS_URL.'/css/colpick.css');
 
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-datepicker');
-		wp_enqueue_script('colpick-js', plugins_url('/js/colpick.js', __FILE__));
-		wp_enqueue_script('jq-timepicker',plugins_url('/js/jquery.ui.timepicker.js',__FILE__));
-		wp_enqueue_script('jquery-maskedinput-script',plugins_url('/js/jquery.maskedinput.min.js',__FILE__),array('jquery'),'1.3.1',true);
-		wp_enqueue_script('jq-validator-script',plugins_url('/js/jquery.validator.js',__FILE__),array('jquery'),'1.0.0',true);
-		wp_enqueue_script('mdw-cms-js',plugins_url('/js/functions.js',__FILE__),array('jquery'),'1.0.0',true);
-		wp_enqueue_script('duplicate-metabox-fields',plugins_url('js/duplicate-metabox-fields.js',__FILE__),array('jquery'),'1.0.2');
-		wp_enqueue_script('jquery-mediauploader',plugins_url('js/jquery.mediauploader.js',__FILE__),array('jquery'));
+		wp_enqueue_script('colpick-js', MDW_CMS_URL.'/js/colpick.js');
+		wp_enqueue_script('jq-timepicker', MDW_CMS_URL.'/js/jquery.ui.timepicker.js');
+		wp_enqueue_script('jquery-maskedinput-script', MDW_CMS_URL.'/js/jquery.maskedinput.min.js', array('jquery'), '1.3.1', true);
+		wp_enqueue_script('jq-validator-script', MDW_CMS_URL.'/js/jquery.validator.js', array('jquery'), '1.0.0', true);
+		wp_enqueue_script('mdw-cms-js', MDW_CMS_URL.'/js/functions.js', array('jquery'), '1.0.0', true);
+		wp_enqueue_script('duplicate-metabox-fields', MDW_CMS_URL.'js/duplicate-metabox-fields.js', array('jquery'), '1.0.2');
+		wp_enqueue_script('jquery-mediauploader', MDW_CMS_URL.'js/jquery.mediauploader.js', array('jquery'));
 
 		if (isset($post->ID)) :
 			$post_id=$post->ID;
