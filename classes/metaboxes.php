@@ -1,4 +1,6 @@
 <?php
+global $MDWMetaboxes;
+
 class MDWMetaboxes {
 
 	private $nonce = 'wp_upm_media_nonce'; // Represents the nonce value used to save the post media //
@@ -132,7 +134,6 @@ class MDWMetaboxes {
 		wp_enqueue_style('jquery-ui-style','//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css',array(),'1.10.4');
 		wp_enqueue_style('colpick-css',plugins_url('/css/colpick.css',__FILE__));
 		//wp_enqueue_style('jq-timepicker-style',plugins_url('/css/jquery.ui.timepicker.css',__FILE__));
-		//wp_enqueue_style('aja-meta-boxes-css',plugins_url('css/ajax-meta-boxes.css',__FILE__),array(),'1.0.0','all');
 
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-datepicker');
@@ -1225,21 +1226,5 @@ class MDWMetaboxes {
 
 } // end class
 
-/**
- * this loads our load plugin first so that the meta boxes can be used throughout the site
-**/
-/*
-add_action('plugins_loaded','load_plugin_first');
-function load_plugin_first() {
-	$path = str_replace( WP_PLUGIN_DIR . '/', '', __FILE__ );
-	if ( $plugins = get_option( 'active_plugins' ) ) {
-		if ( $key = array_search( $path, $plugins ) ) {
-			array_splice( $plugins, $key, 1 );
-			array_unshift( $plugins, $path );
-			update_option( 'active_plugins', $plugins );
-		}
-	}
-}
-*/
 $MDWMetaboxes = new MDWMetaboxes();
 ?>
