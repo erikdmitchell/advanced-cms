@@ -36,6 +36,9 @@ See [Wiki](https://bitbucket.org/millerdesign/mdw-cms/wiki) for details.
 
 = 2.1.9.1 =
 
+* Cleaned up our metabox class. Moved it from a "sub plugin" to core files within the plugin.
+* Removed: mdwm_display_post_media_meta(), get_media_video_data(), get_media_image_data(). The file containing those functions was never included.
+
 = 2.1.9 =
 
 * Added gallery shortcode.
