@@ -15,6 +15,7 @@ function mdw_cms_gallery_shortcode($atts) {
     'size' => 'full',
 		'show_indicators' => true,
 		'show_controls' => true,
+		'bootstrap' => true,
   ), $atts);
 
   if (empty($atts['id']))

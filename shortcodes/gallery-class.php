@@ -18,6 +18,8 @@ class MDWCMSGallery {
 
 	public $show_controls;
 
+	public $bootstrap=0;
+
 	/**
 	 * __construct function.
 	 *
@@ -30,20 +32,6 @@ class MDWCMSGallery {
 
 		if (!empty($args))
 			$mdw_cms_gallery=$this->query($args);
-
-		add_action('wp_footer', array($this, 'scripts_styles'));
-	}
-
-	/**
-	 * scripts_styles function.
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function scripts_styles() {
-		wp_enqueue_script('mdw-cms-gallery-bootstrap-script', MDW_CMS_URL.'/shortcodes/js/bootstrap-carousel.min.js', array('jquery'), '3.3.7');
-
-		wp_enqueue_style('mdw-cms-gallery-bootstrap-style', MDW_CMS_URL.'/shortcodes/css/bootstrap-carousel.css', array(), '3.3.7');
 	}
 
 	/**
@@ -89,6 +77,12 @@ class MDWCMSGallery {
 			$this->show_controls=false;
 		endif;
 
+		if ($args['bootstrap']) :
+			$this->bootstrap=true;
+		else :
+			$this->bootstrap=false;
+		endif;
+
 		return $args;
 	}
 
@@ -105,6 +99,12 @@ class MDWCMSGallery {
 		$this->set_gallery_id($this->query_vars['id']);
 
 		$this->get_images($this->query_vars);
+
+		if ($this->bootstrap) :
+			wp_enqueue_script('mdw-cms-gallery-bootstrap-script', MDW_CMS_URL.'/shortcodes/js/bootstrap-carousel.min.js', array('jquery'), '3.3.7', true);
+
+			wp_enqueue_style('mdw-cms-gallery-bootstrap-style', MDW_CMS_URL.'/shortcodes/css/bootstrap-carousel.css', array(), '3.3.7');
+		endif;
 
 		return $this;
 	}
