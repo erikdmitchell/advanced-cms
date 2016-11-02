@@ -1,8 +1,19 @@
 <?php
+
+/**
+ * MDW_Admin_Columns class.
+ */
 class MDW_Admin_Columns {
 
-	protected $config=array();
+	public $config=array();
 
+	/**
+	 * __construct function.
+	 *
+	 * @access public
+	 * @param mixed $config
+	 * @return void
+	 */
 	function __construct($config) {
 		$this->config=$config;
 
@@ -10,20 +21,35 @@ class MDW_Admin_Columns {
 		add_action('manage_'.$this->config['post_type'].'_posts_custom_column',array($this,'custom_colun_row'),10,2);
 	}
 
+	/**
+	 * custom_admin_columns function.
+	 *
+	 * @access public
+	 * @param mixed $columns
+	 * @return void
+	 */
 	public function custom_admin_columns($columns) {
 		foreach ($this->config['columns'] as $col) :
 			$columns[$col['slug']]=$col['label'];
 		endforeach;
-		
+
 		return $columns;
 	}
-		
+
+	/**
+	 * custom_colun_row function.
+	 *
+	 * @access public
+	 * @param mixed $column_name
+	 * @param mixed $post_id
+	 * @return void
+	 */
 	public function custom_colun_row($column_name,$post_id) {
 		$custom_fields=get_post_custom($post_id);
-	
+
 		foreach ($this->config['columns'] as $col) :
-			if ($col['slug']==$column_name) :	
-				if (isset($col['type'])) :		
+			if ($col['slug']==$column_name) :
+				if (isset($col['type'])) :
 				switch ($col['type']) :
 					case 'meta':
 						if (isset($custom_fields[$col['slug']][0]))
