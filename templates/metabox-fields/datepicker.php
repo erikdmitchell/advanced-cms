@@ -1,0 +1,1 @@
+<input type="text" class="mdw-cms-datepicker" name="<?php echo $atts['id']; ?>" id="<?php echo $atts['id']; ?>" value="<?php echo $value; ?>" />
