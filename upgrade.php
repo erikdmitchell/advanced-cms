@@ -9,7 +9,7 @@
 function mdw_cms_updates() {
 	global $mdw_cms_admin;
 
-	echo $stored_version=get_option('mdw_cms_version', 0);
+	$stored_version=get_option('mdw_cms_version', 0);
 
 	// we have some version milestones that require updates //
 	if (version_compare($stored_version, '2.1.8', '<=')) :
