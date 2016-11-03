@@ -5,3 +5,4 @@ inc/mdw-meta-boxes/js/.DS_Store
 updater/.DS_Store
 gui/.DS_Store
 .DS_Store
+/node_modules
