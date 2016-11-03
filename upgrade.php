@@ -15,12 +15,34 @@ endif;
 
 	//update_mdw_cms_version();
 }
-add_action('init', 'mdw_cms_updates');
+add_action('admin_init', 'mdw_cms_updates');
 
+/**
+ * mdw_cms_version function.
+ *
+ * @access public
+ * @return void
+ */
+function mdw_cms_version() {
+	echo get_mdw_cms_version();
+}
+
+/**
+ * get_mdw_cms_version function.
+ *
+ * @access public
+ * @return void
+ */
 function get_mdw_cms_version() {
 	return MDW_CMS_VERSION;
 }
 
+/**
+ * update_mdw_cms_version function.
+ *
+ * @access public
+ * @return void
+ */
 function update_mdw_cms_version() {
 	$stored_version=get_option('mdw_cms_version', 0);
 
@@ -28,6 +50,12 @@ function update_mdw_cms_version() {
 		update_option('mdw_cms_version', MDW_CMS_VERSION);
 }
 
+/**
+ * mdw_cms_v2_1_8_cleanup function.
+ *
+ * @access public
+ * @return void
+ */
 function mdw_cms_v2_1_8_cleanup() {
 	$version_cleaned=get_option('mdw_cms_options_clean_up', false);
 
