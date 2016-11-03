@@ -1,6 +1,9 @@
 <?php
 global $MDWMetaboxes;
 
+/**
+ * MDWMetaboxes class.
+ */
 class MDWMetaboxes {
 
 	private $nonce = 'wp_upm_media_nonce'; // Represents the nonce value used to save the post media //
@@ -127,7 +130,7 @@ class MDWMetaboxes {
 	 * @param mixed $hook
 	 * @return void
 	 */
-	function register_admin_scripts_styles($hook) {
+	public function register_admin_scripts_styles($hook) {
 		global $post;
 
 		wp_enqueue_style('jquery-ui-style', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css', array(), '1.10.4');
@@ -149,27 +152,42 @@ class MDWMetaboxes {
 			$post_id=false;
 		endif;
 
+		$date_format=$this->set_jquery_date_format($post_id);
+
 		$mdwcmsjs=array(
-			'dateFormat' => 'mm/dd/yy'
+			'dateFormat' => $date_format
 		);
 
-		if (!empty($this->config) && $post_id) :
-			foreach ($this->config as $config) :
-				if (!in_array(get_post_type($post->ID),$config['post_types']))
-					continue;
-
-				foreach ($config['fields'] as $field) :
-					if (isset($field['format']['value']) && !empty($field['format']['value'])) :
-						if ($field['field_type']=='date') :
-							$mdwcmsjs['dateFormat']=$field['format']['value'];
-						endif;
-					endif;
-				endforeach;
-
-			endforeach;
-		endif;
-
 		wp_localize_script('mdw-cms-js', 'wp_options', $mdwcmsjs);
+	}
+
+	/**
+	 * set_jquery_date_format function.
+	 *
+	 * @access public
+	 * @param int $post_id (default: 0)
+	 * @param string $format (default: 'mm/dd/yy')
+	 * @return void
+	 */
+	public function set_jquery_date_format($post_id=0, $format='mm/dd/yy') {
+		if (empty($this->config) || !$post_id)
+			return $format;
+
+		foreach ($this->config as $config) :
+			if (!in_array(get_post_type($post_id), $config['post_types']))
+				continue;
+
+			foreach ($config['fields'] as $field) :
+				if (isset($field['format']['value']) && !empty($field['format']['value'])) :
+					if ($field['field_type']=='date') :
+						$format=$field['format']['value'];
+					endif;
+				endif;
+			endforeach;
+
+		endforeach;
+
+		return $format;
 	}
 
 	/**
