@@ -1,9 +1,14 @@
 <?php
+global $mdw_cms_admin;
+
+/**
+ * MDWCMSAdmin class.
+ */
 class MDWCMSAdmin {
 
 	public $options=array();
 
-	public $version='2.2.0';
+	public $version=MDW_CMS_VERSION;
 
 	/**
 	 * __construct function.
@@ -28,9 +33,6 @@ class MDWCMSAdmin {
 		add_action('wp_ajax_mdw_cms_delete_taxonomy', array($this, 'ajax_delete_taxonomy'));
 		add_action('wp_ajax_mdw_cms_reserved_names', array($this, 'ajax_reserved_names'));
 
-		$this->check_version();
-		$this->cleanup_old_options();
-
 		$this->options['metaboxes']=get_option('mdw_cms_metaboxes');
 		$this->options['post_types']=get_option('mdw_cms_post_types');
 		$this->options['taxonomies']=get_option('mdw_cms_taxonomies');
@@ -43,7 +45,7 @@ class MDWCMSAdmin {
 	 * @return void
 	 */
 	public function build_admin_menu() {
-		add_management_page('MDW CMS','MDW CMS','manage_options','mdw-cms', array($this, 'admin_page'));
+		add_management_page('MDW CMS', 'MDW CMS', 'manage_options', 'mdw-cms', array($this, 'admin_page'));
 	}
 
 	/**
@@ -110,19 +112,6 @@ class MDWCMSAdmin {
 				echo '<div class="notice notice-error is-dismissible"><p>'.$type.' was not updated</p></div>';
 			endif;
 		endif;
-	}
-
-	/**
-	 * check_version function.
-	 *
-	 * @access protected
-	 * @return void
-	 */
-	protected function check_version() {
-		$stored_version=get_option('mdw_cms_version');
-
-		if ($stored_version!=$this->version || !$stored_version)
-			update_option('mdw_cms_version', $this->version);
 	}
 
 	/**
@@ -677,101 +666,6 @@ class MDWCMSAdmin {
 		update_option('mdw_cms_taxonomies', $taxonomies); // update option
 
 		return false;
-	}
-
-	/**
-	 * cleanup_old_options function.
-	 *
-	 * @access protected
-	 * @return void
-	 */
-	protected function cleanup_old_options() {
-		$version_check='2.1.8';
-		$version_cleaned=get_option('mdw_cms_options_clean_up', false);
-
-		if ($this->version<='2.1.8' && !$version_cleaned) :
-			$options=get_option('mdw_cms_options', array());
-			$metabox_options=get_option('mdw_cms_metaboxes', array());
-			$post_type_options=get_option('mdw_cms_post_types', array());
-			$taxonomies_options=get_option('mdw_cms_taxonomies', array());
-
-			// check we have metaboxes to migrate //
-			if (isset($options['metaboxes']) && !empty($options['metaboxes'])) :
-				foreach ($options['metaboxes'] as $key => $metabox) :
-					$flag=0;
-
-					// see if we have a match and merge //
-					foreach ($metabox_options as $mb_key => $mb) :
-						if ($metabox['mb_id']==$mb['mb_id']) :
-							$metabox_options[$mb_key]=mdw_cms_parse_args($metabox, $mb); //merge
-							$flag=1; // set flag
-						endif;
-					endforeach;
-
-					// check flag and add if not set //
-					if (!$flag)
-						$metabox_options[]=$metabox;
-
-					unset($options['metaboxes'][$key]); // remove old option
-				endforeach;
-
-				// update in db //
-				update_option('mdw_cms_options', $options);
-				update_option('mdw_cms_metaboxes', $metabox_options);
-			endif;
-
-			// check we have post types to migrate //
-			if (isset($options['post_types']) && !empty($options['post_types'])) :
-				foreach ($options['post_types'] as $key => $post_type) :
-					$flag=0;
-
-					// see if we have a match and merge //
-					foreach ($post_type_options as $pt_key => $pt) :
-						if ($post_type['name']==$pt['name']) :
-							$post_type_options[$pt_key]=mdw_cms_parse_args($post_type, $pt); //merge
-							$flag=1; // set flag
-						endif;
-					endforeach;
-
-					// check flag and add if not set //
-					if (!$flag)
-						$post_type_options[]=$post_type;
-
-					unset($options['post_types'][$key]); // remove old option
-				endforeach;
-
-				// update in db //
-				update_option('mdw_cms_options', $options);
-				update_option('mdw_cms_post_types', $post_type_options);
-			endif;
-
-			// check we have taxonomies to migrate //
-			if (isset($options['taxonomies']) && !empty($options['taxonomies'])) :
-				foreach ($options['taxonomies'] as $key => $tax) :
-					$flag=0;
-
-					// see if we have a match and merge //
-					foreach ($taxonomies_options as $t_key => $t) :
-						if ($tax['name']==$t['name']) :
-							$taxonomies_options[$t_key]=mdw_cms_parse_args($tax, $t); //merge
-							$flag=1; // set flag
-						endif;
-					endforeach;
-
-					// check flag and add if not set //
-					if (!$flag)
-						$taxonomies_options[]=$tax;
-
-					unset($options['taxonomies'][$key]); // remove old option
-				endforeach;
-
-				// update in db //
-				update_option('mdw_cms_options', $options);
-				update_option('mdw_cms_taxonomies', $taxonomies_options);
-			endif;
-
-			update_option('mdw_cms_options_clean_up', true); // no need to run again
-		endif;
 	}
 
 	/**

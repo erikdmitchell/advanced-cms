@@ -278,7 +278,7 @@ class MDWCMSlegacy {
 		$plugin_root_path=ABSPATH.'wp-content/plugins/';
 
 		if (isset($_GET['clear_config']) && $_GET['clear_config']) :
-			update_option('mdw_cms_version','1.1.1');
+			update_option('mdw_cms_version', '1.1.1');
 
 			self::$admin_notices[]=array(
 				'class' => 'updated',
