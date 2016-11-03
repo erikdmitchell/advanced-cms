@@ -152,26 +152,33 @@ class MDWMetaboxes {
 			$post_id=false;
 		endif;
 
-		$date_format=$this->set_jquery_date_format($post_id);
+		$datepicker=$this->jquery_datepicker_setup($post_id);
 
 		$mdwcmsjs=array(
-			'dateFormat' => $date_format
+			'datepicker' => $datepicker,
 		);
 
 		wp_localize_script('mdw-cms-js', 'wp_options', $mdwcmsjs);
 	}
 
 	/**
-	 * set_jquery_date_format function.
+	 * jquery_datepicker_setup function.
 	 *
 	 * @access public
 	 * @param int $post_id (default: 0)
 	 * @param string $format (default: 'mm/dd/yy')
 	 * @return void
 	 */
-	public function set_jquery_date_format($post_id=0, $format='mm/dd/yy') {
+	public function jquery_datepicker_setup($post_id=0, $format='mm/dd/yy') {
+		$value='';
+
+		$arr=array(
+			'format' => $format,
+			'value' => $value,
+		);
+
 		if (empty($this->config) || !$post_id)
-			return $format;
+			return $arr;
 
 		foreach ($this->config as $config) :
 			if (!in_array(get_post_type($post_id), $config['post_types']))
@@ -180,14 +187,15 @@ class MDWMetaboxes {
 			foreach ($config['fields'] as $field) :
 				if (isset($field['format']['value']) && !empty($field['format']['value'])) :
 					if ($field['field_type']=='date') :
-						$format=$field['format']['value'];
+						$arr['format']=$field['format']['value'];
+						$arr['value']=get_post_meta($post_id, $field['field_id'], true);
 					endif;
 				endif;
 			endforeach;
 
 		endforeach;
 
-		return $format;
+		return $arr;
 	}
 
 	/**
@@ -430,7 +438,11 @@ class MDWMetaboxes {
 				$html.='<input type="text" class="colorPicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				break;
 			case 'date':
-				$html.='<input type="text" class="mdw-cms-datepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				$atts=array(
+					'id' => $args['id'],
+				);
+
+				$html.=mdw_cms_get_field_template('datepicker', $atts, $value);
 				break;
 			case 'email' :
 				$html.='<input type="text" class="email validator '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
