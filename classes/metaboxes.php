@@ -196,7 +196,7 @@ class MDWMetaboxes {
 			endforeach;
 
 		endforeach;
-print_r($arr);
+
 		return $arr;
 	}
 

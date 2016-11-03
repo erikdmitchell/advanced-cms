@@ -47,6 +47,7 @@ See documentation (in plugin) for details.
 * Added support for a custom icon for custom post types.
 * Added taxonomy id check.
 * Added admin notices.
+* Date (aka datepicker) stores dates in propery MySQL format.
 
 = 2.1.9 =
 
