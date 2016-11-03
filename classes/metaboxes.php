@@ -726,7 +726,6 @@ class MDWMetaboxes {
 		// if our current user can't edit this post, bail
 		if (!current_user_can('edit_post',$post_id)) return;
 
-		//$this->build_duplicated_boxes($post_id); // must do here again b/c this action is added before we have all the info
 		$this->add_custom_fields(); // method for adding custom metabox fields outside the cms // -- this is added here as well for proper saving
 
 		// cycle through config fields and find matches //
@@ -746,9 +745,12 @@ class MDWMetaboxes {
 				if (isset($field['field_id']))
 					$field_id=$field['field_id'];
 
-				if (isset($_POST[$field_id])):
+				if (isset($_POST[$field_id]))
 					$data=$_POST[$field_id]; // submitted value //
-				endif;
+
+				// format date properly for db storage //
+				if ($field['field_type']=='date')
+					$data=date("Y-m-d H:i:s", strtotime($data));
 
 				// fix notices on unchecked check boxes //
 				//if (get_post_meta($post_id, $field['id']) == "") :
