@@ -186,17 +186,17 @@ class MDWMetaboxes {
 				continue;
 
 			foreach ($config['fields'] as $field) :
-				if (isset($field['format']['value']) && !empty($field['format']['value'])) :
-					if ($field['field_type']=='date') :
+				if ($field['field_type']=='date') :
+					if (!empty($field['format']['value']))
 						$arr['format']=$field['format']['value'];
-						$arr['value']=get_post_meta($post_id, $field['field_id'], true);
-						$arr['id']=$field['field_id'];
-					endif;
+
+					$arr['value']=get_post_meta($post_id, $field['field_id'], true);
+					$arr['id']=$field['field_id'];
 				endif;
 			endforeach;
 
 		endforeach;
-
+print_r($arr);
 		return $arr;
 	}
 
