@@ -175,6 +175,7 @@ class MDWMetaboxes {
 		$arr=array(
 			'format' => $format,
 			'value' => $value,
+			'id' => '',
 		);
 
 		if (empty($this->config) || !$post_id)
@@ -189,6 +190,7 @@ class MDWMetaboxes {
 					if ($field['field_type']=='date') :
 						$arr['format']=$field['format']['value'];
 						$arr['value']=get_post_meta($post_id, $field['field_id'], true);
+						$arr['id']=$field['field_id'];
 					endif;
 				endif;
 			endforeach;
