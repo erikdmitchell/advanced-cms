@@ -1,19 +1,61 @@
 <?php
+
+/**
+ * mdw_cms_updates function.
+ *
+ * @access public
+ * @return void
+ */
 function mdw_cms_updates() {
-	$stored_version=get_option('mdw_cms_version', 0);
-//echo '<br>';
-//echo "sv: $stored_version<br>";
-//echo MDW_CMS_VERSION;
-//echo '<br>';
-//$foo=version_compare($stored_version, MDW_CMS_VERSION);
-//print_r($foo);
+	global $mdw_cms_admin;
 
-// pre version 2.1.8, run some updates //
-if (version_compare($stored_version, '2.1.8', '<=')) :
-	mdw_cms_v2_1_8_cleanup();
-endif;
+	echo $stored_version=get_option('mdw_cms_version', 0);
 
-	//update_mdw_cms_version();
+	// we have some version milestones that require updates //
+	if (version_compare($stored_version, '2.1.8', '<=')) :
+		mdw_cms_v2_1_8_cleanup();
+	elseif (version_compare($stored_version, '2.1.9.1', '<')) : // we are migrating our dates to a MySQL format //
+		$date_fields=array();
+
+		// cycle through metaboxes/fields and see if any are dates //
+		foreach ($mdw_cms_admin->options['metaboxes'] as $metabox) :
+			foreach ($metabox['fields'] as $field) :
+				if ($field['field_type']=='date')
+					$date_fields[]=array(
+						'id' => $field['field_id'],
+						'post_types' => $metabox['post_types'],
+					);
+			endforeach;
+		endforeach;
+
+		// cycle through date fields and update in db //
+		if (!empty($date_fields)) :
+			foreach ($date_fields as $date_field) :
+				$post_ids=get_posts(array(
+					'posts_per_page' => -1,
+					'post_type' => $date_field['post_types'],
+					'fields' => 'ids',
+				));
+
+				// no posts so continue //
+				if (!count($post_ids))
+					continue;
+
+				// go through posts (ids) //
+				foreach ($post_ids as $post_id) :
+					$date=get_post_meta($post_id, $date_field['id'], true);
+
+					// convert date //
+					if (!empty($date)) :
+						$new_date=date("Y-m-d H:i:s", strtotime($date));
+						update_post_meta($post_id, $date_field['id'], $new_date, $date);
+					endif;
+				endforeach;
+			endforeach;
+		endif;
+	endif;
+
+	update_mdw_cms_version();
 }
 add_action('admin_init', 'mdw_cms_updates');
 
