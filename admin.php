@@ -32,7 +32,7 @@ class AdvancedCMSAdmin {
 
 		$this->options['metaboxes']=get_option('advanced_cms_metaboxes');
 		$this->options['post_types']=get_option('advanced_cms_post_types', array());
-		$this->options['taxonomies']=get_option('advanced_cms_taxonomies');
+		$this->options['taxonomies']=get_option('advanced_cms_taxonomies', array());
 	}
 
 	/**

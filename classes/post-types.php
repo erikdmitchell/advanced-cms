@@ -1,5 +1,5 @@
 <?php
-class advancedCustomPostTypes {
+class advancedCMSPostTypes {
 
 	protected $post_types=array();
 
@@ -96,5 +96,5 @@ class advancedCustomPostTypes {
 
 }
 
-new advancedCustomPostTypes();
+new advancedCMSPostTypes();
 ?>

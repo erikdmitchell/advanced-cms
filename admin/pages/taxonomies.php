@@ -1,10 +1,10 @@
-<?php global $mdw_cms_admin; ?>
+<?php global $advanced_cms_admin; ?>
 
-<div class="mdw-cms-admin-page taxonomies-page">
+<div class="advanced-cms-admin-page taxonomies-page">
 
-	<h2>Taxonomies <a href="<?php mdw_cms_admin_link(array('tab' => 'taxonomies', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h2>
+	<h2>Taxonomies <a href="<?php advanced_cms_admin_link(array('tab' => 'taxonomies', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h2>
 
-	<table class="wp-list-table widefat fixed striped mdw-cms-taxonomies">
+	<table class="wp-list-table widefat fixed striped advanced-cms-taxonomies">
 		<thead>
 		<tr>
 			<th scope="col" id="id" class="id">ID</th>
@@ -14,15 +14,15 @@
 		</thead>
 
 		<tbody class="taxonomies-list">
-			<?php if (count($mdw_cms_admin->options['taxonomies'])) : ?>
-				<?php foreach($mdw_cms_admin->options['taxonomies'] as $taxonomy) : ?>
+			<?php if (count($advanced_cms_admin->options['taxonomies'])) : ?>
+				<?php foreach($advanced_cms_admin->options['taxonomies'] as $taxonomy) : ?>
 					<tr id="taxonomy-<?php echo $taxonomy['name']; ?>">
 						<td class="id" data-colname="ID"><?php echo $taxonomy['name']; ?></td>
 						<td class="metabox" data-colname="Metabox">
-							<strong><a class="row-title" href="<?php mdw_cms_admin_link(array('tab' => 'taxonomies', 'action' => 'update', 'id' => $taxonomy['name'])); ?>"><?php echo $taxonomy['args']['label']; ?></a></strong>
+							<strong><a class="row-title" href="<?php advanced_cms_admin_link(array('tab' => 'taxonomies', 'action' => 'update', 'id' => $taxonomy['name'])); ?>"><?php echo $taxonomy['args']['label']; ?></a></strong>
 						</td>
-						<td class="object-types" data-colname="Object Types"><?php mdw_cms_metabox_post_types_list($taxonomy['object_type']); ?></td>
-						<td class="actions" data-colname="Actions"><a href="<?php mdw_cms_admin_link(); ?>"><span class="dashicons dashicons-trash" data-name="<?php echo $taxonomy['name']; ?>"></span></a></td>
+						<td class="object-types" data-colname="Object Types"><?php advanced_cms_metabox_post_types_list($taxonomy['object_type']); ?></td>
+						<td class="actions" data-colname="Actions"><a href="<?php advanced_cms_admin_link(); ?>"><span class="dashicons dashicons-trash" data-name="<?php echo $taxonomy['name']; ?>"></span></a></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php else : ?>
