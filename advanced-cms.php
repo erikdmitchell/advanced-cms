@@ -22,7 +22,7 @@ require_once(ADVANCED_CMS_PATH.'admin/documentation/init.php'); // handles our d
 require_once(ADVANCED_CMS_PATH.'classes/custom-post-types.php'); // calls custom post types
 //require_once(ADVANCED_CMS_PATH.'classes/metaboxes.php'); // our custom metabox class
 //require_once(ADVANCED_CMS_PATH.'classes/social-media.php'); // our social media page
-//require_once(ADVANCED_CMS_PATH.'classes/inflector.php'); // our pluralizing/singular functions
+require_once(ADVANCED_CMS_PATH.'classes/inflector.php'); // our pluralizing/singular functions
 require_once(ADVANCED_CMS_PATH.'functions.php'); // contains misc functions
 //require_once(ADVANCED_CMS_PATH.'lib/countries-states.php'); // contains global vars/arrays for states and countries
 //require_once(ADVANCED_CMS_PATH.'shortcodes/init.php'); // our shortcodes
