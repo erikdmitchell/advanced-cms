@@ -1,12 +1,12 @@
 <?php
-global $MDWMetaboxes, $mdw_cms_admin, $mdw_cms_metabox_args;
+global $advancedMetaboxes, $advanced_cms_admin, $advanced_cms_metabox_args;
 
-$args=mdw_cms_setup_metabox_row($attributes);
+$args=advanced_cms_setup_metabox_row($attributes);
 ?>
 <pre>
 	<?php //print_r($args); ?>
 </pre>
-<div class="sortable mdw-cms-fields-wrapper <?php echo $args['classes']; ?>" id="fields-wrapper-<?php echo $args['order']; ?>">
+<div class="sortable advanced-cms-fields-wrapper <?php echo $args['classes']; ?>" id="fields-wrapper-<?php echo $args['order']; ?>">
 	<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
 
 	<div class="field-row">
@@ -20,7 +20,7 @@ $args=mdw_cms_setup_metabox_row($attributes);
 
 		<select class="field_type name-item field-type" name="fields[<?php echo $args['order']; ?>][field_type]">
 			<option value=0>Select One</option>
-			<?php foreach ($MDWMetaboxes->fields as $field_type => $setup) : ?>
+			<?php foreach ($advancedMetaboxes->fields as $field_type => $setup) : ?>
 				<option value="<?php echo $field_type; ?>" <?php selected($args['field_type'], $field_type); ?>><?php echo $field_type; ?></option>
 			<?php endforeach; ?>
 		</select>
@@ -40,7 +40,7 @@ $args=mdw_cms_setup_metabox_row($attributes);
 		<div class="options field-row" id="field-options-<?php echo $args['order']; ?>">
 			<label for="options">Options</label>
 
-			<?php mdw_cms_options_rows($args['options'], $args['order']); ?>
+			<?php advanced_cms_options_rows($args['options'], $args['order']); ?>
 
 			<div class="add-option-field"><input type="button" name="add-option-field" class="add-option-field-btn button button-primary" value="Add Option"></div>
 		</div>
@@ -66,7 +66,7 @@ $args=mdw_cms_setup_metabox_row($attributes);
 		<label for="field_id">Field ID</label>
 
 		<div class="gen-field-id">
-			<input type="text" readonly="readonly" class="field_type field-id" value="<?php echo $MDWMetaboxes->generate_field_id($mdw_cms_metabox_args['prefix'], $args['field_label'], $args['field_id']); ?>" /> <span class="description">(use as meta key)</span>
+			<input type="text" readonly="readonly" class="field_type field-id" value="<?php echo $advancedMetaboxes->generate_field_id($advanced_cms_metabox_args['prefix'], $args['field_label'], $args['field_id']); ?>" /> <span class="description">(use as meta key)</span>
 		</div>
 	</div>
 

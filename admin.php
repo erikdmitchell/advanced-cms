@@ -30,7 +30,7 @@ class AdvancedCMSAdmin {
 		add_action('wp_ajax_advanced_cms_delete_taxonomy', array($this, 'ajax_delete_taxonomy'));
 		add_action('wp_ajax_advanced_cms_reserved_names', array($this, 'ajax_reserved_names'));
 
-		$this->options['metaboxes']=get_option('advanced_cms_metaboxes');
+		$this->options['metaboxes']=get_option('advanced_cms_metaboxes', array());
 		$this->options['post_types']=get_option('advanced_cms_post_types', array());
 		$this->options['taxonomies']=get_option('advanced_cms_taxonomies', array());
 	}

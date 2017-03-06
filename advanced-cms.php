@@ -20,7 +20,7 @@ require_once(ADVANCED_CMS_PATH.'admin/documentation/init.php'); // handles our d
 //require_once(ADVANCED_CMS_PATH.'classes/custom-widgets.php'); // alows for custom widgets to be built on the fly - CHECK USAGE
 require_once(ADVANCED_CMS_PATH.'classes/taxonomies.php'); // calls custom taxonomies
 require_once(ADVANCED_CMS_PATH.'classes/post-types.php'); // calls custom post types
-//require_once(ADVANCED_CMS_PATH.'classes/metaboxes.php'); // our custom metabox class
+require_once(ADVANCED_CMS_PATH.'classes/metaboxes.php'); // our custom metabox class
 //require_once(ADVANCED_CMS_PATH.'classes/social-media.php'); // our social media page
 require_once(ADVANCED_CMS_PATH.'functions.php'); // contains misc functions
 //require_once(ADVANCED_CMS_PATH.'lib/countries-states.php'); // contains global vars/arrays for states and countries

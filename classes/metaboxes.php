@@ -2,9 +2,9 @@
 global $advancedMetaboxes;
 
 /**
- * advancedMetaboxes class.
+ * advancedCMSMetaboxes class.
  */
-class advancedMetaboxes {
+class advancedCMSMetaboxes {
 
 	private $nonce = 'wp_upm_media_nonce'; // Represents the nonce value used to save the post media //
 	private $option_name='mdw_meta_box_duped_boxes';
@@ -134,17 +134,17 @@ class advancedMetaboxes {
 		global $post;
 
 		wp_enqueue_style('jquery-ui-style', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css', array(), '1.10.4');
-		wp_enqueue_style('colpick-css',  MDW_CMS_URL.'/css/colpick.css');
+		wp_enqueue_style('colpick-css',  ADVANCED_CMS_URL.'/css/colpick.css');
 
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-datepicker');
-		wp_enqueue_script('colpick-js', MDW_CMS_URL.'/js/colpick.js');
-		wp_enqueue_script('jq-timepicker', MDW_CMS_URL.'/js/jquery.ui.timepicker.js');
-		wp_enqueue_script('jquery-maskedinput-script', MDW_CMS_URL.'/js/jquery.maskedinput.min.js', array('jquery'), '1.3.1', true);
-		wp_enqueue_script('jq-validator-script', MDW_CMS_URL.'/js/jquery.validator.js', array('jquery'), '1.0.0', true);
-		wp_enqueue_script('mdw-cms-js', MDW_CMS_URL.'/js/functions.js', array('jquery'), '1.0.0', true);
-		wp_enqueue_script('duplicate-metabox-fields', MDW_CMS_URL.'js/duplicate-metabox-fields.js', array('jquery'), '1.0.2');
-		wp_enqueue_script('jquery-mediauploader', MDW_CMS_URL.'js/jquery.mediauploader.js', array('jquery'));
+		wp_enqueue_script('colpick-js', ADVANCED_CMS_URL.'/js/colpick.js');
+		wp_enqueue_script('jq-timepicker', ADVANCED_CMS_URL.'/js/jquery.ui.timepicker.js');
+		wp_enqueue_script('jquery-maskedinput-script', ADVANCED_CMS_URL.'/js/jquery.maskedinput.min.js', array('jquery'), '1.3.1', true);
+		wp_enqueue_script('jq-validator-script', ADVANCED_CMS_URL.'/js/jquery.validator.js', array('jquery'), '1.0.0', true);
+		wp_enqueue_script('mdw-cms-js', ADVANCED_CMS_URL.'/js/functions.js', array('jquery'), '1.0.0', true);
+		wp_enqueue_script('duplicate-metabox-fields', ADVANCED_CMS_URL.'js/duplicate-metabox-fields.js', array('jquery'), '1.0.2');
+		wp_enqueue_script('jquery-mediauploader', ADVANCED_CMS_URL.'js/jquery.mediauploader.js', array('jquery'));
 
 		if (isset($post->ID)) :
 			$post_id=$post->ID;
@@ -1232,5 +1232,5 @@ class advancedMetaboxes {
 
 } // end class
 
-$advancedMetaboxes = new advancedMetaboxes();
+$advancedMetaboxes = new advancedCMSMetaboxes();
 ?>
