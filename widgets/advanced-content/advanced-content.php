@@ -1,8 +1,6 @@
 <?php
-/**
- *	content widget
-**/
-class MDW_Content_Widget extends WP_Widget {
+
+class advancedContentWidget extends WP_Widget {
 
 	/**
 	 * Register widget with WordPress.
@@ -131,8 +129,8 @@ class MDW_Content_Widget extends WP_Widget {
 	 * @param array $instance Previously saved values from database.
 	 */
 	public function form( $instance ) {
-		wp_enqueue_script('mdwm-widgets-js',plugins_url('/mdwm-widgets.js',__FILE__));
-		wp_enqueue_style('mdwm-content-widget-form-css',plugins_url('/mdwm-widgets.css',__FILE__));
+		wp_enqueue_script('advanced-widgets-js');
+		wp_enqueue_style('advanced-content-widget-css');
 
 		if (isset($instance['title'])) :
 			$title=$instance['title'];
