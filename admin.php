@@ -53,7 +53,9 @@ class AdvancedCMSAdmin {
 	 * @return void
 	 */
 	public function scripts_styles($hook) {
-		global $advancedMetaboxes;
+		global $advancedMetaboxes, $wp_scripts;
+
+		$ui = $wp_scripts->query('jquery-ui-core');
 
 		wp_register_script('advanced-cms-admin-metaboxes', ADVANCED_CMS_ADMIN_URL.'js/metaboxes.js', array('jquery'), '0.2.0');
 
@@ -64,17 +66,19 @@ class AdvancedCMSAdmin {
 
 		wp_localize_script('advanced-cms-admin-metaboxes', 'metaboxData', $metaboxes_arr);
 
-		wp_enqueue_script('jquery');
+		wp_enqueue_script('jquery-ui-dialog');
 		wp_enqueue_script('jquery-ui-sortable');
 		wp_enqueue_script('namecheck-script', ADVANCED_CMS_URL.'js/jquery.namecheck.js', array('jquery'), '0.1.0');
 		wp_enqueue_script('metabox-id-check-script', ADVANCED_CMS_URL.'js/jquery.metabox-id-check.js', array('jquery'), '0.1.0');
 		wp_enqueue_script('taxonomy-id-check-script', ADVANCED_CMS_URL.'js/jquery.taxonomy-id-check.js', array('jquery'), '0.1.0');
 		wp_enqueue_script('requiredFields-script', ADVANCED_CMS_URL.'js/jquery.requiredFields.js', array('jquery'), '0.1.0');
 		wp_enqueue_script('advanced-cms-admin-functions', ADVANCED_CMS_ADMIN_URL.'js/functions.js', array('jquery'), '0.1.0');
-		wp_enqueue_script('advanced-cms-admin-post-types', ADVANCED_CMS_ADMIN_URL.'js/post-types.js', array('jquery'), '0.1.0');
+		wp_enqueue_script('advanced-cms-admin-post-types', ADVANCED_CMS_ADMIN_URL.'js/post-types.js', array('jquery-ui-dialog'), '0.1.0');
 		wp_enqueue_script('advanced-cms-admin-taxonomies', ADVANCED_CMS_ADMIN_URL.'js/taxonomies.js', array('jquery'), '0.1.0');
 		wp_enqueue_script('advanced-cms-admin-metaboxes');
 
+	
+		wp_enqueue_style('jquery-ui-smoothness', "https://ajax.googleapis.com/ajax/libs/jqueryui/{$ui->ver}/themes/smoothness/jquery-ui.min.css");
 		wp_enqueue_style('advanced-cms-admin-style', ADVANCED_CMS_ADMIN_URL.'css/admin.css');
 		wp_enqueue_style('advanced-cms-metabox-style', ADVANCED_CMS_ADMIN_URL.'css/metaboxes.css');
 	}

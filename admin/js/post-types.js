@@ -16,14 +16,14 @@ jQuery(document).ready(function($) {
 	/**
 	 * delete link click
 	 */
-	$('.mdw-cms-post-types .post-type-list td a .dashicons-trash').on('click', function(e) {
+	$('.advanced-cms-post-types .post-type-list td .dashicons-trash').on('click', function(e) {
 		e.preventDefault();
 
 		var data={
-			'action' : 'mdw_cms_get_post_type',
+			'action' : 'advanced_cms_get_post_type',
 			'slug' : $(this).data('slug')
 		};
-
+console.log(data);
 		$.post(ajaxurl, data, function(response) {
 			var response_data=$.parseJSON(response);
 			var data={
@@ -31,7 +31,7 @@ jQuery(document).ready(function($) {
 				'id' : response_data.name
 			};
 			var delete_data={
-				'action' : 'mdw_cms_delete_post_type',
+				'action' : 'advanced_cms_delete_post_type',
 				'name' : response_data.name
 			}
 			setupDialogBox(data, delete_data, 'custom post type');
@@ -41,7 +41,7 @@ jQuery(document).ready(function($) {
 	/**
 	 * dashicon click
 	 */
-	$('.custom-post-types .mdw-cms-dashicon-grid .dashicons').click(function(e) {
+	$('.custom-post-types .advanced-cms-dashicon-grid .dashicons').click(function(e) {
 		e.preventDefault();
 
 		var iconClass=$(this).data('icon');
