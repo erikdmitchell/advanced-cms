@@ -1,14 +1,12 @@
 <?php
-global $mdw_cms_admin;
+global $advanced_cms_admin;
 
 /**
- * MDWCMSAdmin class.
+ * AdvancedCMSAdmin class.
  */
-class MDWCMSAdmin {
+class AdvancedCMSAdmin {
 
 	public $options=array();
-
-	public $version=MDW_CMS_VERSION;
 
 	/**
 	 * __construct function.
@@ -19,23 +17,21 @@ class MDWCMSAdmin {
 	public function __construct() {
 		add_action('admin_menu', array($this, 'build_admin_menu'));
 		add_action('admin_enqueue_scripts',array($this,'scripts_styles'));
-		add_action('admin_init','MDWCMSlegacy::setup_legacy_updater');
 		add_action('admin_init', array($this, 'update_post_types'));
 		add_action('admin_init', array($this, 'update_metaboxes'));
 		add_action('admin_init', array($this, 'update_taxonomies'));
-		add_action('admin_notices', 'MDWCMSlegacy::legacy_admin_notices');
 		add_action('admin_notices', array($this, 'admin_notices'));
-		add_action('wp_ajax_mdw_cms_get_metabox', array($this, 'ajax_get_metabox'));
-		add_action('wp_ajax_mdw_cms_delete_metabox', array($this, 'ajax_delete_metabox'));
-		add_action('wp_ajax_mdw_cms_get_post_type', array($this, 'ajax_get_post_type'));
-		add_action('wp_ajax_mdw_cms_delete_post_type', array($this, 'ajax_delete_post_type'));
-		add_action('wp_ajax_mdw_cms_get_taxonomy', array($this, 'ajax_get_taxonomy'));
-		add_action('wp_ajax_mdw_cms_delete_taxonomy', array($this, 'ajax_delete_taxonomy'));
-		add_action('wp_ajax_mdw_cms_reserved_names', array($this, 'ajax_reserved_names'));
+		add_action('wp_ajax_advanced_cms_get_metabox', array($this, 'ajax_get_metabox'));
+		add_action('wp_ajax_advanced_cms_delete_metabox', array($this, 'ajax_delete_metabox'));
+		add_action('wp_ajax_advanced_cms_get_post_type', array($this, 'ajax_get_post_type'));
+		add_action('wp_ajax_advanced_cms_delete_post_type', array($this, 'ajax_delete_post_type'));
+		add_action('wp_ajax_advanced_cms_get_taxonomy', array($this, 'ajax_get_taxonomy'));
+		add_action('wp_ajax_advanced_cms_delete_taxonomy', array($this, 'ajax_delete_taxonomy'));
+		add_action('wp_ajax_advanced_cms_reserved_names', array($this, 'ajax_reserved_names'));
 
-		$this->options['metaboxes']=get_option('mdw_cms_metaboxes');
-		$this->options['post_types']=get_option('mdw_cms_post_types');
-		$this->options['taxonomies']=get_option('mdw_cms_taxonomies');
+		$this->options['metaboxes']=get_option('advanced_cms_metaboxes');
+		$this->options['post_types']=get_option('advanced_cms_post_types');
+		$this->options['taxonomies']=get_option('advanced_cms_taxonomies');
 	}
 
 	/**
@@ -45,7 +41,7 @@ class MDWCMSAdmin {
 	 * @return void
 	 */
 	public function build_admin_menu() {
-		add_management_page('MDW CMS', 'MDW CMS', 'manage_options', 'mdw-cms', array($this, 'admin_page'));
+		add_menu_page('Advanced CMS', 'Advanced CMS', 'manage_options', 'advanced-cms', array($this, 'admin_page'), 'dashicons-layout');
 	}
 
 	/**
@@ -56,16 +52,16 @@ class MDWCMSAdmin {
 	 * @return void
 	 */
 	public function scripts_styles($hook) {
-		global $MDWMetaboxes;
+		global $advancedMetaboxes;
 
-		wp_register_script('mdw-cms-admin-metaboxes', plugins_url('/admin/js/metaboxes.js', __FILE__), array('jquery'), '0.2.0');
+		wp_register_script('advanced-cms-admin-metaboxes', plugins_url('/admin/js/metaboxes.js', __FILE__), array('jquery'), '0.2.0');
 
 		// localize scripts //
 		$metaboxes_arr=array(
-			'fields' => $MDWMetaboxes->fields,
+			//'fields' => $advancedMetaboxes->fields,
 		);
 
-		wp_localize_script('mdw-cms-admin-metaboxes', 'metaboxData', $metaboxes_arr);
+		wp_localize_script('advanced-cms-admin-metaboxes', 'metaboxData', $metaboxes_arr);
 
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('jquery-ui-sortable');
@@ -73,13 +69,13 @@ class MDWCMSAdmin {
 		wp_enqueue_script('metabox-id-check-script',plugins_url('/js/jquery.metabox-id-check.js',__FILE__), array('jquery'), '0.1.0');
 		wp_enqueue_script('taxonomy-id-check-script',plugins_url('/js/jquery.taxonomy-id-check.js',__FILE__), array('jquery'), '0.1.0');
 		wp_enqueue_script('requiredFields-script',plugins_url('/js/jquery.requiredFields.js',__FILE__), array('jquery'), '0.1.0');
-		wp_enqueue_script('mdw-cms-admin-functions', plugins_url('/admin/js/functions.js', __FILE__), array('jquery'), '0.1.0');
-		wp_enqueue_script('mdw-cms-admin-post-types', plugins_url('/admin/js/post-types.js', __FILE__), array('jquery'), '0.1.0');
-		wp_enqueue_script('mdw-cms-admin-taxonomies', plugins_url('/admin/js/taxonomies.js', __FILE__), array('jquery'), '0.1.0');
-		wp_enqueue_script('mdw-cms-admin-metaboxes');
+		wp_enqueue_script('advanced-cms-admin-functions', plugins_url('/admin/js/functions.js', __FILE__), array('jquery'), '0.1.0');
+		wp_enqueue_script('advanced-cms-admin-post-types', plugins_url('/admin/js/post-types.js', __FILE__), array('jquery'), '0.1.0');
+		wp_enqueue_script('advanced-cms-admin-taxonomies', plugins_url('/admin/js/taxonomies.js', __FILE__), array('jquery'), '0.1.0');
+		wp_enqueue_script('advanced-cms-admin-metaboxes');
 
-		wp_enqueue_style('mdw-cms-admin-style',plugins_url('/admin/css/admin.css',__FILE__));
-		wp_enqueue_style('mdw-cms-admin-style', plugins_url('/admin/css/metaboxes.css', __FILE__));
+		wp_enqueue_style('advanced-cms-admin-style',plugins_url('/admin/css/admin.css',__FILE__));
+		wp_enqueue_style('advanced-cms-admin-style', plugins_url('/admin/css/metaboxes.css', __FILE__));
 	}
 
 	/**
@@ -135,9 +131,9 @@ class MDWCMSAdmin {
 			$active_tab=$_GET['tab'];
 		?>
 
-		<div class="wrap mdw-cms-wrap">
+		<div class="wrap advanced-cms-wrap">
 
-			<h1>MDW CMS</h1>
+			<h1>Advanced CMS</h1>
 
 			<h2 class="nav-tab-wrapper">
 				<?php
@@ -148,7 +144,7 @@ class MDWCMSAdmin {
 						$class=null;
 					endif;
 					?>
-					<a href="?page=mdw-cms&tab=<?php echo $tab; ?>" class="nav-tab <?php echo $class; ?>"><?php echo $name; ?></a>
+					<a href="?page=advanced-cms&tab=<?php echo $tab; ?>" class="nav-tab <?php echo $class; ?>"><?php echo $name; ?></a>
 				<?php endforeach; ?>
 			</h2>
 
@@ -156,34 +152,34 @@ class MDWCMSAdmin {
 			switch ($active_tab) :
 				case 'cms-main':
 					if (isset($_GET['documentation']) && !empty($_GET['documentation'])) :
-						echo mdw_cms_get_doc_template($_GET['documentation']);
+						echo advanced_cms_get_doc_template($_GET['documentation']);
 					else :
-						echo mdw_cms_get_template('main');
+						echo advanced_cms_get_template('main');
 					endif;
 					break;
 				case 'post-types':
 					if (isset($_GET['action']) && $_GET['action']=='update') :
-						echo mdw_cms_get_template('single-post-type');
+						echo advanced_cms_get_template('single-post-type');
 					else :
-						echo mdw_cms_get_template('post-types');
+						echo advanced_cms_get_template('post-types');
 					endif;
 					break;
 				case 'metaboxes':
 					if (isset($_GET['action']) && $_GET['action']=='update') :
-						echo mdw_cms_get_template('single-metabox');
+						echo advanced_cms_get_template('single-metabox');
 					else :
-						echo mdw_cms_get_template('metaboxes');
+						echo advanced_cms_get_template('metaboxes');
 					endif;
 					break;
 				case 'taxonomies':
 					if (isset($_GET['action']) && $_GET['action']=='update') :
-						echo mdw_cms_get_template('single-taxonomy');
+						echo advanced_cms_get_template('single-taxonomy');
 					else :
-						echo mdw_cms_get_template('taxonomies');
+						echo advanced_cms_get_template('taxonomies');
 					endif;
 					break;
 				default:
-					echo mdw_cms_get_template('main');
+					echo advanced_cms_get_template('main');
 					break;
 			endswitch;
 			?>
@@ -208,7 +204,7 @@ class MDWCMSAdmin {
 		$field['order']=$order;
 		$field['classes']=$classes;
 
-		echo mdw_cms_get_template('metabox-field-rows', $field);
+		echo advanced_cms_get_template('metabox-field-rows', $field);
 	}
 
 	/**
@@ -218,13 +214,13 @@ class MDWCMSAdmin {
 	 * @return void
 	 */
 	public function update_metaboxes() {
-		if (!isset($_POST['mdw_cms_admin']) || !wp_verify_nonce($_POST['mdw_cms_admin'], 'update_metaboxes'))
+		if (!isset($_POST['advanced_cms_admin']) || !wp_verify_nonce($_POST['advanced_cms_admin'], 'update_metaboxes'))
 			return false;
 
-		global $MDWMetaboxes;
+		global $advancedMetaboxes;
 
 		$data=$_POST;
-		$metaboxes=get_option('mdw_cms_metaboxes');
+		$metaboxes=get_option('advanced_cms_metaboxes');
 		$edit_key=-1;
 
 		if (!isset($data['mb_id']) || $data['mb_id']=='')
@@ -254,7 +250,7 @@ class MDWCMSAdmin {
 				if (!$field['field_type']) :
 					unset($data['fields'][$key]);
 				else :
-					$data['fields'][$key]['field_id']=$MDWMetaboxes->generate_field_id($prefix, $field['field_label']); // add id
+					$data['fields'][$key]['field_id']=$advancedMetaboxes->generate_field_id($prefix, $field['field_label']); // add id
 
 					// remove empty options fields //
 					if (isset($field['options'])) :
@@ -299,7 +295,7 @@ class MDWCMSAdmin {
 
 		$this->options['metaboxes']=$metaboxes; // set var
 
-		update_option('mdw_cms_metaboxes', $metaboxes);
+		update_option('advanced_cms_metaboxes', $metaboxes);
 
 		$url=$this->admin_url(array(
 			'tab' => 'metaboxes',
@@ -322,12 +318,12 @@ class MDWCMSAdmin {
 	 * @return void
 	 */
 	public function update_taxonomies() {
-		if (!isset($_POST['mdw_cms_admin']) || !wp_verify_nonce($_POST['mdw_cms_admin'], 'update_taxonomies'))
+		if (!isset($_POST['advanced_cms_admin']) || !wp_verify_nonce($_POST['advanced_cms_admin'], 'update_taxonomies'))
 			return false;
 
 		$data=$_POST;
 		$option_exists=false;
-		$taxonomies=get_option('mdw_cms_taxonomies');
+		$taxonomies=get_option('advanced_cms_taxonomies');
 
 		if (!isset($data['name']) || $data['name']=='')
 			return false;
@@ -355,12 +351,12 @@ class MDWCMSAdmin {
 			$taxonomies[]=$arr;
 		endif;
 
-		if (get_option('mdw_cms_taxonomies'))
+		if (get_option('advanced_cms_taxonomies'))
 			$option_exists=true;
 
 		$this->options['taxonomies']=$taxonomies; // set var
 
-		$update=update_option('mdw_cms_taxonomies',$taxonomies);
+		$update=update_option('advanced_cms_taxonomies',$taxonomies);
 
 		if ($update) :
 			$update=true;
@@ -436,11 +432,11 @@ class MDWCMSAdmin {
 	 * @return void
 	 */
 	public function update_post_types() {
-		if (!isset($_POST['mdw_cms_admin']) || !wp_verify_nonce($_POST['mdw_cms_admin'], 'update_cpts'))
+		if (!isset($_POST['advanced_cms_admin']) || !wp_verify_nonce($_POST['advanced_cms_admin'], 'update_cpts'))
 			return false;
 
 		$data=$_POST;
-		$post_types=get_option('mdw_cms_post_types');
+		$post_types=get_option('advanced_cms_post_types');
 		$post_types_s=serialize($post_types);
 
 		if (!isset($data['name']) || $data['name']=='')
@@ -488,7 +484,7 @@ class MDWCMSAdmin {
 
 		$this->options['post_types']=$post_types; // set var
 
-		$update=update_option('mdw_cms_post_types', $post_types);
+		$update=update_option('advanced_cms_post_types', $post_types);
 
 		wp_redirect($url);
 		exit();
@@ -534,7 +530,7 @@ class MDWCMSAdmin {
 	}
 
 	/**
-	 * mdw_cms_delete_post_type function.
+	 * advanced_cms_delete_post_type function.
 	 *
 	 * @access public
 	 * @param string $name (default: '')
@@ -551,7 +547,7 @@ class MDWCMSAdmin {
 
 		$this->options['post_types']=$post_types; // set var
 
-		update_option('mdw_cms_post_types', $post_types); // update option
+		update_option('advanced_cms_post_types', $post_types); // update option
 
 		return false;
 	}
@@ -614,7 +610,7 @@ class MDWCMSAdmin {
 
 		$this->options['metaboxes']=$metaboxes; // set var
 
-		update_option('mdw_cms_metaboxes', $metaboxes); // update option
+		update_option('advanced_cms_metaboxes', $metaboxes); // update option
 
 		return false;
 	}
@@ -663,7 +659,7 @@ class MDWCMSAdmin {
 
 		$this->options['taxonomies']=$taxonomies; // set var
 
-		update_option('mdw_cms_taxonomies', $taxonomies); // update option
+		update_option('advanced_cms_taxonomies', $taxonomies); // update option
 
 		return false;
 	}
@@ -745,7 +741,7 @@ class MDWCMSAdmin {
 	 */
 	protected function admin_url($args='') {
 		$default_args=array(
-			'page' => 'mdw-cms'
+			'page' => 'advanced-cms'
 		);
 		$args=wp_parse_args($args, $default_args);
 		$admin_url=add_query_arg($args, admin_url('/tools.php'));
@@ -755,5 +751,5 @@ class MDWCMSAdmin {
 
 }
 
-$mdw_cms_admin=new MDWCMSAdmin();
+$advanced_cms_admin=new AdvancedCMSAdmin();
 ?>

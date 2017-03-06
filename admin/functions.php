@@ -1,30 +1,13 @@
 <?php
-/**
- * mdw_cms_get_template function.
- *
- * @access public
- * @param bool $template_name (default: false)
- * @param mixed $attributes (default: null)
- * @return void
- */
-function mdw_cms_get_template($template_name=false, $attributes=null) {
+
+function advanced_cms_get_admin_page($template_name=false, $attributes=null) {
 	if (!$attributes )
 		$attributes = array();
 
 	if (!$template_name)
 		return false;
 
-	do_action('mdw_cms_before_'.$template_name);
-
-	if (file_exists(get_stylesheet_directory().'/mdw-cms/admin-pages/'.$template_name.'.php')) :
-		include(get_stylesheet_directory().'/mdw-cms/admin-pages/'.$template_name.'.php');
-	elseif (file_exists(get_template_directory().'/mdw-cms/admin-pages/'.$template_name.'.php')) :
-		include(get_template_directory().'/mdw-cms/admin-pages/'.$template_name.'.php');
-	else :
-		include(MDW_CMS_PATH.'admin/pages/'.$template_name.'.php');
-	endif;
-
-	do_action('mdw_cms_after_'.$template_name);
+	include(advanced_CMS_PATH.'admin/pages/'.$template_name.'.php');
 
 	$html=ob_get_contents();
 
@@ -34,7 +17,7 @@ function mdw_cms_get_template($template_name=false, $attributes=null) {
 }
 
 /**
- * mdw_cms_parse_args function.
+ * advanced_cms_parse_args function.
  *
  * Similar to wp_parse_args() just a bit extended to work with multidimensional arrays :)
  * credit: http://mekshq.com/recursive-wp-parse-args-wordpress-function/
@@ -44,13 +27,13 @@ function mdw_cms_get_template($template_name=false, $attributes=null) {
  * @param mixed $b
  * @return void
  */
-function mdw_cms_parse_args( &$a, $b ) {
+function advanced_cms_parse_args( &$a, $b ) {
 	$a = (array) $a;
 	$b = (array) $b;
 	$result = $b;
 	foreach ( $a as $k => &$v ) {
 		if ( is_array( $v ) && isset( $result[ $k ] ) ) {
-			$result[ $k ] = mdw_cms_parse_args( $v, $result[ $k ] );
+			$result[ $k ] = advanced_cms_parse_args( $v, $result[ $k ] );
 		} else {
 			$result[ $k ] = $v;
 		}
@@ -60,47 +43,47 @@ function mdw_cms_parse_args( &$a, $b ) {
 }
 
 /**
- * is_mdw_cms_admin_page function.
+ * is_advanced_cms_admin_page function.
  *
  * @access public
  * @return void
  */
-function is_mdw_cms_admin_page() {
-	if (isset($_GET['page']) && $_GET['page']=='mdw-cms')
+function is_advanced_cms_admin_page() {
+	if (isset($_GET['page']) && $_GET['page']=='advanced-cms')
 		return true;
 
 	return false;
 }
 
 /**
- * get_mdw_cms_admin_tab function.
+ * get_advanced_cms_admin_tab function.
  *
  * @access public
  * @return void
  */
-function get_mdw_cms_admin_tab() {
-	if (isset($_GET['page']) && $_GET['page']=='mdw-cms' && isset($_GET['tab']))
+function get_advanced_cms_admin_tab() {
+	if (isset($_GET['page']) && $_GET['page']=='advanced-cms' && isset($_GET['tab']))
 		return $_GET['tab'];
 
 	return false;
 }
 
 /**
- * mdw_cms_admin_metabox_fields function.
+ * advanced_cms_admin_metabox_fields function.
  *
  * @access public
  * @param string $fields (default: '')
  * @return void
  */
-function mdw_cms_admin_metabox_fields($fields='') {
-	global $mdw_cms_admin;
+function advanced_cms_admin_metabox_fields($fields='') {
+	global $advanced_cms_admin;
 
 	$field_counter=0;
 	$field_id=0;
 	$field='';
 
 	if (empty($fields)) :
-		$mdw_cms_admin->build_field_rows($field_id, $field, $field_counter);
+		$advanced_cms_admin->build_field_rows($field_id, $field, $field_counter);
 	else :
 		foreach ($fields as $field_id => $field) :
 			if (isset($field['field_id'])) :
@@ -109,7 +92,7 @@ function mdw_cms_admin_metabox_fields($fields='') {
 				$field_id=0;
 			endif;
 
-			$mdw_cms_admin->build_field_rows($field_id, $field, $field_counter);
+			$advanced_cms_admin->build_field_rows($field_id, $field, $field_counter);
 
 			$field_counter++;
 		endforeach;
@@ -117,13 +100,13 @@ function mdw_cms_admin_metabox_fields($fields='') {
 }
 
 /**
- * mdw_cms_setup_metabox_row function.
+ * advanced_cms_setup_metabox_row function.
  *
  * @access public
  * @param string $args (default: '')
  * @return void
  */
-function mdw_cms_setup_metabox_row($args='') {
+function advanced_cms_setup_metabox_row($args='') {
 	$default_args=array(
 		'field_id' => 0,
 		'order' => 0,
@@ -150,31 +133,31 @@ function mdw_cms_setup_metabox_row($args='') {
 }
 
 /**
- * mdw_cms_options_rows function.
+ * advanced_cms_options_rows function.
  *
  * @access public
  * @param string $options (default: '')
  * @param int $field_key (default: 0)
  * @return void
  */
-function mdw_cms_options_rows($options='', $field_key=0) {
-	echo 	mdw_cms_get_options_rows($options, $field_key);
+function advanced_cms_options_rows($options='', $field_key=0) {
+	echo 	advanced_cms_get_options_rows($options, $field_key);
 }
 
 /**
- * mdw_cms_get_options_rows function.
+ * advanced_cms_get_options_rows function.
  *
  * @access public
  * @param string $options (default: '')
  * @param int $field_key (default: 0)
  * @return void
  */
-function mdw_cms_get_options_rows($options='', $field_key=0) {
+function advanced_cms_get_options_rows($options='', $field_key=0) {
 	$output=null;
 
 	if (!empty($options)) :
 		foreach ($options as $key => $option) :
-			$output.=mdw_cms_generate_option_row(array(
+			$output.=advanced_cms_generate_option_row(array(
 				'row_id' => $key,
 				'field_key' => $field_key,
 				'name' => $option['name'],
@@ -182,7 +165,7 @@ function mdw_cms_get_options_rows($options='', $field_key=0) {
 			));
 		endforeach;
 	else :
-		$output.=mdw_cms_generate_option_row(array(
+		$output.=advanced_cms_generate_option_row(array(
 			'field_key' => $field_key,
 		));
 	endif;
@@ -191,13 +174,13 @@ function mdw_cms_get_options_rows($options='', $field_key=0) {
 }
 
 /**
- * mdw_cms_generate_option_row function.
+ * advanced_cms_generate_option_row function.
  *
  * @access public
  * @param string $args (default: '')
  * @return void
  */
-function mdw_cms_generate_option_row($args='') {
+function advanced_cms_generate_option_row($args='') {
 	$html=null;
 	$default_args=array(
 		'row_id' => 0,
