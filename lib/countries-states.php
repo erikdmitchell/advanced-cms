@@ -1,8 +1,8 @@
 <?php
-global $mdw_cms_countries;
-global $mdw_cms_states;
+global $advanced_cms_countries;
+global $advanced_cms_states;
 
-$mdw_cms_countries=array(
+$advanced_cms_countries=array(
   "GB" => "United Kingdom",
   "US" => "United States",
   "AF" => "Afghanistan",
@@ -244,7 +244,7 @@ $mdw_cms_countries=array(
   "ZW" => "Zimbabwe"
 );
 
-$mdw_cms_states=array(
+$advanced_cms_states=array(
   'AL'=>'Alabama',
   'AK'=>'Alaska',
   'AZ'=>'Arizona',
