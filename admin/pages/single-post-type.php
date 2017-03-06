@@ -1,11 +1,11 @@
-<?php $mdw_cms_post_type_args=mdw_cms_setup_post_type_args(); ?>
+<?php $advanced_cms_post_type_args=advanced_cms_setup_post_type_args(); ?>
 
-<h3><?php echo $mdw_cms_post_type_args['header']; ?> <a href="<?php mdw_cms_admin_link(array('tab' => 'post-types', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h3>
+<h3><?php echo $advanced_cms_post_type_args['header']; ?> <a href="<?php advanced_cms_admin_link(array('tab' => 'post-types', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h3>
 
-<div class="mdw-cms-admin-page single-post-type-page">
+<div class="advanced-cms-admin-page single-post-type-page">
 
 	<form class="custom-post-types" method="post">
-		<?php wp_nonce_field('update_cpts', 'mdw_cms_admin'); ?>
+		<?php wp_nonce_field('update_cpts', 'advanced_cms_admin'); ?>
 
 		<table class="form-table">
 			<tbody>
@@ -15,9 +15,9 @@
 						<label for="name" class="required ">Post Type Name</label>
 					</th>
 					<td>
-						<input type="text" name="name" id="name" class="required" value="<?php echo $mdw_cms_post_type_args['name']; ?>" /><span class="example">(e.g. movie)</span>
+						<input type="text" name="name" id="name" class="required" value="<?php echo $advanced_cms_post_type_args['name']; ?>" /><span class="example">(e.g. movie)</span>
 
-						<div id="mdw-cms-name-error" class="<?php echo $mdw_cms_post_type_args['error_class']; ?>"></div>
+						<div id="advanced-cms-name-error" class="<?php echo $advanced_cms_post_type_args['error_class']; ?>"></div>
 						<p class="description">
 							Max 20 characters, can not contain capital letters or spaces. Reserved post types: post, page, attachment, revision, nav_menu_item.
 						</p>
@@ -29,7 +29,7 @@
 						<label for="label" class="required">Label</label>
 					</th>
 					<td>
-						<input type="text" name="label" id="label" class="required" value="<?php echo $mdw_cms_post_type_args['label']; ?>" /><span class="example">(e.g. Movies)</span>
+						<input type="text" name="label" id="label" class="required" value="<?php echo $advanced_cms_post_type_args['label']; ?>" /><span class="example">(e.g. Movies)</span>
 					</td>
 				</tr>
 
@@ -38,7 +38,7 @@
 						<label for="singular_label" class="">Singular Label</label>
 					</th>
 					<td>
-						<input type="text" name="singular_label" id="singular_label" value="<?php echo $mdw_cms_post_type_args['singular_label']; ?>" /><span class="example">(e.g. Movie)</span>
+						<input type="text" name="singular_label" id="singular_label" value="<?php echo $advanced_cms_post_type_args['singular_label']; ?>" /><span class="example">(e.g. Movie)</span>
 					</td>
 				</tr>
 
@@ -47,7 +47,7 @@
 						<label for="description" class="">Description</label>
 					</th>
 					<td>
-						<textarea name="description" id="description" rows="4" cols="40"><?php echo $mdw_cms_post_type_args['description']; ?></textarea>
+						<textarea name="description" id="description" rows="4" cols="40"><?php echo $advanced_cms_post_type_args['description']; ?></textarea>
 					</td>
 				</tr>
 
@@ -57,8 +57,8 @@
 					</th>
 					<td>
 						<select name="title" id="title">
-							<option value="1" <?php selected($mdw_cms_post_type_args['title'], 1); ?>>True</option>
-							<option value="0" <?php selected($mdw_cms_post_type_args['title'], 0); ?>>False</option>
+							<option value="1" <?php selected($advanced_cms_post_type_args['title'], 1); ?>>True</option>
+							<option value="0" <?php selected($advanced_cms_post_type_args['title'], 0); ?>>False</option>
 						</select>
 						<span class="example">(default True)</span>
 					</td>
@@ -70,8 +70,8 @@
 					</th>
 					<td>
 						<select name="thumbnail" id="thumbnaill">
-							<option value="1" <?php selected($mdw_cms_post_type_args['thumbnail'], 1); ?>>True</option>
-							<option value="0" <?php selected($mdw_cms_post_type_args['thumbnail'], 0); ?>>False</option>
+							<option value="1" <?php selected($advanced_cms_post_type_args['thumbnail'], 1); ?>>True</option>
+							<option value="0" <?php selected($advanced_cms_post_type_args['thumbnail'], 0); ?>>False</option>
 						</select>
 						<span class="example">(default True)</span>
 					</td>
@@ -83,8 +83,8 @@
 					</th>
 					<td>
 					<select name="editor" id="editor" >
-						<option value="1" <?php selected($mdw_cms_post_type_args['editor'], 1); ?>>True</option>
-						<option value="0" <?php selected($mdw_cms_post_type_args['editor'], 0); ?>>False</option>
+						<option value="1" <?php selected($advanced_cms_post_type_args['editor'], 1); ?>>True</option>
+						<option value="0" <?php selected($advanced_cms_post_type_args['editor'], 0); ?>>False</option>
 					</select>
 					<span class="example">(default True)</span>
 					</td>
@@ -96,8 +96,8 @@
 					</th>
 					<td>
 						<select name="revisions" id="revisions">
-							<option value="1" <?php selected($mdw_cms_post_type_args['revisions'], 1); ?>>True</option>
-							<option value="0" <?php selected($mdw_cms_post_type_args['revisions'], 0); ?>>False</option>
+							<option value="1" <?php selected($advanced_cms_post_type_args['revisions'], 1); ?>>True</option>
+							<option value="0" <?php selected($advanced_cms_post_type_args['revisions'], 0); ?>>False</option>
 						</select>
 						<span class="example">(default True)</span>
 					</td>
@@ -109,8 +109,8 @@
 					</th>
 					<td>
 						<select name="hierarchical" id="hierarchical">
-							<option value="1" <?php selected($mdw_cms_post_type_args['hierarchical'], 1); ?>>True</option>
-							<option value="0" <?php selected($mdw_cms_post_type_args['hierarchical'], 0); ?>>False</option>
+							<option value="1" <?php selected($advanced_cms_post_type_args['hierarchical'], 1); ?>>True</option>
+							<option value="0" <?php selected($advanced_cms_post_type_args['hierarchical'], 0); ?>>False</option>
 						</select>
 						<span class="example">(default False)</span>
 						<p class="description">
@@ -126,8 +126,8 @@
 					</th>
 					<td>
 						<select name="page_attributes" id="page_attributes">
-							<option value="1" <?php selected($mdw_cms_post_type_args['page_attributes'], 1); ?>>True</option>
-							<option value="0" <?php selected($mdw_cms_post_type_args['page_attributes'], 0); ?>>False</option>
+							<option value="1" <?php selected($advanced_cms_post_type_args['page_attributes'], 1); ?>>True</option>
+							<option value="0" <?php selected($advanced_cms_post_type_args['page_attributes'], 0); ?>>False</option>
 						</select>
 
 						<span class="example">(default False)</span>
@@ -140,8 +140,8 @@
 					</th>
 					<td>
 						<select name="excerpt" id="has_excerpt">
-							<option value="1" <?php selected($mdw_cms_post_type_args['excerpt'], 1); ?>>True</option>
-							<option value="0" <?php selected($mdw_cms_post_type_args['excerpt'], 0); ?>>False</option>
+							<option value="1" <?php selected($advanced_cms_post_type_args['excerpt'], 1); ?>>True</option>
+							<option value="0" <?php selected($advanced_cms_post_type_args['excerpt'], 0); ?>>False</option>
 						</select>
 
 						<span class="example">(default False)</span>
@@ -154,8 +154,8 @@
 					</th>
 					<td>
 						<select name="comments" id="comments">
-							<option value="1" <?php selected($mdw_cms_post_type_args['comments'], 1); ?>>True</option>
-							<option value="0" <?php selected($mdw_cms_post_type_args['comments'], 0); ?>>False</option>
+							<option value="1" <?php selected($advanced_cms_post_type_args['comments'], 1); ?>>True</option>
+							<option value="0" <?php selected($advanced_cms_post_type_args['comments'], 0); ?>>False</option>
 						</select>
 
 						<span class="example">(default False)</span>
@@ -167,10 +167,10 @@
 						<label for="icon" class=""><?php echo __('Icon'); ?></label>
 					</th>
 					<td>
-						<input type="hidden" id="selected-dashicon" name="icon" value="<?php echo $mdw_cms_post_type_args['icon']; ?>" />
-						<div class="selected-icon"><span class="dashicons <?php echo $mdw_cms_post_type_args['icon']; ?>"></span></div>
+						<input type="hidden" id="selected-dashicon" name="icon" value="<?php echo $advanced_cms_post_type_args['icon']; ?>" />
+						<div class="selected-icon"><span class="dashicons <?php echo $advanced_cms_post_type_args['icon']; ?>"></span></div>
 						<div class="change-text">Click icon to change:</div>
-						<?php mdw_cms_dashicon_grid(); ?>
+						<?php advanced_cms_dashicon_grid(); ?>
 					</td>
 				</tr>
 
@@ -178,10 +178,10 @@
 		</table>
 
 		<p class="submit">
-			<input type="submit" name="add-cpt" id="submit" class="button button-primary" value="<?php echo $mdw_cms_post_type_args['btn_text']; ?>">
+			<input type="submit" name="add-cpt" id="submit" class="button button-primary" value="<?php echo $advanced_cms_post_type_args['btn_text']; ?>">
 		</p>
 
-		<input type="hidden" name="cpt-id" id="cpt-id" value=<?php echo $mdw_cms_post_type_args['id']; ?> />
+		<input type="hidden" name="cpt-id" id="cpt-id" value=<?php echo $advanced_cms_post_type_args['id']; ?> />
 	</form>
 
 </div>

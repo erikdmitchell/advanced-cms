@@ -10,8 +10,6 @@ class advancedCustomPostTypes {
 	}
 
 	function create_post_types() {
-		$Words=new Inflector();
-
 		if (empty($this->post_types))
 			return false;
 
