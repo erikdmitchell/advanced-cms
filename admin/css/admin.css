@@ -145,6 +145,10 @@
 }
 .advanced-cms-fields-wrapper .field-options .options.options-row .option-row {
 	width: 80%;
+	margin-left: 80px;
+}
+.advanced-cms-fields-wrapper .field-options .options.options-row #option-row-0 {
+	margin-left: 0;
 }
 .advanced-cms-fields-wrapper .field-options .add-option-field {
 	overflow: hidden;
