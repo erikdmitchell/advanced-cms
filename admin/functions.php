@@ -1,5 +1,4 @@
 <?php
-
 /**
  * advanced_cms_get_admin_page function.
  * 
@@ -149,7 +148,7 @@ function advanced_cms_setup_metabox_row($args='') {
  * @return void
  */
 function advanced_cms_options_rows($options='', $field_key=0) {
-	echo 	advanced_cms_get_options_rows($options, $field_key);
+	echo advanced_cms_get_options_rows($options, $field_key);
 }
 
 /**

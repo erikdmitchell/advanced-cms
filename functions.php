@@ -1,27 +1,27 @@
 <?php
 
 /**
- * mdw_cms_get_template_part function.
+ * advanced_cms_get_template_part function.
  *
  * @access public
  * @param string $template_name (default: '')
  * @param string $atts (default: '')
  * @return void
  */
-function mdw_cms_get_template_part($template_name='', $atts='') {
+function advanced_cms_get_template_part($template_name='', $atts='') {
 	if (empty($template_name))
 		return false;
 
 	ob_start();
 
-	do_action('mdw_cms_get_template_part_'.$template_name);
+	do_action('advanced_cms_get_template_part_'.$template_name);
 
-	if (file_exists(get_stylesheet_directory().'/mdw-cms/'.$template_name.'.php')) :
-		include(get_stylesheet_directory().'/mdw-cms/'.$template_name.'.php');
-	elseif (file_exists(get_template_directory().'/mdw-cms/'.$template_name.'.php')) :
-		include(get_template_directory().'/mdw-cms/'.$template_name.'.php');
-	elseif (file_exists(MDW_CMS_PATH.'templates/'.$template_name.'.php')) :
-		include(MDW_CMS_PATH.'templates/'.$template_name.'.php');
+	if (file_exists(get_stylesheet_directory().'/advanced-cms/'.$template_name.'.php')) :
+		include(get_stylesheet_directory().'/advanced-cms/'.$template_name.'.php');
+	elseif (file_exists(get_template_directory().'/advanced-cms/'.$template_name.'.php')) :
+		include(get_template_directory().'/advanced-cms/'.$template_name.'.php');
+	elseif (file_exists(advanced_CMS_PATH.'templates/'.$template_name.'.php')) :
+		include(advanced_CMS_PATH.'templates/'.$template_name.'.php');
 	endif;
 
 	$html=ob_get_contents();
@@ -32,16 +32,16 @@ function mdw_cms_get_template_part($template_name='', $atts='') {
 }
 
 /**
- * mdw_cms_dashicon_grid function.
+ * advanced_cms_dashicon_grid function.
  *
  * @access public
  * @return void
  */
-function mdw_cms_dashicon_grid() {
-	$dashicons=mdw_cms_get_dashicons();
+function advanced_cms_dashicon_grid() {
+	$dashicons=advanced_cms_get_dashicons();
 	$html=null;
 
-	$html.='<div class="mdw-cms-dashicon-grid">';
+	$html.='<div class="advanced-cms-dashicon-grid">';
 		foreach ($dashicons as $dashicon) :
 			$html.='<a href="#" class="dashicons '.$dashicon.'" data-icon="'.$dashicon.'"></a>';
 		endforeach;
@@ -51,12 +51,12 @@ function mdw_cms_dashicon_grid() {
 }
 
 /**
- * mdw_cms_get_dashicons function.
+ * advanced_cms_get_dashicons function.
  *
  * @access public
  * @return void
  */
-function mdw_cms_get_dashicons() {
+function advanced_cms_get_dashicons() {
 	$dashicons=array(
 		'dashicons-admin-site',
 		'dashicons-dashboard',
@@ -298,7 +298,7 @@ function mdw_cms_get_dashicons() {
 }
 
 /**
- * mdw_cms_get_field_template function.
+ * advanced_cms_get_field_template function.
  *
  * @access public
  * @param string $template_name (default: '')
@@ -306,18 +306,18 @@ function mdw_cms_get_dashicons() {
  * @param string $value (default: '')
  * @return void
  */
-function mdw_cms_get_field_template($template_name='', $atts='', $value='') {
+function advanced_cms_get_field_template($template_name='', $atts='', $value='') {
 	if (empty($template_name))
 		return false;
 
 	ob_start();
 
-	if (file_exists(get_stylesheet_directory().'/mdw-cms/metabox-fields/'.$template_name.'.php')) :
-		include(get_stylesheet_directory().'/mdw-cms/metabox-fields/'.$template_name.'.php');
-	elseif (file_exists(get_template_directory().'/mdw-cms/metabox-fields/'.$template_name.'.php')) :
-		include(get_template_directory().'/mdw-cms/metabox-fields/'.$template_name.'.php');
-	elseif (file_exists(MDW_CMS_PATH.'templates/metabox-fields/'.$template_name.'.php')) :
-		include(MDW_CMS_PATH.'templates/metabox-fields/'.$template_name.'.php');
+	if (file_exists(get_stylesheet_directory().'/advanced-cms/metabox-fields/'.$template_name.'.php')) :
+		include(get_stylesheet_directory().'/advanced-cms/metabox-fields/'.$template_name.'.php');
+	elseif (file_exists(get_template_directory().'/advanced-cms/metabox-fields/'.$template_name.'.php')) :
+		include(get_template_directory().'/advanced-cms/metabox-fields/'.$template_name.'.php');
+	elseif (file_exists(advanced_CMS_PATH.'templates/metabox-fields/'.$template_name.'.php')) :
+		include(advanced_CMS_PATH.'templates/metabox-fields/'.$template_name.'.php');
 	endif;
 
 	$html=ob_get_contents();
@@ -328,7 +328,7 @@ function mdw_cms_get_field_template($template_name='', $atts='', $value='') {
 }
 
 /**
- * mdw_cms_checked_checkbox function.
+ * advanced_cms_checked_checkbox function.
  *
  * @access public
  * @param mixed $checked
@@ -336,7 +336,7 @@ function mdw_cms_get_field_template($template_name='', $atts='', $value='') {
  * @param bool $echo (default: true)
  * @return void
  */
-function mdw_cms_checked_checkbox($checked, $current=true, $echo=true) {
+function advanced_cms_checked_checkbox($checked, $current=true, $echo=true) {
 	$type='checked';
 
 	if (is_serialized($checked))
@@ -358,26 +358,26 @@ function mdw_cms_checked_checkbox($checked, $current=true, $echo=true) {
 }
 
 /**
- * mdw_cms_admin_link function.
+ * advanced_cms_admin_link function.
  *
  * @access public
  * @param string $args (default: '')
  * @return void
  */
-function mdw_cms_admin_link($args='') {
-	echo mdw_cms_get_admin_link($args);
+function advanced_cms_admin_link($args='') {
+	echo advanced_cms_get_admin_link($args);
 }
 
 /**
- * mdw_cms_get_admin_link function.
+ * advanced_cms_get_admin_link function.
  *
  * @access public
  * @param string $args (default: '')
  * @return void
  */
-function mdw_cms_get_admin_link($args='') {
+function advanced_cms_get_admin_link($args='') {
 	$default_args=array(
-		'page' => 'mdw-cms',
+		'page' => 'advanced-cms',
 	);
 	$args=wp_parse_args($args, $default_args);
 
@@ -387,16 +387,16 @@ function mdw_cms_get_admin_link($args='') {
 }
 
 /**
- * mdw_cms_setup_post_type_args function.
+ * advanced_cms_setup_post_type_args function.
  *
  * @access public
  * @return void
  */
-function mdw_cms_setup_post_type_args() {
-	global $mdw_cms_admin;
+function advanced_cms_setup_post_type_args() {
+	global $advanced_cms_admin;
 
 	$default_args=array(
-		'base_url' => admin_url('tools.php?page=mdw-cms&tab=post-types'),
+		'base_url' => admin_url('tools.php?page=advanced-cms&tab=post-types'),
 		'btn_text' => 'Create',
 		'name' => '',
 		'label' => '',
@@ -418,7 +418,7 @@ function mdw_cms_setup_post_type_args() {
 
 	// edit custom post type //
 	if (isset($_GET['slug']) && $_GET['slug']) :
-		foreach ($mdw_cms_admin->options['post_types'] as $key => $post_type) :
+		foreach ($advanced_cms_admin->options['post_types'] as $key => $post_type) :
 			if ($post_type['name']==$_GET['slug']) :
 				$args=$post_type;
 				$args['header']='Edit Post Type';
@@ -428,22 +428,22 @@ function mdw_cms_setup_post_type_args() {
 		endforeach;
 	endif;
 
-	$args=mdw_cms_parse_args($args, $default_args);
+	$args=advanced_cms_parse_args($args, $default_args);
 
 	return $args;
 }
 
 /**
- * mdw_cms_setup_metabox_args function.
+ * advanced_cms_setup_metabox_args function.
  *
  * @access public
  * @return void
  */
-function mdw_cms_setup_metabox_args() {
-	global $mdw_cms_admin;
+function advanced_cms_setup_metabox_args() {
+	global $advanced_cms_admin;
 
 	$default_args=array(
-		'base_url' => admin_url('tools.php?page=mdw-cms&tab=metaboxes'),
+		'base_url' => admin_url('tools.php?page=advanced-cms&tab=metaboxes'),
 		'btn_text' => 'Create',
 		'mb_id' => '',
 		'title' => '',
@@ -457,7 +457,7 @@ function mdw_cms_setup_metabox_args() {
 
 	// edit //
 	if (isset($_GET['id']) && $_GET['id']) :
-		foreach ($mdw_cms_admin->options['metaboxes'] as $metabox) :
+		foreach ($advanced_cms_admin->options['metaboxes'] as $metabox) :
 			if ($metabox['mb_id']==$_GET['id']) :
 				$args=$metabox;
 				$args['header']='Edit Metabox';
@@ -466,19 +466,19 @@ function mdw_cms_setup_metabox_args() {
 		endforeach;
 	endif;
 
-	$args=mdw_cms_parse_args($args, $default_args);
+	$args=advanced_cms_parse_args($args, $default_args);
 
 	return $args;
 }
 
 /**
- * mdw_cms_metabox_post_types_list function.
+ * advanced_cms_metabox_post_types_list function.
  *
  * @access public
  * @param string $post_types (default: '')
  * @return void
  */
-function mdw_cms_metabox_post_types_list($post_types='') {
+function advanced_cms_metabox_post_types_list($post_types='') {
 	if (empty($post_types))
 		return false;
 
@@ -488,13 +488,13 @@ function mdw_cms_metabox_post_types_list($post_types='') {
 }
 
 /**
- * mdw_cms_setup_taxonomy_args function.
+ * advanced_cms_setup_taxonomy_args function.
  *
  * @access public
  * @return void
  */
-function mdw_cms_setup_taxonomy_args() {
-	global $mdw_cms_admin;
+function advanced_cms_setup_taxonomy_args() {
+	global $advanced_cms_admin;
 
 	$default_args=array(
 		'btn_text' => 'Create',
@@ -510,7 +510,7 @@ function mdw_cms_setup_taxonomy_args() {
 
 	// edit custom taxonomy //
 	if (isset($_GET['id']) && $_GET['id']) :
-		foreach ($mdw_cms_admin->options['taxonomies'] as $key => $taxonomy) :
+		foreach ($advanced_cms_admin->options['taxonomies'] as $key => $taxonomy) :
 			if ($taxonomy['name']==$_GET['id']) :
 				$args=$taxonomy['args'];
 				$args['name']=$taxonomy['name'];
@@ -522,7 +522,7 @@ function mdw_cms_setup_taxonomy_args() {
 		endforeach;
 	endif;
 
-	$args=mdw_cms_parse_args($args, $default_args);
+	$args=advanced_cms_parse_args($args, $default_args);
 
 	return $args;
 }
