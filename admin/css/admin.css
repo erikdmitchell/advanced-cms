@@ -111,10 +111,13 @@
 	margin-left: 10px;
 }
 .advanced-cms-fields-wrapper .field-options .option-row label {
-	width: 50px;
+	width: 80px;
 }
 .advanced-cms-fields-wrapper .field-options .option-row input {
 	width: 190px;
+}
+.advanced-cms-fields-wrapper .field-options .option-row input[type="checkbox"] {
+	width: 16px;
 }
 .advanced-cms-fields-wrapper .field-row .field_type,
 .advanced-cms-fields-wrapper .field-options .option-row .options-item,
@@ -131,7 +134,7 @@
 	width: 250px;
 }
 .advanced-cms-fields-wrapper .field-options .option-row {
-	margin-left: 200px;
+	margin-left: 230px;
 	overflow: hidden;
 	margin-bottom: 3px;
 }

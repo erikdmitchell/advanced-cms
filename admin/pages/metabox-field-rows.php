@@ -3,10 +3,7 @@ global $advancedMetaboxes, $advanced_cms_admin, $advanced_cms_metabox_args;
 
 $args=advanced_cms_setup_metabox_row($attributes);
 ?>
-<pre>
-	mb field row args:<br>
-	<?php print_r($args); ?>
-</pre>
+
 <div class="sortable advanced-cms-fields-wrapper <?php echo $args['classes']; ?>" id="fields-wrapper-<?php echo $args['order']; ?>">
 	<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
 
