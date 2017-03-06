@@ -12,7 +12,7 @@ define('ADVANCED_CMS_PATH', plugin_dir_path(__FILE__));
 define('ADVANCED_CMS_URL', plugin_dir_url(__FILE__));
 define('ADVANCED_CMS_ADMIN_PATH', plugin_dir_path(__FILE__).'admin/');
 define('ADVANCED_CMS_ADMIN_URL', plugin_dir_url(__FILE__).'admin/');
-define('ADVANCED_CMS_VERSION', '2.1.9.1');
+define('ADVANCED_CMS_VERSION', '0.1.0');
 
 require_once(ADVANCED_CMS_PATH.'admin/functions.php'); // admin functions
 require_once(ADVANCED_CMS_PATH.'admin.php'); // admin class
