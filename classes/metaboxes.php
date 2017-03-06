@@ -141,10 +141,10 @@ class advancedCMSMetaboxes {
 		wp_enqueue_script('colpick-js', ADVANCED_CMS_URL.'/js/colpick.js');
 		wp_enqueue_script('jq-timepicker', ADVANCED_CMS_URL.'/js/jquery.ui.timepicker.js');
 		wp_enqueue_script('jquery-maskedinput-script', ADVANCED_CMS_URL.'/js/jquery.maskedinput.min.js', array('jquery'), '1.3.1', true);
-		wp_enqueue_script('jq-validator-script', ADVANCED_CMS_URL.'/js/jquery.validator.js', array('jquery'), '1.0.0', true);
-		wp_enqueue_script('advanced-cms-js', ADVANCED_CMS_URL.'/js/functions.js', array('jquery'), '1.0.0', true);
-		wp_enqueue_script('duplicate-metabox-fields', ADVANCED_CMS_URL.'js/duplicate-metabox-fields.js', array('jquery'), '1.0.2');
-		wp_enqueue_script('jquery-mediauploader', ADVANCED_CMS_URL.'js/jquery.mediauploader.js', array('jquery'));
+		wp_enqueue_script('jq-validator-script', ADVANCED_CMS_URL.'/js/jquery.validator.js', array('jquery'), '1.0.0', true);		
+		wp_enqueue_script('duplicate-metabox-fields', ADVANCED_CMS_URL.'js/duplicate-metabox-fields.js', array('jquery'), '1.0.2', true);
+		wp_enqueue_script('jquery-mediauploader', ADVANCED_CMS_URL.'js/jquery.mediauploader.js', array('jquery'), '0.1.0', true);
+		wp_enqueue_script('advanced-cms-js', ADVANCED_CMS_URL.'/js/functions.js', array('jquery-mediauploader'), '1.0.0', true);
 
 		if (isset($post->ID)) :
 			$post_id=$post->ID;
@@ -158,7 +158,7 @@ class advancedCMSMetaboxes {
 			'datepicker' => $datepicker,
 		);
 
-		wp_localize_script('advanced-cms-js', 'wp_options', $advancedcmsjs);
+		wp_localize_script('advanced-cms-js', 'advancedCMSjs', $advancedcmsjs);
 	}
 
 	/**
@@ -293,7 +293,7 @@ class advancedCMSMetaboxes {
 		$this->fields=null; // this needs to be adjusted for legacy v 1.1.8
 		$row_counter=1;
 
-		wp_enqueue_script('umb-admin', plugins_url('/js/metabox-media-uploader.js', __FILE__), array('jquery'));
+		wp_enqueue_script('advanced-cms-metabox-media-uploader', ADVANCED_CMS_URL.'/js/metabox-media-uploader.js', array('jquery'));
 
 		wp_nonce_field(plugin_basename( __FILE__ ), $this->nonce);
 

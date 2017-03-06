@@ -14,20 +14,24 @@ jQuery(document).ready(function($) {
 	/**
 	 * date picker
 	 */
-	$('.mdw-cms-datepicker').datepicker({
-		dateFormat : wp_options.datepicker.format,
+	$('.advanced-cms-datepicker').datepicker({
+		dateFormat : advancedCMSjs.datepicker.format,
 		showButtonPanel: true,
 		changeMonth: true,
-		changeYear: true
+		changeYear: true,
+		yearRange: '-30:+20'
 	});
 
 	// format and set our date properly //
-	var dateFormatted=$.datepicker.formatDate(wp_options.datepicker.format, new Date(wp_options.datepicker.value));
-	$('#'+wp_options.datepicker.id).val(dateFormatted);
+	if (advancedCMSjs.datepicker.value!='') {
+		var dateFormatted=$.datepicker.formatDate(advancedCMSjs.datepicker.format, new Date(advancedCMSjs.datepicker.value));
+
+		$('#'+advancedCMSjs.datepicker.id).val(dateFormatted);
+	}
 
 	$('.phone').mask('(999) 999-9999'); // masked input //
 
 	// setup media uploader //
-	$('.type-gallery').mdwCMScustomMediaUploader();
+	//$('.type-gallery').advancedCMScustomMediaUploader();
 
 });

@@ -108,6 +108,10 @@ $j(document).ready(function() {
  * cycle thorugh the junk and get our widget id
 **/
 $j(document).ajaxComplete(function(event,XMLHttpRequest,ajaxOptions) {
+	if (typeof ajaxOptions.data === 'undefined') {
+		return false;
+	}
+	
 	var pairs=ajaxOptions.data.split('&');
 	var i;
 	var split;
