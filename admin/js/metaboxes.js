@@ -49,16 +49,21 @@ jQuery(document).ready(function($) {
 	/**
 	 * display field data (options) on change
 	 */
-	$('.add-fields .field_type').live('change',function() {
+	$('.custom-metabox').on('change', '.add-fields .field_type', function() {		
 		var $fieldsWrapper=$(this).closest('.advanced-cms-fields-wrapper');
 		var $fieldOptions=$fieldsWrapper.find('.field-options');
 		var ddValue=$(this).val();
-
+console.log($fieldOptions);
+console.log(ddValue);
 		$fieldOptions.find('.type').each(function() {
+console.log('a');			
+console.log($(this).data());			
 			if ($(this).data('field-type')==ddValue) {
+console.log('b');				
 				$fieldOptions.show();
 				$(this).show();
 			} else {
+console.log('c');				
 				$(this).hide();
 			}
 		});
