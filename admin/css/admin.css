@@ -118,6 +118,10 @@
 }
 .advanced-cms-fields-wrapper .field-options .option-row input[type="checkbox"] {
 	width: 16px;
+	margin-left: 5px;
+}
+.advanced-cms-fields-wrapper .field-options .option-row .field-repeatable-label {
+	width: auto;
 }
 .advanced-cms-fields-wrapper .field-row .field_type,
 .advanced-cms-fields-wrapper .field-options .option-row .options-item,
