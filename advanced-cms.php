@@ -19,7 +19,6 @@ require_once(ADVANCED_CMS_PATH.'admin/functions.php'); // admin functions
 require_once(ADVANCED_CMS_PATH.'admin.php'); // admin class
 require_once(ADVANCED_CMS_PATH.'admin/documentation/init.php'); // handles our documentation
 //require_once(ADVANCED_CMS_PATH.'classes/admin-columns.php'); // allows for custom admin columns - CHECK USAGE
-//require_once(ADVANCED_CMS_PATH.'classes/custom-widgets.php'); // alows for custom widgets to be built on the fly - CHECK USAGE
 require_once(ADVANCED_CMS_PATH.'classes/taxonomies.php'); // calls custom taxonomies
 require_once(ADVANCED_CMS_PATH.'classes/post-types.php'); // calls custom post types
 require_once(ADVANCED_CMS_PATH.'classes/metaboxes.php'); // our custom metabox class
