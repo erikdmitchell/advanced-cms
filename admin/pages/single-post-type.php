@@ -56,9 +56,9 @@
 						<label for="title" class="">Title</label>
 					</th>
 					<td>
-						<select name="title" id="title">
-							<option value="1" <?php selected($advanced_cms_post_type_args['title'], 1); ?>>True</option>
-							<option value="0" <?php selected($advanced_cms_post_type_args['title'], 0); ?>>False</option>
+						<select name="supports[title]" id="title">
+							<option value="1" <?php selected($advanced_cms_post_type_args['supports']['title'], 1); ?>>True</option>
+							<option value="0" <?php selected($advanced_cms_post_type_args['supports']['title'], 0); ?>>False</option>
 						</select>
 						<span class="example">(default True)</span>
 					</td>
@@ -69,9 +69,9 @@
 						<label for="thumbnail" class="">Thumbnail</label>
 					</th>
 					<td>
-						<select name="thumbnail" id="thumbnaill">
-							<option value="1" <?php selected($advanced_cms_post_type_args['thumbnail'], 1); ?>>True</option>
-							<option value="0" <?php selected($advanced_cms_post_type_args['thumbnail'], 0); ?>>False</option>
+						<select name="supports[thumbnail]" id="thumbnaill">
+							<option value="1" <?php selected($advanced_cms_post_type_args['supports']['thumbnail'], 1); ?>>True</option>
+							<option value="0" <?php selected($advanced_cms_post_type_args['supports']['thumbnail'], 0); ?>>False</option>
 						</select>
 						<span class="example">(default True)</span>
 					</td>
@@ -82,9 +82,9 @@
 						<label for="editor" class="">Editor</label>
 					</th>
 					<td>
-					<select name="editor" id="editor" >
-						<option value="1" <?php selected($advanced_cms_post_type_args['editor'], 1); ?>>True</option>
-						<option value="0" <?php selected($advanced_cms_post_type_args['editor'], 0); ?>>False</option>
+					<select name="supports[editor]" id="editor" >
+						<option value="1" <?php selected($advanced_cms_post_type_args['supports']['editor'], 1); ?>>True</option>
+						<option value="0" <?php selected($advanced_cms_post_type_args['supports']['editor'], 0); ?>>False</option>
 					</select>
 					<span class="example">(default True)</span>
 					</td>
@@ -95,9 +95,9 @@
 						<label for="revisions" class="">Revisions</label>
 					</th>
 					<td>
-						<select name="revisions" id="revisions">
-							<option value="1" <?php selected($advanced_cms_post_type_args['revisions'], 1); ?>>True</option>
-							<option value="0" <?php selected($advanced_cms_post_type_args['revisions'], 0); ?>>False</option>
+						<select name="supports[revisions]" id="revisions">
+							<option value="1" <?php selected($advanced_cms_post_type_args['supports']['revisions'], 1); ?>>True</option>
+							<option value="0" <?php selected($advanced_cms_post_type_args['supports']['revisions'], 0); ?>>False</option>
 						</select>
 						<span class="example">(default True)</span>
 					</td>
@@ -125,9 +125,9 @@
 						<label for="page_attributes" class="">Page Attributes</label>
 					</th>
 					<td>
-						<select name="page_attributes" id="page_attributes">
-							<option value="1" <?php selected($advanced_cms_post_type_args['page_attributes'], 1); ?>>True</option>
-							<option value="0" <?php selected($advanced_cms_post_type_args['page_attributes'], 0); ?>>False</option>
+						<select name="supports[page_attributes]" id="page_attributes">
+							<option value="1" <?php selected($advanced_cms_post_type_args['supports']['page_attributes'], 1); ?>>True</option>
+							<option value="0" <?php selected($advanced_cms_post_type_args['supports']['page_attributes'], 0); ?>>False</option>
 						</select>
 
 						<span class="example">(default False)</span>
@@ -139,9 +139,9 @@
 						<label for="excerpt" class="">Excerpt</label>
 					</th>
 					<td>
-						<select name="excerpt" id="has_excerpt">
-							<option value="1" <?php selected($advanced_cms_post_type_args['excerpt'], 1); ?>>True</option>
-							<option value="0" <?php selected($advanced_cms_post_type_args['excerpt'], 0); ?>>False</option>
+						<select name="supports[excerpt]" id="has_excerpt">
+							<option value="1" <?php selected($advanced_cms_post_type_args['supports']['excerpt'], 1); ?>>True</option>
+							<option value="0" <?php selected($advanced_cms_post_type_args['supports']['excerpt'], 0); ?>>False</option>
 						</select>
 
 						<span class="example">(default False)</span>
@@ -153,9 +153,9 @@
 						<label for="comments" class=""><?php echo __('Comments'); ?></label>
 					</th>
 					<td>
-						<select name="comments" id="comments">
-							<option value="1" <?php selected($advanced_cms_post_type_args['comments'], 1); ?>>True</option>
-							<option value="0" <?php selected($advanced_cms_post_type_args['comments'], 0); ?>>False</option>
+						<select name="supports[comments]" id="comments">
+							<option value="1" <?php selected($advanced_cms_post_type_args['supports']['comments'], 1); ?>>True</option>
+							<option value="0" <?php selected($advanced_cms_post_type_args['supports']['comments'], 0); ?>>False</option>
 						</select>
 
 						<span class="example">(default False)</span>

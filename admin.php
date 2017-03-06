@@ -448,14 +448,16 @@ class AdvancedCMSAdmin {
 			'label' => $data['label'],
 			'singular_label' => $data['singular_label'],
 			'description' => $data['description'],
-			'title' => $data['title'],
-			'thumbnail' => $data['thumbnail'],
-			'editor' => $data['editor'],
-			'revisions' => $data['revisions'],
+			'supports' => array(
+				'title' => $data['supports']['title'],
+				'thumbnail' => $data['supports']['thumbnail'],
+				'editor' => $data['supports']['editor'],
+				'revisions' => $data['supports']['revisions'],
+				'page_attributes' => $data['supports']['page_attributes'],
+				'excerpt' => $data['supports']['excerpt'],
+				'comments' => $data['supports']['comments'],
+			),
 			'hierarchical' => $data['hierarchical'],
-			'page_attributes' => $data['page_attributes'],
-			'excerpt' => $data['excerpt'],
-			'comments' => $data['comments'],
 			'icon' => $data['icon'],
 		);
 		$url=$this->admin_url(array(
@@ -464,7 +466,8 @@ class AdvancedCMSAdmin {
 			'edit' => 'cpt',
 			'slug' => $data['name'],
 			'updated' => 1
-		));
+		));		
+		
 		if ($data['cpt-id']!=-1) :
 			$post_types[$data['cpt-id']]=$arr;
 		else :
@@ -474,6 +477,7 @@ class AdvancedCMSAdmin {
 						return false;
 				endforeach;
 			endif;
+			
 			$post_types[]=$arr;
 		endif;
 

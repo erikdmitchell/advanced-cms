@@ -18,8 +18,7 @@ jQuery(document).ready(function($) {
 		dateFormat : advancedCMSjs.datepicker.format,
 		showButtonPanel: true,
 		changeMonth: true,
-		changeYear: true,
-		yearRange: '-30:+20'
+		changeYear: true
 	});
 
 	// format and set our date properly //
