@@ -6,13 +6,13 @@
  */
 (function($) {
 
-	$.fn.mdwCMScustomMediaUploader=function(options) {
+	$.fn.advancedCMScustomMediaUploader=function(options) {
 		var opts=$.extend({
-			$button : $('.mdw-cms-meta-box .gallery-uploader'),
-			$removeButton : $('.mdw-cms-meta-box .gallery-remove'),
-			$gallery : $('#mdw-cms-gallery'),
+			$button : $('.advanced-cms-meta-box .gallery-uploader'),
+			$removeButton : $('.advanced-cms-meta-box .gallery-remove'),
+			$gallery : $('#advanced-cms-gallery'),
 			$idsInput : false,
-			ajaxAction : 'mdw_cms_gallery_update'
+			ajaxAction : 'advanced_cms_gallery_update'
 		}, options);
 
 		var file_frame;
@@ -83,8 +83,8 @@
 		    var attachments;
 		    var selection;
 
-				if (typeof wp.media.view.settings.mdw_cms_gallery!=='undefined')
-					shortcode = wp.shortcode.next( 'gallery', wp.media.view.settings.mdw_cms_gallery.shortcode ); // potential variable
+				if (typeof wp.media.view.settings.advanced_cms_gallery!=='undefined')
+					shortcode = wp.shortcode.next( 'gallery', wp.media.view.settings.advanced_cms_gallery.shortcode ); // potential variable
 
 console.log(shortcode);
 
