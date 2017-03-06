@@ -276,8 +276,8 @@ class advancedCMSMetaboxes {
 						'post_id' => $post->ID
 					)
 				);
-	    endforeach;
-    endforeach;
+			endforeach;
+		endforeach;
 	}
 
 	/**
@@ -616,7 +616,7 @@ class advancedCMSMetaboxes {
 		if (!$prefix || !$label)
 			return false;
 
-		echo $prefix=$this->check_config_prefix($prefix);
+		$prefix=$this->check_config_prefix($prefix);
 
 		if (empty($label)) :
 			$id=$prefix.'_'.$field_id;
