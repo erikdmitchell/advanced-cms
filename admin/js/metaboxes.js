@@ -43,6 +43,10 @@ jQuery(document).ready(function($) {
 		var ddValue=$(this).find('.field-type').val();
 		var fieldData=metaboxData.fields[ddValue];
 
+		if (ddValue==0) {
+			return false;
+		}
+
 		displayFieldOptions($(this), fieldData);
 	});
 
@@ -128,7 +132,7 @@ console.log(response);
  * @param mixed data
  * @return void
  */
-function displayFieldOptions($wrapper, data) {
+function displayFieldOptions($wrapper, data) {	
 	$wrapper.find('.field-options .field-row').each(function(e) {
 		var classes=jQuery(this).attr('class').split(/\s+/);
 

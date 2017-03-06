@@ -88,6 +88,7 @@ function advanced_cms_admin_metabox_fields($fields='') {
 	$field_counter=0;
 	$field_id=0;
 	$field='';
+echo 'advanced_cms_admin_metabox_fields<br>';
 print_r($fields);
 	if (empty($fields)) :
 		$advanced_cms_admin->build_field_rows($field_id, $field, $field_counter);
