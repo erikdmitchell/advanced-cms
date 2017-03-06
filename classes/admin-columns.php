@@ -1,9 +1,9 @@
 <?php
 
 /**
- * MDW_Admin_Columns class.
+ * advancedCMSAdminColumns class.
  */
-class MDW_Admin_Columns {
+class advancedCMSAdminColumns {
 
 	public $config=array();
 
