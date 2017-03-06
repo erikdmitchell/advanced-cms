@@ -120,7 +120,8 @@
 	width: 16px;
 	margin-left: 5px;
 }
-.advanced-cms-fields-wrapper .field-options .option-row .field-repeatable-label {
+.advanced-cms-fields-wrapper .field-options .option-row .field-repeatable-label,
+.advanced-cms-fields-wrapper .field-options .option-row .field-format-label {
 	width: auto;
 }
 .advanced-cms-fields-wrapper .field-row .field_type,
