@@ -3,12 +3,24 @@ class advancedCustomPostTypes {
 
 	protected $post_types=array();
 
+	/**
+	 * __construct function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	function __construct() {
 		$this->post_types=get_option('advanced_cms_post_types');
 
 		add_action('init', array($this, 'create_post_types'));
 	}
 
+	/**
+	 * create_post_types function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	function create_post_types() {
 		if (empty($this->post_types))
 			return false;
