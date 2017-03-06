@@ -209,7 +209,7 @@ class AdvancedCMSAdmin {
 		$field['field_id']=$field_id;
 		$field['order']=$order;
 		$field['classes']=$classes;
-
+echo "build field rows<br>";
 		echo advanced_cms_get_admin_page('metabox-field-rows', $field);
 	}
 

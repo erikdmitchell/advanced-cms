@@ -149,6 +149,7 @@ function advanced_cms_setup_metabox_row($args='') {
  * @return void
  */
 function advanced_cms_options_rows($options='', $field_key=0) {
+echo "advanced_cms_options_rows<br>";
 	echo advanced_cms_get_options_rows($options, $field_key);
 }
 
@@ -162,6 +163,7 @@ function advanced_cms_options_rows($options='', $field_key=0) {
  */
 function advanced_cms_get_options_rows($options='', $field_key=0) {
 	$output=null;
+echo 'advanced_cms_get_options_rows<br>';
 print_r($options);
 	if (!empty($options)) :
 		foreach ($options as $key => $option) :

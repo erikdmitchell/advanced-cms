@@ -4,6 +4,7 @@ global $advancedMetaboxes, $advanced_cms_admin, $advanced_cms_metabox_args;
 $args=advanced_cms_setup_metabox_row($attributes);
 ?>
 <pre>
+	mb field row args:<br>
 	<?php print_r($args); ?>
 </pre>
 <div class="sortable advanced-cms-fields-wrapper <?php echo $args['classes']; ?>" id="fields-wrapper-<?php echo $args['order']; ?>">
@@ -28,7 +29,7 @@ $args=advanced_cms_setup_metabox_row($attributes);
 
 	<div class="field-options">
 
-		<div class="repeatable field-row">
+		<div class="repeatable field-row option-row" data-option-type="repeatable">
 			<div class="field-repeatable-label">
 				<label for="repeatable">Repeatable</label>
 			</div>
@@ -37,7 +38,7 @@ $args=advanced_cms_setup_metabox_row($attributes);
 			</div>
 		</div>
 
-		<div class="options field-row" id="field-options-<?php echo $args['order']; ?>">
+		<div class="options field-row option-row" id="field-options-<?php echo $args['order']; ?>" data-option-type="options">
 			<label for="options">Options</label>
 
 			<?php advanced_cms_options_rows($args['options'], $args['order']); ?>
@@ -45,7 +46,7 @@ $args=advanced_cms_setup_metabox_row($attributes);
 			<div class="add-option-field"><input type="button" name="add-option-field" class="add-option-field-btn button button-primary" value="Add Option"></div>
 		</div>
 
-		<div class="format field-row">
+		<div class="format field-row option-row" data-option-type="format">
 			<div class="field-format-label">
 				<label for="format">Format</label>
 			</div>

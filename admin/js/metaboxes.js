@@ -57,19 +57,15 @@ jQuery(document).ready(function($) {
 		var $fieldsWrapper=$(this).closest('.advanced-cms-fields-wrapper');
 		var $fieldOptions=$fieldsWrapper.find('.field-options');
 		var ddValue=$(this).val();
-console.log($fieldOptions);
-console.log(ddValue);
-		$fieldOptions.find('.type').each(function() {
-console.log('a');			
-console.log($(this).data());			
-			if ($(this).data('field-type')==ddValue) {
-console.log('b');				
+		var mbOptions=metaboxData.fields[ddValue];
+
+		$fieldOptions.find('.option-row').each(function() {
+			if (mbOptions[$(this).data('option-type')]) {
 				$fieldOptions.show();
 				$(this).show();
 			} else {
-console.log('c');				
-				$(this).hide();
-			}
+				$(this).hide();	
+			}	
 		});
 	});
 
@@ -78,16 +74,6 @@ console.log('c');
 	 */
 	$('#add-field-btn').on('click', function() {
 		$(this).duplicateMetaboxField();
-/*
-		var data={
-			'action' : 'advanced_cms_blank_metabox_field'
-		};
-		
-		$.post(ajaxurl, data, function(response) {
-console.log(response);			
-		});
-*/
-
 	});
 
 	// remove a metabox field //
