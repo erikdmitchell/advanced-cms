@@ -1,8 +1,8 @@
 <?php
-global $mdw_cms_gallery;
-global $mdw_cms_image;
+global $advanced_cms_gallery;
+global $advanced_cms_image;
 
-class MDWCMSGallery {
+class advancedCMSGallery {
 
 	public $images;
 
@@ -28,10 +28,10 @@ class MDWCMSGallery {
 	 * @return void
 	 */
 	public function __construct($args='') {
-		global $mdw_cms_gallery;
+		global $advanced_cms_gallery;
 
 		if (!empty($args))
-			$mdw_cms_gallery=$this->query($args);
+			$advanced_cms_gallery=$this->query($args);
 	}
 
 	/**
@@ -101,9 +101,9 @@ class MDWCMSGallery {
 		$this->get_images($this->query_vars);
 
 		if ($this->bootstrap) :
-			wp_enqueue_script('mdw-cms-gallery-bootstrap-script', MDW_CMS_URL.'/shortcodes/js/bootstrap-carousel.min.js', array('jquery'), '3.3.7', true);
+			wp_enqueue_script('advanced-cms-gallery-bootstrap-script', advanced_CMS_URL.'/shortcodes/js/bootstrap-carousel.min.js', array('jquery'), '3.3.7', true);
 
-			wp_enqueue_style('mdw-cms-gallery-bootstrap-style', MDW_CMS_URL.'/shortcodes/css/bootstrap-carousel.css', array(), '3.3.7');
+			wp_enqueue_style('advanced-cms-gallery-bootstrap-style', advanced_CMS_URL.'/shortcodes/css/bootstrap-carousel.css', array(), '3.3.7');
 		endif;
 
 		return $this;
@@ -179,9 +179,9 @@ class MDWCMSGallery {
 	 * @return void
 	 */
 	public function the_image() {
-		global $mdw_cms_image;
+		global $advanced_cms_image;
 
-		$mdw_cms_image = $this->next_image();
+		$advanced_cms_image = $this->next_image();
 	}
 
   /**
@@ -214,73 +214,73 @@ class MDWCMSGallery {
 }
 
 /**
- * mdw_cms_gallery_have_images function.
+ * advanced_cms_gallery_have_images function.
  *
  * @access public
  * @return void
  */
-function mdw_cms_gallery_have_images() {
-	global $mdw_cms_gallery;
+function advanced_cms_gallery_have_images() {
+	global $advanced_cms_gallery;
 
-	return $mdw_cms_gallery->have_images();
+	return $advanced_cms_gallery->have_images();
 }
 
 /**
- * mdw_cms_gallery_the_image function.
+ * advanced_cms_gallery_the_image function.
  *
  * @access public
  * @return void
  */
-function mdw_cms_gallery_the_image() {
-	global $mdw_cms_gallery;
+function advanced_cms_gallery_the_image() {
+	global $advanced_cms_gallery;
 
-	$mdw_cms_gallery->the_image();
+	$advanced_cms_gallery->the_image();
 }
 
 /**
- * mdw_cms_gallery_id function.
+ * advanced_cms_gallery_id function.
  *
  * @access public
  * @return void
  */
-function mdw_cms_gallery_id() {
-	echo 	mdw_cms_gallery_get_id();
+function advanced_cms_gallery_id() {
+	echo 	advanced_cms_gallery_get_id();
 }
 
 /**
- * mdw_cms_gallery_get_id function.
+ * advanced_cms_gallery_get_id function.
  *
  * @access public
  * @return void
  */
-function mdw_cms_gallery_get_id() {
-	global $mdw_cms_gallery;
+function advanced_cms_gallery_get_id() {
+	global $advanced_cms_gallery;
 
-	return $mdw_cms_gallery->id;
+	return $advanced_cms_gallery->id;
 }
 
 /**
- * mdw_cms_image_class function.
+ * advanced_cms_image_class function.
  *
  * @access public
  * @param string $class (default: '')
  * @param mixed $image_id (default: null)
  * @return void
  */
-function mdw_cms_image_class($class='', $image_id=null) {
-	echo join(' ', mdw_cms_get_image_class($class, $image_id));
+function advanced_cms_image_class($class='', $image_id=null) {
+	echo join(' ', advanced_cms_get_image_class($class, $image_id));
 }
 
 /**
- * mdw_cms_get_image_class function.
+ * advanced_cms_get_image_class function.
  *
  * @access public
  * @param string $class (default: '')
  * @param mixed $image_id (default: null)
  * @return void
  */
-function mdw_cms_get_image_class($class='', $image_id=null) {
-	global $mdw_cms_gallery, $mdw_cms_image;
+function advanced_cms_get_image_class($class='', $image_id=null) {
+	global $advanced_cms_gallery, $advanced_cms_image;
 
 	$classes=array();
 
@@ -294,12 +294,12 @@ function mdw_cms_get_image_class($class='', $image_id=null) {
 	endif;
 
 	if (!$image_id)
-		$image_id=$mdw_cms_image->id;
+		$image_id=$advanced_cms_image->id;
 
 	$classes[]=$image_id;
 	$classes[]='item';
 
-	if ($mdw_cms_gallery->current_image==0)
+	if ($advanced_cms_gallery->current_image==0)
 		$classes[]='active';
 
 	$classes=array_map('esc_attr', $classes);
@@ -308,97 +308,97 @@ function mdw_cms_get_image_class($class='', $image_id=null) {
 }
 
 /**
- * mdw_cms_gallery_image function.
+ * advanced_cms_gallery_image function.
  *
  * @access public
  * @return void
  */
-function mdw_cms_gallery_image() {
-	echo mdw_cms_gallery_get_image();
+function advanced_cms_gallery_image() {
+	echo advanced_cms_gallery_get_image();
 }
 
 /**
- * mdw_cms_gallery_get_image function.
+ * advanced_cms_gallery_get_image function.
  *
  * @access public
  * @return void
  */
-function mdw_cms_gallery_get_image() {
-	global $mdw_cms_image;
+function advanced_cms_gallery_get_image() {
+	global $advanced_cms_image;
 
-	return $mdw_cms_image->image;
+	return $advanced_cms_image->image;
 }
 
 /**
- * mdw_cms_gallery_image_caption function.
+ * advanced_cms_gallery_image_caption function.
  *
  * @access public
  * @return void
  */
-function mdw_cms_gallery_image_caption() {
-	echo mdw_cms_gallery_get_image_caption();
+function advanced_cms_gallery_image_caption() {
+	echo advanced_cms_gallery_get_image_caption();
 }
 
 /**
- * mdw_cms_gallery_get_image_caption function.
+ * advanced_cms_gallery_get_image_caption function.
  *
  * @access public
  * @return void
  */
-function mdw_cms_gallery_get_image_caption() {
-	global $mdw_cms_image;
+function advanced_cms_gallery_get_image_caption() {
+	global $advanced_cms_image;
 
-	return $mdw_cms_image->caption;
+	return $advanced_cms_image->caption;
 }
 
 /**
- * mdw_cms_gallery_has_caption function.
+ * advanced_cms_gallery_has_caption function.
  *
  * @access public
  * @return void
  */
-function mdw_cms_gallery_has_caption() {
-	global $mdw_cms_image;
+function advanced_cms_gallery_has_caption() {
+	global $advanced_cms_image;
 
-	if ($mdw_cms_image->caption!='')
+	if ($advanced_cms_image->caption!='')
 		return true;
 
 	return false;
 }
 
 /**
- * mdw_cms_gallery_indicators function.
+ * advanced_cms_gallery_indicators function.
  *
  * @access public
  * @return void
  */
-function mdw_cms_gallery_indicators() {
-	echo mdw_cms_gallery_get_indicators();
+function advanced_cms_gallery_indicators() {
+	echo advanced_cms_gallery_get_indicators();
 }
 
 /**
- * mdw_cms_gallery_get_indicators function.
+ * advanced_cms_gallery_get_indicators function.
  *
  * @access public
  * @return void
  */
-function mdw_cms_gallery_get_indicators() {
-	global $mdw_cms_gallery;
+function advanced_cms_gallery_get_indicators() {
+	global $advanced_cms_gallery;
 
 	$html=null;
 
-	if (!$mdw_cms_gallery->image_count || !$mdw_cms_gallery->show_indicators)
+	if (!$advanced_cms_gallery->image_count || !$advanced_cms_gallery->show_indicators)
 		return false;
 
 	$html.='<ol class="carousel-indicators">';
-		foreach ($mdw_cms_gallery->images as $key => $image) :
+		foreach ($advanced_cms_gallery->images as $key => $image) :
 			if ($key==0) :
 				$class='active';
 			else :
 				$class='';
 			endif;
 
-	  	$html.='<li data-target="#mdw-cms-carousel-'.mdw_cms_gallery_get_id().'" data-slide-to="'.$key.'" class="'.$class.'"></li>';
+	  	$html.='<li data-target="#advanced-cms-carousel-'.advanced_cms_gallery_get_id().'" data-slide-to="'.$key.'" class="'.$class.'"></li>';
 		endforeach;
 	$html.='</ol>';
 
@@ -406,34 +406,34 @@ function mdw_cms_gallery_get_indicators() {
 }
 
 /**
- * mdw_cms_gallery_controls function.
+ * advanced_cms_gallery_controls function.
  *
  * @access public
  * @return void
  */
-function mdw_cms_gallery_controls() {
-	echo mdw_cms_gallery_get_controls();
+function advanced_cms_gallery_controls() {
+	echo advanced_cms_gallery_get_controls();
 }
 
 /**
- * mdw_cms_gallery_get_controls function.
+ * advanced_cms_gallery_get_controls function.
  *
  * @access public
  * @return void
  */
-function mdw_cms_gallery_get_controls() {
-	global $mdw_cms_gallery;
+function advanced_cms_gallery_get_controls() {
+	global $advanced_cms_gallery;
 
 	$html=null;
 
-	if (!$mdw_cms_gallery->image_count || !$mdw_cms_gallery->show_controls)
+	if (!$advanced_cms_gallery->image_count || !$advanced_cms_gallery->show_controls)
 		return false;
 
-  $html.='<a class="left carousel-control" href="#mdw-cms-carousel-'.mdw_cms_gallery_get_id().'" role="button" data-slide="prev">';
+  $html.='<a class="left carousel-control" href="#advanced-cms-carousel-'.advanced_cms_gallery_get_id().'" role="button" data-slide="prev">';
     $html.='<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>';
     $html.='<span class="sr-only">Previous</span>';
   $html.='</a>';
-  $html.='<a class="right carousel-control" href="#mdw-cms-carousel-'.mdw_cms_gallery_get_id().'" role="button" data-slide="next">';
+  $html.='<a class="right carousel-control" href="#advanced-cms-carousel-'.advanced_cms_gallery_get_id().'" role="button" data-slide="next">';
     $html.='<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>';
     $html.='<span class="sr-only">Next</span>';
   $html.='</a>';
