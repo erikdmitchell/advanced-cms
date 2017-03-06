@@ -20,8 +20,8 @@ function advanced_cms_get_template_part($template_name='', $atts='') {
 		include(get_stylesheet_directory().'/advanced-cms/'.$template_name.'.php');
 	elseif (file_exists(get_template_directory().'/advanced-cms/'.$template_name.'.php')) :
 		include(get_template_directory().'/advanced-cms/'.$template_name.'.php');
-	elseif (file_exists(advanced_CMS_PATH.'templates/'.$template_name.'.php')) :
-		include(advanced_CMS_PATH.'templates/'.$template_name.'.php');
+	elseif (file_exists(ADVANCED_CMS_PATH.'templates/'.$template_name.'.php')) :
+		include(ADVANCED_CMS_PATH.'templates/'.$template_name.'.php');
 	endif;
 
 	$html=ob_get_contents();
@@ -316,8 +316,8 @@ function advanced_cms_get_field_template($template_name='', $atts='', $value='')
 		include(get_stylesheet_directory().'/advanced-cms/metabox-fields/'.$template_name.'.php');
 	elseif (file_exists(get_template_directory().'/advanced-cms/metabox-fields/'.$template_name.'.php')) :
 		include(get_template_directory().'/advanced-cms/metabox-fields/'.$template_name.'.php');
-	elseif (file_exists(advanced_CMS_PATH.'templates/metabox-fields/'.$template_name.'.php')) :
-		include(advanced_CMS_PATH.'templates/metabox-fields/'.$template_name.'.php');
+	elseif (file_exists(ADVANCED_CMS_PATH.'templates/metabox-fields/'.$template_name.'.php')) :
+		include(ADVANCED_CMS_PATH.'templates/metabox-fields/'.$template_name.'.php');
 	endif;
 
 	$html=ob_get_contents();

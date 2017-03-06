@@ -16,11 +16,11 @@ jQuery(document).ready(function($) {
 	/**
 	 * delete link click
 	 */
-	$('.mdw-cms-metaboxes .metaboxes-list td a .dashicons-trash').on('click',function(e) {
+	$('.advanced-cms-metaboxes .metaboxes-list td a .dashicons-trash').on('click',function(e) {
 		e.preventDefault();
 
 		var data={
-			'action' : 'mdw_cms_get_metabox',
+			'action' : 'advanced_cms_get_metabox',
 			'id' : $(this).data('id')
 		};
 
@@ -31,7 +31,7 @@ jQuery(document).ready(function($) {
 				'id' : response_data.mb_id
 			};
 			var delete_data={
-				'action' : 'mdw_cms_delete_metabox',
+				'action' : 'advanced_cms_delete_metabox',
 				'id' : response_data.mb_id
 			}
 			setupDialogBox(data, delete_data, 'metabox');
@@ -39,7 +39,7 @@ jQuery(document).ready(function($) {
 	});
 
 	// display field data on load //
-	$('.mdw-cms-fields-wrapper').each(function() {
+	$('.advanced-cms-fields-wrapper').each(function() {
 		var ddValue=$(this).find('.field-type').val();
 		var fieldData=metaboxData.fields[ddValue];
 
@@ -50,7 +50,7 @@ jQuery(document).ready(function($) {
 	 * display field data (options) on change
 	 */
 	$('.add-fields .field_type').live('change',function() {
-		var $fieldsWrapper=$(this).closest('.mdw-cms-fields-wrapper');
+		var $fieldsWrapper=$(this).closest('.advanced-cms-fields-wrapper');
 		var $fieldOptions=$fieldsWrapper.find('.field-options');
 		var ddValue=$(this).val();
 
@@ -171,7 +171,7 @@ jQuery(function($) {
 		var lastFieldID;
 		var lastFieldArr;
 		var lastFieldIDNum=0;
-		var $fieldsWrapper=$('.mdw-cms-fields-wrapper');
+		var $fieldsWrapper=$('.advanced-cms-fields-wrapper');
 
 		$fieldsWrapper.each(function() {
 			lastFieldID=$(this).attr('id');
@@ -183,7 +183,7 @@ jQuery(function($) {
 		var $clonedElement=$('#'+lastFieldID).clone(); // clone element
 
 		// clean up and configure our cloned element (classes, ids, etc)
-		var cloneID='mdw-cms-fields-wrapper-'+newID;
+		var cloneID='advanced-cms-fields-wrapper-'+newID;
 
 		$clonedElement.removeClass('default');
 		$clonedElement.attr('id',cloneID);
@@ -197,26 +197,26 @@ jQuery(function($) {
 		});
 
 		// clear all input values (reset) - except butons //
-		$('#mdw-cms-fields-wrapper-'+newID).find('input').each(function() {
+		$('#advanced-cms-fields-wrapper-'+newID).find('input').each(function() {
 			if ($(this).attr('type')!='button') {
 				$(this).val('');
 			}
 		});
 
 		// clear drop down //
-		$('#mdw-cms-fields-wrapper-'+newID).find('select').each(function() {
+		$('#advanced-cms-fields-wrapper-'+newID).find('select').each(function() {
 			$(this).val(0);
 		});
 
 		// hides any custom fields in our item cloned from //
-		$('#mdw-cms-fields-wrapper-'+newID).find('.field-options').each(function() {
+		$('#advanced-cms-fields-wrapper-'+newID).find('.field-options').each(function() {
 			$(this).hide();
 		});
 
 		var lastFieldOrder=parseInt($('#'+lastFieldID+' .order').val()); // last field order (as int) //
 
 		$('#'+cloneID+' .order').val(lastFieldOrder+1); // set new field order //
-		$('#'+cloneID+' .remove-field').attr('data-id','mdw-cms-fields-wrapper-'+newID); // set our button to remove field //
+		$('#'+cloneID+' .remove-field').attr('data-id','advanced-cms-fields-wrapper-'+newID); // set our button to remove field //
 	};
 
 }(jQuery));
