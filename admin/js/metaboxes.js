@@ -59,7 +59,7 @@ jQuery(document).ready(function($) {
 		var ddValue=$(this).val();
 		var mbOptions=metaboxData.fields[ddValue];
 
-		$fieldOptions.find('.option-row').each(function() {
+		$fieldOptions.find('.options-row').each(function() {
 			if (mbOptions[$(this).data('option-type')]) {
 				$fieldOptions.show();
 				$(this).show();

@@ -103,29 +103,29 @@
 .advanced-cms-fields-wrapper input.field-id {
 	width: 394px;
 }
-.advanced-cms-fields-wrapper .field-options .option-row > div {
+.advanced-cms-fields-wrapper .field-options .options-row > div {
 	float: left;
 	width: 50%;
 }
-.advanced-cms-fields-wrapper .field-options .option-row .value-field label {
+.advanced-cms-fields-wrapper .field-options .options-row .value-field label {
 	margin-left: 10px;
 }
-.advanced-cms-fields-wrapper .field-options .option-row label {
+.advanced-cms-fields-wrapper .field-options .options-row label {
 	width: 80px;
 }
-.advanced-cms-fields-wrapper .field-options .option-row input {
+.advanced-cms-fields-wrapper .field-options .options-row input {
 	width: 190px;
 }
-.advanced-cms-fields-wrapper .field-options .option-row input[type="checkbox"] {
+.advanced-cms-fields-wrapper .field-options .options-row input[type="checkbox"] {
 	width: 16px;
 	margin-left: 5px;
 }
-.advanced-cms-fields-wrapper .field-options .option-row .field-repeatable-label,
-.advanced-cms-fields-wrapper .field-options .option-row .field-format-label {
+.advanced-cms-fields-wrapper .field-options .options-row .field-repeatable-label,
+.advanced-cms-fields-wrapper .field-options .options-row .field-format-label {
 	width: auto;
 }
 .advanced-cms-fields-wrapper .field-row .field_type,
-.advanced-cms-fields-wrapper .field-options .option-row .options-item,
+.advanced-cms-fields-wrapper .field-options .options-row .options-item,
 .advanced-cms-fields-wrapper .field-options .field-repeatable-check {
 	float: left;
 }
@@ -138,10 +138,13 @@
 .advanced-cms-fields-wrapper .field-row .long-text {
 	width: 250px;
 }
-.advanced-cms-fields-wrapper .field-options .option-row {
+.advanced-cms-fields-wrapper .field-options .options-row {
 	margin-left: 230px;
 	overflow: hidden;
 	margin-bottom: 3px;
+}
+.advanced-cms-fields-wrapper .field-options .options.options-row .option-row {
+	width: 80%;
 }
 .advanced-cms-fields-wrapper .field-options .add-option-field {
 	overflow: hidden;
