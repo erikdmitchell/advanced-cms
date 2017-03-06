@@ -16,7 +16,7 @@ class AdvancedCMSAdmin {
 	 */
 	public function __construct() {
 		add_action('admin_menu', array($this, 'build_admin_menu'));
-		add_action('admin_enqueue_scripts',array($this,'scripts_styles'));
+		add_action('admin_enqueue_scripts', array($this, 'scripts_styles'));
 		add_action('admin_init', array($this, 'update_post_types'));
 		add_action('admin_init', array($this, 'update_metaboxes'));
 		add_action('admin_init', array($this, 'update_taxonomies'));
@@ -76,7 +76,7 @@ class AdvancedCMSAdmin {
 		wp_enqueue_script('advanced-cms-admin-metaboxes');
 
 		wp_enqueue_style('advanced-cms-admin-style',plugins_url('/admin/css/admin.css',__FILE__));
-		wp_enqueue_style('advanced-cms-admin-style', plugins_url('/admin/css/metaboxes.css', __FILE__));
+		wp_enqueue_style('advanced-cms-metabox-style', plugins_url('/admin/css/metaboxes.css', __FILE__));
 	}
 
 	/**

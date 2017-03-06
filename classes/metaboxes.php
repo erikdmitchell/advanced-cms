@@ -7,7 +7,7 @@ global $advancedMetaboxes;
 class advancedCMSMetaboxes {
 
 	private $nonce = 'wp_upm_media_nonce'; // Represents the nonce value used to save the post media //
-	private $option_name='mdw_meta_box_duped_boxes';
+	private $option_name='advanced_meta_box_duped_boxes';
 
 	protected $options=array();
 	protected $post_types=array();
@@ -18,7 +18,7 @@ class advancedCMSMetaboxes {
 	 * constructs our function, setups our scripts and styles, attaches meta box to wp actions
 	 */
 	function __construct() {
-		$config=get_option('mdw_cms_metaboxes');
+		$config=get_option('advanced_cms_metaboxes');
 
 		$this->fields=array(
 			'address' => array(
@@ -112,11 +112,11 @@ class advancedCMSMetaboxes {
 		add_action('admin_enqueue_scripts', array($this, 'register_admin_scripts_styles'));
 		add_action('wp_enqueue_scripts', array($this, 'register_scripts_styles'));
 		add_action('save_post', array($this, 'save_custom_meta_data'));
-		add_action('add_meta_boxes', array($this, 'mdwmb_add_meta_box'));
+		add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
 
 		add_action('wp_ajax_duplicate_metabox_field', array($this, 'ajax_duplicate_metabox_field'));
 		add_action('wp_ajax_remove_duplicate_metabox_field' ,array($this, 'ajax_remove_duplicate_metabox_field'));
-		add_action('wp_ajax_mdw_cms_gallery_update', array($this, 'ajax_mdw_cms_gallery_update'));
+		add_action('wp_ajax_advanced_cms_gallery_update', array($this, 'ajax_advanced_cms_gallery_update'));
 
 		add_filter('media_view_settings', array($this, 'media_view_settings'), 10, 2);
 
@@ -142,7 +142,7 @@ class advancedCMSMetaboxes {
 		wp_enqueue_script('jq-timepicker', ADVANCED_CMS_URL.'/js/jquery.ui.timepicker.js');
 		wp_enqueue_script('jquery-maskedinput-script', ADVANCED_CMS_URL.'/js/jquery.maskedinput.min.js', array('jquery'), '1.3.1', true);
 		wp_enqueue_script('jq-validator-script', ADVANCED_CMS_URL.'/js/jquery.validator.js', array('jquery'), '1.0.0', true);
-		wp_enqueue_script('mdw-cms-js', ADVANCED_CMS_URL.'/js/functions.js', array('jquery'), '1.0.0', true);
+		wp_enqueue_script('advanced-cms-js', ADVANCED_CMS_URL.'/js/functions.js', array('jquery'), '1.0.0', true);
 		wp_enqueue_script('duplicate-metabox-fields', ADVANCED_CMS_URL.'js/duplicate-metabox-fields.js', array('jquery'), '1.0.2');
 		wp_enqueue_script('jquery-mediauploader', ADVANCED_CMS_URL.'js/jquery.mediauploader.js', array('jquery'));
 
@@ -154,11 +154,11 @@ class advancedCMSMetaboxes {
 
 		$datepicker=$this->jquery_datepicker_setup($post_id);
 
-		$mdwcmsjs=array(
+		$advancedcmsjs=array(
 			'datepicker' => $datepicker,
 		);
 
-		wp_localize_script('mdw-cms-js', 'wp_options', $mdwcmsjs);
+		wp_localize_script('advanced-cms-js', 'wp_options', $advancedcmsjs);
 	}
 
 	/**
@@ -244,15 +244,15 @@ class advancedCMSMetaboxes {
 	}
 
 	/**
-	 * mdwmb_add_meta_box function.
+	 * add_meta_boxes function.
 	 *
 	 * creates the actual metabox itself using the id and title from the config file and attaches it to the post type
 	 *
 	 * @access public
 	 * @return void
 	 */
-	public function mdwmb_add_meta_box() {
-		global $config_id,$post;
+	public function add_meta_boxes() {
+		global $config_id, $post;
 
 		if (empty($this->config))
 			return false;
@@ -263,19 +263,19 @@ class advancedCMSMetaboxes {
 			$config_id=$config['mb_id']; // for use in our classes function
 
 			foreach ($config['post_types'] as $post_type) :
-		    add_meta_box(
-		    	$config['mb_id'],
-		      __($config['title'],'Upload_Meta_Box'),
-		      array($this, 'generate_meta_box_fields'),
-		      $post_type,
-		      apply_filters("mdw_cms_add_metabox_context_{$config['mb_id']}", 'normal'), // normal, advanced, side
-		      apply_filters("mdw_cms_add_metabox_priority_{$config['mb_id']}", 'high'), // high, core, default, low (prority)
-		      array(
-		      	'config_key' => $key,
+				add_meta_box(
+					$config['mb_id'],
+					__($config['title'], 'Upload_Meta_Box'),
+					array($this, 'generate_meta_box_fields'),
+					$post_type,
+					apply_filters("advanced_cms_add_metabox_context_{$config['mb_id']}", 'normal'), // normal, advanced, side
+					apply_filters("advanced_cms_add_metabox_priority_{$config['mb_id']}", 'high'), // high, core, default, low (prority)
+					array(
+						'config_key' => $key,
 						'meta_box_id' => $config['mb_id'],
 						'post_id' => $post->ID
-		      )
-		    );
+					)
+				);
 	    endforeach;
     endforeach;
 	}
@@ -300,7 +300,7 @@ class advancedCMSMetaboxes {
 		// because our legacy and current setups can be different, we need this function to do our post fields //
 		$this->add_post_fields($this, $metabox, $post->ID);
 
-		$html.='<div class="mdw-cms-meta-box umb-meta-box">';
+		$html.='<div class="advanced-cms-meta-box">';
 
 			foreach ($this->config as $config) :
 
@@ -347,9 +347,9 @@ class advancedCMSMetaboxes {
 				endforeach;
 			endif;
 
-			$html.='<input type="hidden" id="mdw-cms-metabox-id" name="mdw-cms-metabox-id" value="'.$metabox['args']['meta_box_id'].'" />';
-			$html.='<input type="hidden" id="mdw-cms-config-key" name="mdw-cms-config-key" value="'.$metabox['args']['config_key'].'" />';
-			$html.='<input type="hidden" id="mdw-cms-post-id" name="mdw-cms-post-id" value="'.$metabox['args']['post_id'].'" />';
+			$html.='<input type="hidden" id="advanced-cms-metabox-id" name="advanced-cms-metabox-id" value="'.$metabox['args']['meta_box_id'].'" />';
+			$html.='<input type="hidden" id="advanced-cms-config-key" name="advanced-cms-config-key" value="'.$metabox['args']['config_key'].'" />';
+			$html.='<input type="hidden" id="advanced-cms-post-id" name="advanced-cms-post-id" value="'.$metabox['args']['post_id'].'" />';
 		$html.='</div>';
 
 		echo $html;
@@ -432,7 +432,7 @@ class advancedCMSMetaboxes {
 							'value' => $option['value'],
 						);
 
-						$html.=mdw_cms_get_field_template('checkbox', $atts, $value);
+						$html.=advanced_cms_get_field_template('checkbox', $atts, $value);
 					endforeach;
 				endif;
 				break;
@@ -444,7 +444,7 @@ class advancedCMSMetaboxes {
 					'id' => $args['id'],
 				);
 
-				$html.=mdw_cms_get_field_template('datepicker', $atts, $value);
+				$html.=advanced_cms_get_field_template('datepicker', $atts, $value);
 				break;
 			case 'email' :
 				$html.='<input type="text" class="email validator '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
@@ -454,7 +454,7 @@ class advancedCMSMetaboxes {
 					'id' => $args['id'],
 				);
 
-				$html.=mdw_cms_get_field_template('gallery', $atts, $value);
+				$html.=advanced_cms_get_field_template('gallery', $atts, $value);
 				break;
 			case 'media':
 				$html.='<input id="'.$args['id'].'" class="uploader-input regular-text" type="text" name="'.$args['id'].'" value="'.$value.'" />';
@@ -467,7 +467,7 @@ class advancedCMSMetaboxes {
 				endif;
 
 				if ($value) :
-					$html.='<div class="mdw-cms-meta-box-thumb umb-media-thumb">';
+					$html.='<div class="advanced-cms-meta-box-thumb umb-media-thumb">';
 						$attr=array('src' => $value);
 						$thumbnail=get_the_post_thumbnail($post->ID,'thumbnail',$attr);
 						$attachment_id=$this->get_attachment_id_from_url($value);
@@ -494,12 +494,12 @@ class advancedCMSMetaboxes {
 							'value' => $option['value'],
 						);
 
-						$html.=mdw_cms_get_field_template('radio', $atts, $value);
+						$html.=advanced_cms_get_field_template('radio', $atts, $value);
 					endforeach;
 				endif;
 				break;
 			case 'select' :
-				$html.=mdw_cms_get_field_template('select', $args, $value);
+				$html.=advanced_cms_get_field_template('select', $args, $value);
 				break;
 			case 'text' :
 				$html.='<input type="text" class="'.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.htmlentities($value).'" />';
@@ -520,7 +520,7 @@ class advancedCMSMetaboxes {
 					//'quicktags' => false
 				);
 
-				$html.=$this->mdwm_wp_editor($value,$args['id'],$settings);
+				$html.=$this->advancedm_wp_editor($value,$args['id'],$settings);
 				break;
 			case 'media_images' :
 				$images=$this->get_all_media_images();
@@ -550,7 +550,7 @@ class advancedCMSMetaboxes {
 				if (!is_array($values))
 					$values=array($values);
 
-				$html.=apply_filters('add_mdw_cms_metabox_custom_input-'.$args['id'],$args['id'],$values);
+				$html.=apply_filters('add_advanced_cms_metabox_custom_input-'.$args['id'],$args['id'],$values);
 				break;
 			default:
 				$html.='<input type="text" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
@@ -794,9 +794,9 @@ class advancedCMSMetaboxes {
 	function setup_config($configs=array()) {
 		$ran_string=substr(substr("abcdefghijklmnopqrstuvwxyz",mt_rand(0,25),1).substr(md5(time()),1),0,5);
 		$default_config=array(
-			'mb_id' => 'mdwmb_'.$ran_string,
+			'mb_id' => 'advancedmb_'.$ran_string,
 			'title' => 'Default Meta Box',
-			'prefix' => '_mdwmb',
+			'prefix' => '_advancedmb',
 			'post_types' => 'post,page',
 			'fields' => array(), // for legacy support (pre 1.1.8)
 			'post_fields' => array()
@@ -874,7 +874,7 @@ class advancedCMSMetaboxes {
 		if (!$dup_flag)
 			$this->config[$_POST['config_key']]['post_fields'][]=$arr;
 
-		if (update_option('mdw_cms_metaboxes',$this->config)) :
+		if (update_option('advanced_cms_metaboxes',$this->config)) :
 			echo true;
 		else :
 			echo false;
@@ -892,7 +892,7 @@ class advancedCMSMetaboxes {
 
 		$this->config[$_POST['config_key']]['post_fields']=array_values($this->config[$_POST['config_key']]['post_fields']);
 
-		if (update_option('mdw_cms_metaboxes',$this->config)) :
+		if (update_option('advanced_cms_metaboxes',$this->config)) :
 			echo 'option updated';
 		else :
 			echo 'option failed to update (may be due to no fields being reomved)';
@@ -972,7 +972,7 @@ class advancedCMSMetaboxes {
 		foreach ($this->config as $key => $config) :
 
 			$extra_fields=array();
-			$extra_fields=apply_filters('add_mdw_cms_metabox_custom_fields-'.$config['mb_id'],$extra_fields,$config['prefix']);
+			$extra_fields=apply_filters('add_advanced_cms_metabox_custom_fields-'.$config['mb_id'],$extra_fields,$config['prefix']);
 			$extra_field_defaults=array(
 				'field_type' => 'custom',
 				'field_label' => 'Extra Field',
@@ -995,7 +995,7 @@ class advancedCMSMetaboxes {
 	}
 
 	/**
-	 * mdwm_wp_editor function.
+	 * advancedm_wp_editor function.
 	 *
 	 * @access protected
 	 * @param mixed $content
@@ -1003,7 +1003,7 @@ class advancedCMSMetaboxes {
 	 * @param mixed $settings
 	 * @return void
 	 */
-	protected function mdwm_wp_editor($content,$editor_id,$settings) {
+	protected function advancedm_wp_editor($content,$editor_id,$settings) {
 		ob_start(); // Turn on the output buffer
 		wp_editor($content,$editor_id,$settings); // Echo the editor to the buffer
 		$editor_contents = ob_get_clean(); // Store the contents of the buffer in a variable
@@ -1064,13 +1064,13 @@ class advancedCMSMetaboxes {
 	 * @return void
 	 */
 	public function get_countries_dropdown($name='country',$selected='US') {
-		global $mdw_cms_countries;
+		global $advanced_cms_countries;
 
 		$html=null;
 
 		$html.='<select name="'.$name.'">';
 			$html.='<option value="0">Select Country</option>';
-			foreach ($mdw_cms_countries as $id => $country) :
+			foreach ($advanced_cms_countries as $id => $country) :
 				$html.='<option value="'.$id.'" '.selected($selected,$id,false).'>'.$country.'</option>';
 			endforeach;
 		$html.='</select>';
@@ -1093,13 +1093,13 @@ class advancedCMSMetaboxes {
 		if (!is_array($ids))
 			$ids=explode(',',$ids);
 
-		$ids=apply_filters('mdw_cms_get_gallery_images',$ids,$post);
+		$ids=apply_filters('advanced_cms_get_gallery_images',$ids,$post);
 
 		if (empty($ids))
 			return false;
 
 		foreach ($ids as $attachment_id) :
-			$images.=wp_get_attachment_image($attachment_id,'thumbnail',false,array('class' => 'img-responsive mdw-cms-gallery-image'));
+			$images.=wp_get_attachment_image($attachment_id,'thumbnail',false,array('class' => 'img-responsive advanced-cms-gallery-image'));
 		endforeach;
 
 		return $images;
@@ -1118,7 +1118,7 @@ class advancedCMSMetaboxes {
 		if ($ids && !is_array($ids))
 			$ids=explode(',',$ids);
 
-		$ids=apply_filters("mdw_cms_get_gallery_image_ids",$ids,$post);
+		$ids=apply_filters("advanced_cms_get_gallery_image_ids",$ids,$post);
 
 		if (is_array($ids))
 			$ids=implode(',',$ids);
@@ -1161,21 +1161,21 @@ class advancedCMSMetaboxes {
 			if (get_post_meta($post->ID,$field_id,true))
 				$images=get_post_meta($post->ID,$field_id,true);
 
-			$shortcode=apply_filters('mdw_cms_media_settings_gallery_shortcode','[gallery ids="'.$images.'"]',$images,$post);
+			$shortcode=apply_filters('advanced_cms_media_settings_gallery_shortcode','[gallery ids="'.$images.'"]',$images,$post);
 
-			$settings['mdw_cms_gallery']=array('shortcode' => $shortcode);
+			$settings['advanced_cms_gallery']=array('shortcode' => $shortcode);
 		endforeach;
 
 		return $settings;
 	}
 
 	/**
-	 * ajax_mdw_cms_gallery_update function.
+	 * ajax_advanced_cms_gallery_update function.
 	 *
 	 * @access public
 	 * @return void
 	 */
-	public function ajax_mdw_cms_gallery_update() {
+	public function ajax_advanced_cms_gallery_update() {
 		$images=null;
 		$counter=0;
 
@@ -1183,7 +1183,7 @@ class advancedCMSMetaboxes {
 			return false;
 
 		foreach ($_POST['ids'] as $attachment_id) :
-			$images.=wp_get_attachment_image($attachment_id,'thumbnail',false,array('class' => 'img-responsive mdw-bg-image'));
+			$images.=wp_get_attachment_image($attachment_id,'thumbnail',false,array('class' => 'img-responsive advanced-bg-image'));
 		endforeach;
 
 		echo json_encode($images);
