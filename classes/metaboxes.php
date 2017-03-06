@@ -616,7 +616,7 @@ class advancedCMSMetaboxes {
 		if (!$prefix || !$label)
 			return false;
 
-		$prefix=$this->check_config_prefix($prefix);
+		echo $prefix=$this->check_config_prefix($prefix);
 
 		if (empty($label)) :
 			$id=$prefix.'_'.$field_id;

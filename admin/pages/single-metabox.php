@@ -1,5 +1,5 @@
 <?php
-global $advanced_cms_admin;
+global $advanced_cms_admin, $advanced_cms_metabox_args;
 
 $advanced_cms_metabox_args=advanced_cms_setup_metabox_args();
 ?>
