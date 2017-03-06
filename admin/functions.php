@@ -88,7 +88,7 @@ function advanced_cms_admin_metabox_fields($fields='') {
 	$field_counter=0;
 	$field_id=0;
 	$field='';
-
+print_r($fields);
 	if (empty($fields)) :
 		$advanced_cms_admin->build_field_rows($field_id, $field, $field_counter);
 	else :
@@ -161,7 +161,7 @@ function advanced_cms_options_rows($options='', $field_key=0) {
  */
 function advanced_cms_get_options_rows($options='', $field_key=0) {
 	$output=null;
-
+print_r($options);
 	if (!empty($options)) :
 		foreach ($options as $key => $option) :
 			$output.=advanced_cms_generate_option_row(array(

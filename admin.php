@@ -29,6 +29,7 @@ class AdvancedCMSAdmin {
 		add_action('wp_ajax_advanced_cms_get_taxonomy', array($this, 'ajax_get_taxonomy'));
 		add_action('wp_ajax_advanced_cms_delete_taxonomy', array($this, 'ajax_delete_taxonomy'));
 		add_action('wp_ajax_advanced_cms_reserved_names', array($this, 'ajax_reserved_names'));
+		add_action('wp_ajax_advanced_cms_blank_metabox_field', array($this, 'ajax_blank_metabox_field'));
 
 		$this->options['metaboxes']=get_option('advanced_cms_metaboxes', array());
 		$this->options['post_types']=get_option('advanced_cms_post_types', array());
@@ -756,6 +757,12 @@ class AdvancedCMSAdmin {
 		$admin_url=add_query_arg($args, admin_url('/tools.php'));
 
 		return $admin_url;
+	}
+	
+	public function ajax_blank_metabox_field() {
+print_r($_POST);
+
+		wp_die();		
 	}
 
 }

@@ -74,6 +74,16 @@ console.log('c');
 	 */
 	$('#add-field-btn').on('click', function() {
 		$(this).duplicateMetaboxField();
+/*
+		var data={
+			'action' : 'advanced_cms_blank_metabox_field'
+		};
+		
+		$.post(ajaxurl, data, function(response) {
+console.log(response);			
+		});
+*/
+
 	});
 
 	// remove a metabox field //
@@ -191,7 +201,7 @@ jQuery(function($) {
 		var cloneID='advanced-cms-fields-wrapper-'+newID;
 
 		$clonedElement.removeClass('default');
-		$clonedElement.attr('id',cloneID);
+		$clonedElement.attr('id', cloneID);
 		$clonedElement.insertAfter('#'+lastFieldID);
 
 		// replace lastFieldIDNum with our new attribute name via new id //
