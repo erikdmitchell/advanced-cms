@@ -1,45 +1,45 @@
 /* general
 ---------- */
-.mdw-cms-admin-page .wp-list-table {
+.advanced-cms-admin-page .wp-list-table {
 	margin-top: 15px;
 	margin-bottom: 15px;
 }
 
-.tools_page_mdw-cms label {
+.tools_page_advanced-cms label {
 	font-weight: bold;
 	display: inline-block;
 	vertical-align: top;
 }
-.tools_page_mdw-cms label.required {
+.tools_page_advanced-cms label.required {
 	color: #000;
 }
-.tools_page_mdw-cms label.required:after {
+.tools_page_advanced-cms label.required:after {
 	color: red;
 	content: "*";
 	padding-left: 3px;
 }
-.mdw-cms-wrap .left-col {
+.advanced-cms-wrap .left-col {
 	float: left;
 	width: 70%;
 }
-.mdw-cms-wrap .right-col {
+.advanced-cms-wrap .right-col {
 	float: left;
 	width: 29%;
 	margin-left: 1%;
 }
-.mdw-cms-edit-list .mdw-cms-edit-list-row {
+.advanced-cms-edit-list .advanced-cms-edit-list-row {
 	overflow: hidden;
 }
-.mdw-cms-edit-list .mdw-cms-edit-list-row > div {
+.advanced-cms-edit-list .advanced-cms-edit-list-row > div {
 	margin-right: 5px;
 	float: left;
 }
-.mdw-cms-edit-list .mdw-cms-edit-list-row .label {
+.advanced-cms-edit-list .advanced-cms-edit-list-row .label {
 	font-weight: bold;
   vertical-align: top;
   color: #23282d;
 }
-.mdw-cms-wrap {
+.advanced-cms-wrap {
 	overflow: hidden;
 }
 
@@ -49,44 +49,44 @@
 	overflow: hidden;
 }
 
-.mdw-cms-wrap .form-row div.input {
+.advanced-cms-wrap .form-row div.input {
 	padding: 0;
 }
-.mdw-cms-wrap .form-row div.input > input {
+.advanced-cms-wrap .form-row div.input > input {
 	width: 100%;
 }
-.mdw-cms-wrap .fd > input,
-.mdw-cms-wrap .gen-field-id > input {
+.advanced-cms-wrap .fd > input,
+.advanced-cms-wrap .gen-field-id > input {
 	width: 50%;
 }
 
 /* errors */
-#mdw-cms-name-error,
-.mdw-cms-name-error {
+#advanced-cms-name-error,
+.advanced-cms-name-error {
 	color: red;
 	font-weight: bold;
 }
-.custom-metabox .mdw-cms-name-error {
+.custom-metabox .advanced-cms-name-error {
 	clear: both;
 	padding: 5px 0;
 }
 
 /* meta box fields
 ------------------ */
-.mdw-cms-fields-wrapper {
+.advanced-cms-fields-wrapper {
 	margin-bottom: 20px;
 	overflow: hidden;
 }
-.mdw-cms-fields-wrapper .ui-icon {
+.advanced-cms-fields-wrapper .ui-icon {
 	float: left;
 	margin-top: 3px;
 }
-.mdw-cms-fields-wrapper .field-row {
+.advanced-cms-fields-wrapper .field-row {
 	margin-bottom: 5px;
 	overflow: hidden;
 	margin-left: 30px;
 }
-.mdw-cms-fields-wrapper .field-row label {
+.advanced-cms-fields-wrapper .field-row label {
 	vertical-align: middle;
 	font-weight: bold;
 	color: #23282d;
@@ -95,54 +95,54 @@
 	float: left;
 	margin-top: 3px;
 }
-.mdw-cms-fields-wrapper input.field-label,
-.mdw-cms-fields-wrapper select.field-type,
-.mdw-cms-fields-wrapper input.field-description {
+.advanced-cms-fields-wrapper input.field-label,
+.advanced-cms-fields-wrapper select.field-type,
+.advanced-cms-fields-wrapper input.field-description {
 	width: 502px;
 }
-.mdw-cms-fields-wrapper input.field-id {
+.advanced-cms-fields-wrapper input.field-id {
 	width: 394px;
 }
-.mdw-cms-fields-wrapper .field-options .option-row > div {
+.advanced-cms-fields-wrapper .field-options .option-row > div {
 	float: left;
 	width: 50%;
 }
-.mdw-cms-fields-wrapper .field-options .option-row .value-field label {
+.advanced-cms-fields-wrapper .field-options .option-row .value-field label {
 	margin-left: 10px;
 }
-.mdw-cms-fields-wrapper .field-options .option-row label {
+.advanced-cms-fields-wrapper .field-options .option-row label {
 	width: 50px;
 }
-.mdw-cms-fields-wrapper .field-options .option-row input {
+.advanced-cms-fields-wrapper .field-options .option-row input {
 	width: 190px;
 }
-.mdw-cms-fields-wrapper .field-row .field_type,
-.mdw-cms-fields-wrapper .field-options .option-row .options-item,
-.mdw-cms-fields-wrapper .field-options .field-repeatable-check {
+.advanced-cms-fields-wrapper .field-row .field_type,
+.advanced-cms-fields-wrapper .field-options .option-row .options-item,
+.advanced-cms-fields-wrapper .field-options .field-repeatable-check {
 	float: left;
 }
-.mdw-cms-fields-wrapper .field-options .field-repeatable-check > input {
+.advanced-cms-fields-wrapper .field-options .field-repeatable-check > input {
 	margin-top: 0;
 }
-.mdw-cms-fields-wrapper .field-options .add-option-field-btn {
+.advanced-cms-fields-wrapper .field-options .add-option-field-btn {
 	float: right;
 }
-.mdw-cms-fields-wrapper .field-row .long-text {
+.advanced-cms-fields-wrapper .field-row .long-text {
 	width: 250px;
 }
-.mdw-cms-fields-wrapper .field-options .option-row {
+.advanced-cms-fields-wrapper .field-options .option-row {
 	margin-left: 200px;
 	overflow: hidden;
 	margin-bottom: 3px;
 }
-.mdw-cms-fields-wrapper .field-options .add-option-field {
+.advanced-cms-fields-wrapper .field-options .add-option-field {
 	overflow: hidden;
 	margin-bottom: 10px;
 	margin-top: 10px;
 	height: 30px;
 	margin-left: 150px;
 }
-.mdw-cms-fields-wrapper .remove-field {
+.advanced-cms-fields-wrapper .remove-field {
 	float: right;
 }
 .wp-core-ui .button-primary.remove-field {
@@ -160,31 +160,31 @@ p.submit > #clear-files {
 	margin-left: 15px;
 }
 
-#mdwcms-updater-notices > .primary {
+#advancedcms-updater-notices > .primary {
 	display: none;
 }
 
 /* metabox display
 ------------------ */
-.mdw-cms-meta-box .type-textarea button.duplicate,
-.mdw-cms-meta-box .type-textarea button.delete {
+.advanced-cms-meta-box .type-textarea button.duplicate,
+.advanced-cms-meta-box .type-textarea button.delete {
 	float: right;
 	margin-right: 7%;
 }
-.mdw-cms-meta-box .field_description {
+.advanced-cms-meta-box .field_description {
 	font-style: italic;
 	padding: 3px 0;
 }
-.mdw-cms-meta-box .mdw-cms-meta-box-thumb {
+.advanced-cms-meta-box .advanced-cms-meta-box-thumb {
 	clear: left;
 	text-align: center;
 	padding: 5px 0;
 }
-.mdw-cms-meta-box .format {
+.advanced-cms-meta-box .format {
 	margin-left: 5px;
 	font-style: italic;
 }
-.mdw-cms-meta-box .fields-wrap {
+.advanced-cms-meta-box .fields-wrap {
 	margin-left: 135px;
 }
 /*
@@ -196,7 +196,7 @@ p.submit > #clear-files {
 /**
  * custom post types
  */
-.mdw-cms-admin .ui-widget-overlay {
+.advanced-cms-admin .ui-widget-overlay {
 	background: #aaaaaa;
 }
 .custom-post-types .selected-icon {
@@ -205,7 +205,7 @@ p.submit > #clear-files {
 .custom-post-types .change-text {
 	padding-bottom: 10px;
 }
-.mdw-cms-dashicon-grid .dashicons {
+.advanced-cms-dashicon-grid .dashicons {
 	font-size: 25px;
 	width: 25px;
 	height: 25px;
@@ -217,14 +217,14 @@ p.submit > #clear-files {
 /**
  * documentation
  */
-.mdw-cms-doc-breadcrumb a {
+.advanced-cms-doc-breadcrumb a {
 	text-decoration: none;
 }
-.mdw-cms-doc-breadcrumb .sep {
+.advanced-cms-doc-breadcrumb .sep {
 	padding-left: 5px;
 	padding-right: 5px;
 }
-.mdw-cms-documentation pre {
+.advanced-cms-documentation pre {
   font-family: "Courier 10 Pitch", Courier, monospace;
   font-size: 95%;
   line-height: 140%;
@@ -233,7 +233,7 @@ p.submit > #clear-files {
   white-space: -moz-pre-wrap;
   white-space: -o-pre-wrap;
 }
-.mdw-cms-documentation code {
+.advanced-cms-documentation code {
   font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
   font-size: 95%;
   line-height: 140%;
@@ -243,45 +243,45 @@ p.submit > #clear-files {
   white-space: -o-pre-wrap;
   background: #faf8f0;
 }
-.mdw-cms-documentation code {
+.advanced-cms-documentation code {
   display: block;
   padding: 0.5em 1em;
   border: 1px solid #bebab0;
 }
-.mdw-cms-documentation .doc-list {
+.advanced-cms-documentation .doc-list {
 
 }
-.mdw-cms-documentation .doc-list > li {
+.advanced-cms-documentation .doc-list > li {
 	margin-bottom: 10px;
 }
-.mdw-cms-documentation .doc-list > li .field {
+.advanced-cms-documentation .doc-list > li .field {
 	font-weight: bold;
 }
-.mdw-cms-documentation .doc-list > li .type {
+.advanced-cms-documentation .doc-list > li .type {
 	font-style: italic;
 }
-.mdw-cms-documentation .doc-list > li .description {
+.advanced-cms-documentation .doc-list > li .description {
 
 }
-.mdw-cms-documentation .doc-list > li .default {
+.advanced-cms-documentation .doc-list > li .default {
 	font-style: italic;
 }
-.mdw-cms-documentation .doc-sub-list {
+.advanced-cms-documentation .doc-sub-list {
 	margin: 10px 0 15px 30px;
 }
-.mdw-cms-documentation .doc-sub-list > li {
+.advanced-cms-documentation .doc-sub-list > li {
 
 }
-.mdw-cms-documentation .doc-sub-list > li .field-type {
+.advanced-cms-documentation .doc-sub-list > li .field-type {
 	font-weight: bold;
 }
-.mdw-cms-documentation .doc-sub-list > li .field-description {
+.advanced-cms-documentation .doc-sub-list > li .field-description {
 
 }
-.mdw-cms-documentation .doc-sub-list > li .field-options {
+.advanced-cms-documentation .doc-sub-list > li .field-options {
 	font-style: italic;
 }
-.mdw-cms-doc-version {
+.advanced-cms-doc-version {
 	float: right;
 	font-style: italic;
 }

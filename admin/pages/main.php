@@ -1,8 +1,7 @@
-<?php global $mdw_cms_admin; ?>
+<?php global $advanced_cms_admin; ?>
 
-<div class="mdw-cms-default">
-	<?php //echo MDWCMSlegacy::get_legacy_page(); ?>
+<div class="advanced-cms-main">
 
-	<?php do_action('mdw_cms_main_age'); ?>
-
-</div><!-- .mdw-cms-default -->
+	<?php advanced_cms_load_documentation(); ?>
+	
+</div>

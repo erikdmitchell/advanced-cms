@@ -58,7 +58,7 @@ class AdvancedCMSAdmin {
 
 		// localize scripts //
 		$metaboxes_arr=array(
-			//'fields' => $advancedMetaboxes->fields,
+			'fields' => $advancedMetaboxes->fields,
 		);
 
 		wp_localize_script('advanced-cms-admin-metaboxes', 'metaboxData', $metaboxes_arr);
@@ -154,32 +154,32 @@ class AdvancedCMSAdmin {
 					if (isset($_GET['documentation']) && !empty($_GET['documentation'])) :
 						echo advanced_cms_get_doc_template($_GET['documentation']);
 					else :
-						echo advanced_cms_get_template('main');
+						echo advanced_cms_get_admin_page('main');
 					endif;
 					break;
 				case 'post-types':
 					if (isset($_GET['action']) && $_GET['action']=='update') :
-						echo advanced_cms_get_template('single-post-type');
+						echo advanced_cms_get_admin_page('single-post-type');
 					else :
-						echo advanced_cms_get_template('post-types');
+						echo advanced_cms_get_admin_page('post-types');
 					endif;
 					break;
 				case 'metaboxes':
 					if (isset($_GET['action']) && $_GET['action']=='update') :
-						echo advanced_cms_get_template('single-metabox');
+						echo advanced_cms_get_admin_page('single-metabox');
 					else :
-						echo advanced_cms_get_template('metaboxes');
+						echo advanced_cms_get_admin_page('metaboxes');
 					endif;
 					break;
 				case 'taxonomies':
 					if (isset($_GET['action']) && $_GET['action']=='update') :
-						echo advanced_cms_get_template('single-taxonomy');
+						echo advanced_cms_get_admin_page('single-taxonomy');
 					else :
-						echo advanced_cms_get_template('taxonomies');
+						echo advanced_cms_get_admin_page('taxonomies');
 					endif;
 					break;
 				default:
-					echo advanced_cms_get_template('main');
+					echo advanced_cms_get_admin_page('main');
 					break;
 			endswitch;
 			?>
@@ -204,7 +204,7 @@ class AdvancedCMSAdmin {
 		$field['order']=$order;
 		$field['classes']=$classes;
 
-		echo advanced_cms_get_template('metabox-field-rows', $field);
+		echo advanced_cms_get_admin_page('metabox-field-rows', $field);
 	}
 
 	/**

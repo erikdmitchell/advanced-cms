@@ -1,10 +1,10 @@
 <?php
-global $MDWMetaboxes;
+global $advancedMetaboxes;
 
 /**
- * MDWMetaboxes class.
+ * advancedMetaboxes class.
  */
-class MDWMetaboxes {
+class advancedMetaboxes {
 
 	private $nonce = 'wp_upm_media_nonce'; // Represents the nonce value used to save the post media //
 	private $option_name='mdw_meta_box_duped_boxes';
@@ -1232,5 +1232,5 @@ class MDWMetaboxes {
 
 } // end class
 
-$MDWMetaboxes = new MDWMetaboxes();
+$advancedMetaboxes = new advancedMetaboxes();
 ?>

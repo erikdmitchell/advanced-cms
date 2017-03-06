@@ -1,4 +1,4 @@
-<?php mdw_cms_doc_header(); ?>
+<?php advanced_cms_doc_header(); ?>
 
 	<p>
 		Below is a detailed description of each field (aka settings) for each custom taxonomy:
@@ -130,4 +130,4 @@
 		</li>
 	</ul>
 
-<?php mdw_cms_doc_footer(); ?>
+<?php advanced_cms_doc_footer(); ?>

@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * advanced_cms_get_admin_page function.
+ * 
+ * @access public
+ * @param bool $template_name (default: false)
+ * @param mixed $attributes (default: null)
+ * @return void
+ */
 function advanced_cms_get_admin_page($template_name=false, $attributes=null) {
 	if (!$attributes )
 		$attributes = array();
@@ -7,7 +15,7 @@ function advanced_cms_get_admin_page($template_name=false, $attributes=null) {
 	if (!$template_name)
 		return false;
 
-	include(advanced_CMS_PATH.'admin/pages/'.$template_name.'.php');
+	include(ADVANCED_CMS_PATH.'admin/pages/'.$template_name.'.php');
 
 	$html=ob_get_contents();
 
