@@ -26,5 +26,5 @@ require_once(ADVANCED_CMS_PATH.'classes/metaboxes.php'); // our custom metabox c
 require_once(ADVANCED_CMS_PATH.'functions.php'); // contains misc functions
 require_once(ADVANCED_CMS_PATH.'lib/countries-states.php'); // contains global vars/arrays for states and countries
 //require_once(ADVANCED_CMS_PATH.'shortcodes/init.php'); // our shortcodes
-//require_once(ADVANCED_CMS_PATH.'widgets/init.php'); // our widgets
+require_once(ADVANCED_CMS_PATH.'widgets/init.php'); // our widgets
 ?>
