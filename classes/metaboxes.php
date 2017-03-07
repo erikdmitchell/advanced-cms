@@ -388,40 +388,31 @@ class advancedCMSMetaboxes {
 
 		switch ($args['type']) :
 			case 'address':
-				$line1=null;
-				$line2=null;
-				$city=null;
-				$state=null;
-				$zip=null;
-				$country='US';
-
 				if (isset($value))
-					extract(unserialize($value));
+					$value=unserialize($value);
+					
+				$atts=array(
+					'id' => $args['id'],
+				);
+				$defaults=array(
+					'line1' => null,
+					'line2' => null,
+					'city' => null,
+					'state' => null,
+					'zip' => null,
+					'country' => 'US'
+				);
+				$value=wp_parse_args($value, $defaults);
 
-				$html.='<div class="address-wrap">';
-					$html.='<div class="line-1">';
-						$html.='<input type="text" class="'.$classes.'" name="'.$args['id'].'[line1]" id="'.$args['id'].'_line1" value="'.$line1.'" />';
-					$html.='</div>';
-					$html.='<div class="line-2">';
-						$html.='<input type="text" class="'.$classes.'" name="'.$args['id'].'[line2]" id="'.$args['id'].'_line2" value="'.$line2.'" />';
-					$html.='</div>';
-					$html.='<div class="city">';
-						$html.='<span>City</span><input type="text" class="'.$classes.'" name="'.$args['id'].'[city]" id="'.$args['id'].'_city" value="'.$city.'" />';
-					$html.='</div>';
-					$html.='<div class="state">';
-						$html.='<span>State/Province</span><input type="text" class="'.$classes.'" name="'.$args['id'].'[state]" id="'.$args['id'].'_state" value="'.$state.'" />';
-					$html.='</div>';
-					$html.='<div class="zip">';
-						$html.='<span>Postal Code</span><input type="text" class="'.$classes.'" name="'.$args['id'].'[zip]" id="'.$args['id'].'_zip" value="'.$zip.'" />';
-					$html.='</div>';
-					$html.='<div class="country">';
-						$html.='<span>Country</span>'.$this->get_countries_dropdown($args['id'].'[country]',$country);
-					$html.='</div>';
-				$html.='</div>';
+				$html.=advanced_cms_get_field_template('address', $atts, $value);
 				break;
 			case 'button' :
-				$html.='<input type="button" class="button '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$args['label'].'" />';
-				//<input name="geocode" type="button" class="button button-primary button-large" id="cce-company-address-geocode" value="Geocode">
+				$atts=array(
+					'id' => $args['id'],
+					'value' => $args['label']
+				);
+				
+				$html.=advanced_cms_get_field_template('button', $atts, $value);
 				break;
 			case 'checkbox':
 				if (isset($args['options']) && !empty($args['options'])) :
@@ -437,7 +428,11 @@ class advancedCMSMetaboxes {
 				endif;
 				break;
 			case 'colorpicker' :
-				$html.='<input type="text" class="colorPicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				$atts=array(
+					'id' => $args['id'],
+				);
+
+				$html.=advanced_cms_get_field_template('colorpicker', $atts, $value);
 				break;
 			case 'date':
 				$atts=array(
@@ -447,7 +442,11 @@ class advancedCMSMetaboxes {
 				$html.=advanced_cms_get_field_template('datepicker', $atts, $value);
 				break;
 			case 'email' :
-				$html.='<input type="text" class="email validator '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				$atts=array(
+					'id' => $args['id'],
+				);
+
+				$html.=advanced_cms_get_field_template('email', $atts, $value);				
 				break;
 			case 'gallery' :
 				$atts=array(
@@ -1063,7 +1062,7 @@ class advancedCMSMetaboxes {
 	 * @param string $selected (default: 'US')
 	 * @return void
 	 */
-	public function get_countries_dropdown($name='country',$selected='US') {
+	public function get_countries_dropdown($name='country', $selected='US') {
 		global $advanced_cms_countries;
 
 		$html=null;

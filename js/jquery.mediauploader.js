@@ -86,7 +86,7 @@
 				if (typeof wp.media.view.settings.advanced_cms_gallery!=='undefined')
 					shortcode = wp.shortcode.next( 'gallery', wp.media.view.settings.advanced_cms_gallery.shortcode ); // potential variable
 
-console.log(shortcode);
+//console.log(shortcode);
 
 		    // Bail if we didn't match the shortcode or all of the content.
 		    if ( ! shortcode )
