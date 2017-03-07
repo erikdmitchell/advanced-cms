@@ -456,30 +456,13 @@ class advancedCMSMetaboxes {
 				$html.=advanced_cms_get_field_template('gallery', $atts, $value);
 				break;
 			case 'media':
-				$html.='<input id="'.$args['id'].'" class="uploader-input regular-text" type="text" name="'.$args['id'].'" value="'.$value.'" />';
-				$html.='<input class="uploader button" name="'.$args['id'].'_button" id="'.$args['id'].'_button" value="Upload" />';
-				$html.='<input type="hidden" name="_name" value="'.$args['id'].'" />';
+				$atts=array(
+					'id' => $args['id'],
+					'description_visible' => $description_visible,
+					'description' => $description,
+				);
 
-				if (!$description_visible) :
-					$html.='<div class="description field_description">'.$description.'</div>';
-					$description_visible=true;
-				endif;
-
-				if ($value) :
-					$html.='<div class="advanced-cms-meta-box-thumb umb-media-thumb">';
-						$attr=array('src' => $value);
-						$thumbnail=get_the_post_thumbnail($post->ID,'thumbnail',$attr);
-						$attachment_id=$this->get_attachment_id_from_url($value);
-
-						if (get_post_mime_type($attachment_id)!='image') :
-							$html.=wp_get_attachment_image($attachment_id,'thumbnail',true);
-						else :
-							$html.=$thumbnail;
-						endif;
-						$html.='<p><a class="remove" data-type-img-id="'.$args['id'].'" href="#">Remove</a></p>';
-					$html.='</div>';
-				endif;
-
+				$html.=advanced_cms_get_field_template('media', $atts, $value);
 				break;
 			case 'phone':
 				$html.='<input type="text" class="phone '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
