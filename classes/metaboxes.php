@@ -464,6 +464,10 @@ class advancedCMSMetaboxes {
 
 				$html.=advanced_cms_get_field_template('media', $atts, $value);
 				break;
+			case 'media_images' :
+				$html.=advanced_cms_get_field_template('media-images', '', unserialize($value));
+
+				break;				
 			case 'phone':
 				$html.='<input type="text" class="phone '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
 				break;
@@ -503,24 +507,6 @@ class advancedCMSMetaboxes {
 				);
 
 				$html.=$this->advancedm_wp_editor($value,$args['id'],$settings);
-				break;
-			case 'media_images' :
-				$images=$this->get_all_media_images();
-				$value_arr=unserialize($value);
-
-				$html.='<select multiple size="10" name="'.$args['id'].'[]" id="'.$args['id'].'">';
-
-						foreach ($images as $image) :
-							$selected=null;
-
-							if (is_array($value_arr) && !empty($value_arr) && in_array($image->ID,$value_arr))
-								$selected='selected="selected"';
-
-							$html.='<option value="'.$image->ID.'" '.$selected.'>'.$image->post_title.'</option>';
-						endforeach;
-
-				$html.='</select>';
-
 				break;
 			case 'custom' :
 				if (is_serialized($value)) :
