@@ -407,12 +407,7 @@ class advancedCMSMetaboxes {
 				$html.=advanced_cms_get_field_template('address', $atts, $value);
 				break;
 			case 'button' :
-				$atts=array(
-					'id' => $args['id'],
-					'value' => $args['label']
-				);
-				
-				$html.=advanced_cms_get_field_template('button', $atts, $value);
+				$html.=advanced_cms_get_field_template('button', $args, $value);
 				break;
 			case 'checkbox':
 				if (isset($args['options']) && !empty($args['options'])) :
@@ -428,32 +423,16 @@ class advancedCMSMetaboxes {
 				endif;
 				break;
 			case 'colorpicker' :
-				$atts=array(
-					'id' => $args['id'],
-				);
-
-				$html.=advanced_cms_get_field_template('colorpicker', $atts, $value);
+				$html.=advanced_cms_get_field_template('colorpicker', $args, $value);
 				break;
 			case 'date':
-				$atts=array(
-					'id' => $args['id'],
-				);
-
-				$html.=advanced_cms_get_field_template('datepicker', $atts, $value);
+				$html.=advanced_cms_get_field_template('datepicker', $args, $value);
 				break;
 			case 'email' :
-				$atts=array(
-					'id' => $args['id'],
-				);
-
-				$html.=advanced_cms_get_field_template('email', $atts, $value);				
+				$html.=advanced_cms_get_field_template('email', $args, $value);				
 				break;
 			case 'gallery' :
-				$atts=array(
-					'id' => $args['id'],
-				);
-
-				$html.=advanced_cms_get_field_template('gallery', $atts, $value);
+				$html.=advanced_cms_get_field_template('gallery', $args, $value);
 				break;
 			case 'media':
 				$atts=array(
@@ -469,7 +448,7 @@ class advancedCMSMetaboxes {
 
 				break;				
 			case 'phone':
-				$html.='<input type="text" class="phone '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				$html.=advanced_cms_get_field_template('phone', $args, $value);				
 				break;
 			case 'radio':
 				if (isset($args['options']) && !empty($args['options'])) :
@@ -488,16 +467,16 @@ class advancedCMSMetaboxes {
 				$html.=advanced_cms_get_field_template('select', $args, $value);
 				break;
 			case 'text' :
-				$html.='<input type="text" class="'.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.htmlentities($value).'" />';
+				$html.=advanced_cms_get_field_template('text', $args, $value);	
 				break;
 			case 'textarea':
-				$html.='<textarea class="textarea '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'">'.$value.'</textarea>';
+				$html.=advanced_cms_get_field_template('textarea', $args, $value);	
 				break;
 			case 'timepicker' :
-				$html.='<input type="text" class="timepicker" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				$html.=advanced_cms_get_field_template('timepicker', $args, $value);	
 				break;
 			case 'url':
-				$html.='<input type="text" class="url validator '.$classes.'" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				$html.=advanced_cms_get_field_template('url', $args, $value);	
 				break;
 			case 'wysiwyg':
 				$settings=array(
@@ -521,7 +500,7 @@ class advancedCMSMetaboxes {
 				$html.=apply_filters('add_advanced_cms_metabox_custom_input-'.$args['id'],$args['id'],$values);
 				break;
 			default:
-				$html.='<input type="text" name="'.$args['id'].'" id="'.$args['id'].'" value="'.$value.'" />';
+				$html.=advanced_cms_get_field_template('text', $args, $value);
 		endswitch;
 
 		if ($format)
