@@ -260,9 +260,8 @@ class AdvancedCMSAdmin {
 
 					// remove empty options fields //
 					if (isset($field['options'])) :
-
 						foreach ($field['options'] as $_key => $option) :
-							if (empty($option['name']) || empty($option['value']) || $option['name']=='') :
+							if (empty($option['name']) || $option['value']=='' || $option['name']=='') :						
 								unset($field['options'][$_key]);
 							endif;
 						endforeach;
