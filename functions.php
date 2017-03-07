@@ -528,4 +528,47 @@ function advanced_cms_setup_taxonomy_args() {
 
 	return $args;
 }
+
+function advanced_cms_setup_admin_columns_args() {
+	global $advanced_cms_admin;
+
+	$default_args=array(
+		'base_url' => admin_url('tools.php?page=advanced-cms&tab=columns'),
+		'btn_text' => 'Create',
+		'name' => '',
+		'label' => '',
+		'singular_label' => '',
+		'description' => '',
+		'supports' => array(
+			'title' => 1,
+			'thumbnail' => 1,
+			'editor' => 1,
+			'revisions' => 1,
+			'page_attributes' => 0,
+			'excerpt' => 0,
+			'comments' => 0,
+		),
+		'hierarchical' => 0,
+		'id' => -1,
+		'header' => 'Add New Admin Column',
+		'icon' => 'dashicons-admin-post',
+		'error_class' => '',
+	);
+
+	// edit custom post type //
+	if (isset($_GET['slug']) && $_GET['slug']) :
+		foreach ($advanced_cms_admin->options['post_types'] as $key => $post_type) :
+			if ($post_type['name']==$_GET['slug']) :
+				$args=$post_type;
+				$args['header']='Edit Post Type';
+				$args['btn_text']='Update';
+				$args['id']=$key;
+			endif;
+		endforeach;
+	endif;
+
+	$args=advanced_cms_parse_args($args, $default_args);
+
+	return $args;
+}
 ?>

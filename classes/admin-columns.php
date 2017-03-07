@@ -17,8 +17,8 @@ class advancedCMSAdminColumns {
 	function __construct($config) {
 		$this->config=$config;
 
-		add_filter('manage_edit-'.$this->config['post_type'].'_columns',array($this,'custom_admin_columns'));
-		add_action('manage_'.$this->config['post_type'].'_posts_custom_column',array($this,'custom_colun_row'),10,2);
+		add_filter('manage_edit-'.$this->config['post_type'].'_columns', array($this, 'custom_admin_columns'));
+		add_action('manage_'.$this->config['post_type'].'_posts_custom_column', array($this, 'custom_colun_row'), 10, 2);
 	}
 
 	/**

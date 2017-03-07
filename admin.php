@@ -34,6 +34,7 @@ class AdvancedCMSAdmin {
 		$this->options['metaboxes']=get_option('advanced_cms_metaboxes', array());
 		$this->options['post_types']=get_option('advanced_cms_post_types', array());
 		$this->options['taxonomies']=get_option('advanced_cms_taxonomies', array());
+		$this->options['columns']=get_option('advanced_cms_admin_columns', array());
 	}
 
 	/**
@@ -93,6 +94,9 @@ class AdvancedCMSAdmin {
 	public function admin_notices() {
 		if (isset($_GET['edit'])) :
 			switch ($_GET['edit']) :
+				case 'columns':
+					$type='Admin Columns';
+					break;
 				case 'cpt' :
 					$type='Post Type';
 					break;
@@ -130,7 +134,8 @@ class AdvancedCMSAdmin {
 			'cms-main' => 'Main',
 			'post-types' => 'Post Types',
 			'metaboxes' => 'Metaboxes',
-			'taxonomies' => 'Taxonomies'
+			'taxonomies' => 'Taxonomies',
+			'columns' => 'Admin Columns',
 		);
 
 		if (isset( $_GET[ 'tab' ] ))
@@ -161,6 +166,13 @@ class AdvancedCMSAdmin {
 						echo advanced_cms_get_doc_template($_GET['documentation']);
 					else :
 						echo advanced_cms_get_admin_page('main');
+					endif;
+					break;
+				case 'columns':
+					if (isset($_GET['action']) && $_GET['action']=='update') :
+						echo advanced_cms_get_admin_page('single-admin-column');
+					else :
+						echo advanced_cms_get_admin_page('admin-columns');
 					endif;
 					break;
 				case 'post-types':
@@ -404,28 +416,71 @@ class AdvancedCMSAdmin {
 				$html.='<label for="post_type">Post Type</label>';
 			$html.='</th>';
 
-			$html.='<td class="post-types-cbs">';
-				$counter=0;
+			switch ($output) :
+				case 'dropdown' :
+					$selected_pt=implode('', $selected_pt);
+					$html.=$this->post_types_dropdown($post_types_arr, $selected_pt);
+					break;
+				default:
+					$html.=$this->post_types_checkbox($post_types_arr, $selected_pt);
+			endswitch;
 
-				foreach ($post_types_arr as $type) :
-					if ($counter==0) :
-						$class='first';
-					else :
-						$class='';
-					endif;
 
-					if ($selected_pt && in_array($type, (array) $selected_pt)) :
-						$checked='checked=checked';
-					else :
-						$checked=null;
-					endif;
-
-					$html.='<input type="checkbox" name="post_types[]" value="'.$type.'" '.$checked.'>'.$type.'<br />';
-
-					$counter++;
-				endforeach;
-			$html.='</td>';
 		$html.='</tr>';
+
+		return $html;
+	}
+	
+	/**
+	 * post_types_checkbox function.
+	 * 
+	 * @access protected
+	 * @param string $post_types (default: '')
+	 * @param string $selected (default: '')
+	 * @return void
+	 */
+	protected function post_types_checkbox($post_types='', $selected='') {
+		$html=null;
+		
+		$html.='<td class="post-types-cbs">';
+			$counter=0;
+
+			foreach ($post_types as $type) :
+				if ($counter==0) :
+					$class='first';
+				else :
+					$class='';
+				endif;
+
+				if ($selected && in_array($type, (array) $selected)) :
+					$checked='checked=checked';
+				else :
+					$checked=null;
+				endif;
+
+				$html.='<input type="checkbox" name="post_types[]" value="'.$type.'" '.$checked.'>'.$type.'<br />';
+
+				$counter++;
+			endforeach;
+		$html.='</td>';		
+
+		return $html;
+	}
+
+	protected function post_types_dropdown($post_types='', $selected='') {
+		$html=null;
+		
+		$html.='<td class="post-types-dropdown">';
+			$html.='<select name="post_type">';
+
+				$html.='<option value="0">Select One</option>';
+
+				foreach ($post_types as $type) :
+					$html.='<option value="'.$type.'" '.selected($selected, $type, false).'>'.$type.'</option>';
+				endforeach;
+			
+			$html.='</select>';
+		$html.='</td>';		
 
 		return $html;
 	}
