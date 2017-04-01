@@ -453,7 +453,6 @@ function advanced_cms_setup_metabox_args() {
 		'post_types' => '',
 		'edit_class_v' => '',
 		'fields' => '',
-		'title' => '',
 		'header' => 'Add New Metabox',
 	);
 

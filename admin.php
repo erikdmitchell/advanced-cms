@@ -268,7 +268,7 @@ class AdvancedCMSAdmin {
 				if (!$field['field_type']) :
 					unset($data['fields'][$key]);
 				else :
-					$data['fields'][$key]['field_id']=$advancedMetaboxes->generate_field_id($prefix, $field['field_label']); // add id
+					$data['fields'][$key]['field_id']=$advancedMetaboxes->generate_field_id($prefix, $field['field_title']); // add id
 
 					// remove empty options fields //
 					if (isset($field['options'])) :

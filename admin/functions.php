@@ -122,7 +122,7 @@ function advanced_cms_setup_metabox_row($args='') {
 		'options' => '',
 		'field_description' => '',
 		'field_type' => '',
-		'field_label' => '',
+		'field_title' => '',
 		'repeatable_checked' => '',
 		'clean_format' => '',
 	);

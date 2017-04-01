@@ -18,8 +18,23 @@ class advancedCMSMetaboxes {
 	 * constructs our function, setups our scripts and styles, attaches meta box to wp actions
 	 */
 	function __construct() {
-		$config=get_option('advanced_cms_metaboxes');
+		add_action('admin_enqueue_scripts', array($this, 'register_admin_scripts_styles'));
+		add_action('wp_enqueue_scripts', array($this, 'register_scripts_styles'));
+		add_action('save_post', array($this, 'save_custom_meta_data'));
+		add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
 
+		add_action('wp_ajax_duplicate_metabox_field', array($this, 'ajax_duplicate_metabox_field'));
+		add_action('wp_ajax_remove_duplicate_metabox_field' ,array($this, 'ajax_remove_duplicate_metabox_field'));
+		add_action('wp_ajax_advanced_cms_gallery_update', array($this, 'ajax_advanced_cms_gallery_update'));
+
+		add_filter('media_view_settings', array($this, 'media_view_settings'), 10, 2);
+
+		add_action('admin_init', array($this, 'add_metaboxes_to_global'));
+				
+		add_action('plugins_loaded', array($this, 'setup_config'));
+		
+		
+		/*
 		$this->fields=array(
 			'address' => array(
 				'repeatable' => 1,
@@ -81,11 +96,6 @@ class advancedCMSMetaboxes {
 				'options' => 1,
 				'format' => 0,
 			),
-			'text' => array(
-				'repeatable' => 1,
-				'options' => 0,
-				'format' => 0,
-			),
 			'textarea' => array(
 				'repeatable' => 1,
 				'options' => 0,
@@ -107,22 +117,15 @@ class advancedCMSMetaboxes {
 				'format' => 0,
 			)
 		);
-		$this->config=$this->setup_config($config); // set our config
+		*/
 
-		add_action('admin_enqueue_scripts', array($this, 'register_admin_scripts_styles'));
-		add_action('wp_enqueue_scripts', array($this, 'register_scripts_styles'));
-		add_action('save_post', array($this, 'save_custom_meta_data'));
-		add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
 
-		add_action('wp_ajax_duplicate_metabox_field', array($this, 'ajax_duplicate_metabox_field'));
-		add_action('wp_ajax_remove_duplicate_metabox_field' ,array($this, 'ajax_remove_duplicate_metabox_field'));
-		add_action('wp_ajax_advanced_cms_gallery_update', array($this, 'ajax_advanced_cms_gallery_update'));
-
-		add_filter('media_view_settings', array($this, 'media_view_settings'), 10, 2);
-
-		add_action('admin_init', array($this, 'add_metaboxes_to_global'));
 	}
-
+	
+	public function register_field($field) {
+		$this->fields[$field->name]=$field;
+	}
+	
 	/**
 	 * register_admin_scripts_styles function.
 	 *
@@ -257,8 +260,6 @@ class advancedCMSMetaboxes {
 		if (empty($this->config))
 			return false;
 
-		$this->add_custom_fields(); // method for adding custom metabox fields outside the cms //
-
 		foreach ($this->config as $key => $config) :
 			$config_id=$config['mb_id']; // for use in our classes function
 
@@ -290,15 +291,11 @@ class advancedCMSMetaboxes {
 	 */
 	function generate_meta_box_fields($post, $metabox) {
 		$html=null;
-		$this->fields=null; // this needs to be adjusted for legacy v 1.1.8
 		$row_counter=1;
 
 		wp_enqueue_script('advanced-cms-metabox-media-uploader', ADVANCED_CMS_URL.'/js/metabox-media-uploader.js', array('jquery'));
 
 		wp_nonce_field(plugin_basename( __FILE__ ), $this->nonce);
-
-		// because our legacy and current setups can be different, we need this function to do our post fields //
-		$this->add_post_fields($this, $metabox, $post->ID);
 
 		$html.='<div class="advanced-cms-meta-box">';
 
@@ -307,17 +304,8 @@ class advancedCMSMetaboxes {
 				if ($metabox['args']['meta_box_id']==$config['mb_id']) :
 
 					if (!empty($config['fields'])) :
-						$this->add_fields_array($config['fields'],$config['mb_id']);
-					endif;
-
-				endif;
-
-			endforeach;
-
-			// output all of our fields //
-			if (isset($this->fields)) :
-
-				// sort fields by order //
+						// order ?/? //
+				/*		
 				usort($this->fields, function ($a, $b) {
 					if (function_exists('bccomp')) :
 						return bccomp($a['order'], $b['order']);
@@ -325,27 +313,32 @@ class advancedCMSMetaboxes {
 						return strcmp($a['order'], $b['order']);
 					endif;
 				});
+				*/		
+						foreach ($config['fields'] as $field) :	
+							$classes=array('meta-row', $field['field_id'], 'type-'.$field['field_type']);
 
-				foreach ($this->fields as $field) :
-					$classes=$field['id'].' type-'.$field['type'];
+echo '<pre>';
+print_r($field);
+//print_r($this->fields[$field['field_type']]);
+echo '</pre>';	
+					
+							$html.='<div id="meta-row-'.$row_counter.'" class="'.implode(' ', $classes).'" data-input-id="'.$field['field_id'].'" data-field-type="'.$field['field_type'].'" data-field-order="'.$field['order'].'">';
+								$html.='<label for="'.$field['field_id'].'">'.$field['field_title'].'</label>';
+		
+								$html.='<div class="fields-wrap">';
+									//$html.='FIELD OUTPUT';
+									//do_action('create_field_'.$field['field_type'], $field);
+									$html.=apply_filters('create_field_'.$field['field_type'], $field);
+								$html.='</div>';
+		
+							$html.='</div>';
+							$row_counter++;																
+						endforeach;
+					endif;
 
-					if ($field['duplicate'])
-						$classes.=' clone';
+				endif;
 
-					$html.='<div id="meta-row-'.$row_counter.'" class="meta-row '.$classes.'" data-input-id="'.$field['id'].'" data-field-type="'.$field['type'].'" data-field-order="'.$field['order'].'">';
-						$html.='<label for="'.$field['id'].'">'.$field['label'].'</label>';
-
-						$html.='<div class="fields-wrap">';
-							$html.=$this->generate_field($field);
-
-							if ($field['duplicate'])
-								$html.='<button type="button" class="ajaxmb-field-btn delete">Delete Field</button>'; // add delete btn
-						$html.='</div>';
-
-					$html.='</div>';
-					$row_counter++;
-				endforeach;
-			endif;
+			endforeach;
 
 			$html.='<input type="hidden" id="advanced-cms-metabox-id" name="advanced-cms-metabox-id" value="'.$metabox['args']['meta_box_id'].'" />';
 			$html.='<input type="hidden" id="advanced-cms-config-key" name="advanced-cms-config-key" value="'.$metabox['args']['config_key'].'" />';
@@ -575,88 +568,6 @@ class advancedCMSMetaboxes {
 	}
 
 	/**
-	 * a variation of the add_fields function
-	 * this allows us to generate our fields with a passed array
-	 * added 1.1.8
-	**/
-	function add_fields_array($arr, $meta_id) {
-		$fields_counter=0;
-
-		foreach ($arr as $id => $values) :
-			$options=false;
-			$repeatable=0;
-			$order=0;
-			$description=null;
-			$format=null;
-
-			if (isset($values['options']))
-				$options=$values['options'];
-
-			if (isset($values['repeatable']))
-				$repeatable=1;
-
-			if (isset($values['order']))
-				$order=$values['order'];
-
-			if (isset($values['field_description']))
-				$description=$values['field_description'];
-
-			if (isset($values['format']['value']))
-				$format=$values['format']['value'];
-
-			$args=array(
-				'id' => $id,
-				'type' => $values['field_type'],
-				'label' => $values['field_label'],
-				'order' => $order,
-				'options' => $options,
-				'repeatable' => $repeatable,
-				'duplicate' => 0,
-				'format' => $format,
-				'field_description' => $description
-			);
-
-			$this->add_field($args, $meta_id);
-			$fields_counter++;
-		endforeach;
-	}
-
-	/**
-	 * add_post_fields function.
-	 *
-	 * @access public
-	 * @param bool $arr (default: false)
-	 * @param bool $metabox (default: false)
-	 * @param bool $post_id (default: false)
-	 * @return void
-	 */
-	function add_post_fields($arr=false,$metabox=false,$post_id=false) {
-		if (!$arr || empty($arr) || !$metabox || !$post_id)
-			return false;
-
-		foreach ($this->config as $config) :
-			if ($metabox['args']['meta_box_id']==$config['mb_id']) :
-				if (isset($config['post_fields']) && !empty($config['post_fields'])) :
-					foreach ($config['post_fields'] as $post_field) :
-						if ($post_field['post_id']==$post_id) :
-							$args=array(
-								'id' => $post_field['field_id'],
-								'type' => $post_field['field_type'],
-								'label' => $post_field['field_label'],
-								'order' => $post_field['order'],
-								'options' => 0,
-								'repeatable' => 0,
-								'duplicate' => 1
-							);
-							$this->add_field($args,$post_field['metabox_id']);
-						endif;
-					endforeach;
-				endif;
-			endif;
-		endforeach;
-	}
-
-	/**
 	 * save_custom_meta_data function.
 	 *
 	 * @access public
@@ -738,14 +649,17 @@ class advancedCMSMetaboxes {
 	/**
 	 * setup our config with defaults and adjusments
 	**/
-	function setup_config($configs=array()) {
+	function setup_config() {
+		do_action('acms_register_field');
+
+		$configs=get_option('advanced_cms_metaboxes');
+			
 		$ran_string=substr(substr("abcdefghijklmnopqrstuvwxyz",mt_rand(0,25),1).substr(md5(time()),1),0,5);
 		$default_config=array(
 			'mb_id' => 'advancedmb_'.$ran_string,
 			'title' => 'Default Meta Box',
 			'prefix' => '_advancedmb',
 			'post_types' => 'post,page',
-			'fields' => array(), // for legacy support (pre 1.1.8)
 			'post_fields' => array()
 		);
 
@@ -763,8 +677,10 @@ class advancedCMSMetaboxes {
 
 			$configs[$key]=$config;
 		endforeach;
+		
+		$this->config=$configs;
 
-		return $configs;
+		return;
 	}
 
 	/**
@@ -905,40 +821,6 @@ class advancedCMSMetaboxes {
 		}
 
 		return $attachment_id;
-	}
-
-	/**
-	 * add_custom_fields function.
-	 *
-	 * method for adding custom metabox fields outside the cms
-	 *
-	 * @access public
-	 * @return void
-	 */
-	function add_custom_fields() {
-		foreach ($this->config as $key => $config) :
-
-			$extra_fields=array();
-			$extra_fields=apply_filters('add_advanced_cms_metabox_custom_fields-'.$config['mb_id'],$extra_fields,$config['prefix']);
-			$extra_field_defaults=array(
-				'field_type' => 'custom',
-				'field_label' => 'Extra Field',
-				'options' => array(),
-				'field_description' => null,
-				'order' => 99999,
-				'field_id' => $this->generate_field_id($config['prefix'],'Extra Field')
-			);
-
-			if (empty($extra_fields))
-				continue;
-
-			foreach ($extra_fields as $extra_field) :
-				$args=array_replace_recursive($extra_field_defaults,$extra_field);
-
-				$this->config[$key]['fields'][]=$args;
-			endforeach;
-
-		endforeach;
 	}
 
 	/**
@@ -1180,4 +1062,10 @@ class advancedCMSMetaboxes {
 } // end class
 
 $advancedMetaboxes = new advancedCMSMetaboxes();
+
+function acms_register_field($field) {
+	global $advancedMetaboxes;
+
+	$advancedMetaboxes->register_field($field);	
+}
 ?>
