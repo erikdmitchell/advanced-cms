@@ -326,8 +326,6 @@ echo '</pre>';
 								$html.='<label for="'.$field['field_id'].'">'.$field['field_title'].'</label>';
 		
 								$html.='<div class="fields-wrap">';
-									//$html.='FIELD OUTPUT';
-									//do_action('create_field_'.$field['field_type'], $field);
 									$html.=apply_filters('create_field_'.$field['field_type'], $field);
 								$html.='</div>';
 		

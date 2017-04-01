@@ -113,24 +113,24 @@ function advanced_cms_admin_metabox_fields($fields='') {
  * @param string $args (default: '')
  * @return void
  */
-function advanced_cms_setup_metabox_row($args='') {
+function advanced_cms_setup_metabox_row($args='') {	
+	global $advancedMetaboxes;
+	
 	$default_args=array(
-		'field_id' => 0,
+		'id' => 0,
 		'order' => 0,
 		'classes' => '',
-		'repeatable' => false,
-		'options' => '',
-		'field_description' => '',
-		'field_type' => '',
-		'field_title' => '',
-		'repeatable_checked' => '',
-		'clean_format' => '',
+		'field_type' => 'text',
 	);
 	$args=wp_parse_args($args, $default_args);
+	$args=wp_parse_args($advancedMetaboxes->fields[$args['field_type']], $args);
 
-	// is field repeatable? //
-	if (isset($args['repeatable']) && $args['repeatable'])
-		$args['repeatable_checked']='checked="checked"';
+	// move defaults //
+	foreach ($args['defaults'] as $key => $value) :
+		$args[$key]=$value;
+	endforeach;
+	
+	unset($args['defaults']);
 
 	// setup field format if found //
 	if (isset($args['format']['value']))

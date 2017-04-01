@@ -15,8 +15,9 @@ class acmsField {
 // potential front end output
 
 	function __construct() {
-		//$this->add_action('create_field_'.$this->name, array($this, 'create_field'), 10, 1);
 		$this->add_filter('create_field_'.$this->name, array($this, 'create_field'), 10, 1);
+		$this->add_action('create_options_field_'.$this->name, array($this, 'create_options_field'), 10, 1);		
+		$this->add_action('create_field_options_'.$this->name, array($this, 'create_options'), 10, 1);
 /*
 		// register field
 		add_filter('acf/registered_fields', array($this, 'registered_fields'), 10, 1);
@@ -46,15 +47,6 @@ class acmsField {
 		$this->add_action('acf/field_group/admin_enqueue_scripts', array($this, 'field_group_admin_enqueue_scripts'), 10, 0);
 		$this->add_action('acf/field_group/admin_head', array($this, 'field_group_admin_head'), 10, 0);
 */
-/*
-	public function __construct( $id_base, $name, $widget_options = array(), $control_options = array() ) {
-	                $this->id_base = empty($id_base) ? preg_replace( '/(wp_)?widget_/', '', strtolower(get_class($this)) ) : strtolower($id_base);
-	                $this->name = $name;
-	                $this->option_name = 'widget_' . $this->id_base;
-	                $this->widget_options = wp_parse_args( $widget_options, array( 'classname' => $this->option_name, 'customize_selective_refresh' => false ) );
-	                $this->control_options = wp_parse_args( $control_options, array( 'id_base' => $this->id_base ) );
-	        }
-*/
 		
 	}
 	
@@ -72,6 +64,7 @@ class acmsField {
 		}
 	}
 
+/*
 	function registered_fields( $fields ) {
 		// defaults
 		if( !$this->category )
@@ -87,6 +80,7 @@ class acmsField {
 		// return array
 		return $fields;
 	}
+*/
 	
 	
 	/*
