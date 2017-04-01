@@ -582,10 +582,13 @@ echo '</pre>';
 		// if our current user can't edit this post, bail
 		if (!current_user_can('edit_post',$post_id)) return;
 
-		$this->add_custom_fields(); // method for adding custom metabox fields outside the cms // -- this is added here as well for proper saving
+// load_field
+// update_value
 
+/*
 		// cycle through config fields and find matches //
 		$_post_type=get_post_type($post_id);
+
 		foreach ($this->config as $config) :
 			$data=null;
 			$prefix=$config['prefix'];
@@ -642,6 +645,7 @@ echo '</pre>';
 			endif;
 
 		endforeach;
+*/
 	}
 
 	/**
