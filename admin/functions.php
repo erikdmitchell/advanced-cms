@@ -88,19 +88,14 @@ function advanced_cms_admin_metabox_fields($fields='') {
 	$field_counter=0;
 	$field_id=0;
 	$field='';
-
+//echo '<pre>';
+//echo 'advanced_cms_admin_metabox_fields<br>';
+//print_r($fields);
+//echo '</pre>';
 	if (empty($fields)) :
-		//$advanced_cms_admin->build_field_rows($field_id, $field, $field_counter);
 		echo advanced_cms_get_admin_page('metabox-field-rows', $field);
 	else :
-		foreach ($fields as $field_id => $field) :
-			if (isset($field['field_id'])) :
-				$field_id=$field['field_id'];
-			else :
-				$field_id=0;
-			endif;
-
-			//$advanced_cms_admin->build_field_rows($field_id, $field, $field_counter);
+		foreach ($fields as $field) :
 			echo advanced_cms_get_admin_page('metabox-field-rows', $field);
 
 			$field_counter++;

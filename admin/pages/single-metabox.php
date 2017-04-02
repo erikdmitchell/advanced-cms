@@ -46,7 +46,7 @@ $advanced_cms_metabox_args=advanced_cms_setup_metabox_args();
 				<tr>
 					<td colspan="2" class="add-fields sortable-div <?php echo $advanced_cms_metabox_args['edit_class_v']; ?>">
 						<h3>Metabox Fields</h3>
-
+						
 						<?php advanced_cms_admin_metabox_fields($advanced_cms_metabox_args['fields']); ?>
 					</td>
 				</tr>

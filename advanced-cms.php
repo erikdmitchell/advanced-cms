@@ -30,4 +30,5 @@ require_once(ADVANCED_CMS_PATH.'widgets/init.php'); // our widgets
 // metabox fields //
 require_once(ADVANCED_CMS_PATH.'fields/_field.php');
 require_once(ADVANCED_CMS_PATH.'fields/text.php');
+require_once(ADVANCED_CMS_PATH.'fields/datepicker/datepicker.php');
 ?>

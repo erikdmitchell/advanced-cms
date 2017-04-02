@@ -32,96 +32,16 @@ class advancedCMSMetaboxes {
 		add_action('admin_init', array($this, 'add_metaboxes_to_global'));
 				
 		add_action('plugins_loaded', array($this, 'setup_config'));
-		
-		
-		/*
-		$this->fields=array(
-			'address' => array(
-				'repeatable' => 1,
-				'options' => 0,
-				'format' => 0,
-			),
-			'button' => array(
-				'repeatable' => 0,
-				'options' => 0,
-				'format' => 0,
-			),
-			'checkbox' => array(
-				'repeatable' => 1,
-				'options' => 1,
-				'format' => 0,
-			),
-			'colorpicker' => array(
-				'repeatable' => 0,
-				'options' => 0,
-				'format' => 0,
-			),
-			'date' => array(
-				'repeatable' => 0,
-				'options' => 0,
-				'format' => 1,
-			),
-			'gallery' => array(
-				'repeatable' => 0,
-				'options' => 0,
-				'format' => 0,
-			),
-			'email' => array(
-				'repeatable' => 1,
-				'options' => 0,
-				'format' => 0,
-			),
-			'media' => array(
-				'repeatable' => 0,
-				'options' => 0,
-				'format' => 0,
-			),
-			'media_images' => array(
-				'repeatable' => 0,
-				'options' => 0,
-				'format' => 0,
-			),
-			'phone' => array(
-				'repeatable' => 1,
-				'options' => 0,
-				'format' => 0,
-			),
-			'radio' => array(
-				'repeatable' => 1,
-				'options' => 1,
-				'format' => 0,
-			),
-			'select' => array(
-				'repeatable' => 0,
-				'options' => 1,
-				'format' => 0,
-			),
-			'textarea' => array(
-				'repeatable' => 1,
-				'options' => 0,
-				'format' => 0,
-			),
-			'timepicker' => array(
-				'repeatable' => 0,
-				'options' => 0,
-				'format' => 0,
-			),
-			'url'	 => array(
-				'repeatable' => 1,
-				'options' => 0,
-				'format' => 0,
-			),
-			'wysiwyg' => array(
-				'repeatable' => 0,
-				'options' => 0,
-				'format' => 0,
-			)
-		);
-		*/
-
 
 	}
 	
+	/**
+	 * register_field function.
+	 * 
+	 * @access public
+	 * @param mixed $field
+	 * @return void
+	 */
 	public function register_field($field) {
 		$this->fields[$field->name]=$field;
 	}
@@ -136,16 +56,16 @@ class advancedCMSMetaboxes {
 	public function register_admin_scripts_styles($hook) {
 		global $post;
 
-		wp_enqueue_style('jquery-ui-style', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css', array(), '1.10.4');
+		//wp_enqueue_style('jquery-ui-style', '//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css', array(), '1.10.4');
 		wp_enqueue_style('colpick-css',  ADVANCED_CMS_URL.'/css/colpick.css');
 
 		wp_enqueue_script('jquery');
-		wp_enqueue_script('jquery-ui-datepicker');
-		wp_enqueue_script('colpick-js', ADVANCED_CMS_URL.'/js/colpick.js');
-		wp_enqueue_script('jq-timepicker', ADVANCED_CMS_URL.'/js/jquery.ui.timepicker.js');
+		//wp_enqueue_script('jquery-ui-datepicker');
+		//wp_enqueue_script('colpick-js', ADVANCED_CMS_URL.'/js/colpick.js');
+		//wp_enqueue_script('jq-timepicker', ADVANCED_CMS_URL.'/js/jquery.ui.timepicker.js');
 		wp_enqueue_script('jquery-maskedinput-script', ADVANCED_CMS_URL.'/js/jquery.maskedinput.min.js', array('jquery'), '1.3.1', true);
 		wp_enqueue_script('jq-validator-script', ADVANCED_CMS_URL.'/js/jquery.validator.js', array('jquery'), '1.0.0', true);		
-		wp_enqueue_script('duplicate-metabox-fields', ADVANCED_CMS_URL.'js/duplicate-metabox-fields.js', array('jquery'), '1.0.2', true);
+		//wp_enqueue_script('duplicate-metabox-fields', ADVANCED_CMS_URL.'js/duplicate-metabox-fields.js', array('jquery'), '1.0.2', true);
 		wp_enqueue_script('jquery-mediauploader', ADVANCED_CMS_URL.'js/jquery.mediauploader.js', array('jquery'), '0.1.0', true);
 		wp_enqueue_script('advanced-cms-js', ADVANCED_CMS_URL.'/js/functions.js', array('jquery-mediauploader'), '1.0.0', true);
 

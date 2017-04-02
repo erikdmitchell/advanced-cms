@@ -1,17 +1,17 @@
 <?php
-class acmsField_Text extends acmsField {
+class acmsField_Datepicker extends acmsField {
 
 	function __construct() {	
 		// vars
-		$this->name = 'text';
-		$this->label = __('Text', '');
+		$this->name = 'datepicker';
+		$this->label = __('Datepicker', '');
 		$this->defaults = array(
 			'default_value'	=>	'',
 			'formatting' 	=>	'html',
 			'maxlength'		=>	'',
 			'placeholder'	=>	'',
 			'description' => '',
-			'class' => 'regular-text',
+			'class' => '',
 		);
 		$this->options=0;
 		
@@ -38,11 +38,11 @@ class acmsField_Text extends acmsField {
 		$e .= ' />';
 		$e .= '</div>';
 		
-		
+		/*<input type="text" class="advanced-cms-datepicker" name="<?php echo $atts['id']; ?>" id="<?php echo $atts['id']; ?>" value="<?php echo $value; ?>" />*/
 		// return
 		return $e;
 	}
-	
+			
 	function create_options( $field ) {
 		// vars
 		$key = $field['order'];	
@@ -85,18 +85,6 @@ class acmsField_Text extends acmsField {
 			));
 			?>
 		</div>
-		
-		<div class="field-row field_option_<?php echo $this->name; ?>">
-			<label>Character Limit</label>
-		
-			<?php 
-			do_action('create_options_field_text', array(
-				'type'	=>	'number',
-				'name'	=>	'fields[' .$key.'][maxlength]',
-				'value'	=>	$field['maxlength'],
-			));
-			?>
-		</div>
 
 		<div class="field-row field_option_<?php echo $this->name; ?>">
 			<label>Description</label>
@@ -124,17 +112,10 @@ class acmsField_Text extends acmsField {
 		
 	}
 	
-	//
-	function format_value( $value, $post_id, $field ) {
-		$value = htmlspecialchars($value, ENT_QUOTES);
-		
-		return $value;
-	}
-	
 }
 
-function register_amcs_text_field() {
-	acms_register_field(new acmsField_Text());	
+function register_amcs_datepicker_field() {
+	acms_register_field(new acmsField_Datepicker());	
 }
-add_action('acms_register_field', 'register_amcs_text_field');
+add_action('acms_register_field', 'register_amcs_datepicker_field');
 ?>

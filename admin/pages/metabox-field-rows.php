@@ -44,7 +44,6 @@ $key=$field['order'];
 
 	<?php do_action('create_field_options_'.$field['field_type'], $field); ?>
 
-
 	<div class="field-row">
 		<label for="id">Field ID</label>
 
@@ -53,10 +52,10 @@ $key=$field['order'];
 		</div>
 	</div>
 
-		<div class="remove">
-			<input type="button" name="remove-field" id="remove-field-btn" class="button button-primary remove-field" data-id="fields-wrapper-<?php echo $key; ?>" value="Remove">
-		</div>
+	<div class="remove">
+		<input type="button" name="remove-field" id="remove-field-btn" class="button button-primary remove-field" data-id="fields-wrapper-<?php echo $key; ?>" value="Remove">
+	</div>
 
-		<input type="hidden" name="fields[<?php echo $field['order']; ?>][order]" class="order name-item" value="<?php echo $field['order']; ?>" />
+	<input type="hidden" name="fields[<?php echo $field['order']; ?>][order]" class="order name-item" value="<?php echo $field['order']; ?>" />
 
 </div>

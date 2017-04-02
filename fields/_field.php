@@ -73,7 +73,32 @@ class acmsField {
 		return $fields;
 	}
 	
-	
+	function create_options_field($field) {		
+		// vars
+		$html='';
+		
+		$html.='<div class="input-wrap">';
+		
+			switch ($field['type']) :
+				case 'select' :
+					$html.='<select name="'.$field['name'].'">';
+						foreach ($field['choices'] as $value => $display) :
+							$html.='<option value="'.$value.'" '.selected($field['value'], $value, false).'>'.$display.'</option>';
+						endforeach;
+					$html.='</select>';
+					break;
+				case 'textarea' :
+					$html.='<textarea name="'.$field['name'].'">'.$field['value'].'</textarea>';
+					break;
+				default:
+					$html.='<input type="'.$field['type'].'" name="'.$field['name'].'" value="'.$field['value'].'" />';
+			endswitch;
+		
+		$html.='</div>';		
+		
+		echo $html;
+	}
+		
 	/*
 	*  load_field_defaults
 	*
