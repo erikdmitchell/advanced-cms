@@ -13,12 +13,13 @@ class acmsField {
 // potential front end output
 
 	function __construct() {
+		add_filter('acms_registered_fields', array($this, 'registered_fields'), 10, 1);
+		
 		$this->add_filter('create_field_'.$this->name, array($this, 'create_field'), 10, 1);
 		$this->add_action('create_options_field_'.$this->name, array($this, 'create_options_field'), 10, 1);		
 		$this->add_action('create_field_options_'.$this->name, array($this, 'create_options'), 10, 1);
 /*
 		// register field
-		add_filter('acf/registered_fields', array($this, 'registered_fields'), 10, 1);
 		add_filter('acf/load_field_defaults/type=' . $this->name, array($this, 'load_field_defaults'), 10, 1);
 		
 		// value
@@ -49,37 +50,28 @@ class acmsField {
 	}
 	
 	function add_filter($tag, $function_to_add, $priority = 10, $accepted_args = 1) {
-		if( is_callable($function_to_add) )
-		{
+		if (is_callable($function_to_add)) {
 			add_filter($tag, $function_to_add, $priority, $accepted_args);
 		}
 	}
 	
 	function add_action($tag, $function_to_add, $priority = 10, $accepted_args = 1) {
-		if( is_callable($function_to_add) )
-		{
+		if (is_callable($function_to_add)) {
 			add_action($tag, $function_to_add, $priority, $accepted_args);
 		}
 	}
 
-	
-/*
-	function registered_fields( $fields ) {
+	function registered_fields($fields) {
 		// defaults
-		if( !$this->category )
-		{
-			$this->category = __('Basic', 'acf');
-		}
-		
-		
+		if (!$this->category)
+			$this->category = __('Basic', '');
+
 		// add to array
-		$fields[ $this->category ][ $this->name ] = $this->label;
-		
+		$fields[$this->category][$this->name]=$this->label;
 		
 		// return array
 		return $fields;
 	}
-*/
 	
 	
 	/*
