@@ -38,15 +38,6 @@ $field=advanced_cms_setup_metabox_row($attributes);
 			<div class="add-option-field"><input type="button" name="add-option-field" class="add-option-field-btn button button-primary" value="Add Option"></div>
 		</div>
 
-		<div class="format field-row options-row" data-option-type="format">
-			<div class="field-format-label">
-				<label for="format">Format</label>
-			</div>
-			<div class="field-format-check">
-				<input type="text" name="fields[<?php echo $field['order']; ?>][format][value]" class="options-item value" value="<?php echo $field['clean_format']; ?>" />
-			</div>
-		</div>
-
 	</div><!-- .field-options -->
 
 	<?php do_action('create_field_options_'.$field['field_type'], $field); ?>
