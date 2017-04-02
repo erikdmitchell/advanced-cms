@@ -1,26 +1,28 @@
 <?php
-global $advancedMetaboxes, $advanced_cms_admin, $advanced_cms_metabox_args;
+global $advancedMetaboxes, $advanced_cms_metabox_args;
 
+//$field=$attributes;
 $field=advanced_cms_setup_metabox_row($attributes);
+$key=$field['order'];	
 ?>
 
 <pre>
 	<?php print_r($field); ?>
 </pre>
 
-<div class="sortable advanced-cms-fields-wrapper <?php echo $field['classes']; ?>" id="fields-wrapper-<?php echo $field['order']; ?>">
+<div class="sortable advanced-cms-fields-wrapper <?php echo $field['classes']; ?>" id="fields-wrapper-<?php echo $key; ?>">
 	<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
 
 	<div class="field-row">
 		<label for="title">Title</label>
 
-		<input type="text" name="fields[<?php echo $field['order']; ?>][title]" class="field_type name-item field-title" value="<?php echo $field['title']; ?>" />
+		<input type="text" name="fields[<?php echo $key; ?>][title]" class="field_type name-item field-title" value="<?php echo $field['title']; ?>" />
 	</div>
 
 	<div class="field-row">
 		<label for="field_type">Field Type</label>
 
-		<select class="field_type name-item field-type" name="fields[<?php echo $field['order']; ?>][field_type]">
+		<select class="field_type name-item field-type" name="fields[<?php echo $key; ?>][field_type]">
 			<option value=0>Select One</option>
 			<?php foreach ($advancedMetaboxes->fields as $_field) : ?>
 				<option value="<?php echo $_field->name; ?>" <?php selected($field['field_type'], $_field->name); ?>><?php echo $_field->label; ?></option>
@@ -30,10 +32,10 @@ $field=advanced_cms_setup_metabox_row($attributes);
 
 	<div class="field-options">
 
-		<div class="options field-row options-row" id="field-options-<?php echo $field['order']; ?>" data-option-type="options">
+		<div class="options field-row options-row" id="field-options-<?php echo $key; ?>" data-option-type="options">
 			<label for="options">Options</label><br />
 
-			<?php advanced_cms_options_rows($field['options'], $field['order']); ?>
+			<?php advanced_cms_options_rows($field['options'], $key); ?>
 
 			<div class="add-option-field"><input type="button" name="add-option-field" class="add-option-field-btn button button-primary" value="Add Option"></div>
 		</div>
@@ -47,12 +49,12 @@ $field=advanced_cms_setup_metabox_row($attributes);
 		<label for="id">Field ID</label>
 
 		<div class="gen-field-id">
-			<input type="text" readonly="readonly" class="field_type field-id" value="<?php echo $advancedMetaboxes->generate_field_id($advanced_cms_metabox_args['prefix'], $field['field_title'], $field['id']); ?>" /> <span class="description">(use as meta key)</span>
+			<input type="text" readonly="readonly" class="field_type field-id" value="<?php echo $advancedMetaboxes->generate_field_id($advanced_cms_metabox_args['prefix'], $field['title'], $field['id']); ?>" /> <span class="description">(use as meta key)</span>
 		</div>
 	</div>
 
 		<div class="remove">
-			<input type="button" name="remove-field" id="remove-field-btn" class="button button-primary remove-field" data-id="fields-wrapper-<?php echo $field['field_id']; ?>" value="Remove">
+			<input type="button" name="remove-field" id="remove-field-btn" class="button button-primary remove-field" data-id="fields-wrapper-<?php echo $key; ?>" value="Remove">
 		</div>
 
 		<input type="hidden" name="fields[<?php echo $field['order']; ?>][order]" class="order name-item" value="<?php echo $field['order']; ?>" />

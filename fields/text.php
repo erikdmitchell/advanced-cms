@@ -11,9 +11,9 @@ class acmsField_Text extends acmsField {
 			'maxlength'		=>	'',
 			'placeholder'	=>	'',
 			'description' => '',
+			'class' => 'regular-text',
 		);
 		$this->options=0;
-		$this->format=0;
 		
 		// do not delete!
     	parent::__construct();
@@ -85,7 +85,7 @@ class acmsField_Text extends acmsField {
 	
 	function create_options( $field ) {
 		// vars
-		$key = $field['name'];	
+		$key = $field['order'];	
 		?>
 		<div class="field-row field_option_<?php echo $this->name; ?>">
 			<label for="">Default Value</label>
@@ -150,6 +150,16 @@ class acmsField_Text extends acmsField {
 			?>
 		</div>
 
+		<div class="field-row field_option_<?php echo $this->name; ?>">
+			<label for="">Classes</label>
+			<?php 
+			do_action('create_options_field_text', array(
+				'type' => 'text',
+				'name'	=>	'fields[' .$key.'][class]',
+				'value'	=>	$field['class'],
+			));
+			?>
+		</div>
 		<?php
 		
 	}

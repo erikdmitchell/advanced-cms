@@ -240,11 +240,13 @@ class advancedCMSMetaboxes {
 	 * autoloads our helper classes and functions
 	 * @param string $class_name - the name of the field/class to include
 	**/
+/*
 	private function autoload_class($filename) {
 		require_once(plugin_dir_path(__FILE__).$filename.'.php');
 
 		return new $filename;
 	}
+*/
 
 	/**
 	 * add_meta_boxes function.
@@ -315,18 +317,19 @@ class advancedCMSMetaboxes {
 				});
 				*/		
 						foreach ($config['fields'] as $field) :	
-							$classes=array('meta-row', $field['field_id'], 'type-'.$field['field_type']);
+							$classes=array('meta-row', $field['id'], 'type-'.$field['field_type']);
+							$field['value']=get_post_meta($post->ID, $field['name'], true);
 
 echo '<pre>';
 print_r($field);
-//print_r($this->fields[$field['field_type']]);
 echo '</pre>';	
 					
-							$html.='<div id="meta-row-'.$row_counter.'" class="'.implode(' ', $classes).'" data-input-id="'.$field['field_id'].'" data-field-type="'.$field['field_type'].'" data-field-order="'.$field['order'].'">';
-								$html.='<label for="'.$field['field_id'].'">'.$field['field_title'].'</label>';
+							$html.='<div id="meta-row-'.$row_counter.'" class="'.implode(' ', $classes).'" data-input-id="'.$field['id'].'" data-field-type="'.$field['field_type'].'" data-field-order="'.$field['order'].'">';
+								$html.='<label for="'.$field['id'].'">'.$field['title'].'</label>';
 		
 								$html.='<div class="fields-wrap">';
 									$html.=apply_filters('create_field_'.$field['field_type'], $field);
+									$html.='<p class="description">'.$field['description'].'</p>';
 								$html.='</div>';
 		
 							$html.='</div>';
@@ -581,7 +584,8 @@ echo '</pre>';
 
 		// if our current user can't edit this post, bail
 		if (!current_user_can('edit_post',$post_id)) return;
-
+print_r($_POST);
+exit;
 // load_field
 // update_value
 
@@ -699,71 +703,6 @@ echo '</pre>';
 		$string = preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
 		return preg_replace('/-+/', '-', $string); // Replaces multiple hyphens with single one.
-	}
-
-	/**
-	 * ajax_duplicate_metabox_field function.
-	 *
-	 * adds specific fields to indvidual posts/pages via our duplicate field button
-	 * because we use a config array, when the field is duplicated via js, it needs to be added
-	 * however, the dup fields apply to individual posts only, so we have an array for them
-	 *
-	 * @access public
-	 * @return void
-	 */
-	function ajax_duplicate_metabox_field() {
-// todo: check empty
-		$arr=array(
-			'post_id' => $_POST['post_id'],
-			'config_key' => $_POST['config_key'], // may not be needed
-			'metabox_id' => $_POST['metabox_id'],
-			'field_type' => $_POST['field_type'],
-			'field_label' => $_POST['field_label'],
-			'options' => array(),
-			'field_id' => $_POST['field_id'],
-			'order' => $_POST['order']
-		);
-
-		// check for dups and replace if found //
-		$dup_flag=false;
-		if (isset($this->config[$_POST['config_key']]['post_fields']) && !empty($this->config[$_POST['config_key']]['post_fields'])) :
-			foreach ($this->config[$_POST['config_key']]['post_fields'] as $key => $post_field) :
-				if ($post_field['field_id']==$arr['field_id']) :
-					$this->config[$_POST['config_key']]['post_fields'][$key]=$arr;
-					$dup_flag=true;
-				endif;
-			endforeach;
-		endif;
-
-		// insert if no dup found //
-		if (!$dup_flag)
-			$this->config[$_POST['config_key']]['post_fields'][]=$arr;
-
-		if (update_option('advanced_cms_metaboxes',$this->config)) :
-			echo true;
-		else :
-			echo false;
-		endif;
-
-		wp_die();
-	}
-
-	function ajax_remove_duplicate_metabox_field() {
-// todo: check empty
-		foreach ($this->config[$_POST['config_key']]['post_fields'] as $key => $post_field) :
-			if ($post_field['field_id']==$_POST['field_id'])
-				unset($this->config[$_POST['config_key']]['post_fields'][$key]);
-		endforeach;
-
-		$this->config[$_POST['config_key']]['post_fields']=array_values($this->config[$_POST['config_key']]['post_fields']);
-
-		if (update_option('advanced_cms_metaboxes',$this->config)) :
-			echo 'option updated';
-		else :
-			echo 'option failed to update (may be due to no fields being reomved)';
-		endif;
-
-		wp_die();
 	}
 
 	/**

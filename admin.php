@@ -216,14 +216,16 @@ class AdvancedCMSAdmin {
 	 * @param string $classes (default: '')
 	 * @return void
 	 */
+/*
 	function build_field_rows($field_id='', $field='', $order=0, $classes='') {
 		// prep vars to pass //
-		$field['field_id']=$field_id;
-		$field['order']=$order;
-		$field['classes']=$classes;
-
+		//$field['field_id']=$field_id;
+		//$field['order']=$order;
+		//$field['classes']=$classes;
+print_r($field);
 		echo advanced_cms_get_admin_page('metabox-field-rows', $field);
 	}
+*/
 
 	/**
 	 * update_metaboxes function.
@@ -236,11 +238,11 @@ class AdvancedCMSAdmin {
 			return false;
 
 		global $advancedMetaboxes;
-
+//echo '<pre>';
 		$data=$_POST;
 		$metaboxes=get_option('advanced_cms_metaboxes');
 		$edit_key=-1;
-
+//print_r($_POST);
 		if (!isset($data['mb_id']) || $data['mb_id']=='')
 			return false;
 
@@ -268,7 +270,8 @@ class AdvancedCMSAdmin {
 				if (!$field['field_type']) :
 					unset($data['fields'][$key]);
 				else :
-					$data['fields'][$key]['field_id']=$advancedMetaboxes->generate_field_id($prefix, $field['field_title']); // add id
+					$data['fields'][$key]['id']=$advancedMetaboxes->generate_field_id($prefix, $field['title']); // add id
+					$data['fields'][$key]['name']=$data['fields'][$key]['id'];
 
 					// remove empty options fields //
 					if (isset($field['options'])) :
@@ -288,7 +291,7 @@ class AdvancedCMSAdmin {
 
 		if (isset($data['fields']))
 			$arr['fields']=array_values($data['fields']);
-
+//print_r($arr);
 		if (!empty($metaboxes)) :
 			foreach ($metaboxes as $key => $mb) :
 				if ($mb['mb_id']==$data['mb_id']) :
@@ -311,9 +314,10 @@ class AdvancedCMSAdmin {
 		endif;
 
 		$this->options['metaboxes']=$metaboxes; // set var
-
+//print_r($metaboxes);
 		update_option('advanced_cms_metaboxes', $metaboxes);
-
+//echo '</pre>';		
+//exit;
 		$url=$this->admin_url(array(
 			'tab' => 'metaboxes',
 			'action' => 'update',

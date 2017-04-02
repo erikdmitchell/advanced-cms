@@ -90,7 +90,8 @@ function advanced_cms_admin_metabox_fields($fields='') {
 	$field='';
 
 	if (empty($fields)) :
-		$advanced_cms_admin->build_field_rows($field_id, $field, $field_counter);
+		//$advanced_cms_admin->build_field_rows($field_id, $field, $field_counter);
+		echo advanced_cms_get_admin_page('metabox-field-rows', $field);
 	else :
 		foreach ($fields as $field_id => $field) :
 			if (isset($field['field_id'])) :
@@ -99,7 +100,8 @@ function advanced_cms_admin_metabox_fields($fields='') {
 				$field_id=0;
 			endif;
 
-			$advanced_cms_admin->build_field_rows($field_id, $field, $field_counter);
+			//$advanced_cms_admin->build_field_rows($field_id, $field, $field_counter);
+			echo advanced_cms_get_admin_page('metabox-field-rows', $field);
 
 			$field_counter++;
 		endforeach;
@@ -115,26 +117,25 @@ function advanced_cms_admin_metabox_fields($fields='') {
  */
 function advanced_cms_setup_metabox_row($args='') {	
 	global $advancedMetaboxes;
-	
+
 	$default_args=array(
 		'id' => 0,
 		'order' => 0,
-		'classes' => '',
-		'field_type' => 'text',
+		//'classes' => '',
+		'type' => 'text',
 	);
 	$args=wp_parse_args($args, $default_args);
-	$args=wp_parse_args($advancedMetaboxes->fields[$args['field_type']], $args);
+	$metabox_field=$advancedMetaboxes->fields[$args['field_type']];
 
 	// move defaults //
-	foreach ($args['defaults'] as $key => $value) :
-		$args[$key]=$value;
+	foreach ($metabox_field->defaults as $key => $value) :
+		$metabox_field->$key=$value;
 	endforeach;
 	
-	unset($args['defaults']);
-
-	// setup field format if found //
-	if (isset($args['format']['value']))
-		$args['clean_format']=$args['format']['value'];
+	unset($metabox_field->defaults);
+	
+	$metabox_field=(array) $metabox_field;	
+	$args=wp_parse_args($args, $metabox_field);
 
 	return $args;
 }

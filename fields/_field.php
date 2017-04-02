@@ -5,9 +5,7 @@ class acmsField {
 		$title,
 		$category,
 		$defaults,
-		$repeatable,
-		$options,
-		$format;
+		$options;
 
 // admin options
 // metabox setup field
