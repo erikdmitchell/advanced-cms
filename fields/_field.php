@@ -16,6 +16,7 @@ class acmsField {
 		add_filter('acms_registered_fields', array($this, 'registered_fields'), 10, 1);
 		
 		$this->add_filter('create_field_'.$this->name, array($this, 'create_field'), 10, 1);
+		$this->add_filter('load_field_options_'.$this->name, array($this, 'create_options'), 10, 1);
 		$this->add_action('create_options_field_'.$this->name, array($this, 'create_options_field'), 10, 1);		
 		$this->add_action('create_field_options_'.$this->name, array($this, 'create_options'), 10, 1);
 /*

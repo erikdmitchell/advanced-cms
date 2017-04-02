@@ -44,11 +44,6 @@
 }
 
 /* mb */
-.add-fields .field-options > div {
-	display: none;
-	overflow: hidden;
-}
-
 .advanced-cms-wrap .form-row div.input {
 	padding: 0;
 }

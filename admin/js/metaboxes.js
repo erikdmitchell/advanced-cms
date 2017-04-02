@@ -53,19 +53,18 @@ jQuery(document).ready(function($) {
 	/**
 	 * display field data (options) on change
 	 */
-	$('.custom-metabox').on('change', '.add-fields .field_type', function() {		
-		var $fieldsWrapper=$(this).closest('.advanced-cms-fields-wrapper');
-		var $fieldOptions=$fieldsWrapper.find('.field-options');
-		var ddValue=$(this).val();
-		var mbOptions=metaboxData.fields[ddValue];
-
-		$fieldOptions.find('.options-row').each(function() {
-			if (mbOptions[$(this).data('option-type')]) {
-				$fieldOptions.show();
-				$(this).show();
-			} else {
-				$(this).hide();	
-			}	
+	$('.custom-metabox').on('change', '.add-fields .field_type', function(e) {	
+		e.preventDefault();
+		
+		var $el=$(this).parents('.advanced-cms-fields-wrapper');
+		var data={
+			'action' : 'metabox_change_field_type',
+			'field' : $(this).val()
+		};
+	
+		$.post(ajaxurl, data, function(response) {
+			$el.find('.field-options').html(''); // clear out options
+			$el.find('.field-options').html(response); // add new options	
 		});
 	});
 
@@ -73,6 +72,7 @@ jQuery(document).ready(function($) {
 	 * adds a new field to our metabox
 	 */
 	$('#add-field-btn').on('click', function() {
+console.log('add new field to mb');		
 		$(this).duplicateMetaboxField();
 	});
 

@@ -10,7 +10,7 @@ $key=$field['order'];
 	<?php print_r($field); ?>
 </pre>
 
-<div class="sortable advanced-cms-fields-wrapper <?php echo $field['classes']; ?>" id="fields-wrapper-<?php echo $key; ?>">
+<div class="sortable advanced-cms-fields-wrapper" id="fields-wrapper-<?php echo $key; ?>">
 	<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
 
 	<div class="field-row">
@@ -31,18 +31,8 @@ $key=$field['order'];
 	</div>
 
 	<div class="field-options">
-
-		<div class="options field-row options-row" id="field-options-<?php echo $key; ?>" data-option-type="options">
-			<label for="options">Options</label><br />
-
-			<?php advanced_cms_options_rows($field['options'], $key); ?>
-
-			<div class="add-option-field"><input type="button" name="add-option-field" class="add-option-field-btn button button-primary" value="Add Option"></div>
-		</div>
-
-	</div><!-- .field-options -->
-
-	<?php do_action('create_field_options_'.$field['field_type'], $field); ?>
+		<?php do_action('create_field_options_'.$field['field_type'], $field); ?>
+	</div>
 
 	<div class="field-row">
 		<label for="id">Field ID</label>
