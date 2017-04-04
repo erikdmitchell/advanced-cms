@@ -238,7 +238,7 @@ print_r($field);
 			return false;
 
 		global $advancedMetaboxes;
-//echo '<pre>';
+echo '<pre>';
 		$data=$_POST;
 		$metaboxes=get_option('advanced_cms_metaboxes');
 		$edit_key=-1;
@@ -266,25 +266,12 @@ print_r($field);
 		// clean fields, if any //
 		if (isset($data['fields'])) :
 			foreach ($data['fields'] as $key => $field) :
-
+print_r($field);
 				if (!$field['field_type']) :
 					unset($data['fields'][$key]);
 				else :
 					$data['fields'][$key]['id']=$advancedMetaboxes->generate_field_id($prefix, $field['title']); // add id
 					$data['fields'][$key]['name']=$data['fields'][$key]['id'];
-
-					// remove empty options fields //
-					if (isset($field['options'])) :
-						foreach ($field['options'] as $_key => $option) :
-							if (empty($option['name']) || $option['value']=='' || $option['name']=='') :						
-								unset($field['options'][$_key]);
-							endif;
-						endforeach;
-
-						$data['fields'][$key]['options']=$field['options'];
-						$data['fields'][$key]['options']=array_values($data['fields'][$key]['options']);
-					endif;
-
 				endif;
 			endforeach;
 		endif;
@@ -316,8 +303,8 @@ print_r($field);
 		$this->options['metaboxes']=$metaboxes; // set var
 //print_r($metaboxes);
 		update_option('advanced_cms_metaboxes', $metaboxes);
-//echo '</pre>';		
-//exit;
+echo '</pre>';		
+exit;
 		$url=$this->admin_url(array(
 			'tab' => 'metaboxes',
 			'action' => 'update',

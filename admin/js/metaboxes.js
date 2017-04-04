@@ -67,8 +67,7 @@ jQuery(document).ready(function($) {
 	});
 
 	// remove a metabox field //
-	$('.button.remove-field').live('click',function(e) {
-console.log('remove mb field');		
+	$('.button.remove-field').live('click',function(e) {		
 		var elemID=$(this).data('id');
 		
 		$('#'+elemID).remove();
