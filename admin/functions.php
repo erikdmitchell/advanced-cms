@@ -76,34 +76,6 @@ function get_advanced_cms_admin_tab() {
 }
 
 /**
- * advanced_cms_admin_metabox_fields function.
- *
- * @access public
- * @param string $fields (default: '')
- * @return void
- */
-function advanced_cms_admin_metabox_fields($fields='') {
-	global $advanced_cms_admin;
-
-	$field_counter=0;
-	$field_id=0;
-	$field='';
-//echo '<pre>';
-//echo 'advanced_cms_admin_metabox_fields<br>';
-//print_r($fields);
-//echo '</pre>';
-	if (empty($fields)) :
-		echo advanced_cms_get_admin_page('metabox-field-rows', $field);
-	else :
-		foreach ($fields as $field) :
-			echo advanced_cms_get_admin_page('metabox-field-rows', $field);
-
-			$field_counter++;
-		endforeach;
-	endif;
-}
-
-/**
  * advanced_cms_setup_metabox_row function.
  *
  * @access public
@@ -112,26 +84,31 @@ function advanced_cms_admin_metabox_fields($fields='') {
  */
 function advanced_cms_setup_metabox_row($args='') {	
 	global $advancedMetaboxes;
+	echo 'a';
+echo '<pre>';
+print_r($advancedMetaboxes->fields);
 
 	$default_args=array(
 		'id' => 0,
 		'order' => 0,
 		//'classes' => '',
-		'type' => 'text',
+		//'type' => 'text',
 	);
 	$args=wp_parse_args($args, $default_args);
 	$metabox_field=$advancedMetaboxes->fields[$args['field_type']];
-
+//print_r($metabox_field);
 	// move defaults //
 	foreach ($metabox_field->defaults as $key => $value) :
 		$metabox_field->$key=$value;
 	endforeach;
 	
-	unset($metabox_field->defaults);
+	//unset($metabox_field->defaults);
 	
 	$metabox_field=(array) $metabox_field;	
+//print_r($metabox_field);
 	$args=wp_parse_args($args, $metabox_field);
-
+print_r($args);	
+echo '</pre>';
 	return $args;
 }
 

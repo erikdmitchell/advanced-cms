@@ -43,7 +43,7 @@ class acmsField_Text extends acmsField {
 		return $e;
 	}
 	
-	function create_options( $field ) {
+	function create_options($field) {
 		// vars
 		$key = $field['order'];	
 		?>
@@ -125,7 +125,7 @@ class acmsField_Text extends acmsField {
 	}
 	
 	//
-	function format_value( $value, $post_id, $field ) {
+	function format_value($value, $post_id, $field) {
 		$value = htmlspecialchars($value, ENT_QUOTES);
 		
 		return $value;
