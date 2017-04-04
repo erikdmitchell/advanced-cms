@@ -238,7 +238,7 @@ print_r($field);
 			return false;
 
 		global $advancedMetaboxes;
-echo '<pre>';
+//echo '<pre>';
 		$data=$_POST;
 		$metaboxes=get_option('advanced_cms_metaboxes');
 		$edit_key=-1;
@@ -266,8 +266,8 @@ echo '<pre>';
 		// clean fields, if any //
 		if (isset($data['fields'])) :
 			foreach ($data['fields'] as $key => $field) :
-print_r($field);
-				if (!$field['field_type']) :
+//print_r($field);
+				if (empty($field['field_type']) || empty(trim($field['title']))) :
 					unset($data['fields'][$key]);
 				else :
 					$data['fields'][$key]['id']=$advancedMetaboxes->generate_field_id($prefix, $field['title']); // add id
@@ -303,8 +303,8 @@ print_r($field);
 		$this->options['metaboxes']=$metaboxes; // set var
 //print_r($metaboxes);
 		update_option('advanced_cms_metaboxes', $metaboxes);
-echo '</pre>';		
-exit;
+//echo '</pre>';		
+//exit;
 		$url=$this->admin_url(array(
 			'tab' => 'metaboxes',
 			'action' => 'update',
