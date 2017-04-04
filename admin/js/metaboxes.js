@@ -38,24 +38,12 @@ jQuery(document).ready(function($) {
 		});
 	});
 
-	// display field data on load CHECK //
-	$('.advanced-cms-fields-wrapper').each(function() {
-		var ddValue=$(this).find('.field-type').val();
-		var fieldData=metaboxData.fields[ddValue];
-
-		if (ddValue==0) {
-			return false;
-		}
-
-		displayFieldOptions($(this), fieldData);
-	});
-
 	/**
 	 * display field data (options) on change
 	 */
 	$('.custom-metabox').on('change', '.add-fields .field_type', function(e) {	
 		e.preventDefault();
-console.log('foo');		
+		
 		var elID=$(this).parents('.advanced-cms-fields-wrapper').attr('id');
 		var data={
 			'action' : 'metabox_change_field_type',
@@ -63,7 +51,7 @@ console.log('foo');
 		};
 	
 		$.post(ajaxurl, data, function(response) {
-console.log(response);			
+			
 			$('#' + elID).find('.field-options').html(''); // clear out options
 			$('#' + elID).find('.field-options').html(response); // add new options	
 		});
