@@ -14,7 +14,7 @@ jQuery(document).ready(function($) {
 	});
 
 	/**
-	 * delete link click
+	 * delete metabox link click
 	 */
 	$('.advanced-cms-metaboxes .metaboxes-list td a .dashicons-trash').on('click',function(e) {
 		e.preventDefault();
@@ -38,7 +38,7 @@ jQuery(document).ready(function($) {
 		});
 	});
 
-	// display field data on load //
+	// display field data on load CHECK //
 	$('.advanced-cms-fields-wrapper').each(function() {
 		var ddValue=$(this).find('.field-type').val();
 		var fieldData=metaboxData.fields[ddValue];
@@ -55,34 +55,38 @@ jQuery(document).ready(function($) {
 	 */
 	$('.custom-metabox').on('change', '.add-fields .field_type', function(e) {	
 		e.preventDefault();
-		
-		var $el=$(this).parents('.advanced-cms-fields-wrapper');
+console.log('foo');		
+		var elID=$(this).parents('.advanced-cms-fields-wrapper').attr('id');
 		var data={
 			'action' : 'metabox_change_field_type',
 			'field' : $(this).val()
 		};
 	
 		$.post(ajaxurl, data, function(response) {
-			$el.find('.field-options').html(''); // clear out options
-			$el.find('.field-options').html(response); // add new options	
+console.log(response);			
+			$('#' + elID).find('.field-options').html(''); // clear out options
+			$('#' + elID).find('.field-options').html(response); // add new options	
 		});
 	});
 
 	/**
 	 * adds a new field to our metabox
 	 */
-	$('#add-field-btn').on('click', function() {
-console.log('add new field to mb');		
+	$('#add-field-btn').on('click', function(e) {	
+		e.preventDefault();
+		
 		$(this).duplicateMetaboxField();
 	});
 
 	// remove a metabox field //
 	$('.button.remove-field').live('click',function(e) {
+console.log('remove mb field');		
 		var elemID=$(this).data('id');
+		
 		$('#'+elemID).remove();
 	});
 
-	// adds a new option field to our metabox element //
+	// adds a new option field to our metabox element TEST //
 	$('.add-option-field-btn').on('click', function() {
 		var wrapperID=$(this).parent().parent().attr('id');
 		var $lastElement=$('#'+wrapperID+' .option-row:last');
@@ -214,9 +218,7 @@ jQuery(function($) {
 		});
 
 		// hides any custom fields in our item cloned from //
-		$('#advanced-cms-fields-wrapper-'+newID).find('.field-options').each(function() {
-			$(this).hide();
-		});
+		$('#advanced-cms-fields-wrapper-'+newID).find('.field-options').html('');
 
 		var lastFieldOrder=parseInt($('#'+lastFieldID+' .order').val()); // last field order (as int) //
 
