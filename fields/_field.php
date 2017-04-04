@@ -28,6 +28,7 @@ class acmsField {
 		}
 	}
 
+/*
 	function registered_fields($fields) {
 		// defaults
 		if (!$this->category)
@@ -39,6 +40,7 @@ class acmsField {
 		// return array
 		return $fields;
 	}
+*/
 	
 	function create_options_field($field) {		
 		// vars

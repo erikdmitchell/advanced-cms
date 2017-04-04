@@ -13,18 +13,6 @@ jQuery(document).ready(function($) {
 
 	//$('.timepicker').timepicker();
 
-	/**
-	 * date picker
-	 */
-/*
-	$('.advanced-cms-datepicker').datepicker({
-		dateFormat : advancedCMSjs.datepicker.format,
-		showButtonPanel: true,
-		changeMonth: true,
-		changeYear: true
-	});
-*/
-
 	// format and set our date properly //
 /*
 	if (advancedCMSjs.datepicker.value!='') {

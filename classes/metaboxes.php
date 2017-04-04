@@ -249,7 +249,9 @@ echo '</pre>';
 		
 								$html.='<div class="fields-wrap">';
 									$html.=apply_filters('create_field_'.$field['field_type'], $field);
-									$html.='<p class="description">'.$field['description'].'</p>';
+									
+									if (isset($field['description']))
+										$html.='<p class="description">'.$field['description'].'</p>';
 								$html.='</div>';
 		
 							$html.='</div>';

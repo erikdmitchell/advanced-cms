@@ -7,45 +7,65 @@ class acmsField_Datepicker extends acmsField {
 		$this->label = __('Datepicker', '');
 		$this->defaults = array(
 			'default_value'	=>	'',
-			'formatting' 	=>	'html',
-			'maxlength'		=>	'',
+			'formatting' 	=>	'yy-mm-dd',
 			'placeholder'	=>	'',
 			'description' => '',
-			'class' => '',
 		);
 		$this->options=0;
 		
 		// do not delete!
     	parent::__construct();
+    	
+    	add_action('admin_enqueue_scripts', array($this, 'admin_scripts_styles'));
+	}
+	
+	public function admin_scripts_styles() {
+		wp_register_script('acms-datepicker-script', ADVANCED_CMS_URL.'fields/datepicker/datepicker.js', array('jquery-ui-datepicker'), '0.1.0', true);
+		
+		wp_register_style('acms-datepicker-style', ADVANCED_CMS_URL.'fields/datepicker/datepicker.css', '', '0.1.0');
 	}
 	
 	function create_field($field) {
-		// vars
-		$o=array( 'class', 'name', 'id', 'value', 'placeholder', 'maxlength');
-		$e = '';
+		// merge defaults here //
+	
+		if (!isset($field['formatting']))
+			$field['formatting']=$this->defaults['formatting'];
 		
-		// maxlength
-		if ($field['maxlength'] !== "" )
-			$o[] = 'maxlength';
+		wp_localize_script('acms-datepicker-script', 'acmsDatepicker', array(
+			'format' => $field['formatting']
+		));
 		
-		$e .= '<div class="input-wrap">';
-		$e .= '<input type="text"';
+		wp_enqueue_script('jquery-ui-datepicker');
+		wp_enqueue_script('acms-datepicker-script');
 		
-		foreach( $o as $k ) {
-			$e .= ' ' . $k . '="' . esc_attr( $field[ $k ] ) . '"';	
-		}
+		wp_enqueue_style('acms-datepicker-style');
 		
-		$e .= ' />';
-		$e .= '</div>';
+		$opts=array('name', 'id', 'value', 'placeholder');
+		$html='';
 		
-		/*<input type="text" class="advanced-cms-datepicker" name="<?php echo $atts['id']; ?>" id="<?php echo $atts['id']; ?>" value="<?php echo $value; ?>" />*/
-		// return
-		return $e;
+		$html.= '<div class="input-wrap">';
+		$html.= '<input type="text" class="acms-datepicker"';
+		
+		foreach($opts as $key) :
+			if (isset($field[$key])) :
+				$value=esc_attr($field[$key]);
+			else :
+				$value=$this->defaults[$key];
+			endif;
+			
+			$html.=' '.$key.'="'.$value.'"';	
+		endforeach;
+		
+		$html.= ' />';
+		$html.= '</div>';
+
+		return $html;
 	}
 			
 	function create_options( $field ) {
 		// vars
 		$key = $field['order'];	
+		$field=$this->parse_defaults($field);
 		?>
 		<div class="field-row field_option_<?php echo $this->name; ?>">
 			<label for="">Default Value</label>
@@ -79,8 +99,7 @@ class acmsField_Datepicker extends acmsField {
 				'name' => 'fields[' .$key.'][formatting]',
 				'value'	=> $field['formatting'],
 				'choices' => array(
-					'none'	=>	__("No formatting",'acf'),
-					'html'	=>	__("Convert HTML into tags",'acf')
+					'yy-mm-dd'	=>	__('yy-mm-dd')
 				)
 			));
 			?>
