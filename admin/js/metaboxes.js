@@ -41,9 +41,9 @@ jQuery(document).ready(function($) {
 	/**
 	 * display field data (options) on change
 	 */
-	$('.custom-metabox').on('change', '.add-fields .field_type', function(e) {	
+	$('.custom-metabox').on('change', '.add-fields .field-type', function(e) {	
 		e.preventDefault();
-		
+	
 		var elID=$(this).parents('.advanced-cms-fields-wrapper').attr('id');
 		var data={
 			'action' : 'metabox_change_field_type',
@@ -105,6 +105,7 @@ console.log('remove mb field');
 /**
  * our sortable function for our metabox fields
  */
+ /*
 jQuery(function($) {
 	$( ".sortable-div" ).sortable({
 		start: function (event,ui) {
@@ -134,6 +135,7 @@ jQuery(function($) {
   $( ".sortable" ).disableSelection();
 
 });
+*/
 
 /**
  * add new metabox field
