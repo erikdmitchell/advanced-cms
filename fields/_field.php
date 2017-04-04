@@ -65,6 +65,12 @@ class acmsField {
 		
 		echo $html;
 	}
+	
+	protected function parse_defaults($field) {	
+		$field=wp_parse_args($field, (array) $this->defaults);
+		
+		return $field;
+	}
 		
 	/*
 	*  load_field_defaults

@@ -51,7 +51,7 @@ $advanced_cms_metabox_args=advanced_cms_setup_metabox_args();
 							<?php $key=$field['order']; ?>
 
 <pre>
-	<?php print_r($field); ?>
+	<?php //print_r($field); ?>
 </pre>
 							
 							<div class="sortable advanced-cms-fields-wrapper" id="fields-wrapper-<?php echo $key; ?>">

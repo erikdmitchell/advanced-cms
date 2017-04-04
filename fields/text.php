@@ -45,7 +45,8 @@ class acmsField_Text extends acmsField {
 	
 	function create_options($field) {
 		// vars
-		$key = $field['order'];	
+		$key = $field['order'];
+		$field=$this->parse_defaults($field);			
 		?>
 		<div class="field-row field_option_<?php echo $this->name; ?>">
 			<label for="">Default Value</label>
