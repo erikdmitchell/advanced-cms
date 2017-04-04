@@ -115,26 +115,6 @@ console.log('remove mb field');
 });
 
 /**
- * displayFieldOptions function.
- *
- * @access public
- * @param mixed $wrapper
- * @param mixed data
- * @return void
- */
-function displayFieldOptions($wrapper, data) {	
-	$wrapper.find('.field-options .field-row').each(function(e) {
-		var classes=jQuery(this).attr('class').split(/\s+/);
-
-		for (var i in classes) {
-			if (classes[i]!='field-row' && typeof data[classes[i]] !== 'undefined' && data[classes[i]]==1) {
-				$wrapper.find('.' + classes[i]).show();
-			}
-		}
-	});
-}
-
-/**
  * our sortable function for our metabox fields
  */
 jQuery(function($) {
