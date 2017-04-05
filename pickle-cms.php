@@ -1,10 +1,13 @@
 <?php
 /*
 Plugin Name: Pickle CMS
+Plugin URI:
 Description: Adds customized functionality to the site to make WordPress super awesome.
 Version: 0.1.0
 Author: Erik Mitchell
 Author URI: http://erikmitchell.net
+Text Domain: picklecms
+Domain PAth: /languages
 License: GPL2
 */
 
