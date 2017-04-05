@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Advanced CMS
+Plugin Name: Pickle CMS
 Description: Adds customized functionality to the site to make WordPress super awesome.
 Version: 0.1.0
 Author: Erik Mitchell
