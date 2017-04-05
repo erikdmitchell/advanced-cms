@@ -1,14 +1,14 @@
 <?php
-global $advanced_cms_admin, $advanced_cms_metabox_args, $advancedMetaboxes;
+global $pickle_cms_admin, $pickle_cms_metabox_args, $pickleMetaboxes;
 
-$advanced_cms_metabox_args=advanced_cms_setup_metabox_args();
+$pickle_cms_metabox_args=pickle_cms_setup_metabox_args();
 ?>
 
-<h3><?php echo $advanced_cms_metabox_args['header']; ?> <a href="<?php advanced_cms_admin_link(array('tab' => 'metaboxes', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h3>
+<h3><?php echo $pickle_cms_metabox_args['header']; ?> <a href="<?php pickle_cms_admin_link(array('tab' => 'metaboxes', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h3>
 
-<div class="advanced-cms-admin-page single-metabox-page">
+<div class="pickle-cms-admin-page single-metabox-page">
 	<form class="custom-metabox" action="" method="post">
-		<?php wp_nonce_field('update_metaboxes', 'advanced_cms_admin'); ?>
+		<?php wp_nonce_field('update_metaboxes', 'pickle_cms_admin'); ?>
 
 		<table class="form-table">
 			<tbody>
@@ -18,8 +18,8 @@ $advanced_cms_metabox_args=advanced_cms_setup_metabox_args();
 						<label for="mb_id" class="required ">Metabox ID</label>
 					</th>
 					<td>
-						<input type="text" name="mb_id" id="mb_id" class="required" value="<?php echo $advanced_cms_metabox_args['mb_id']; ?>" /><span class="example">(e.g. movie_details)</span>
-						<div id="advanced-cms-name-error" class=""></div>
+						<input type="text" name="mb_id" id="mb_id" class="required" value="<?php echo $pickle_cms_metabox_args['mb_id']; ?>" /><span class="example">(e.g. movie_details)</span>
+						<div id="pickle-cms-name-error" class=""></div>
 					</td>
 				</tr>
 
@@ -28,7 +28,7 @@ $advanced_cms_metabox_args=advanced_cms_setup_metabox_args();
 						<label for="title" class="required">Title</label>
 					</th>
 					<td>
-						<input type="text" name="title" id="title" class="required" value="<?php echo $advanced_cms_metabox_args['title']; ?>" /><span class="example">(e.g. Movie Details)</span>
+						<input type="text" name="title" id="title" class="required" value="<?php echo $pickle_cms_metabox_args['title']; ?>" /><span class="example">(e.g. Movie Details)</span>
 					</td>
 				</tr>
 
@@ -37,24 +37,24 @@ $advanced_cms_metabox_args=advanced_cms_setup_metabox_args();
 						<label for="prefix" class="">Prefix</label>
 					</th>
 					<td>
-						<input type="text" name="prefix" id="prefix" class="" value="<?php echo $advanced_cms_metabox_args['prefix']; ?>" /><span class="example">(e.g. movies)</span>
+						<input type="text" name="prefix" id="prefix" class="" value="<?php echo $pickle_cms_metabox_args['prefix']; ?>" /><span class="example">(e.g. movies)</span>
 					</td>
 				</tr>
 
-				<?php echo $advanced_cms_admin->get_post_types_list($advanced_cms_metabox_args['post_types']); ?>
+				<?php echo $pickle_cms_admin->get_post_types_list($pickle_cms_metabox_args['post_types']); ?>
 
 				<tr>
-					<td colspan="2" class="add-fields sortable-div <?php echo $advanced_cms_metabox_args['edit_class_v']; ?>">
+					<td colspan="2" class="add-fields sortable-div <?php echo $pickle_cms_metabox_args['edit_class_v']; ?>">
 						<h3>Metabox Fields</h3>
 						
-						<?php foreach ($advanced_cms_metabox_args['fields'] as $field): ?>
+						<?php foreach ($pickle_cms_metabox_args['fields'] as $field): ?>
 							<?php $key=$field['order']; ?>
 
 <pre>
 	<?php //print_r($field); ?>
 </pre>
 							
-							<div class="sortable advanced-cms-fields-wrapper" id="fields-wrapper-<?php echo $key; ?>">
+							<div class="sortable pickle-cms-fields-wrapper" id="fields-wrapper-<?php echo $key; ?>">
 								<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>
 							
 								<div class="field-row">
@@ -68,7 +68,7 @@ $advanced_cms_metabox_args=advanced_cms_setup_metabox_args();
 							
 									<select class="field_type name-item field-type" name="fields[<?php echo $key; ?>][field_type]">
 										<option value=0>Select One</option>
-										<?php foreach ($advancedMetaboxes->fields as $_field) : ?>
+										<?php foreach ($pickleMetaboxes->fields as $_field) : ?>
 											<option value="<?php echo $_field->name; ?>" <?php selected($field['field_type'], $_field->name); ?>><?php echo $_field->label; ?></option>
 										<?php endforeach; ?>
 									</select>
@@ -83,7 +83,7 @@ $advanced_cms_metabox_args=advanced_cms_setup_metabox_args();
 							
 									<div class="gen-field-id">
 										I would like this to be stored
-										<input type="text" readonly="readonly" class="field_type field-id" value="<?php echo $advancedMetaboxes->generate_field_id($advanced_cms_metabox_args['prefix'], $field['title'], $field['id']); ?>" /> <span class="description">(use as meta key)</span>
+										<input type="text" readonly="readonly" class="field_type field-id" value="<?php echo $pickleMetaboxes->generate_field_id($pickle_cms_metabox_args['prefix'], $field['title'], $field['id']); ?>" /> <span class="description">(use as meta key)</span>
 									</div>
 								</div>
 							
@@ -101,7 +101,7 @@ $advanced_cms_metabox_args=advanced_cms_setup_metabox_args();
 		</table>
 
 		<p class="submit">
-			<input type="submit" name="update-metabox" id="submit" class="button button-primary" value="<?php echo $advanced_cms_metabox_args['btn_text']; ?>">
+			<input type="submit" name="update-metabox" id="submit" class="button button-primary" value="<?php echo $pickle_cms_metabox_args['btn_text']; ?>">
 			<input type="button" name="add-field" id="add-field-btn" class="button button-primary add-field" value="Add Field">
 		</p>
 	</form>

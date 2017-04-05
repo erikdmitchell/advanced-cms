@@ -1,6 +1,6 @@
 <?php
-function acms_change_field_type() {
-	global $advancedMetaboxes;
+function pickle_cms_change_field_type() {
+	global $pickleMetaboxes;
 	
 	$options=apply_filters('load_field_options_'.$_POST['field'], array());
 
@@ -8,5 +8,5 @@ function acms_change_field_type() {
 
 	wp_die();
 }
-add_action('wp_ajax_metabox_change_field_type', 'acms_change_field_type');
+add_action('wp_ajax_metabox_change_field_type', 'pickle_cms_change_field_type');
 ?>

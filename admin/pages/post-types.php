@@ -1,7 +1,5 @@
 <?php global $pickle_cms_admin; ?>
-<pre>
-	<?php //print_r($pickle_cms_admin); ?>
-</pre>
+
 <div class="pickle-cms-admin-page post-types-page">
 
 	<h2>Post Types <a href="<?php pickle_cms_admin_link(array('tab' => 'post-types', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h2>

@@ -1,20 +1,20 @@
 <?php 
-global $advanced_cms_admin;	
+global $pickle_cms_admin;	
 
-$args=advanced_cms_setup_admin_columns_args(); 
+$args=pickle_cms_setup_admin_columns_args(); 
 ?>
 
-<h3><?php echo $args['header']; ?> <a href="<?php advanced_cms_admin_link(array('tab' => 'columns', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h3>
+<h3><?php echo $args['header']; ?> <a href="<?php pickle_cms_admin_link(array('tab' => 'columns', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h3>
 
-<div class="advanced-cms-admin-page single-admin-column">
+<div class="pickle-cms-admin-page single-admin-column">
 
 	<form class="custom-post-types" method="post">
-		<?php wp_nonce_field('update_columns', 'advanced_cms_admin'); ?>
+		<?php wp_nonce_field('update_columns', 'pickle_cms_admin'); ?>
 
 		<table class="form-table">
 			<tbody>
 
-				<?php echo $advanced_cms_admin->get_post_types_list('', 'dropdown'); ?>
+				<?php echo $pickle_cms_admin->get_post_types_list('', 'dropdown'); ?>
 
 				<tr>
 					<th scope="row">
