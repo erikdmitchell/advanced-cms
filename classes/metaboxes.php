@@ -523,7 +523,7 @@ echo '</pre>';
 	 * setup our config with defaults and adjusments
 	**/
 	function setup_config() {
-		do_action('acms_register_field');
+		do_action('picklecms_register_field');
 
 		$configs=get_option('pickle_cms_metaboxes');
 			
@@ -891,7 +891,7 @@ echo '</pre>';
 
 $pickleMetaboxes = new pickleCMSMetaboxes();
 
-function acms_register_field($field) {
+function picklecms_register_field($field) {
 	global $pickleMetaboxes;
 
 	$pickleMetaboxes->register_field($field);	

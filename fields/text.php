@@ -1,7 +1,7 @@
-<?php
+<?php	
 class picklecmsField_Text extends picklecmsField {
 
-	function __construct() {	
+	function __construct() {			
 		// vars
 		$this->name = 'text';
 		$this->label = __('Text', '');
@@ -43,7 +43,7 @@ class picklecmsField_Text extends picklecmsField {
 		return $e;
 	}
 	
-	function create_options($field) {
+	function create_options($field) {		
 		// vars
 		$key = $field['order'];
 		$field=$this->parse_defaults($field);			

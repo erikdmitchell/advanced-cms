@@ -1,7 +1,7 @@
 jQuery(document).ready(function($) {
 
-	$('.acms-datepicker').datepicker({
-		dateFormat : acmsDatepicker.format,
+	$('.picklecms-datepicker').datepicker({
+		dateFormat : picklecmsDatepicker.format,
 		showButtonPanel: true,
 		changeMonth: true,
 		changeYear: true
