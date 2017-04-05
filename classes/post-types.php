@@ -1,5 +1,5 @@
 <?php
-class advancedCMSPostTypes {
+class pickleCMSPostTypes {
 
 	protected $post_types=array();
 
@@ -102,5 +102,5 @@ class advancedCMSPostTypes {
 
 }
 
-new advancedCMSPostTypes();
+new pickleCMSPostTypes();
 ?>

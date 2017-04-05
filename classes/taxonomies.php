@@ -1,5 +1,5 @@
 <?php
-class advancedCMSTaxonomies {
+class pickleCMSTaxonomies {
 
 	protected $taxonomies=array();
 
@@ -10,7 +10,7 @@ class advancedCMSTaxonomies {
 	 * @return void
 	 */
 	function __construct() {
-		$this->taxonomies=get_option('advanced_cms_taxonomies');
+		$this->taxonomies=get_option('pickle_cms_taxonomies');
 
 		add_action('init', array($this, 'create_taxonomies'));
 	}
@@ -35,5 +35,5 @@ class advancedCMSTaxonomies {
 
 }
 
-new advancedCMSTaxonomies();
+new pickleCMSTaxonomies();
 ?>

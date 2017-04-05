@@ -51,7 +51,7 @@ $pickle_cms_metabox_args=pickle_cms_setup_metabox_args();
 							<?php $key=$field['order']; ?>
 
 <pre>
-	<?php //print_r($field); ?>
+	<?php print_r($field); ?>
 </pre>
 							
 							<div class="sortable pickle-cms-fields-wrapper" id="fields-wrapper-<?php echo $key; ?>">

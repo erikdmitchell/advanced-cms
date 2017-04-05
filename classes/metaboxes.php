@@ -1,13 +1,13 @@
 <?php
-global $advancedMetaboxes;
+global $pickleMetaboxes;
 
 /**
- * advancedCMSMetaboxes class.
+ * pickleCMSMetaboxes class.
  */
-class advancedCMSMetaboxes {
+class pickleCMSMetaboxes {
 
 	private $nonce = 'wp_upm_media_nonce'; // Represents the nonce value used to save the post media //
-	private $option_name='advanced_meta_box_duped_boxes';
+	private $option_name='pickle_meta_box_duped_boxes';
 
 	protected $options=array();
 	protected $post_types=array();
@@ -25,7 +25,7 @@ class advancedCMSMetaboxes {
 
 		add_action('wp_ajax_duplicate_metabox_field', array($this, 'ajax_duplicate_metabox_field'));
 		add_action('wp_ajax_remove_duplicate_metabox_field' ,array($this, 'ajax_remove_duplicate_metabox_field'));
-		add_action('wp_ajax_advanced_cms_gallery_update', array($this, 'ajax_advanced_cms_gallery_update'));
+		add_action('wp_ajax_pickle_cms_gallery_update', array($this, 'ajax_pickle_cms_gallery_update'));
 
 		add_filter('media_view_settings', array($this, 'media_view_settings'), 10, 2);
 
@@ -67,7 +67,7 @@ class advancedCMSMetaboxes {
 		wp_enqueue_script('jq-validator-script', PICKLE_CMS_URL.'/js/jquery.validator.js', array('jquery'), '1.0.0', true);		
 		//wp_enqueue_script('duplicate-metabox-fields', PICKLE_CMS_URL.'js/duplicate-metabox-fields.js', array('jquery'), '1.0.2', true);
 		wp_enqueue_script('jquery-mediauploader', PICKLE_CMS_URL.'js/jquery.mediauploader.js', array('jquery'), '0.1.0', true);
-		wp_enqueue_script('advanced-cms-js', PICKLE_CMS_URL.'/js/functions.js', array('jquery-mediauploader'), '1.0.0', true);
+		wp_enqueue_script('pickle-cms-js', PICKLE_CMS_URL.'/js/functions.js', array('jquery-mediauploader'), '1.0.0', true);
 
 		if (isset($post->ID)) :
 			$post_id=$post->ID;
@@ -77,11 +77,11 @@ class advancedCMSMetaboxes {
 
 		$datepicker=$this->jquery_datepicker_setup($post_id);
 
-		$advancedcmsjs=array(
+		$picklecmsjs=array(
 			'datepicker' => $datepicker,
 		);
 
-		wp_localize_script('advanced-cms-js', 'advancedCMSjs', $advancedcmsjs);
+		wp_localize_script('pickle-cms-js', 'pickleCMSjs', $picklecmsjs);
 	}
 
 	/**
@@ -191,8 +191,8 @@ class advancedCMSMetaboxes {
 					__($config['title'], 'Upload_Meta_Box'),
 					array($this, 'generate_meta_box_fields'),
 					$post_type,
-					apply_filters("advanced_cms_add_metabox_context_{$config['mb_id']}", 'normal'), // normal, advanced, side
-					apply_filters("advanced_cms_add_metabox_priority_{$config['mb_id']}", 'high'), // high, core, default, low (prority)
+					apply_filters("pickle_cms_add_metabox_context_{$config['mb_id']}", 'normal'), // normal, pickle, side
+					apply_filters("pickle_cms_add_metabox_priority_{$config['mb_id']}", 'high'), // high, core, default, low (prority)
 					array(
 						'config_key' => $key,
 						'meta_box_id' => $config['mb_id'],
@@ -215,11 +215,11 @@ class advancedCMSMetaboxes {
 		$html=null;
 		$row_counter=1;
 
-		wp_enqueue_script('advanced-cms-metabox-media-uploader', PICKLE_CMS_URL.'/js/metabox-media-uploader.js', array('jquery'));
+		wp_enqueue_script('pickle-cms-metabox-media-uploader', PICKLE_CMS_URL.'/js/metabox-media-uploader.js', array('jquery'));
 
 		wp_nonce_field(plugin_basename( __FILE__ ), $this->nonce);
 
-		$html.='<div class="advanced-cms-meta-box">';
+		$html.='<div class="pickle-cms-meta-box">';
 
 			foreach ($this->config as $config) :
 
@@ -263,9 +263,9 @@ echo '</pre>';
 
 			endforeach;
 
-			$html.='<input type="hidden" id="advanced-cms-metabox-id" name="advanced-cms-metabox-id" value="'.$metabox['args']['meta_box_id'].'" />';
-			$html.='<input type="hidden" id="advanced-cms-config-key" name="advanced-cms-config-key" value="'.$metabox['args']['config_key'].'" />';
-			$html.='<input type="hidden" id="advanced-cms-post-id" name="advanced-cms-post-id" value="'.$metabox['args']['post_id'].'" />';
+			$html.='<input type="hidden" id="pickle-cms-metabox-id" name="pickle-cms-metabox-id" value="'.$metabox['args']['meta_box_id'].'" />';
+			$html.='<input type="hidden" id="pickle-cms-config-key" name="pickle-cms-config-key" value="'.$metabox['args']['config_key'].'" />';
+			$html.='<input type="hidden" id="pickle-cms-post-id" name="pickle-cms-post-id" value="'.$metabox['args']['post_id'].'" />';
 		$html.='</div>';
 
 		echo $html;
@@ -320,10 +320,10 @@ echo '</pre>';
 				);
 				$value=wp_parse_args($value, $defaults);
 
-				$html.=advanced_cms_get_field_template('address', $atts, $value);
+				$html.=pickle_cms_get_field_template('address', $atts, $value);
 				break;
 			case 'button' :
-				$html.=advanced_cms_get_field_template('button', $args, $value);
+				$html.=pickle_cms_get_field_template('button', $args, $value);
 				break;
 			case 'checkbox':
 				if (isset($args['options']) && !empty($args['options'])) :
@@ -334,21 +334,21 @@ echo '</pre>';
 							'value' => $option['value'],
 						);
 
-						$html.=advanced_cms_get_field_template('checkbox', $atts, $value);
+						$html.=pickle_cms_get_field_template('checkbox', $atts, $value);
 					endforeach;
 				endif;
 				break;
 			case 'colorpicker' :
-				$html.=advanced_cms_get_field_template('colorpicker', $args, $value);
+				$html.=pickle_cms_get_field_template('colorpicker', $args, $value);
 				break;
 			case 'date':
-				$html.=advanced_cms_get_field_template('datepicker', $args, $value);
+				$html.=pickle_cms_get_field_template('datepicker', $args, $value);
 				break;
 			case 'email' :
-				$html.=advanced_cms_get_field_template('email', $args, $value);				
+				$html.=pickle_cms_get_field_template('email', $args, $value);				
 				break;
 			case 'gallery' :
-				$html.=advanced_cms_get_field_template('gallery', $args, $value);
+				$html.=pickle_cms_get_field_template('gallery', $args, $value);
 				break;
 			case 'media':
 				$atts=array(
@@ -357,14 +357,14 @@ echo '</pre>';
 					'description' => $description,
 				);
 
-				$html.=advanced_cms_get_field_template('media', $atts, $value);
+				$html.=pickle_cms_get_field_template('media', $atts, $value);
 				break;
 			case 'media_images' :
-				$html.=advanced_cms_get_field_template('media-images', '', unserialize($value));
+				$html.=pickle_cms_get_field_template('media-images', '', unserialize($value));
 
 				break;				
 			case 'phone':
-				$html.=advanced_cms_get_field_template('phone', $args, $value);				
+				$html.=pickle_cms_get_field_template('phone', $args, $value);				
 				break;
 			case 'radio':
 				if (isset($args['options']) && !empty($args['options'])) :
@@ -375,24 +375,24 @@ echo '</pre>';
 							'value' => $option['value'],
 						);
 
-						$html.=advanced_cms_get_field_template('radio', $atts, $value);
+						$html.=pickle_cms_get_field_template('radio', $atts, $value);
 					endforeach;
 				endif;
 				break;
 			case 'select' :
-				$html.=advanced_cms_get_field_template('select', $args, $value);
+				$html.=pickle_cms_get_field_template('select', $args, $value);
 				break;
 			case 'text' :
-				$html.=advanced_cms_get_field_template('text', $args, $value);	
+				$html.=pickle_cms_get_field_template('text', $args, $value);	
 				break;
 			case 'textarea':
-				$html.=advanced_cms_get_field_template('textarea', $args, $value);	
+				$html.=pickle_cms_get_field_template('textarea', $args, $value);	
 				break;
 			case 'timepicker' :
-				$html.=advanced_cms_get_field_template('timepicker', $args, $value);	
+				$html.=pickle_cms_get_field_template('timepicker', $args, $value);	
 				break;
 			case 'url':
-				$html.=advanced_cms_get_field_template('url', $args, $value);	
+				$html.=pickle_cms_get_field_template('url', $args, $value);	
 				break;
 			case 'wysiwyg':
 				$settings=array(
@@ -401,7 +401,7 @@ echo '</pre>';
 					//'quicktags' => false
 				);
 
-				$html.=$this->advancedm_wp_editor($value,$args['id'],$settings);
+				$html.=$this->picklem_wp_editor($value,$args['id'],$settings);
 				break;
 			case 'custom' :
 				if (is_serialized($value)) :
@@ -413,10 +413,10 @@ echo '</pre>';
 				if (!is_array($values))
 					$values=array($values);
 
-				$html.=apply_filters('add_advanced_cms_metabox_custom_input-'.$args['id'],$args['id'],$values);
+				$html.=apply_filters('add_pickle_cms_metabox_custom_input-'.$args['id'],$args['id'],$values);
 				break;
 			default:
-				$html.=advanced_cms_get_field_template('text', $args, $value);
+				$html.=pickle_cms_get_field_template('text', $args, $value);
 		endswitch;
 
 		if ($format)
@@ -525,13 +525,13 @@ echo '</pre>';
 	function setup_config() {
 		do_action('acms_register_field');
 
-		$configs=get_option('advanced_cms_metaboxes');
+		$configs=get_option('pickle_cms_metaboxes');
 			
 		$ran_string=substr(substr("abcdefghijklmnopqrstuvwxyz",mt_rand(0,25),1).substr(md5(time()),1),0,5);
 		$default_config=array(
-			'mb_id' => 'advancedmb_'.$ran_string,
+			'mb_id' => 'picklemb_'.$ran_string,
 			'title' => 'Default Meta Box',
-			'prefix' => '_advancedmb',
+			'prefix' => '_picklemb',
 			'post_types' => 'post,page',
 			'post_fields' => array()
 		);
@@ -652,7 +652,7 @@ echo '</pre>';
 	}
 
 	/**
-	 * advancedm_wp_editor function.
+	 * picklem_wp_editor function.
 	 *
 	 * @access protected
 	 * @param mixed $content
@@ -660,7 +660,7 @@ echo '</pre>';
 	 * @param mixed $settings
 	 * @return void
 	 */
-	protected function advancedm_wp_editor($content,$editor_id,$settings) {
+	protected function picklem_wp_editor($content,$editor_id,$settings) {
 		ob_start(); // Turn on the output buffer
 		wp_editor($content,$editor_id,$settings); // Echo the editor to the buffer
 		$editor_contents = ob_get_clean(); // Store the contents of the buffer in a variable
@@ -669,7 +669,7 @@ echo '</pre>';
 	}
 
 	/**
-	 * get_post_meta_advanced function.
+	 * get_post_meta_pickle function.
 	 *
 	 * generates a preformatted get post meta field
 	 *
@@ -683,7 +683,7 @@ echo '</pre>';
 	 * Not Used v2.0.9
 	 *
 	 */
-	public function get_post_meta_advanced($post_id,$key='',$single=false,$type='') {
+	public function get_post_meta_pickle($post_id,$key='',$single=false,$type='') {
 		$metadata=get_metadata('post', $post_id, $key, $single);
 
 		switch($type) :
@@ -721,13 +721,13 @@ echo '</pre>';
 	 * @return void
 	 */
 	public function get_countries_dropdown($name='country', $selected='US') {
-		global $advanced_cms_countries;
+		global $pickle_cms_countries;
 
 		$html=null;
 
 		$html.='<select name="'.$name.'">';
 			$html.='<option value="0">Select Country</option>';
-			foreach ($advanced_cms_countries as $id => $country) :
+			foreach ($pickle_cms_countries as $id => $country) :
 				$html.='<option value="'.$id.'" '.selected($selected,$id,false).'>'.$country.'</option>';
 			endforeach;
 		$html.='</select>';
@@ -750,13 +750,13 @@ echo '</pre>';
 		if (!is_array($ids))
 			$ids=explode(',',$ids);
 
-		$ids=apply_filters('advanced_cms_get_gallery_images',$ids,$post);
+		$ids=apply_filters('pickle_cms_get_gallery_images',$ids,$post);
 
 		if (empty($ids))
 			return false;
 
 		foreach ($ids as $attachment_id) :
-			$images.=wp_get_attachment_image($attachment_id,'thumbnail',false,array('class' => 'img-responsive advanced-cms-gallery-image'));
+			$images.=wp_get_attachment_image($attachment_id,'thumbnail',false,array('class' => 'img-responsive pickle-cms-gallery-image'));
 		endforeach;
 
 		return $images;
@@ -775,7 +775,7 @@ echo '</pre>';
 		if ($ids && !is_array($ids))
 			$ids=explode(',',$ids);
 
-		$ids=apply_filters("advanced_cms_get_gallery_image_ids",$ids,$post);
+		$ids=apply_filters("pickle_cms_get_gallery_image_ids",$ids,$post);
 
 		if (is_array($ids))
 			$ids=implode(',',$ids);
@@ -818,21 +818,21 @@ echo '</pre>';
 			if (get_post_meta($post->ID,$field_id,true))
 				$images=get_post_meta($post->ID,$field_id,true);
 
-			$shortcode=apply_filters('advanced_cms_media_settings_gallery_shortcode','[gallery ids="'.$images.'"]',$images,$post);
+			$shortcode=apply_filters('pickle_cms_media_settings_gallery_shortcode','[gallery ids="'.$images.'"]',$images,$post);
 
-			$settings['advanced_cms_gallery']=array('shortcode' => $shortcode);
+			$settings['pickle_cms_gallery']=array('shortcode' => $shortcode);
 		endforeach;
 
 		return $settings;
 	}
 
 	/**
-	 * ajax_advanced_cms_gallery_update function.
+	 * ajax_pickle_cms_gallery_update function.
 	 *
 	 * @access public
 	 * @return void
 	 */
-	public function ajax_advanced_cms_gallery_update() {
+	public function ajax_pickle_cms_gallery_update() {
 		$images=null;
 		$counter=0;
 
@@ -840,7 +840,7 @@ echo '</pre>';
 			return false;
 
 		foreach ($_POST['ids'] as $attachment_id) :
-			$images.=wp_get_attachment_image($attachment_id,'thumbnail',false,array('class' => 'img-responsive advanced-bg-image'));
+			$images.=wp_get_attachment_image($attachment_id,'thumbnail',false,array('class' => 'img-responsive pickle-bg-image'));
 		endforeach;
 
 		echo json_encode($images);
@@ -889,11 +889,11 @@ echo '</pre>';
 	
 } // end class
 
-$advancedMetaboxes = new advancedCMSMetaboxes();
+$pickleMetaboxes = new pickleCMSMetaboxes();
 
 function acms_register_field($field) {
-	global $advancedMetaboxes;
+	global $pickleMetaboxes;
 
-	$advancedMetaboxes->register_field($field);	
+	$pickleMetaboxes->register_field($field);	
 }
 ?>

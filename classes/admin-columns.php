@@ -1,9 +1,9 @@
 <?php
 
 /**
- * advancedCMSAdminColumns class.
+ * pickleCMSAdminColumns class.
  */
-class advancedCMSAdminColumns {
+class pickleCMSAdminColumns {
 
 	public $config=array();
 
