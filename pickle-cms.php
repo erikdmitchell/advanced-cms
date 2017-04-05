@@ -17,7 +17,6 @@ define('PICKLE_CMS_ADMIN_PATH', plugin_dir_path(__FILE__).'admin/');
 define('PICKLE_CMS_ADMIN_URL', plugin_dir_url(__FILE__).'admin/');
 define('PICKLE_CMS_VERSION', '0.1.0');
 
-require_once(PICKLE_CMS_PATH.'init.php'); // basic init
 require_once(PICKLE_CMS_PATH.'admin/functions.php'); // admin functions
 require_once(PICKLE_CMS_PATH.'admin.php'); // admin class
 require_once(PICKLE_CMS_PATH.'admin/ajax.php'); // admin ajax funcs
