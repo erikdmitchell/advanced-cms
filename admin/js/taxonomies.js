@@ -16,11 +16,11 @@ jQuery(document).ready(function($) {
 	/**
 	 * delete link click
 	 */
-	$('.mdw-cms-taxonomies .taxonomies-list td a .dashicons-trash').on('click', function(e) {
+	$('.pickle-cms-taxonomies .taxonomies-list td a .dashicons-trash').on('click', function(e) {
 		e.preventDefault();
 
 		var data={
-			'action' : 'mdw_cms_get_taxonomy',
+			'action' : 'pickle_cms_get_taxonomy',
 			'name' : $(this).data('name')
 		};
 
@@ -31,7 +31,7 @@ jQuery(document).ready(function($) {
 				'id' : response_data.name
 			};
 			var delete_data={
-				'action' : 'mdw_cms_delete_taxonomy',
+				'action' : 'pickle_cms_delete_taxonomy',
 				'id' : response_data.name
 			}
 

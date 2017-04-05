@@ -1,10 +1,10 @@
 <?php
-global $advanced_cms_admin;
+global $pickle_cms_admin;
 
 /**
- * AdvancedCMSAdmin class.
+ * PickleCMSAdmin class.
  */
-class AdvancedCMSAdmin {
+class PickleCMSAdmin {
 
 	public $options=array();
 
@@ -22,19 +22,19 @@ class AdvancedCMSAdmin {
 		add_action('admin_init', array($this, 'update_taxonomies'));
 		add_action('admin_notices', array($this, 'admin_notices'));
 		
-		add_action('wp_ajax_advanced_cms_get_metabox', array($this, 'ajax_get_metabox'));
-		add_action('wp_ajax_advanced_cms_delete_metabox', array($this, 'ajax_delete_metabox'));
-		add_action('wp_ajax_advanced_cms_get_post_type', array($this, 'ajax_get_post_type'));
-		add_action('wp_ajax_advanced_cms_delete_post_type', array($this, 'ajax_delete_post_type'));
-		add_action('wp_ajax_advanced_cms_get_taxonomy', array($this, 'ajax_get_taxonomy'));
-		add_action('wp_ajax_advanced_cms_delete_taxonomy', array($this, 'ajax_delete_taxonomy'));
-		add_action('wp_ajax_advanced_cms_reserved_names', array($this, 'ajax_reserved_names'));
-		add_action('wp_ajax_advanced_cms_blank_metabox_field', array($this, 'ajax_blank_metabox_field'));
+		add_action('wp_ajax_pickle_cms_get_metabox', array($this, 'ajax_get_metabox'));
+		add_action('wp_ajax_pickle_cms_delete_metabox', array($this, 'ajax_delete_metabox'));
+		add_action('wp_ajax_pickle_cms_get_post_type', array($this, 'ajax_get_post_type'));
+		add_action('wp_ajax_pickle_cms_delete_post_type', array($this, 'ajax_delete_post_type'));
+		add_action('wp_ajax_pickle_cms_get_taxonomy', array($this, 'ajax_get_taxonomy'));
+		add_action('wp_ajax_pickle_cms_delete_taxonomy', array($this, 'ajax_delete_taxonomy'));
+		add_action('wp_ajax_pickle_cms_reserved_names', array($this, 'ajax_reserved_names'));
+		add_action('wp_ajax_pickle_cms_blank_metabox_field', array($this, 'ajax_blank_metabox_field'));
 
-		$this->options['metaboxes']=get_option('advanced_cms_metaboxes', array());
-		$this->options['post_types']=get_option('advanced_cms_post_types', array());
-		$this->options['taxonomies']=get_option('advanced_cms_taxonomies', array());
-		$this->options['columns']=get_option('advanced_cms_admin_columns', array());
+		$this->options['metaboxes']=get_option('pickle_cms_metaboxes', array());
+		$this->options['post_types']=get_option('pickle_cms_post_types', array());
+		$this->options['taxonomies']=get_option('pickle_cms_taxonomies', array());
+		$this->options['columns']=get_option('pickle_cms_admin_columns', array());
 	}
 
 	/**
@@ -44,7 +44,7 @@ class AdvancedCMSAdmin {
 	 * @return void
 	 */
 	public function build_admin_menu() {
-		add_menu_page('Advanced CMS', 'Advanced CMS', 'manage_options', 'advanced-cms', array($this, 'admin_page'), 'dashicons-layout');
+		add_menu_page('Pickle CMS', 'Pickle CMS', 'manage_options', 'pickle-cms', array($this, 'admin_page'), 'dashicons-layout');
 	}
 
 	/**
@@ -55,34 +55,34 @@ class AdvancedCMSAdmin {
 	 * @return void
 	 */
 	public function scripts_styles($hook) {
-		global $advancedMetaboxes, $wp_scripts;
+		global $pickleMetaboxes, $wp_scripts;
 
 		$ui = $wp_scripts->query('jquery-ui-core');
 
-		wp_register_script('advanced-cms-admin-metaboxes', ADVANCED_CMS_ADMIN_URL.'js/metaboxes.js', array('jquery'), '0.2.0');
+		wp_register_script('pickle-cms-admin-metaboxes', PICKLE_CMS_ADMIN_URL.'js/metaboxes.js', array('jquery'), '0.2.0');
 
 		// localize scripts //
 		$metaboxes_arr=array(
-			'fields' => $advancedMetaboxes->fields,
+			'fields' => $pickleMetaboxes->fields,
 		);
 
-		wp_localize_script('advanced-cms-admin-metaboxes', 'metaboxData', $metaboxes_arr);
+		wp_localize_script('pickle-cms-admin-metaboxes', 'metaboxData', $metaboxes_arr);
 
 		wp_enqueue_script('jquery-ui-dialog');
 		wp_enqueue_script('jquery-ui-sortable');
-		wp_enqueue_script('namecheck-script', ADVANCED_CMS_URL.'js/jquery.namecheck.js', array('jquery'), '0.1.0');
-		wp_enqueue_script('metabox-id-check-script', ADVANCED_CMS_URL.'js/jquery.metabox-id-check.js', array('jquery'), '0.1.0');
-		wp_enqueue_script('taxonomy-id-check-script', ADVANCED_CMS_URL.'js/jquery.taxonomy-id-check.js', array('jquery'), '0.1.0');
-		wp_enqueue_script('requiredFields-script', ADVANCED_CMS_URL.'js/jquery.requiredFields.js', array('jquery'), '0.1.0');
-		wp_enqueue_script('advanced-cms-admin-functions', ADVANCED_CMS_ADMIN_URL.'js/functions.js', array('jquery'), '0.1.0');
-		wp_enqueue_script('advanced-cms-admin-post-types', ADVANCED_CMS_ADMIN_URL.'js/post-types.js', array('jquery-ui-dialog'), '0.1.0');
-		wp_enqueue_script('advanced-cms-admin-taxonomies', ADVANCED_CMS_ADMIN_URL.'js/taxonomies.js', array('jquery'), '0.1.0');
-		wp_enqueue_script('advanced-cms-admin-metaboxes');
+		wp_enqueue_script('namecheck-script', PICKLE_CMS_ADMIN_URL.'js/jquery.namecheck.js', array('jquery'), '0.1.0');
+		wp_enqueue_script('metabox-id-check-script', PICKLE_CMS_ADMIN_URL.'js/jquery.metabox-id-check.js', array('jquery'), '0.1.0');
+		wp_enqueue_script('taxonomy-id-check-script', PICKLE_CMS_ADMIN_URL.'js/jquery.taxonomy-id-check.js', array('jquery'), '0.1.0');
+		wp_enqueue_script('requiredFields-script', PICKLE_CMS_ADMIN_URL.'js/jquery.requiredFields.js', array('jquery'), '0.1.0');
+		wp_enqueue_script('pickle-cms-admin-functions', PICKLE_CMS_ADMIN_URL.'js/functions.js', array('jquery'), '0.1.0');
+		wp_enqueue_script('pickle-cms-admin-post-types', PICKLE_CMS_ADMIN_URL.'js/post-types.js', array('jquery-ui-dialog'), '0.1.0');
+		wp_enqueue_script('pickle-cms-admin-taxonomies', PICKLE_CMS_ADMIN_URL.'js/taxonomies.js', array('jquery'), '0.1.0');
+		wp_enqueue_script('pickle-cms-admin-metaboxes');
 
 	
 		wp_enqueue_style('jquery-ui-smoothness', "https://ajax.googleapis.com/ajax/libs/jqueryui/{$ui->ver}/themes/smoothness/jquery-ui.min.css");
-		wp_enqueue_style('advanced-cms-admin-style', ADVANCED_CMS_ADMIN_URL.'css/admin.css');
-		wp_enqueue_style('advanced-cms-metabox-style', ADVANCED_CMS_ADMIN_URL.'css/metaboxes.css');
+		wp_enqueue_style('pickle-cms-admin-style', PICKLE_CMS_ADMIN_URL.'css/admin.css');
+		wp_enqueue_style('pickle-cms-metabox-style', PICKLE_CMS_ADMIN_URL.'css/metaboxes.css');
 	}
 
 	/**
@@ -142,9 +142,9 @@ class AdvancedCMSAdmin {
 			$active_tab=$_GET['tab'];
 		?>
 
-		<div class="wrap advanced-cms-wrap">
+		<div class="wrap pickle-cms-wrap">
 
-			<h1>Advanced CMS</h1>
+			<h1>Pickle CMS</h1>
 
 			<h2 class="nav-tab-wrapper">
 				<?php
@@ -155,7 +155,7 @@ class AdvancedCMSAdmin {
 						$class=null;
 					endif;
 					?>
-					<a href="?page=advanced-cms&tab=<?php echo $tab; ?>" class="nav-tab <?php echo $class; ?>"><?php echo $name; ?></a>
+					<a href="?page=pickle-cms&tab=<?php echo $tab; ?>" class="nav-tab <?php echo $class; ?>"><?php echo $name; ?></a>
 				<?php endforeach; ?>
 			</h2>
 
@@ -163,41 +163,41 @@ class AdvancedCMSAdmin {
 			switch ($active_tab) :
 				case 'cms-main':
 					if (isset($_GET['documentation']) && !empty($_GET['documentation'])) :
-						echo advanced_cms_get_doc_template($_GET['documentation']);
+						echo pickle_cms_get_doc_template($_GET['documentation']);
 					else :
-						echo advanced_cms_get_admin_page('main');
+						echo pickle_cms_get_admin_page('main');
 					endif;
 					break;
 				case 'columns':
 					if (isset($_GET['action']) && $_GET['action']=='update') :
-						echo advanced_cms_get_admin_page('single-admin-column');
+						echo pickle_cms_get_admin_page('single-admin-column');
 					else :
-						echo advanced_cms_get_admin_page('admin-columns');
+						echo pickle_cms_get_admin_page('admin-columns');
 					endif;
 					break;
 				case 'post-types':
 					if (isset($_GET['action']) && $_GET['action']=='update') :
-						echo advanced_cms_get_admin_page('single-post-type');
+						echo pickle_cms_get_admin_page('single-post-type');
 					else :
-						echo advanced_cms_get_admin_page('post-types');
+						echo pickle_cms_get_admin_page('post-types');
 					endif;
 					break;
 				case 'metaboxes':
 					if (isset($_GET['action']) && $_GET['action']=='update') :
-						echo advanced_cms_get_admin_page('single-metabox');
+						echo pickle_cms_get_admin_page('single-metabox');
 					else :
-						echo advanced_cms_get_admin_page('metaboxes');
+						echo pickle_cms_get_admin_page('metaboxes');
 					endif;
 					break;
 				case 'taxonomies':
 					if (isset($_GET['action']) && $_GET['action']=='update') :
-						echo advanced_cms_get_admin_page('single-taxonomy');
+						echo pickle_cms_get_admin_page('single-taxonomy');
 					else :
-						echo advanced_cms_get_admin_page('taxonomies');
+						echo pickle_cms_get_admin_page('taxonomies');
 					endif;
 					break;
 				default:
-					echo advanced_cms_get_admin_page('main');
+					echo pickle_cms_get_admin_page('main');
 					break;
 			endswitch;
 			?>
@@ -223,7 +223,7 @@ class AdvancedCMSAdmin {
 		//$field['order']=$order;
 		//$field['classes']=$classes;
 print_r($field);
-		echo advanced_cms_get_admin_page('metabox-field-rows', $field);
+		echo pickle_cms_get_admin_page('metabox-field-rows', $field);
 	}
 */
 
@@ -234,13 +234,13 @@ print_r($field);
 	 * @return void
 	 */
 	public function update_metaboxes() {
-		if (!isset($_POST['advanced_cms_admin']) || !wp_verify_nonce($_POST['advanced_cms_admin'], 'update_metaboxes'))
+		if (!isset($_POST['pickle_cms_admin']) || !wp_verify_nonce($_POST['pickle_cms_admin'], 'update_metaboxes'))
 			return false;
 
-		global $advancedMetaboxes;
+		global $pickleMetaboxes;
 //echo '<pre>';
 		$data=$_POST;
-		$metaboxes=get_option('advanced_cms_metaboxes');
+		$metaboxes=get_option('pickle_cms_metaboxes');
 		$edit_key=-1;
 //print_r($_POST);
 		if (!isset($data['mb_id']) || $data['mb_id']=='')
@@ -270,7 +270,7 @@ print_r($field);
 				if (empty($field['field_type']) || empty(trim($field['title']))) :
 					unset($data['fields'][$key]);
 				else :
-					$data['fields'][$key]['id']=$advancedMetaboxes->generate_field_id($prefix, $field['title']); // add id
+					$data['fields'][$key]['id']=$pickleMetaboxes->generate_field_id($prefix, $field['title']); // add id
 					$data['fields'][$key]['name']=$data['fields'][$key]['id'];
 				endif;
 			endforeach;
@@ -302,7 +302,7 @@ print_r($field);
 
 		$this->options['metaboxes']=$metaboxes; // set var
 //print_r($metaboxes);
-		update_option('advanced_cms_metaboxes', $metaboxes);
+		update_option('pickle_cms_metaboxes', $metaboxes);
 //echo '</pre>';		
 //exit;
 		$url=$this->admin_url(array(
@@ -326,12 +326,12 @@ print_r($field);
 	 * @return void
 	 */
 	public function update_taxonomies() {
-		if (!isset($_POST['advanced_cms_admin']) || !wp_verify_nonce($_POST['advanced_cms_admin'], 'update_taxonomies'))
+		if (!isset($_POST['pickle_cms_admin']) || !wp_verify_nonce($_POST['pickle_cms_admin'], 'update_taxonomies'))
 			return false;
 
 		$data=$_POST;
 		$option_exists=false;
-		$taxonomies=get_option('advanced_cms_taxonomies');
+		$taxonomies=get_option('pickle_cms_taxonomies');
 
 		if (!isset($data['name']) || $data['name']=='')
 			return false;
@@ -359,12 +359,12 @@ print_r($field);
 			$taxonomies[]=$arr;
 		endif;
 
-		if (get_option('advanced_cms_taxonomies'))
+		if (get_option('pickle_cms_taxonomies'))
 			$option_exists=true;
 
 		$this->options['taxonomies']=$taxonomies; // set var
 
-		$update=update_option('advanced_cms_taxonomies',$taxonomies);
+		$update=update_option('pickle_cms_taxonomies',$taxonomies);
 
 		if ($update) :
 			$update=true;
@@ -483,11 +483,11 @@ print_r($field);
 	 * @return void
 	 */
 	public function update_post_types() {
-		if (!isset($_POST['advanced_cms_admin']) || !wp_verify_nonce($_POST['advanced_cms_admin'], 'update_cpts'))
+		if (!isset($_POST['pickle_cms_admin']) || !wp_verify_nonce($_POST['pickle_cms_admin'], 'update_cpts'))
 			return false;
 
 		$data=$_POST;
-		$post_types=get_option('advanced_cms_post_types');
+		$post_types=get_option('pickle_cms_post_types');
 		$post_types_s=serialize($post_types);
 
 		if (!isset($data['name']) || $data['name']=='')
@@ -539,7 +539,7 @@ print_r($field);
 
 		$this->options['post_types']=$post_types; // set var
 
-		$update=update_option('advanced_cms_post_types', $post_types);
+		$update=update_option('pickle_cms_post_types', $post_types);
 
 		wp_redirect($url);
 		exit();
@@ -585,7 +585,7 @@ print_r($field);
 	}
 
 	/**
-	 * advanced_cms_delete_post_type function.
+	 * pickle_cms_delete_post_type function.
 	 *
 	 * @access public
 	 * @param string $name (default: '')
@@ -602,7 +602,7 @@ print_r($field);
 
 		$this->options['post_types']=$post_types; // set var
 
-		update_option('advanced_cms_post_types', $post_types); // update option
+		update_option('pickle_cms_post_types', $post_types); // update option
 
 		return false;
 	}
@@ -665,7 +665,7 @@ print_r($field);
 
 		$this->options['metaboxes']=$metaboxes; // set var
 
-		update_option('advanced_cms_metaboxes', $metaboxes); // update option
+		update_option('pickle_cms_metaboxes', $metaboxes); // update option
 
 		return false;
 	}
@@ -714,7 +714,7 @@ print_r($field);
 
 		$this->options['taxonomies']=$taxonomies; // set var
 
-		update_option('advanced_cms_taxonomies', $taxonomies); // update option
+		update_option('pickle_cms_taxonomies', $taxonomies); // update option
 
 		return false;
 	}
@@ -796,7 +796,7 @@ print_r($field);
 	 */
 	protected function admin_url($args='') {
 		$default_args=array(
-			'page' => 'advanced-cms'
+			'page' => 'pickle-cms'
 		);
 		$args=wp_parse_args($args, $default_args);
 		$admin_url=add_query_arg($args, admin_url('/tools.php'));
@@ -812,5 +812,5 @@ print_r($_POST);
 
 }
 
-$advanced_cms_admin=new AdvancedCMSAdmin();
+$pickle_cms_admin=new PickleCMSAdmin();
 ?>

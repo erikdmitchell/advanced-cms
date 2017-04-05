@@ -16,11 +16,11 @@ jQuery(document).ready(function($) {
 	/**
 	 * delete link click
 	 */
-	$('.advanced-cms-post-types .post-type-list td .dashicons-trash').on('click', function(e) {
+	$('.pickle-cms-post-types .post-type-list td .dashicons-trash').on('click', function(e) {
 		e.preventDefault();
 
 		var data={
-			'action' : 'advanced_cms_get_post_type',
+			'action' : 'pickle_cms_get_post_type',
 			'slug' : $(this).data('slug')
 		};
 console.log(data);
@@ -31,7 +31,7 @@ console.log(data);
 				'id' : response_data.name
 			};
 			var delete_data={
-				'action' : 'advanced_cms_delete_post_type',
+				'action' : 'pickle_cms_delete_post_type',
 				'name' : response_data.name
 			}
 			setupDialogBox(data, delete_data, 'custom post type');
@@ -41,7 +41,7 @@ console.log(data);
 	/**
 	 * dashicon click
 	 */
-	$('.custom-post-types .advanced-cms-dashicon-grid .dashicons').click(function(e) {
+	$('.custom-post-types .pickle-cms-dashicon-grid .dashicons').click(function(e) {
 		e.preventDefault();
 
 		var iconClass=$(this).data('icon');

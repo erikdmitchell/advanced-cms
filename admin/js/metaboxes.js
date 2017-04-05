@@ -16,11 +16,11 @@ jQuery(document).ready(function($) {
 	/**
 	 * delete metabox link click
 	 */
-	$('.advanced-cms-metaboxes .metaboxes-list td a .dashicons-trash').on('click',function(e) {
+	$('.pickle-cms-metaboxes .metaboxes-list td a .dashicons-trash').on('click',function(e) {
 		e.preventDefault();
 
 		var data={
-			'action' : 'advanced_cms_get_metabox',
+			'action' : 'pickle_cms_get_metabox',
 			'id' : $(this).data('id')
 		};
 
@@ -31,7 +31,7 @@ jQuery(document).ready(function($) {
 				'id' : response_data.mb_id
 			};
 			var delete_data={
-				'action' : 'advanced_cms_delete_metabox',
+				'action' : 'pickle_cms_delete_metabox',
 				'id' : response_data.mb_id
 			}
 			setupDialogBox(data, delete_data, 'metabox');
@@ -44,7 +44,7 @@ jQuery(document).ready(function($) {
 	$('.custom-metabox').on('change', '.add-fields .field-type', function(e) {	
 		e.preventDefault();
 	
-		var elID=$(this).parents('.advanced-cms-fields-wrapper').attr('id');
+		var elID=$(this).parents('.pickle-cms-fields-wrapper').attr('id');
 		var data={
 			'action' : 'metabox_change_field_type',
 			'field' : $(this).val()
@@ -149,7 +149,7 @@ jQuery(function($) {
 		var lastFieldID;
 		var lastFieldArr;
 		var lastFieldIDNum=0;
-		var $fieldsWrapper=$('.advanced-cms-fields-wrapper');
+		var $fieldsWrapper=$('.pickle-cms-fields-wrapper');
 
 		$fieldsWrapper.each(function() {
 			lastFieldID=$(this).attr('id');
@@ -161,7 +161,7 @@ jQuery(function($) {
 		var $clonedElement=$('#'+lastFieldID).clone(); // clone element
 
 		// clean up and configure our cloned element (classes, ids, etc)
-		var cloneID='advanced-cms-fields-wrapper-'+newID;
+		var cloneID='pickle-cms-fields-wrapper-'+newID;
 
 		$clonedElement.removeClass('default');
 		$clonedElement.attr('id', cloneID);
@@ -175,24 +175,24 @@ jQuery(function($) {
 		});
 
 		// clear all input values (reset) - except butons //
-		$('#advanced-cms-fields-wrapper-'+newID).find('input').each(function() {
+		$('#pickle-cms-fields-wrapper-'+newID).find('input').each(function() {
 			if ($(this).attr('type')!='button') {
 				$(this).val('');
 			}
 		});
 
 		// clear drop down //
-		$('#advanced-cms-fields-wrapper-'+newID).find('select').each(function() {
+		$('#pickle-cms-fields-wrapper-'+newID).find('select').each(function() {
 			$(this).val(0);
 		});
 
 		// hides any custom fields in our item cloned from //
-		$('#advanced-cms-fields-wrapper-'+newID).find('.field-options').html('');
+		$('#pickle-cms-fields-wrapper-'+newID).find('.field-options').html('');
 
 		var lastFieldOrder=parseInt($('#'+lastFieldID+' .order').val()); // last field order (as int) //
 
 		$('#'+cloneID+' .order').val(lastFieldOrder+1); // set new field order //
-		$('#'+cloneID+' .remove-field').attr('data-id','advanced-cms-fields-wrapper-'+newID); // set our button to remove field //
+		$('#'+cloneID+' .remove-field').attr('data-id','pickle-cms-fields-wrapper-'+newID); // set our button to remove field //
 	};
 
 }(jQuery));

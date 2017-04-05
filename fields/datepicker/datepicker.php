@@ -20,9 +20,9 @@ class acmsField_Datepicker extends acmsField {
 	}
 	
 	public function admin_scripts_styles() {
-		wp_register_script('acms-datepicker-script', ADVANCED_CMS_URL.'fields/datepicker/datepicker.js', array('jquery-ui-datepicker'), '0.1.0', true);
+		wp_register_script('acms-datepicker-script', PICKLE_CMS_URL.'fields/datepicker/datepicker.js', array('jquery-ui-datepicker'), '0.1.0', true);
 		
-		wp_register_style('acms-datepicker-style', ADVANCED_CMS_URL.'fields/datepicker/datepicker.css', '', '0.1.0');
+		wp_register_style('acms-datepicker-style', PICKLE_CMS_URL.'fields/datepicker/datepicker.css', '', '0.1.0');
 	}
 	
 	function create_field($field) {

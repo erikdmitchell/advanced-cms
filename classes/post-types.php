@@ -10,7 +10,7 @@ class advancedCMSPostTypes {
 	 * @return void
 	 */
 	function __construct() {
-		$this->post_types=get_option('advanced_cms_post_types');
+		$this->post_types=get_option('pickle_cms_post_types');
 
 		add_action('init', array($this, 'create_post_types'));
 	}
@@ -44,7 +44,7 @@ class advancedCMSPostTypes {
 				'taxonomies' => 0, 
 				'icon' => 'dashicons-admin-post'				
 			);
-			$args=advanced_cms_parse_args($post_type, $default_args);
+			$args=pickle_cms_parse_args($post_type, $default_args);
 
 			extract($args);
 

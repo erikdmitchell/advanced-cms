@@ -1,37 +1,37 @@
 <?php
-global $advanced_cms_doc_version;
+global $pickle_cms_doc_version;
 
-$advanced_cms_doc_version='0.1.1';
+$pickle_cms_doc_version='0.1.0';
 
 /**
- * advanced_cms_load_documentation function.
+ * pickle_cms_load_documentation function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_load_documentation() {
+function pickle_cms_load_documentation() {
 	echo '<h2>Documentation</h2>';
 	
-	advanced_cms_admin_docs_pages_list();
+	pickle_cms_admin_docs_pages_list();
 }
 
 /**
- * advanced_cms_admin_docs_pages_list function.
+ * pickle_cms_admin_docs_pages_list function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_admin_docs_pages_list() {
+function pickle_cms_admin_docs_pages_list() {
 	$html=null;
-	$pages=advanced_cms_admin_docs_pages();
+	$pages=pickle_cms_admin_docs_pages();
 
 	if (empty($pages))
 		return false;
 
-	$html.='<ul class="advanced-cms-doc-pages">';
+	$html.='<ul class="pickle-cms-doc-pages">';
 
 		foreach ($pages as $page) :
-			$html.='<li><a href="'.advanced_cms_docs_page_link($page).'">'.advanced_cms_docs_page_name($page).'</a></li>';
+			$html.='<li><a href="'.pickle_cms_docs_page_link($page).'">'.pickle_cms_docs_page_name($page).'</a></li>';
 		endforeach;
 
 	$html.='</ul>';
@@ -40,13 +40,13 @@ function advanced_cms_admin_docs_pages_list() {
 }
 
 /**
- * advanced_cms_docs_page_name function.
+ * pickle_cms_docs_page_name function.
  *
  * @access public
  * @param string $page (default: '')
  * @return void
  */
-function advanced_cms_docs_page_name($page='') {
+function pickle_cms_docs_page_name($page='') {
 	$page=str_replace('-', ' ', $page); // remove -
 	$page=ucwords($page); // Upper Case Words
 
@@ -54,16 +54,16 @@ function advanced_cms_docs_page_name($page='') {
 }
 
 /**
- * advanced_cms_docs_page_link function.
+ * pickle_cms_docs_page_link function.
  *
  * @access public
  * @param string $page (default: '')
  * @return void
  */
-function advanced_cms_docs_page_link($page='') {
+function pickle_cms_docs_page_link($page='') {
 	$url=add_query_arg(
 		array(
-			'page' => 'advanced-cms',
+			'page' => 'pickle-cms',
 			'documentation' => $page,
 		),
 		admin_url('tools.php')
@@ -73,15 +73,15 @@ function advanced_cms_docs_page_link($page='') {
 }
 
 /**
- * advanced_cms_admin_docs_pages function.
+ * pickle_cms_admin_docs_pages function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_admin_docs_pages() {
+function pickle_cms_admin_docs_pages() {
 	$filenames=array();
 
-	if ($handle = opendir(ADVANCED_CMS_PATH.'admin/documentation/')) :
+	if ($handle = opendir(PICKLE_CMS_PATH.'admin/documentation/')) :
 
 		while (false !== ($entry = readdir($handle))) :
 
@@ -102,21 +102,21 @@ function advanced_cms_admin_docs_pages() {
 }
 
 /**
- * advanced_cms_get_doc_template function.
+ * pickle_cms_get_doc_template function.
  *
  * @access public
  * @param string $template_name (default: '')
  * @param string $atts (default: '')
  * @return void
  */
-function advanced_cms_get_doc_template($template_name='', $atts='') {
+function pickle_cms_get_doc_template($template_name='', $atts='') {
 	if (empty($template_name))
 		return false;
 
 	ob_start();
 
-	if (file_exists(ADVANCED_CMS_PATH.'admin/documentation/'.$template_name.'.php')) :
-		include(ADVANCED_CMS_PATH.'admin/documentation/'.$template_name.'.php');
+	if (file_exists(PICKLE_CMS_PATH.'admin/documentation/'.$template_name.'.php')) :
+		include(PICKLE_CMS_PATH.'admin/documentation/'.$template_name.'.php');
 	endif;
 
 	$html=ob_get_contents();
@@ -127,50 +127,57 @@ function advanced_cms_get_doc_template($template_name='', $atts='') {
 }
 
 /**
- * advanced_cms_docs_breadcrumb function.
+ * pickle_cms_docs_breadcrumb function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_docs_breadcrumb() {
+function pickle_cms_docs_breadcrumb() {
 	$html=null;
 	$current_page=isset($_GET['documentation']) ? $_GET['documentation'] : '';
-	$doc_url=add_query_arg(array('page' => 'advanced-cms'), admin_url('tools.php'));
+	$doc_url=add_query_arg(array('page' => 'pickle-cms'), admin_url('tools.php'));
 
-	$html.='<div class="advanced-cms-doc-breadcrumb">';
+	$html.='<div class="pickle-cms-doc-breadcrumb">';
 		$html.='<span class="first"><a href="'.$doc_url.'">Documentation</a></span>';
 		$html.='<span class="sep">&rsaquo;</span>';
-		$html.='<span class="last">'.advanced_cms_docs_page_name($current_page).'</span>';
+		$html.='<span class="last">'.pickle_cms_docs_page_name($current_page).'</span>';
 	$html.='</div>';
 
 	return $html;
 }
 
-function advanced_cms_doc_header($classes='') {
+/**
+ * pickle_cms_doc_header function.
+ * 
+ * @access public
+ * @param string $classes (default: '')
+ * @return void
+ */
+function pickle_cms_doc_header($classes='') {
 	$html=null;
 
-	$html.='<div class="advanced-cms-documentation '.$classes.'">';
+	$html.='<div class="pickle-cms-documentation '.$classes.'">';
 		$html.='<h2>Documentation</h2>';
 
-		$html.=advanced_cms_docs_breadcrumb();
+		$html.=pickle_cms_docs_breadcrumb();
 
 	echo $html;
 }
 
 /**
- * advanced_cms_doc_footer function.
+ * pickle_cms_doc_footer function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_doc_footer() {
-	global $advanced_cms_doc_version;
+function pickle_cms_doc_footer() {
+	global $pickle_cms_doc_version;
 
 	$html=null;
 
 	$html.='</div>';
 
-	$html.='<div class="advanced-cms-doc-version">Doc Version '.$advanced_cms_doc_version.'</div>';
+	$html.='<div class="pickle-cms-doc-version">Doc Version '.$pickle_cms_doc_version.'</div>';
 
 	echo $html;
 }
