@@ -1,5 +1,5 @@
 <?php
-class acmsField_Text extends acmsField {
+class picklecmsField_Text extends picklecmsField {
 
 	function __construct() {	
 		// vars
@@ -134,8 +134,8 @@ class acmsField_Text extends acmsField {
 	
 }
 
-function register_amcs_text_field() {
-	acms_register_field(new acmsField_Text());	
+function register_picklecms_text_field() {
+	picklecms_register_field(new picklecmsField_Text());	
 }
-add_action('acms_register_field', 'register_amcs_text_field');
+add_action('picklecms_register_field', 'register_picklecms_text_field');
 ?>

@@ -1,6 +1,6 @@
 <?php
  
-class acmsField {
+class picklecmsField {
 	var $name,
 		$title,
 		$category,
@@ -8,7 +8,7 @@ class acmsField {
 		$options;
 
 	function __construct() {
-		add_filter('acms_registered_fields', array($this, 'registered_fields'), 10, 1);
+		add_filter('picklecms_registered_fields', array($this, 'registered_fields'), 10, 1);
 		
 		$this->add_filter('create_field_'.$this->name, array($this, 'create_field'), 10, 1);
 		$this->add_filter('load_field_options_'.$this->name, array($this, 'create_options'), 10, 1);

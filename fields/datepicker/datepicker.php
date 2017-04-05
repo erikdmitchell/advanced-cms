@@ -1,5 +1,5 @@
 <?php
-class acmsField_Datepicker extends acmsField {
+class picklecmsField_Datepicker extends picklecmsField {
 
 	function __construct() {	
 		// vars
@@ -20,9 +20,9 @@ class acmsField_Datepicker extends acmsField {
 	}
 	
 	public function admin_scripts_styles() {
-		wp_register_script('acms-datepicker-script', PICKLE_CMS_URL.'fields/datepicker/datepicker.js', array('jquery-ui-datepicker'), '0.1.0', true);
+		wp_register_script('picklecms-datepicker-script', PICKLE_CMS_URL.'fields/datepicker/datepicker.js', array('jquery-ui-datepicker'), '0.1.0', true);
 		
-		wp_register_style('acms-datepicker-style', PICKLE_CMS_URL.'fields/datepicker/datepicker.css', '', '0.1.0');
+		wp_register_style('picklecms-datepicker-style', PICKLE_CMS_URL.'fields/datepicker/datepicker.css', '', '0.1.0');
 	}
 	
 	function create_field($field) {
@@ -31,20 +31,20 @@ class acmsField_Datepicker extends acmsField {
 		if (!isset($field['formatting']))
 			$field['formatting']=$this->defaults['formatting'];
 		
-		wp_localize_script('acms-datepicker-script', 'acmsDatepicker', array(
+		wp_localize_script('picklecms-datepicker-script', 'picklecmsDatepicker', array(
 			'format' => $field['formatting']
 		));
 		
 		wp_enqueue_script('jquery-ui-datepicker');
-		wp_enqueue_script('acms-datepicker-script');
+		wp_enqueue_script('picklecms-datepicker-script');
 		
-		wp_enqueue_style('acms-datepicker-style');
+		wp_enqueue_style('picklecms-datepicker-style');
 		
 		$opts=array('name', 'id', 'value', 'placeholder');
 		$html='';
 		
 		$html.= '<div class="input-wrap">';
-		$html.= '<input type="text" class="acms-datepicker"';
+		$html.= '<input type="text" class="picklecms-datepicker"';
 		
 		foreach($opts as $key) :
 			if (isset($field[$key])) :
@@ -133,8 +133,8 @@ class acmsField_Datepicker extends acmsField {
 	
 }
 
-function register_amcs_datepicker_field() {
-	acms_register_field(new acmsField_Datepicker());	
+function register_picklecms_datepicker_field() {
+	picklecms_register_field(new picklecmsField_Datepicker());	
 }
-add_action('acms_register_field', 'register_amcs_datepicker_field');
+add_action('picklecms_register_field', 'register_picklecms_datepicker_field');
 ?>
