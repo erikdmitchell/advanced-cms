@@ -23,7 +23,7 @@ jQuery(document).ready(function($) {
 			'action' : 'pickle_cms_get_post_type',
 			'slug' : $(this).data('slug')
 		};
-console.log(data);
+
 		$.post(ajaxurl, data, function(response) {
 			var response_data=$.parseJSON(response);
 			var data={

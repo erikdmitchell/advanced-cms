@@ -62,17 +62,19 @@ class PickleCMSAdmin {
 		wp_register_script('pickle-cms-admin-metaboxes', PICKLE_CMS_ADMIN_URL.'js/metaboxes.js', array('jquery'), '0.2.0');
 
 		// localize scripts //
+/*
 		$metaboxes_arr=array(
 			'fields' => $pickleMetaboxes->fields,
 		);
 
 		wp_localize_script('pickle-cms-admin-metaboxes', 'metaboxData', $metaboxes_arr);
-
+*/
+echo 'a';
 		wp_enqueue_script('jquery-ui-dialog');
 		wp_enqueue_script('jquery-ui-sortable');
-		wp_enqueue_script('namecheck-script', PICKLE_CMS_ADMIN_URL.'js/jquery.namecheck.js', array('jquery'), '0.1.0');
-		wp_enqueue_script('metabox-id-check-script', PICKLE_CMS_ADMIN_URL.'js/jquery.metabox-id-check.js', array('jquery'), '0.1.0');
-		wp_enqueue_script('taxonomy-id-check-script', PICKLE_CMS_ADMIN_URL.'js/jquery.taxonomy-id-check.js', array('jquery'), '0.1.0');
+		wp_enqueue_script('namecheck-script', PICKLE_CMS_URL.'js/jquery.namecheck.js', array('jquery'), '0.1.0');
+		wp_enqueue_script('metabox-id-check-script', PICKLE_CMS_URL.'js/jquery.metabox-id-check.js', array('jquery'), '0.1.0');
+		wp_enqueue_script('taxonomy-id-check-script', PICKLE_CMS_URL.'js/jquery.taxonomy-id-check.js', array('jquery'), '0.1.0');
 		wp_enqueue_script('requiredFields-script', PICKLE_CMS_ADMIN_URL.'js/jquery.requiredFields.js', array('jquery'), '0.1.0');
 		wp_enqueue_script('pickle-cms-admin-functions', PICKLE_CMS_ADMIN_URL.'js/functions.js', array('jquery'), '0.1.0');
 		wp_enqueue_script('pickle-cms-admin-post-types', PICKLE_CMS_ADMIN_URL.'js/post-types.js', array('jquery-ui-dialog'), '0.1.0');
@@ -83,6 +85,7 @@ class PickleCMSAdmin {
 		wp_enqueue_style('jquery-ui-smoothness', "https://ajax.googleapis.com/ajax/libs/jqueryui/{$ui->ver}/themes/smoothness/jquery-ui.min.css");
 		wp_enqueue_style('pickle-cms-admin-style', PICKLE_CMS_ADMIN_URL.'css/admin.css');
 		wp_enqueue_style('pickle-cms-metabox-style', PICKLE_CMS_ADMIN_URL.'css/metaboxes.css');
+echo 'b';		
 	}
 
 	/**
