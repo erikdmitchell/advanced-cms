@@ -452,7 +452,7 @@ function pickle_cms_setup_metabox_args() {
 		'prefix' => '',
 		'post_types' => '',
 		'edit_class_v' => '',
-		'fields' => '',
+		'fields' => array(),
 		'header' => 'Add New Metabox',
 	);
 
@@ -570,4 +570,18 @@ function pickle_cms_setup_admin_columns_args() {
 
 	return $args;
 }
+
+function pickle_cms_parse_args( &$a, $b ) {
+	$a = (array) $a;
+	$b = (array) $b;
+	$result = $b;
+	foreach ( $a as $k => &$v ) {
+		if ( is_array( $v ) && isset( $result[ $k ] ) ) {
+			$result[ $k ] = pickle_cms_parse_args( $v, $result[ $k ] );
+		} else {
+			$result[ $k ] = $v;
+		}
+	}
+	return $result;
+	}
 ?>

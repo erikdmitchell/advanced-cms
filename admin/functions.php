@@ -24,32 +24,6 @@ function pickle_cms_get_admin_page($template_name=false, $attributes=null) {
 }
 
 /**
- * pickle_cms_parse_args function.
- *
- * Similar to wp_parse_args() just a bit extended to work with multidimensional arrays :)
- * credit: http://mekshq.com/recursive-wp-parse-args-wordpress-function/
- *
- * @access public
- * @param mixed &$a
- * @param mixed $b
- * @return void
- */
-function pickle_cms_parse_args( &$a, $b ) {
-	$a = (array) $a;
-	$b = (array) $b;
-	$result = $b;
-	foreach ( $a as $k => &$v ) {
-		if ( is_array( $v ) && isset( $result[ $k ] ) ) {
-			$result[ $k ] = pickle_cms_parse_args( $v, $result[ $k ] );
-		} else {
-			$result[ $k ] = $v;
-		}
-	}
-
-	return $result;
-}
-
-/**
  * is_pickle_cms_admin_page function.
  *
  * @access public

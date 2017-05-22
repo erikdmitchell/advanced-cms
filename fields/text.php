@@ -1,6 +1,13 @@
 <?php	
-class picklecmsField_Text extends picklecmsField {
+class PickleCMSField_Text extends PickleCMSField {
 
+	public function __construct() {
+		parent::__construct(array(
+			'id' => 'text',
+			'name' => 'Text',
+		));
+	}
+/*
 	function __construct() {			
 		// vars
 		$this->name = 'text';
@@ -18,6 +25,7 @@ class picklecmsField_Text extends picklecmsField {
 		// do not delete!
     	parent::__construct();
 	}
+*/
 	
 	function create_field($field) {
 		// vars
@@ -133,9 +141,4 @@ class picklecmsField_Text extends picklecmsField {
 	}
 	
 }
-
-function register_picklecms_text_field() {
-	picklecms_register_field(new picklecmsField_Text());	
-}
-add_action('picklecms_register_field', 'register_picklecms_text_field');
 ?>

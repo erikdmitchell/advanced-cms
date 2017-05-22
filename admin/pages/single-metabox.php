@@ -1,8 +1,11 @@
 <?php
-global $pickle_cms_admin, $pickle_cms_metabox_args, $pickleMetaboxes;
+global $pickle_cms_admin, $pickle_cms_metabox_args, $pickle_metaboxes;
 
 $pickle_cms_metabox_args=pickle_cms_setup_metabox_args();
 ?>
+<pre>
+	<?php print_r($pickle_cms_metabox_args); ?>
+</pre>
 
 <h3><?php echo $pickle_cms_metabox_args['header']; ?> <a href="<?php pickle_cms_admin_link(array('tab' => 'metaboxes', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h3>
 
@@ -68,7 +71,7 @@ $pickle_cms_metabox_args=pickle_cms_setup_metabox_args();
 							
 									<select class="field_type name-item field-type" name="fields[<?php echo $key; ?>][field_type]">
 										<option value=0>Select One</option>
-										<?php foreach ($pickleMetaboxes->fields as $_field) : ?>
+										<?php foreach ($pickle_metaboxes->fields as $_field) : ?>
 											<option value="<?php echo $_field->name; ?>" <?php selected($field['field_type'], $_field->name); ?>><?php echo $_field->label; ?></option>
 										<?php endforeach; ?>
 									</select>
@@ -83,7 +86,7 @@ $pickle_cms_metabox_args=pickle_cms_setup_metabox_args();
 							
 									<div class="gen-field-id">
 										I would like this to be stored
-										<input type="text" readonly="readonly" class="field_type field-id" value="<?php echo $pickleMetaboxes->generate_field_id($pickle_cms_metabox_args['prefix'], $field['title'], $field['id']); ?>" /> <span class="description">(use as meta key)</span>
+										<input type="text" readonly="readonly" class="field_type field-id" value="<?php echo $pickle_metaboxes->generate_field_id($pickle_cms_metabox_args['prefix'], $field['title'], $field['id']); ?>" /> <span class="description">(use as meta key)</span>
 									</div>
 								</div>
 							

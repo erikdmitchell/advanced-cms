@@ -1,19 +1,40 @@
 <?php
- 
-class picklecmsField {
-	var $name,
-		$title,
-		$category,
-		$defaults,
-		$options;
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+global $pickle_cms_fields;
+
+$pickle_cms_fields=array();
+
+class PickleCMSField {
+	public $id;
+	
+	public $title;
+
+	public $category;
+
+	//public $defaults;
+
+	public $options;
 
 	function __construct() {
-		add_filter('picklecms_registered_fields', array($this, 'registered_fields'), 10, 1);
-		
-		$this->add_filter('create_field_'.$this->name, array($this, 'create_field'), 10, 1);
-		$this->add_filter('load_field_options_'.$this->name, array($this, 'create_options'), 10, 1);
-		$this->add_action('create_options_field_'.$this->name, array($this, 'create_options_field'), 10, 1);		
-		$this->add_action('create_field_options_'.$this->name, array($this, 'create_options'), 10, 1);	
+		$default_args=array(
+			'id' => '',
+			'title' => '',
+			'category' => 'basic',
+			'options' => array(),
+		);
+		$args=pickle_cms_parse_args($args, $default_args);
+
+		$this->id=$args['id'];
+		$this->title=$args['title'];
+		$this->category=$args['category'];
+		$this->options=$args['options'];	
+				
+		$this->add_filter('create_field_'.$this->id, array($this, 'create_field'), 10, 1);
+		$this->add_filter('load_field_options_'.$this->id, array($this, 'create_options'), 10, 1);
+		$this->add_action('create_options_field_'.$this->id, array($this, 'create_options_field'), 10, 1);		
+		$this->add_action('create_field_options_'.$this->id, array($this, 'create_options'), 10, 1);	
 	}
 	
 	function add_filter($tag, $function_to_add, $priority = 10, $accepted_args = 1) {
@@ -103,7 +124,17 @@ class picklecmsField {
 		return $field;
 	}
 */
-	
+    public function _register() {
+	    global $pickle_cms_fields;
+	    
+	    $pickle_cms_fields[$this->id]=$this;
+    }	
 }
 
+function pickle_cms_fields_init() {
+    pickle_cms_register_fields('PickleCMSField_Text');
+ 
+    do_action('pickle_cms_fields_init');
+}
+add_action('init', 'pickle_cms_fields_init', 1);
 ?>

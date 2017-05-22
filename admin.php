@@ -31,10 +31,27 @@ class PickleCMSAdmin {
 		add_action('wp_ajax_pickle_cms_reserved_names', array($this, 'ajax_reserved_names'));
 		add_action('wp_ajax_pickle_cms_blank_metabox_field', array($this, 'ajax_blank_metabox_field'));
 
-		$this->options['metaboxes']=get_option('pickle_cms_metaboxes', array());
-		$this->options['post_types']=get_option('pickle_cms_post_types', array());
-		$this->options['taxonomies']=get_option('pickle_cms_taxonomies', array());
-		$this->options['columns']=get_option('pickle_cms_admin_columns', array());
+		$this->options['metaboxes']=$this->get_option('pickle_cms_metaboxes', array());
+		$this->options['post_types']=$this->get_option('pickle_cms_post_types', array());
+		$this->options['taxonomies']=$this->get_option('pickle_cms_taxonomies', array());
+		$this->options['columns']=$this->get_option('pickle_cms_admin_columns', array());
+	}
+	
+	/**
+	 * get_option function.
+	 * 
+	 * @access protected
+	 * @param string $name (default: '')
+	 * @param string $default (default: '')
+	 * @return void
+	 */
+	protected function get_option($name='', $default='') {
+		$option=get_option($name, $default);
+		
+		if ($option=='')
+			$option=$default;
+
+		return $option;
 	}
 
 	/**
@@ -55,18 +72,20 @@ class PickleCMSAdmin {
 	 * @return void
 	 */
 	public function scripts_styles($hook) {
-		global $pickleMetaboxes, $wp_scripts;
+		global $pickle_metaboxes, $wp_scripts;
 
 		$ui = $wp_scripts->query('jquery-ui-core');
 
 		wp_register_script('pickle-cms-admin-metaboxes', PICKLE_CMS_ADMIN_URL.'js/metaboxes.js', array('jquery'), '0.2.0');
 
 		// localize scripts //
+		/*
 		$metaboxes_arr=array(
-			'fields' => $pickleMetaboxes->fields,
+			'fields' => $pickle_metaboxes->fields,
 		);
+		*/
 
-		wp_localize_script('pickle-cms-admin-metaboxes', 'metaboxData', $metaboxes_arr);
+		//wp_localize_script('pickle-cms-admin-metaboxes', 'metaboxData', $metaboxes_arr);
 
 		wp_enqueue_script('jquery-ui-dialog');
 		wp_enqueue_script('jquery-ui-sortable');
