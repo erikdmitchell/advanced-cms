@@ -23,26 +23,26 @@ class PickleCMSFieldsInit {
      * register function.
      * 
      * @access public
-     * @param mixed $stat
+     * @param mixed $field
      * @return void
      */
-    public function register($stat) {
-		$this->stats[$stat]=new $stat();
+    public function register($field) {
+		$this->fields[$field]=new $field();
 	}
 	
 	/**
 	 * unregister function.
 	 * 
 	 * @access public
-	 * @param mixed $stat
+	 * @param mixed $field
 	 * @return void
 	 */
-	public function unregister($stat) {
-		unset($this->stats[$stat]);
+	public function unregister($field) {
+		unset($this->fields[$field]);
 	}
 	
 	/**
-	 * _register_stats function.
+	 * _register_fields function.
 	 * 
 	 * @access public
 	 * @return void
@@ -50,19 +50,19 @@ class PickleCMSFieldsInit {
 	public function _register_fields() {
 		global $pickle_cms_fields;
 		
-		$keys=array_keys($this->stats);
+		$keys=array_keys($this->fields);
 		$registered=array_keys($pickle_cms_fields);
 
 		foreach ($keys as $key) :
-			if (in_array($this->stats[$key]->id, $registered, true)) :
-				unset($this->stats[$key]);
+			if (in_array($this->fields[$key]->id, $registered, true)) :
+				unset($this->fields[$key]);
 				continue;
 			endif;
 
-			$this->stats[$key]->_register();
-		endforeach;
+			$this->fields[$key]->_register();
+		endforeach;		
 	}
-  
+	  
 }
 
 $pickle_cms_fields_init=new PickleCMSFieldsInit();
@@ -76,7 +76,7 @@ $pickle_cms_fields_init=new PickleCMSFieldsInit();
  */
 function pickle_cms_register_fields($field) {
     global $pickle_cms_fields_init;
- 
+
     $pickle_cms_fields_init->register($field);
 }
 ?>

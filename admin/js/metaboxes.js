@@ -67,8 +67,8 @@ jQuery(document).ready(function($) {
 			'action' : 'pickle_cms_add_meta_box_field'
 		};
 		
-		$.post(ajaxurl, data, function(response) {
-console.log(response);			
+		$.post(ajaxurl, data, function(response) {			
+			$('.add-fields').append(response);		
 		});
 	});
 

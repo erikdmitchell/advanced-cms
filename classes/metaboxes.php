@@ -16,8 +16,6 @@ class PickleCMSMetaboxes {
 		add_action('save_post', array($this, 'save_custom_meta_data'));
 		add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
 
-		add_action('wp_ajax_pickle_cms_add_meta_box_field', array($this, 'ajax_add_field'));
-
 		add_action('admin_init', array($this, 'add_metaboxes_to_global'));
 				
 		add_action('plugins_loaded', array($this, 'setup_config'));
@@ -282,11 +280,6 @@ echo '</pre>';
 				$wp_meta_boxes[$post_type]['normal']['high']=$arr;
 			endforeach;
 		endforeach;
-	}
-	
-	public function ajax_add_field() {
-print_r($_POST);		
-		wp_die();
 	}
 	
 } // end class

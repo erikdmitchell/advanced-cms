@@ -4,7 +4,7 @@ class PickleCMSField_Text extends PickleCMSField {
 	public function __construct() {
 		parent::__construct(array(
 			'id' => 'text',
-			'name' => 'Text',
+			'title' => 'Text',
 		));
 	}
 /*
