@@ -63,7 +63,13 @@ jQuery(document).ready(function($) {
 	$('#add-field-btn').on('click', function(e) {	
 		e.preventDefault();
 		
-		$(this).duplicateMetaboxField();
+		var data={
+			'action' : 'pickle_cms_add_meta_box_field'
+		};
+		
+		$.post(ajaxurl, data, function(response) {
+console.log(response);			
+		});
 	});
 
 	// remove a metabox field //
@@ -135,64 +141,3 @@ jQuery(function($) {
 
 });
 */
-
-/**
- * add new metabox field
- * @version: 1.0.0
- * @since
- */
-(function($) {
-
-	$.fn.duplicateMetaboxField=function(callback) {
-
-		var newID=0;
-		var lastFieldID;
-		var lastFieldArr;
-		var lastFieldIDNum=0;
-		var $fieldsWrapper=$('.pickle-cms-fields-wrapper');
-
-		$fieldsWrapper.each(function() {
-			lastFieldID=$(this).attr('id');
-			lastFieldArr=lastFieldID.split('-');
-			lastFieldIDNum=lastFieldArr.pop();
-			newID=parseInt(lastFieldIDNum)+1;
-		});
-
-		var $clonedElement=$('#'+lastFieldID).clone(); // clone element
-
-		// clean up and configure our cloned element (classes, ids, etc)
-		var cloneID='pickle-cms-fields-wrapper-'+newID;
-
-		$clonedElement.removeClass('default');
-		$clonedElement.attr('id', cloneID);
-		$clonedElement.insertAfter('#'+lastFieldID);
-
-		// replace lastFieldIDNum with our new attribute name via new id //
-		$('#'+cloneID+' .name-item').each(function() {
-			var attrName=$(this).attr('name');
-			var attrNewName=attrName.replace(lastFieldIDNum,newID);
-			$(this).attr('name',attrNewName);
-		});
-
-		// clear all input values (reset) - except butons //
-		$('#pickle-cms-fields-wrapper-'+newID).find('input').each(function() {
-			if ($(this).attr('type')!='button') {
-				$(this).val('');
-			}
-		});
-
-		// clear drop down //
-		$('#pickle-cms-fields-wrapper-'+newID).find('select').each(function() {
-			$(this).val(0);
-		});
-
-		// hides any custom fields in our item cloned from //
-		$('#pickle-cms-fields-wrapper-'+newID).find('.field-options').html('');
-
-		var lastFieldOrder=parseInt($('#'+lastFieldID+' .order').val()); // last field order (as int) //
-
-		$('#'+cloneID+' .order').val(lastFieldOrder+1); // set new field order //
-		$('#'+cloneID+' .remove-field').attr('data-id','pickle-cms-fields-wrapper-'+newID); // set our button to remove field //
-	};
-
-}(jQuery));

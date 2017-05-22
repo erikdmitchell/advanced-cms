@@ -16,8 +16,7 @@ class PickleCMSMetaboxes {
 		add_action('save_post', array($this, 'save_custom_meta_data'));
 		add_action('add_meta_boxes', array($this, 'add_meta_boxes'));
 
-		add_action('wp_ajax_duplicate_metabox_field', array($this, 'ajax_duplicate_metabox_field'));
-		add_action('wp_ajax_remove_duplicate_metabox_field' ,array($this, 'ajax_remove_duplicate_metabox_field'));
+		add_action('wp_ajax_pickle_cms_add_meta_box_field', array($this, 'ajax_add_field'));
 
 		add_action('admin_init', array($this, 'add_metaboxes_to_global'));
 				
@@ -33,7 +32,8 @@ class PickleCMSMetaboxes {
 	 */
 	public function register_admin_scripts_styles($hook) {
 		wp_enqueue_script('jquery-maskedinput-script', PICKLE_CMS_URL.'/js/jquery.maskedinput.min.js', array('jquery'), '1.3.1', true);
-		wp_enqueue_script('jq-validator-script', PICKLE_CMS_URL.'/js/jquery.validator.js', array('jquery'), '1.0.0', true);
+		wp_enqueue_script('jq-validator-script', PICKLE_CMS_URL.'/js/jquery.validator.js', array('jquery'), '1.0.0', true); // this may be global admin
+		wp_enqueue_script('pickle-cms-admin-metaboxes', PICKLE_CMS_URL.'admin/js/metaboxes.js', array('jquery'), '0.1.0', true);		
 	}
 
 	/**
@@ -84,7 +84,7 @@ class PickleCMSMetaboxes {
 		$html=null;
 		$row_counter=1;
 
-		wp_enqueue_script('pickle-cms-metabox-media-uploader', PICKLE_CMS_URL.'/js/metabox-media-uploader.js', array('jquery'));
+		//wp_enqueue_script('pickle-cms-metabox-media-uploader', PICKLE_CMS_URL.'/js/metabox-media-uploader.js', array('jquery'));
 
 		wp_nonce_field(plugin_basename( __FILE__ ), $this->nonce);
 
@@ -282,6 +282,11 @@ echo '</pre>';
 				$wp_meta_boxes[$post_type]['normal']['high']=$arr;
 			endforeach;
 		endforeach;
+	}
+	
+	public function ajax_add_field() {
+print_r($_POST);		
+		wp_die();
 	}
 	
 } // end class

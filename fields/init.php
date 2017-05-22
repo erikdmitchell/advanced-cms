@@ -61,14 +61,22 @@ class PickleCMSFieldsInit {
 
 			$this->stats[$key]->_register();
 		endforeach;
-	}    
+	}
+  
 }
 
 $pickle_cms_fields_init=new PickleCMSFieldsInit();
 
-function pickle_cms_register_fields($stat) {
+/**
+ * pickle_cms_register_fields function.
+ * 
+ * @access public
+ * @param mixed $field
+ * @return void
+ */
+function pickle_cms_register_fields($field) {
     global $pickle_cms_fields_init;
  
-    $pickle_cms_fields_init->register($stat);
+    $pickle_cms_fields_init->register($field);
 }
 ?>

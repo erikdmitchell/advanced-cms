@@ -48,6 +48,8 @@ class PickleCMSField {
 			add_action($tag, $function_to_add, $priority, $accepted_args);
 		}
 	}
+	
+
 
 /*
 	function registered_fields($fields) {
@@ -131,6 +133,12 @@ class PickleCMSField {
     }	
 }
 
+/**
+ * pickle_cms_fields_init function.
+ * 
+ * @access public
+ * @return void
+ */
 function pickle_cms_fields_init() {
     pickle_cms_register_fields('PickleCMSField_Text');
  
