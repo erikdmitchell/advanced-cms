@@ -32,7 +32,4 @@ require_once(PICKLE_CMS_PATH.'lib/countries-states.php'); // contains global var
 
 // metabox fields //
 require_once(PICKLE_CMS_PATH.'fields/init.php');
-require_once(PICKLE_CMS_PATH.'fields/field.php');
-require_once(PICKLE_CMS_PATH.'fields/text.php');
-//require_once(PICKLE_CMS_PATH.'fields/datepicker/datepicker.php');
 ?>

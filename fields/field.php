@@ -1,12 +1,5 @@
 <?php
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
-
-global $pickle_cms_fields;
-
-$pickle_cms_fields=array();
-
-class PickleCMSField {
+class Pickle_CMS_Field {
 	
 	public $id;
 	
@@ -14,7 +7,7 @@ class PickleCMSField {
 
 	public $category;
 
-	//public $defaults;
+	public $defaults;
 
 	public $options;
 
@@ -23,6 +16,7 @@ class PickleCMSField {
 			'id' => '',
 			'title' => '',
 			'category' => 'basic',
+			'defaults' => array(),
 			'options' => array(),
 		);
 		$args=pickle_cms_parse_args($args, $default_args);
@@ -31,42 +25,9 @@ class PickleCMSField {
 		$this->title=$args['title'];
 		$this->category=$args['category'];
 		$this->options=$args['options'];	
-//echo 'create_field'.$this->id;				 
-		$this->add_filter('create_field_'.$this->id, array($this, 'create_field'), 10, 1);
-		$this->add_filter('load_field_options_'.$this->id, array($this, 'create_options'), 10, 1);
-		$this->add_action('create_options_field_'.$this->id, array($this, 'create_options_field'), 10, 1);		
-		$this->add_action('create_field_options_'.$this->id, array($this, 'create_options'), 10, 1);
-		
+print_r($this);		
 		add_action('wp_ajax_pickle_cms_add_meta_box_field', array($this, 'ajax_add_field'));
 	}
-	
-	function add_filter($tag, $function_to_add, $priority = 10, $accepted_args = 1) {
-		if (is_callable($function_to_add)) {
-			add_filter($tag, $function_to_add, $priority, $accepted_args);
-		}
-	}
-	
-	function add_action($tag, $function_to_add, $priority = 10, $accepted_args = 1) {
-		if (is_callable($function_to_add)) {
-			add_action($tag, $function_to_add, $priority, $accepted_args);
-		}
-	}
-	
-
-
-/*
-	function registered_fields($fields) {
-		// defaults
-		if (!$this->category)
-			$this->category = __('Basic', '');
-
-		// add to array
-		$fields[$this->category][$this->name]=$this->label;
-		
-		// return array
-		return $fields;
-	}
-*/
 	
 	function create_options_field($field) {		
 		// vars
@@ -94,15 +55,16 @@ class PickleCMSField {
 		echo $html;
 	}
 
+/*
 	protected function parse_defaults($field) {	
 		$field=wp_parse_args($field, (array) $this->defaults);
 		
 		return $field;
 	}
+*/
 	
 	public function add_field($key=0, $field='') {
-		global $pickle_cms_fields;
-print_r($pickle_cms_fields);		
+		global $pickle_cms_fields;	
 		
 		$default='text';
 		$html='';
@@ -159,53 +121,8 @@ print_r($pickle_cms_fields);
 		
 		wp_die();
 	}	
-		
-	/*
-	*  load_field_defaults
-	*
-	*  action called when rendering the head of an admin screen. Used primarily for passing PHP to JS
-	*
-	*  @type	filer
-	*  @date	1/06/13
-	*
-	*  @param	$field	{array}
-	*  @return	$field	{array}
-	*/
-	
-/*
-	function load_field_defaults( $field )
-	{
-		if( !empty($this->defaults) )
-		{
-			foreach( $this->defaults as $k => $v )
-			{
-				if( !isset($field[ $k ]) )
-				{
-					$field[ $k ] = $v;
-				}
-			}
-		}
-		
-		return $field;
-	}
-*/
-    public function _register() {
-	    global $pickle_cms_fields;
-	    
-	    $pickle_cms_fields[$this->id]=$this;
-    }	
+			
 }
 
-/**
- * pickle_cms_fields_init function.
- * 
- * @access public
- * @return void
- */
-function pickle_cms_fields_init() {
-    pickle_cms_register_fields('PickleCMSField_Text');
- 
-    do_action('pickle_cms_fields_init');
-}
-add_action('init', 'pickle_cms_fields_init', 1);
+new Pickle_CMS_Field();
 ?>
