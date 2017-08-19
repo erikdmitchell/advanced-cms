@@ -3,8 +3,17 @@
 final class Pickle_CMS_Fields {
 
 	public $version = '0.1.0';
-
-	public $product_factory = null;
+	
+	protected static $_instance=null;
+	
+	public $fields=array();
+	
+	public static function instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
+	}	
 
 	public function __construct() {
 		$this->define_constants();
@@ -17,15 +26,13 @@ final class Pickle_CMS_Fields {
 	}
 
 	public function includes() {
-		//include_once(PCKLE_CMS_FIELDS_PATH.'field.php');
-		//include_once(PCKLE_CMS_FIELDS_PATH.'text.php');
+		include_once(PCKLE_CMS_FIELDS_PATH.'field.php');
+		include_once(PCKLE_CMS_FIELDS_PATH.'text.php');
 		//include_once(PICKLE_CMS_PATH.'fields/datepicker/datepicker.php');	
-
-		//$this->query = new WC_Query();
 	}
 
 	private function init_hooks() {
-		add_action('init', array($this, 'init'), 0);
+		add_action('init', array($this, 'register_fields'));
 	}
 
 	private function define($name, $value) {
@@ -34,14 +41,27 @@ final class Pickle_CMS_Fields {
 		}
 	}
 
-	public function init() {
-		//$this->product_factory=new WC_Product_Factory(); // Product Factory to create new product instances.
+	public function register_fields() {
+		$field_classes=array();
+		
+		foreach (get_declared_classes() as $class) :
+			if (is_subclass_of($class, 'Pickle_CMS_Field'))
+				$field_classes[]=$class;
+		endforeach;
+		
+		foreach ($field_classes as $field_class) :
+			echo "$field_class<br>";
+
+			$fc=new $field_class();
+			
+			$this->fields[$fc->name]=$fc;
+		endforeach;
 	}
 
 }
 
 function pickle_cms_fields() {
-	return Pickle_CMS_Fields();
+	return Pickle_CMS_Fields::instance();
 }
 // Global for backwards compatibility.
 $GLOBALS['pickle_cms_fields'] = pickle_cms_fields();

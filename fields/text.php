@@ -133,6 +133,4 @@ class Pickle_CMS_Field_Text extends Pickle_CMS_Field {
 	}
 	
 }
-
-//new Pickle_CMS_Field_Text();
 ?>

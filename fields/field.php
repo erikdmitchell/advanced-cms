@@ -25,7 +25,7 @@ class Pickle_CMS_Field {
 		$this->title=$args['title'];
 		$this->category=$args['category'];
 		$this->options=$args['options'];	
-print_r($this);		
+//print_r($this);		
 		add_action('wp_ajax_pickle_cms_add_meta_box_field', array($this, 'ajax_add_field'));
 	}
 	
