@@ -50,8 +50,6 @@ final class Pickle_CMS_Fields {
 		endforeach;
 		
 		foreach ($field_classes as $field_class) :
-			echo "$field_class<br>";
-
 			$fc=new $field_class();
 			
 			$this->fields[$fc->name]=$fc;

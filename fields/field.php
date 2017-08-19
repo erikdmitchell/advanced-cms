@@ -25,7 +25,7 @@ class Pickle_CMS_Field {
 		$this->title=$args['title'];
 		$this->category=$args['category'];
 		$this->options=$args['options'];	
-//print_r($this);		
+		
 		add_action('wp_ajax_pickle_cms_add_meta_box_field', array($this, 'ajax_add_field'));
 	}
 	
@@ -64,11 +64,9 @@ class Pickle_CMS_Field {
 */
 	
 	public function add_field($key=0, $field='') {
-		global $pickle_cms_fields;	
-		
 		$default='text';
 		$html='';
-		$field=pickle_cms_parse_args($field, $pickle_cms_fields[$default]);
+		$field=pickle_cms_parse_args($field, pickle_cms_fields()->fields[$default]);
 
 		$html.='<div class="sortable pickle-cms-fields-wrapper" id="fields-wrapper-'.$key.'">';
 		
@@ -85,15 +83,14 @@ class Pickle_CMS_Field {
 		
 				$html.='<select class="field_type name-item field-type" name="fields['.$key.'][field_type]">';
 					$html.='<option value=0>Select One</option>';
-					foreach ($pickle_cms_fields as $id => $_field) :
-						$html.='<option value="'.$_field->name.'" '.selected($field['field_type'], $_field->name).'>'.$_field->label.'</option>';
+					foreach (pickle_cms_fields()->fields as $id => $pickle_cms_field) :
+						$html.='<option value="'.$pickle_cms_field->name.'" '.selected($field['field_type'], $pickle_cms_field->name).'>'.$pickle_cms_field->label.'</option>';
 					endforeach;
 				$html.='</select>';
 			$html.='</div>';
 		
 			$html.='<div class="field-options">';
 				$html.='this cannot be an action (field options)';
-				//do_action('create_field_options_'.$field['field_type'], $field);
 			$html.='</div>';
 		
 			$html.='<div class="field-row">';
