@@ -31,5 +31,5 @@ require_once(PICKLE_CMS_PATH.'lib/countries-states.php'); // contains global var
 //require_once(PICKLE_CMS_PATH.'widgets/init.php'); // our widgets
 
 // metabox fields //
-require_once(PICKLE_CMS_PATH.'fields/init.php');
+require_once(PICKLE_CMS_PATH.'fields/pickle-cms-fields.php');
 ?>
