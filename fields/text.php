@@ -46,14 +46,12 @@ class Pickle_CMS_Field_Text extends Pickle_CMS_Field {
 		$field=$this->parse_defaults($field);
 		?>
 		
-		<div class="field-row field_option_<?php echo $this->name; ?>">
-			<label for="">Default Value</label>
-			<?php $this->create_options_field(array(
-				'type' => 'text',
-				'name'	=>	'fields[' .$key.'][default_value]',
-				'value'	=>	$field['default_value'],
-			)); ?>
-		</div>
+		<?php $this->create_options_field(array(
+			'label' => 'Default Value',
+			'type' => 'text',
+			'name'	=>	'fields[' .$key.'][default_value]',
+			'value'	=>	$field['default_value'],
+		)); ?>
 
 		<div class="field-row field_option_<?php echo $this->name; ?>">
 			<label>Placeholder Text</label>

@@ -18,22 +18,27 @@ class Pickle_CMS_Field {
 	protected function create_options_field($args) {
 		$html='';
 
-		$html.='<div class="input-wrap">';
-		
-			switch ($args['type']) :
-				case 'select' :
-					$html.='<select name="'.$args['name'].'">';
-						foreach ($args['choices'] as $value => $display) :
-							$html.='<option value="'.$value.'" '.selected($args['value'], $value, false).'>'.$display.'</option>';
-						endforeach;
-					$html.='</select>';
-					break;
-				case 'textarea' :
-					$html.='<textarea name="'.$args['name'].'">'.$args['value'].'</textarea>';
-					break;
-				default:
-					$html.='<input type="'.$args['type'].'" name="'.$args['name'].'" value="'.$args['value'].'" />';
-			endswitch;
+		$html.='<div class="field-row field_option_'.$this->name.'">';
+			$html.='<label>'.$args['label'].'</label>';
+
+			$html.='<div class="input-wrap">';
+			
+				switch ($args['type']) :
+					case 'select' :
+						$html.='<select name="'.$args['name'].'">';
+							foreach ($args['choices'] as $value => $display) :
+								$html.='<option value="'.$value.'" '.selected($args['value'], $value, false).'>'.$display.'</option>';
+							endforeach;
+						$html.='</select>';
+						break;
+					case 'textarea' :
+						$html.='<textarea name="'.$args['name'].'">'.$args['value'].'</textarea>';
+						break;
+					default:
+						$html.='<input type="'.$args['type'].'" name="'.$args['name'].'" value="'.$args['value'].'" />';
+				endswitch;
+			
+			$html.='</div>';
 		
 		$html.='</div>';		
 		
