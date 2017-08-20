@@ -19,7 +19,6 @@ define('PICKLE_CMS_VERSION', '0.1.0');
 
 require_once(PICKLE_CMS_PATH.'admin/functions.php'); // admin functions
 require_once(PICKLE_CMS_PATH.'admin.php'); // admin class
-require_once(PICKLE_CMS_PATH.'admin/ajax.php'); // admin ajax funcs
 //require_once(PICKLE_CMS_PATH.'admin/documentation/init.php'); // handles our documentation
 //require_once(PICKLE_CMS_PATH.'classes/admin-columns.php'); // allows for custom admin columns
 //require_once(PICKLE_CMS_PATH.'classes/taxonomies.php'); // calls custom taxonomies

@@ -3,34 +3,20 @@ class Pickle_CMS_Field {
 	
 	public $id;
 	
-	public $title;
+	public $name;
 
-	public $category;
+	public $label;
 
-	public $defaults;
+	public $defaults=array();
 
-	public $options;
+	public $options=array();
 
-	function __construct($args='') {
-		$default_args=array(
-			'id' => '',
-			'title' => '',
-			'category' => 'basic',
-			'defaults' => array(),
-			'options' => array(),
-		);
-		$args=pickle_cms_parse_args($args, $default_args);
-
-		$this->id=$args['id'];
-		$this->title=$args['title'];
-		$this->category=$args['category'];
-		$this->options=$args['options'];	
-		
+	public function __construct() {	
 		add_action('wp_ajax_pickle_cms_add_meta_box_field', array($this, 'ajax_add_field'));
 	}
 	
-	function create_options_field($field) {		
-		// vars
+/*
+	private function create_options_field($field) {
 		$html='';
 		
 		$html.='<div class="input-wrap">';
@@ -53,13 +39,6 @@ class Pickle_CMS_Field {
 		$html.='</div>';		
 		
 		echo $html;
-	}
-
-/*
-	protected function parse_defaults($field) {	
-		$field=wp_parse_args($field, (array) $this->defaults);
-		
-		return $field;
 	}
 */
 	
@@ -90,7 +69,7 @@ class Pickle_CMS_Field {
 			$html.='</div>';
 		
 			$html.='<div class="field-options">';
-				$html.='this cannot be an action (field options)';
+				$html.='this will be ajax';
 			$html.='</div>';
 		
 			$html.='<div class="field-row">';
@@ -112,6 +91,8 @@ class Pickle_CMS_Field {
 
 		return $html;		
 	}	
+	
+	public function create_options($field) {}
 	
 	public function ajax_add_field() {
 		echo $this->add_field();

@@ -33,6 +33,8 @@ final class Pickle_CMS_Fields {
 
 	private function init_hooks() {
 		add_action('init', array($this, 'register_fields'));
+		
+		add_action('wp_ajax_metabox_change_field_type', array($this, 'change_field_type'));
 	}
 
 	private function define($name, $value) {
@@ -54,6 +56,14 @@ final class Pickle_CMS_Fields {
 			
 			$this->fields[$fc->name]=$fc;
 		endforeach;
+	}
+	
+	public function change_field_type() {
+		$field=$this->fields[$_POST['field']];
+
+		echo $field->create_options();
+
+		wp_die();
 	}
 
 }

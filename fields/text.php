@@ -13,7 +13,7 @@ class Pickle_CMS_Field_Text extends Pickle_CMS_Field {
 			'description' => '',
 			'class' => 'regular-text',
 		);
-		$this->options=0;
+		$this->options='';
 		
 		// do not delete!
     	parent::__construct();
@@ -37,16 +37,21 @@ class Pickle_CMS_Field_Text extends Pickle_CMS_Field {
 		
 		$e .= ' />';
 		$e .= '</div>';
-		
-		
-		// return
+
 		return $e;
 	}
 	
-	function create_options($field) {		
+	public function create_options($field) {				
 		// vars
 		$key = $field['order'];
-		$field=$this->parse_defaults($field);			
+		//$field=$this->parse_defaults($field);
+		$field=pickle_cms_parse_args($args, $default_args);
+echo '<pre>';
+echo "f<br>";		
+print_r($field);					
+echo "t<br>";
+print_r($this);
+echo '</pre>';
 		?>
 		<div class="field-row field_option_<?php echo $this->name; ?>">
 			<label for="">Default Value</label>

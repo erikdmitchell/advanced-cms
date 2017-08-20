@@ -51,7 +51,6 @@ jQuery(document).ready(function($) {
 		};
 	
 		$.post(ajaxurl, data, function(response) {
-			
 			$('#' + elID).find('.field-options').html(''); // clear out options
 			$('#' + elID).find('.field-options').html(response); // add new options	
 		});
