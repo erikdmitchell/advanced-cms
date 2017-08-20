@@ -14,33 +14,31 @@ class Pickle_CMS_Field {
 	public function __construct() {	
 		add_action('wp_ajax_pickle_cms_add_meta_box_field', array($this, 'ajax_add_field'));
 	}
-	
-/*
-	private function create_options_field($field) {
+
+	protected function create_options_field($args) {
 		$html='';
-		
+
 		$html.='<div class="input-wrap">';
 		
-			switch ($field['type']) :
+			switch ($args['type']) :
 				case 'select' :
-					$html.='<select name="'.$field['name'].'">';
-						foreach ($field['choices'] as $value => $display) :
-							$html.='<option value="'.$value.'" '.selected($field['value'], $value, false).'>'.$display.'</option>';
+					$html.='<select name="'.$args['name'].'">';
+						foreach ($args['choices'] as $value => $display) :
+							$html.='<option value="'.$value.'" '.selected($args['value'], $value, false).'>'.$display.'</option>';
 						endforeach;
 					$html.='</select>';
 					break;
 				case 'textarea' :
-					$html.='<textarea name="'.$field['name'].'">'.$field['value'].'</textarea>';
+					$html.='<textarea name="'.$args['name'].'">'.$args['value'].'</textarea>';
 					break;
 				default:
-					$html.='<input type="'.$field['type'].'" name="'.$field['name'].'" value="'.$field['value'].'" />';
+					$html.='<input type="'.$args['type'].'" name="'.$args['name'].'" value="'.$args['value'].'" />';
 			endswitch;
 		
 		$html.='</div>';		
 		
 		echo $html;
 	}
-*/
 	
 	public function add_field($key=0, $field='') {
 		$default='text';
@@ -68,9 +66,7 @@ class Pickle_CMS_Field {
 				$html.='</select>';
 			$html.='</div>';
 		
-			$html.='<div class="field-options">';
-				$html.='this will be ajax';
-			$html.='</div>';
+			$html.='<div class="field-options"></div>'; // populated via ajax
 		
 			$html.='<div class="field-row">';
 				$html.='<label for="id">Field ID</label>';
@@ -91,6 +87,12 @@ class Pickle_CMS_Field {
 
 		return $html;		
 	}	
+
+	protected function parse_defaults($field) {	
+		$field=pickle_cms_parse_args($field, (array) $this->defaults);
+		
+		return $field;
+	}
 	
 	public function create_options($field) {}
 	

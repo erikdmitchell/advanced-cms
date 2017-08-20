@@ -42,89 +42,70 @@ class Pickle_CMS_Field_Text extends Pickle_CMS_Field {
 	}
 	
 	public function create_options($field) {				
-		// vars
 		$key = $field['order'];
-		//$field=$this->parse_defaults($field);
-		$field=pickle_cms_parse_args($args, $default_args);
-echo '<pre>';
-echo "f<br>";		
-print_r($field);					
-echo "t<br>";
-print_r($this);
-echo '</pre>';
+		$field=$this->parse_defaults($field);
 		?>
+		
 		<div class="field-row field_option_<?php echo $this->name; ?>">
 			<label for="">Default Value</label>
-			<?php 
-			do_action('create_options_field_text', array(
+			<?php $this->create_options_field(array(
 				'type' => 'text',
 				'name'	=>	'fields[' .$key.'][default_value]',
 				'value'	=>	$field['default_value'],
-			));
-			?>
+			)); ?>
 		</div>
 
 		<div class="field-row field_option_<?php echo $this->name; ?>">
 			<label>Placeholder Text</label>
 		
-			<?php 
-			do_action('create_options_field_text', array(
+			<?php $this->create_options_field(array(
 				'type'	=>	'text',
 				'name'	=>	'fields[' .$key.'][placeholder]',
 				'value'	=>	$field['placeholder'],
-			));
-			?>
+			)); ?>
 		</div>
 
 		<div class="field-row field_option_<?php echo $this->name; ?>">
 			<label>Formatting</label>
 		
-			<?php 
-			do_action('create_options_field_text', array(
+			<?php $this->create_options_field(array(
 				'type' => 'select',
 				'name' => 'fields[' .$key.'][formatting]',
 				'value'	=> $field['formatting'],
 				'choices' => array(
-					'none'	=>	__("No formatting",'acf'),
-					'html'	=>	__("Convert HTML into tags",'acf')
+					'none'	=>	__("No formatting", 'pickle-cms'),
+					'html'	=>	__("Convert HTML into tags", 'pickle-cms')
 				)
-			));
-			?>
+			)); ?>
 		</div>
 		
 		<div class="field-row field_option_<?php echo $this->name; ?>">
 			<label>Character Limit</label>
 		
-			<?php 
-			do_action('create_options_field_text', array(
+			<?php $this->create_options_field(array(
 				'type'	=>	'number',
 				'name'	=>	'fields[' .$key.'][maxlength]',
 				'value'	=>	$field['maxlength'],
-			));
-			?>
+			)); ?>
 		</div>
 
 		<div class="field-row field_option_<?php echo $this->name; ?>">
 			<label>Description</label>
 		
-			<?php 
-			do_action('create_options_field_text', array(
+			<?php $this->create_options_field(array(
 				'type'	=>	'textarea',
 				'name'	=>	'fields[' .$key.'][description]',
 				'value'	=>	$field['description'],
-			));
-			?>
+			)); ?>
 		</div>
 
 		<div class="field-row field_option_<?php echo $this->name; ?>">
 			<label for="">Classes</label>
-			<?php 
-			do_action('create_options_field_text', array(
+			<?php $this->create_options_field(array(
 				'type' => 'text',
 				'name'	=>	'fields[' .$key.'][class]',
 				'value'	=>	$field['class'],
-			));
-			?>
+			)); ?>
 		</div>
 		<?php
 		
