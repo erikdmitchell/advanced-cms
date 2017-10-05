@@ -41,13 +41,14 @@ jQuery(document).ready(function($) {
 	/**
 	 * display field data (options) on change
 	 */
-	$('.custom-metabox').on('change', '.add-fields .field-type', function(e) {	
+	$('.custom-metabox').on('change', '.add-fields .type', function(e) {	
 		e.preventDefault();
 	
 		var elID=$(this).parents('.pickle-cms-fields-wrapper').attr('id');
 		var data={
 			'action' : 'metabox_change_field_type',
-			'field' : $(this).val()
+			'field' : $(this).val(),
+			'key' : $(this).parents('.pickle-cms-fields-wrapper').data('key'),
 		};
 	
 		$.post(ajaxurl, data, function(response) {

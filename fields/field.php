@@ -50,23 +50,23 @@ class Pickle_CMS_Field {
 		$html='';
 		$field=pickle_cms_parse_args($field, pickle_cms_fields()->fields[$default]);
 
-		$html.='<div class="sortable pickle-cms-fields-wrapper" id="fields-wrapper-'.$key.'">';
+		$html.='<div class="sortable pickle-cms-fields-wrapper" id="fields-wrapper-'.$key.'" data-key="'.$key.'">';
 		
 			$html.='<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>';
 		
 			$html.='<div class="field-row">';
 				$html.='<label for="title">Title</label>';
 		
-				$html.='<input type="text" name="fields['.$key.'][title]" class="field_type name-item field-title" value="'.$field['title'].'" />';
+				$html.='<input type="text" name="fields['.$key.'][title]" class="field-type field-title" value="'.$field['title'].'" />';
 			$html.='</div>';
 		
 			$html.='<div class="field-row">';
-				$html.='<label for="field_type">Field Type</label>';
+				$html.='<label for="field-type">Field Type</label>';
 		
-				$html.='<select class="field_type name-item field-type" name="fields['.$key.'][field_type]">';
+				$html.='<select class="field-type type" name="fields['.$key.'][field_type]">';
 					$html.='<option value=0>Select One</option>';
 					foreach (pickle_cms_fields()->fields as $id => $pickle_cms_field) :
-						$html.='<option value="'.$pickle_cms_field->name.'" '.selected($field['field_type'], $pickle_cms_field->name).'>'.$pickle_cms_field->label.'</option>';
+						$html.='<option value="'.$pickle_cms_field->name.'" '.selected($field['field-type'], $pickle_cms_field->name).'>'.$pickle_cms_field->label.'</option>';
 					endforeach;
 				$html.='</select>';
 			$html.='</div>';
@@ -77,8 +77,7 @@ class Pickle_CMS_Field {
 				$html.='<label for="id">Field ID</label>';
 		
 				$html.='<div class="gen-field-id">';
-					$html.='I would like this to be stored - Field ID';
-					//$html.='<input type="text" readonly="readonly" class="field_type field-id" value="'.$pickle_metaboxes->generate_field_id($pickle_cms_metabox_args['prefix'], $field['title'], $field['id']).'" /> <span class="description">(use as meta key)</span>';
+					$html.='<input type="text" readonly="readonly" class="field-type field-id" value="" /> <span class="description">(use as meta key)</span>';
 				$html.='</div>';
 			$html.='</div>';
 		
@@ -101,7 +100,7 @@ class Pickle_CMS_Field {
 	
 	public function create_options($field) {}
 	
-	public function ajax_add_field() {
+	public function ajax_add_field() {	
 		echo $this->add_field();
 		
 		wp_die();

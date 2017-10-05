@@ -96,9 +96,10 @@ class PickleCMSAdmin {
 		wp_enqueue_script('pickle-cms-admin-functions', PICKLE_CMS_ADMIN_URL.'js/functions.js', array('jquery'), '0.1.0');
 		wp_enqueue_script('pickle-cms-admin-post-types', PICKLE_CMS_ADMIN_URL.'js/post-types.js', array('jquery-ui-dialog'), '0.1.0');
 		wp_enqueue_script('pickle-cms-admin-taxonomies', PICKLE_CMS_ADMIN_URL.'js/taxonomies.js', array('jquery'), '0.1.0');
+		wp_enqueue_script('pickle-cms-fields-script', PICKLE_CMS_ADMIN_URL.'js/fields.js', array('jquery'), '0.1.0', true);
+		
 		wp_enqueue_script('pickle-cms-admin-metaboxes');
 
-	
 		wp_enqueue_style('jquery-ui-smoothness', "https://ajax.googleapis.com/ajax/libs/jqueryui/{$ui->ver}/themes/smoothness/jquery-ui.min.css");
 		wp_enqueue_style('pickle-cms-admin-style', PICKLE_CMS_ADMIN_URL.'css/admin.css');
 		wp_enqueue_style('pickle-cms-metabox-style', PICKLE_CMS_ADMIN_URL.'css/metaboxes.css');		
@@ -257,7 +258,8 @@ print_r($field);
 			return false;
 
 		global $pickleMetaboxes;
-//echo '<pre>';
+echo '<pre>';
+echo "update metaboxes<br>";
 		$data=$_POST;
 		$metaboxes=get_option('pickle_cms_metaboxes');
 		$edit_key=-1;
@@ -285,19 +287,16 @@ print_r($field);
 		// clean fields, if any //
 		if (isset($data['fields'])) :
 			foreach ($data['fields'] as $key => $field) :
-//print_r($field);
-				if (empty($field['field_type']) || empty(trim($field['title']))) :
+
+				if (empty($field['field_type']) || empty(trim($field['title'])))
 					unset($data['fields'][$key]);
-				else :
-					$data['fields'][$key]['id']=$pickleMetaboxes->generate_field_id($prefix, $field['title']); // add id
-					$data['fields'][$key]['name']=$data['fields'][$key]['id'];
-				endif;
+
 			endforeach;
 		endif;
 
 		if (isset($data['fields']))
 			$arr['fields']=array_values($data['fields']);
-//print_r($arr);
+
 		if (!empty($metaboxes)) :
 			foreach ($metaboxes as $key => $mb) :
 				if ($mb['mb_id']==$data['mb_id']) :
@@ -320,10 +319,11 @@ print_r($field);
 		endif;
 
 		$this->options['metaboxes']=$metaboxes; // set var
-//print_r($metaboxes);
+echo "mb<br>";		
+print_r($metaboxes);
 		update_option('pickle_cms_metaboxes', $metaboxes);
-//echo '</pre>';		
-//exit;
+echo '</pre>';		
+exit;
 		$url=$this->admin_url(array(
 			'tab' => 'metaboxes',
 			'action' => 'update',

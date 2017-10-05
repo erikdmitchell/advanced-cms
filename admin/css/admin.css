@@ -68,9 +68,13 @@
 
 /* meta box fields
 ------------------ */
+.pickle-cms-wrap .add-fields {
+	padding-left: 0;
+}
 .pickle-cms-fields-wrapper {
 	margin-bottom: 20px;
 	overflow: hidden;
+	width: 80%;
 }
 .pickle-cms-fields-wrapper .ui-icon {
 	float: left;
@@ -85,15 +89,26 @@
 	vertical-align: middle;
 	font-weight: bold;
 	color: #23282d;
-	width: 200px;
+	width: 20%;
 	display: inline-block;
 	float: left;
 	margin-top: 3px;
 }
+.pickle-cms-fields-wrapper .field-row > input,
+.pickle-cms-fields-wrapper .field-row > select,
+.pickle-cms-fields-wrapper .field-options .field-row input,
+.pickle-cms-fields-wrapper .field-options .field-row select {
+	width: 79%;
+}
+.pickle-cms-fields-wrapper .field-options .field-row textarea {
+	width: 79%;
+	height: 100px;
+}
+/*
 .pickle-cms-fields-wrapper input.field-label,
 .pickle-cms-fields-wrapper select.field-type,
 .pickle-cms-fields-wrapper input.field-description {
-	width: 502px;
+	width: 50%;
 }
 .pickle-cms-fields-wrapper input.field-id {
 	width: 394px;
@@ -145,6 +160,7 @@
 .pickle-cms-fields-wrapper .field-options .options.options-row #option-row-0 {
 	margin-left: 0;
 }
+*/
 .pickle-cms-fields-wrapper .field-options .add-option-field {
 	overflow: hidden;
 	margin-bottom: 10px;

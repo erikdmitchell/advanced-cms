@@ -58,10 +58,12 @@ final class Pickle_CMS_Fields {
 		endforeach;
 	}
 	
-	public function change_field_type() {
+	public function change_field_type() {		
 		$field=$this->fields[$_POST['field']];
 
-		echo $field->create_options();
+		echo $field->create_options(array(
+			'key' => $_POST['key']
+		));
 
 		wp_die();
 	}
@@ -71,6 +73,7 @@ final class Pickle_CMS_Fields {
 function pickle_cms_fields() {
 	return Pickle_CMS_Fields::instance();
 }
+
 // Global for backwards compatibility.
 $GLOBALS['pickle_cms_fields'] = pickle_cms_fields();
 ?>

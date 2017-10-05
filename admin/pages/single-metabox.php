@@ -50,8 +50,7 @@ $pickle_cms_metabox_args=pickle_cms_setup_metabox_args();
 					<td colspan="2" class="add-fields sortable-div <?php echo $pickle_cms_metabox_args['edit_class_v']; ?>">
 						<h3>Metabox Fields</h3>
 						
-						<?php foreach ($pickle_cms_metabox_args['fields'] as $field): ?>
-							<?php $key=$field['order']; ?>
+						<?php foreach ($pickle_cms_metabox_args['fields'] as $key => $field): ?>
 
 <pre>
 	<?php print_r($field); ?>
