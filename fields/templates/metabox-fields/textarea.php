@@ -1,1 +1,0 @@
-<textarea class="textarea" name="<?php echo $atts['id']; ?>" id="<?php echo $atts['id']; ?>"><?php echo $value; ?></textarea>

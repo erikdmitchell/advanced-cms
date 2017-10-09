@@ -1,1 +1,0 @@
-<input type="checkbox" class="field-input" name="<?php echo $atts['id']; ?>[]" id="<?php echo $atts['id']; ?>" value="<?php echo $atts['value']; ?>" <?php advanced_cms_checked_checkbox($value, $atts['value']); ?> /> <?php echo $atts['name']; ?> <br/>
