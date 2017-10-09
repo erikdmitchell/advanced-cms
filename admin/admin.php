@@ -182,11 +182,7 @@ class PickleCMSAdmin {
 			<?php
 			switch ($active_tab) :
 				case 'cms-main':
-					if (isset($_GET['documentation']) && !empty($_GET['documentation'])) :
-						echo pickle_cms_get_doc_template($_GET['documentation']);
-					else :
-						echo pickle_cms_get_admin_page('main');
-					endif;
+					echo pickle_cms_get_admin_page('main');
 					break;
 				case 'columns':
 					if (isset($_GET['action']) && $_GET['action']=='update') :
