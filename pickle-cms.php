@@ -23,7 +23,11 @@ final class PickleCMS {
 	
 	public $metaboxes=null;
 	
-	public $metaboxes=null;
+	public $post_types=null;
+	
+	public $taxonomies=null;
+	
+	public $admin_columns=null;
 
 	public static function instance() {
 		if ( is_null( self::$_instance ) ) {
@@ -70,12 +74,19 @@ final class PickleCMS {
 		 * classes
 		 */
 		include_once(PICKLE_CMS_PATH.'classes/metaboxes.php');
-		require_once(PICKLE_CMS_PATH.'fields/pickle-cms-fields.php'); // metabox fields
+		include_once(PICKLE_CMS_PATH.'classes/post-types.php');
+		include_once(PICKLE_CMS_PATH.'fields/pickle-cms-fields.php'); // metabox fields
 		 
 		/**
 		 * libraries
 		 */
 		include_once(PICKLE_CMS_PATH.'lib/countries-states.php'); // contains global vars/arrays for states and countries
+		
+		// setup metaboxes
+		// setup post types
+		$this->post_types=new PickleCMS_Post_Types();
+		// setup taxonomies
+		// setup admin columns?
 	}
 
 	private function init_hooks() {
