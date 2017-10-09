@@ -1,11 +1,8 @@
 <?php
-global $pickle_cms_admin, $pickle_cms_metabox_args, $pickle_metaboxes;
+global $pickle_cms_admin, $pickle_cms_metabox_args;
 
 $pickle_cms_metabox_args=pickle_cms_setup_metabox_args();
 ?>
-<pre>
-	<?php print_r($pickle_cms_metabox_args); ?>
-</pre>
 
 <h3><?php echo $pickle_cms_metabox_args['header']; ?> <a href="<?php pickle_cms_admin_link(array('tab' => 'metaboxes', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h3>
 
