@@ -1,10 +1,6 @@
 <?php
-global $pickle_metaboxes;
-
-/**
- * PickleCMSMetaboxes class.
- */
-class PickleCMSMetaboxes {
+	
+class PickleCMS_Metaboxes {
 
 	public $config;
 
@@ -271,7 +267,5 @@ class PickleCMSMetaboxes {
 		endforeach;
 	}
 	
-} // end class
-
-$pickle_metaboxes = new PickleCMSMetaboxes();
+}
 ?>

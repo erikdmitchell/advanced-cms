@@ -82,11 +82,12 @@ final class PickleCMS {
 		 */
 		include_once(PICKLE_CMS_PATH.'lib/countries-states.php'); // contains global vars/arrays for states and countries
 		
+		// setup admin columns?
 		// setup metaboxes
+		$this->meta_boxes=new PickleCMS_Metaboxes();
 		// setup post types
 		$this->post_types=new PickleCMS_Post_Types();
 		// setup taxonomies
-		// setup admin columns?
 	}
 
 	private function init_hooks() {

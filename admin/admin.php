@@ -72,20 +72,11 @@ class PickleCMSAdmin {
 	 * @return void
 	 */
 	public function scripts_styles($hook) {
-		global $pickle_metaboxes, $wp_scripts;
+		global $wp_scripts;
 
 		$ui = $wp_scripts->query('jquery-ui-core');
 
 		wp_register_script('pickle-cms-admin-metaboxes', PICKLE_CMS_ADMIN_URL.'js/metaboxes.js', array('jquery'), '0.2.0');
-
-		// localize scripts //
-		/*
-		$metaboxes_arr=array(
-			'fields' => $pickle_metaboxes->fields,
-		);
-		*/
-
-		//wp_localize_script('pickle-cms-admin-metaboxes', 'metaboxData', $metaboxes_arr);
 
 		wp_enqueue_script('jquery-ui-dialog');
 		wp_enqueue_script('jquery-ui-sortable');
