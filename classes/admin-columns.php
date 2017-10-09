@@ -1,9 +1,6 @@
 <?php
 
-/**
- * pickleCMSAdminColumns class.
- */
-class pickleCMSAdminColumns {
+class PickleCMS_Admin_Columns {
 
 	public $config=array();
 
