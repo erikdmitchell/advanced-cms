@@ -1,7 +1,8 @@
 <?php
+	
 class Pickle_CMS_Field {
 	
-	public $id;
+	//public $id;
 	
 	public $name;
 
@@ -49,7 +50,8 @@ class Pickle_CMS_Field {
 		$default='text';
 		$html='';
 		$field=pickle_cms_parse_args($field, pickle_cms_fields()->fields[$default]);
-
+echo "add field<br>";			
+print_r($field);
 		$html.='<div class="sortable pickle-cms-fields-wrapper" id="fields-wrapper-'.$key.'" data-key="'.$key.'">';
 		
 			$html.='<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>';
@@ -66,7 +68,7 @@ class Pickle_CMS_Field {
 				$html.='<select class="field-type type" name="fields['.$key.'][field_type]">';
 					$html.='<option value=0>Select One</option>';
 					foreach (pickle_cms_fields()->fields as $id => $pickle_cms_field) :
-						$html.='<option value="'.$pickle_cms_field->name.'" '.selected($field['field-type'], $pickle_cms_field->name).'>'.$pickle_cms_field->label.'</option>';
+						$html.='<option value="'.$pickle_cms_field->name.'" '.selected($field['field_type'], $pickle_cms_field->name).'>'.$pickle_cms_field->label.'</option>';
 					endforeach;
 				$html.='</select>';
 			$html.='</div>';
@@ -104,9 +106,14 @@ class Pickle_CMS_Field {
 		echo $this->add_field();
 		
 		wp_die();
-	}	
+	}
+	
+	public function load($field='', $key=0) {
+		if (empty($field))
+			return;	
+
+		$this->add_field($key, $field);
+	}
 			
 }
-
-new Pickle_CMS_Field();
 ?>
