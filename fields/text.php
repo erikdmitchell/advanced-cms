@@ -19,11 +19,14 @@ class Pickle_CMS_Field_Text extends Pickle_CMS_Field {
     	parent::__construct();
 	}
 	
-	function create_field($field) {
+	public function create_field($field) {
+		$field['name']=$field['id'];
 		// vars
 		$o=array( 'class', 'name', 'id', 'value', 'placeholder', 'maxlength');
 		$e = '';
-		
+echo '<pre>';
+print_r($field);
+echo '</pre>';			
 		// maxlength
 		if ($field['maxlength'] !== "" )
 			$o[] = 'maxlength';
@@ -49,7 +52,7 @@ class Pickle_CMS_Field_Text extends Pickle_CMS_Field {
 echo '<pre>';
 echo "text create options<br>";
 print_r($field);
-echo '</pre>";	
+echo '</pre>';	
 */	
 		$output.=$this->create_options_field(array(
 			'label' => 'Default Value',

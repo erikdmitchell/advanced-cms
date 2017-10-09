@@ -93,7 +93,7 @@ echo '</pre>';
 		
 				$html.='<div class="gen-field-id">';
 					//$html.='<input type="text" readonly="readonly" class="field-type field-id" name="fields['.$key.'][field_id]" value="" /> <span class="description">(use as meta key)</span>';
-					$html.='<input type="text" readonly="readonly" class="field-type field-id" name="fields['.$key.'][field_id]" value="'.$field['field_id'].'" /> <span class="description">(use as meta key)</span>';
+					$html.='<input type="text" readonly="readonly" class="field-type field-id" name="fields['.$key.'][id]" value="'.$field['id'].'" /> <span class="description">(use as meta key)</span>';
 				$html.='</div>';
 			$html.='</div>';
 		

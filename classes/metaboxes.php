@@ -95,14 +95,14 @@ class PickleCMSMetaboxes {
 					if (!empty($config['fields'])) :
 	
 						foreach ($config['fields'] as $field) :	
-							$classes=array('meta-row', $field['field_id'], 'type-'.$field['field_type']);
-							$field['value']=get_post_meta($post->ID, $field['field_id'], true);
+							$classes=array('meta-row', $field['id'], 'type-'.$field['field_type']);
+							$field['value']=get_post_meta($post->ID, $field['id'], true);
 					
-							$html.='<div id="meta-row-'.$row_counter.'" class="'.implode(' ', $classes).'" data-input-id="'.$field['field_id'].'" data-field-type="'.$field['field_type'].'" data-field-order="">';
-								$html.='<label for="'.$field['field_id'].'">'.$field['title'].'</label>';
+							$html.='<div id="meta-row-'.$row_counter.'" class="'.implode(' ', $classes).'" data-input-id="'.$field['id'].'" data-field-type="'.$field['field_type'].'" data-field-order="">';
+								$html.='<label for="'.$field['id'].'">'.$field['title'].'</label>';
 		
 								$html.='<div class="fields-wrap">';
-									//$html.=apply_filters('create_field_'.$field['field_type'], $field);
+									$html.=pickle_cms_fields()->fields[$field['field_type']]->create_field($field);
 									
 									if (isset($field['description']))
 										$html.='<p class="description">'.$field['description'].'</p>';
@@ -218,7 +218,7 @@ class PickleCMSMetaboxes {
 		
 		foreach ($this->config as $mb) :
 			foreach ($mb['fields'] as $field) :
-				$registered_fields[]=$field['field_id'];
+				$registered_fields[]=$field['id'];
 			endforeach;
 		endforeach;
 		

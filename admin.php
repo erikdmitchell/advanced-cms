@@ -319,7 +319,12 @@ echo "update metaboxes<br>";
 		endif;
 
 		$this->options['metaboxes']=$metaboxes; // set var
-
+/*
+echo "mb<br>";		
+print_r($metaboxes);	
+echo '</pre>';		
+exit;
+*/
 		update_option('pickle_cms_metaboxes', $metaboxes);
 
 		$url=$this->admin_url(array(
