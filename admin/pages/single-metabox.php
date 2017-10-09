@@ -54,7 +54,7 @@ $pickle_cms_metabox_args=pickle_cms_setup_metabox_args();
 
 <pre>
 	(single metabox) <br>
-	<?php print_r($field); ?>
+	<?php pickle_cms_fields()->field->load($field, $key); ?>
 </pre>
 							
 

@@ -8,6 +8,8 @@ final class Pickle_CMS_Fields {
 	
 	public $fields=array();
 	
+	public $field=array();
+	
 	public static function instance() {
 		if ( is_null( self::$_instance ) ) {
 			self::$_instance = new self();
@@ -28,7 +30,9 @@ final class Pickle_CMS_Fields {
 	public function includes() {
 		include_once(PCKLE_CMS_FIELDS_PATH.'field.php');
 		include_once(PCKLE_CMS_FIELDS_PATH.'text.php');
-		//include_once(PICKLE_CMS_PATH.'fields/datepicker/datepicker.php');	
+		//include_once(PICKLE_CMS_PATH.'fields/datepicker/datepicker.php');
+		
+		$this->field=new Pickle_CMS_Field();	
 	}
 
 	private function init_hooks() {
