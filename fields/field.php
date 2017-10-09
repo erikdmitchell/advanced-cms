@@ -43,15 +43,19 @@ class Pickle_CMS_Field {
 		
 		$html.='</div>';		
 		
-		echo $html;
+		return $html;
 	}
 	
 	public function add_field($key=0, $field='') {
+//echo "add field<br>";
 		$default='text';
 		$html='';
-		$field=pickle_cms_parse_args($field, pickle_cms_fields()->fields[$default]);
-echo "add field<br>";			
+/*
+echo '<pre>';		
 print_r($field);
+echo '</pre>';
+*/
+
 		$html.='<div class="sortable pickle-cms-fields-wrapper" id="fields-wrapper-'.$key.'" data-key="'.$key.'">';
 		
 			$html.='<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>';
@@ -68,18 +72,21 @@ print_r($field);
 				$html.='<select class="field-type type" name="fields['.$key.'][field_type]">';
 					$html.='<option value=0>Select One</option>';
 					foreach (pickle_cms_fields()->fields as $id => $pickle_cms_field) :
-						$html.='<option value="'.$pickle_cms_field->name.'" '.selected($field['field_type'], $pickle_cms_field->name).'>'.$pickle_cms_field->label.'</option>';
+						$html.='<option value="'.$pickle_cms_field->name.'" '.selected($field['field_type'], $pickle_cms_field->name, false).'>'.$pickle_cms_field->label.'</option>';
 					endforeach;
 				$html.='</select>';
 			$html.='</div>';
 		
-			$html.='<div class="field-options"></div>'; // populated via ajax
+			$html.='<div class="field-options">';
+					$html.=pickle_cms_fields()->fields[$field['field_type']]->create_options($field);
+			$html.='</div>';
 		
 			$html.='<div class="field-row">';
 				$html.='<label for="id">Field ID</label>';
 		
 				$html.='<div class="gen-field-id">';
-					$html.='<input type="text" readonly="readonly" class="field-type field-id" name="fields['.$key.'][field_id]" value="" /> <span class="description">(use as meta key)</span>';
+					//$html.='<input type="text" readonly="readonly" class="field-type field-id" name="fields['.$key.'][field_id]" value="" /> <span class="description">(use as meta key)</span>';
+					$html.='<input type="text" readonly="readonly" class="field-type field-id" name="fields['.$key.'][field_id]" value="'.$field['field_id'].'" /> <span class="description">(use as meta key)</span>';
 				$html.='</div>';
 			$html.='</div>';
 		
@@ -112,7 +119,10 @@ print_r($field);
 		if (empty($field))
 			return;	
 
-		$this->add_field($key, $field);
+		if (!isset($field['key']))
+			$field['key']=$key;
+		
+		echo $this->add_field($key, $field);
 	}
 			
 }

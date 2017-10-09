@@ -41,25 +41,31 @@ class Pickle_CMS_Field_Text extends Pickle_CMS_Field {
 		return $e;
 	}
 	
-	public function create_options($field) {				
+	public function create_options($field) {
+		$output='';				
 		$key=$field['key'];
 		$field=$this->parse_defaults($field);
-		
-		$this->create_options_field(array(
+/*
+echo '<pre>';
+echo "text create options<br>";
+print_r($field);
+echo '</pre>";	
+*/	
+		$output.=$this->create_options_field(array(
 			'label' => 'Default Value',
 			'type' => 'text',
 			'name'	=> 'fields[' .$key.'][default_value]',
 			'value'	=> $field['default_value'],
 		)); 
 
-		$this->create_options_field(array(
+		$output.=$this->create_options_field(array(
 			'label' => 'Placeholder Text',
 			'type' => 'text',
 			'name'	=> 'fields[' .$key.'][placeholder]',
 			'value'	=> $field['placeholder'],
 		));
 		
-		$this->create_options_field(array(
+		$output.=$this->create_options_field(array(
 			'label' => 'Formatting',
 			'type' => 'select',
 			'name' => 'fields[' .$key.'][formatting]',
@@ -70,26 +76,28 @@ class Pickle_CMS_Field_Text extends Pickle_CMS_Field {
 			)
 		)); 				
 		
-		$this->create_options_field(array(
+		$output.=$this->create_options_field(array(
 			'label' => 'Character Limit',
 			'type'	=>	'number',
 			'name'	=>	'fields[' .$key.'][maxlength]',
 			'value'	=>	$field['maxlength'],
 		));
 		
-		$this->create_options_field(array(
+		$output.=$this->create_options_field(array(
 			'label' => 'Description',
 			'type'	=>	'textarea',
 			'name'	=>	'fields[' .$key.'][description]',
 			'value'	=>	$field['description'],
 		));
 
-		$this->create_options_field(array(
+		$output.=$this->create_options_field(array(
 			'label' => 'Classes',
 			'type' => 'text',
 			'name'	=>	'fields[' .$key.'][class]',
 			'value'	=>	$field['class'],
 		));
+		
+		return $output;
 	}
 	
 	function format_value($value, $post_id, $field) {
