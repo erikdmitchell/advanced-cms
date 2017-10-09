@@ -24,9 +24,7 @@ class Pickle_CMS_Field_Text extends Pickle_CMS_Field {
 		// vars
 		$o=array( 'class', 'name', 'id', 'value', 'placeholder', 'maxlength');
 		$e = '';
-echo '<pre>';
-print_r($field);
-echo '</pre>';			
+		
 		// maxlength
 		if ($field['maxlength'] !== "" )
 			$o[] = 'maxlength';
@@ -48,12 +46,7 @@ echo '</pre>';
 		$output='';				
 		$key=$field['key'];
 		$field=$this->parse_defaults($field);
-/*
-echo '<pre>';
-echo "text create options<br>";
-print_r($field);
-echo '</pre>';	
-*/	
+
 		$output.=$this->create_options_field(array(
 			'label' => 'Default Value',
 			'type' => 'text',

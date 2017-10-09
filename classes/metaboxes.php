@@ -45,7 +45,7 @@ class PickleCMSMetaboxes {
 		if (!$prefix)
 			return false;
 
-		if (substr($prefix,0,1)!='_')
+		if (substr($prefix, 0, 1)!='_')
 			$prefix='_'.$prefix;
 
 		return $prefix;
@@ -82,12 +82,10 @@ class PickleCMSMetaboxes {
 		$html=null;
 		$row_counter=1;
 
-		//wp_enqueue_script('pickle-cms-metabox-media-uploader', PICKLE_CMS_URL.'/js/metabox-media-uploader.js', array('jquery'));
-
-		//wp_nonce_field(plugin_basename( __FILE__ ), $this->nonce);
-
 		$html.='<div class="pickle-cms-meta-box">';
 
+			$html.=wp_nonce_field('update_metabox', 'pickle_cms_metabox', true, false);
+			
 			foreach ($this->config as $config) :
 
 				if ($metabox['args']['meta_box_id']==$config['mb_id']) :
@@ -144,19 +142,23 @@ class PickleCMSMetaboxes {
 
 	public function save_custom_meta_data($post_id) {
 		// Bail if we're doing an auto save
-		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) 
+			return;
 
 		// if our nonce isn't there, or we can't verify it, bail
-		if (!isset($_POST[$this->nonce]) || !wp_verify_nonce($_POST[$this->nonce],plugin_basename(__FILE__))) return;
+		if (!isset($_POST['pickle_cms_metabox']) || !wp_verify_nonce($_POST['pickle_cms_metabox'], 'update_metabox')) 
+			return;
 
 		// if our current user can't edit this post, bail
-		if (!current_user_can('edit_post',$post_id)) return;
+		if (!current_user_can('edit_post',$post_id)) 
+			return;
 		
 		$custom_values=array();
 	
 		foreach ($this->registered_fields as $key) :
-			if (isset($_POST[$key]))
+			if (isset($_POST[$key])) :
 				$custom_values[$key]=$_POST[$key];
+			endif;
 		endforeach;
 		
 		foreach ($custom_values as $meta_key => $meta_value) :
