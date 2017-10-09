@@ -66,8 +66,8 @@ jQuery(document).ready(function($) {
 		});
 	});
 
-	
-	$('.button.remove-field').live('click',function(e) {		
+	// FIELDS //
+	$('.custom-metabox').on('click', '.button.remove-field', function(e) {		
 		var elemID=$(this).data('id');
 		
 		$('#'+elemID).remove();
