@@ -84,7 +84,7 @@ class PickleCMSMetaboxes {
 
 		//wp_enqueue_script('pickle-cms-metabox-media-uploader', PICKLE_CMS_URL.'/js/metabox-media-uploader.js', array('jquery'));
 
-		wp_nonce_field(plugin_basename( __FILE__ ), $this->nonce);
+		//wp_nonce_field(plugin_basename( __FILE__ ), $this->nonce);
 
 		$html.='<div class="pickle-cms-meta-box">';
 
@@ -93,29 +93,16 @@ class PickleCMSMetaboxes {
 				if ($metabox['args']['meta_box_id']==$config['mb_id']) :
 
 					if (!empty($config['fields'])) :
-						// order ?/? //
-				/*		
-				usort($this->fields, function ($a, $b) {
-					if (function_exists('bccomp')) :
-						return bccomp($a['order'], $b['order']);
-					else :
-						return strcmp($a['order'], $b['order']);
-					endif;
-				});
-				*/		
+	
 						foreach ($config['fields'] as $field) :	
-							$classes=array('meta-row', $field['id'], 'type-'.$field['field_type']);
-							$field['value']=get_post_meta($post->ID, $field['name'], true);
-
-echo '<pre>';
-print_r($field);
-echo '</pre>';	
+							$classes=array('meta-row', $field['field_id'], 'type-'.$field['field_type']);
+							$field['value']=get_post_meta($post->ID, $field['field_id'], true);
 					
-							$html.='<div id="meta-row-'.$row_counter.'" class="'.implode(' ', $classes).'" data-input-id="'.$field['id'].'" data-field-type="'.$field['field_type'].'" data-field-order="'.$field['order'].'">';
-								$html.='<label for="'.$field['id'].'">'.$field['title'].'</label>';
+							$html.='<div id="meta-row-'.$row_counter.'" class="'.implode(' ', $classes).'" data-input-id="'.$field['field_id'].'" data-field-type="'.$field['field_type'].'" data-field-order="">';
+								$html.='<label for="'.$field['field_id'].'">'.$field['title'].'</label>';
 		
 								$html.='<div class="fields-wrap">';
-									$html.=apply_filters('create_field_'.$field['field_type'], $field);
+									//$html.=apply_filters('create_field_'.$field['field_type'], $field);
 									
 									if (isset($field['description']))
 										$html.='<p class="description">'.$field['description'].'</p>';
