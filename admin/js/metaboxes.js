@@ -2,9 +2,6 @@ jQuery(document).ready(function($) {
 
 	$('form.custom-metabox').requiredFields();
 
-	/**
-	 * metabox id check
-	 */
 	$('.custom-metabox #mb_id').change(function() {
 		if ($(this).metaboxIDcheck($(this), $(this).val())) {
 			$('.custom-post-types #submit').prop('disabled',false);
@@ -13,9 +10,6 @@ jQuery(document).ready(function($) {
 		}
 	});
 
-	/**
-	 * delete metabox link click
-	 */
 	$('.pickle-cms-metaboxes .metaboxes-list td a .dashicons-trash').on('click',function(e) {
 		e.preventDefault();
 
@@ -40,6 +34,7 @@ jQuery(document).ready(function($) {
 
 	/**
 	 * display field data (options) on change
+	 // FIELDS //
 	 */
 	$('.custom-metabox').on('change', '.add-fields .type', function(e) {	
 		e.preventDefault();
@@ -57,9 +52,7 @@ jQuery(document).ready(function($) {
 		});
 	});
 
-	/**
-	 * adds a new field to our metabox
-	 */
+	// FIELDS //
 	$('#add-field-btn').on('click', function(e) {	
 		e.preventDefault();
 		
@@ -67,19 +60,19 @@ jQuery(document).ready(function($) {
 			'action' : 'pickle_cms_add_meta_box_field'
 		};
 		
+	// we need to check field id //
 		$.post(ajaxurl, data, function(response) {			
 			$('.add-fields').append(response);		
 		});
 	});
 
-	// remove a metabox field //
+	
 	$('.button.remove-field').live('click',function(e) {		
 		var elemID=$(this).data('id');
 		
 		$('#'+elemID).remove();
 	});
 
-	// adds a new option field to our metabox element TEST //
 	$('.add-option-field-btn').on('click', function() {
 		var wrapperID=$(this).parent().parent().attr('id');
 		var $lastElement=$('#'+wrapperID+' .option-row:last');
