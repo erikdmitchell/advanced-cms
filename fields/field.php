@@ -50,11 +50,14 @@ class Pickle_CMS_Field {
 //echo "add field<br>";
 		$default='text';
 		$html='';
+
 /*
 echo '<pre>';		
 print_r($field);
+//print_r(pickle_cms_fields());
 echo '</pre>';
 */
+
 
 		$html.='<div class="sortable pickle-cms-fields-wrapper" id="fields-wrapper-'.$key.'" data-key="'.$key.'">';
 		
@@ -78,7 +81,11 @@ echo '</pre>';
 			$html.='</div>';
 		
 			$html.='<div class="field-options">';
-					$html.=pickle_cms_fields()->fields[$field['field_type']]->create_options($field);
+			
+					if (isset($field['field_type']) && pickle_cms_fields()->is_field_type($field['field_type'])) :
+						$html.=pickle_cms_fields()->fields[$field['field_type']]->create_options($field);
+					endif;	
+					
 			$html.='</div>';
 		
 			$html.='<div class="field-row">';
@@ -109,7 +116,7 @@ echo '</pre>';
 	
 	public function create_options($field) {}
 	
-	public function ajax_add_field() {	
+	public function ajax_add_field() {			
 		echo $this->add_field();
 		
 		wp_die();

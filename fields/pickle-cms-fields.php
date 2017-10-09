@@ -71,6 +71,13 @@ final class Pickle_CMS_Fields {
 
 		wp_die();
 	}
+	
+	public function is_field_type($field_type='') {
+		if (array_key_exists($field_type, $this->fields))
+			return true;
+			
+		return false;
+	}
 
 }
 
