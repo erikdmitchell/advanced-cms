@@ -57,10 +57,10 @@ jQuery(document).ready(function($) {
 		e.preventDefault();
 		
 		var data={
-			'action' : 'pickle_cms_add_meta_box_field'
+			'action' : 'pickle_cms_add_meta_box_field',
+			'field_id' : getNextFieldID()
 		};
-		
-	// we need to check field id //
+
 		$.post(ajaxurl, data, function(response) {			
 			$('.add-fields').append(response);		
 		});
@@ -99,6 +99,10 @@ jQuery(document).ready(function($) {
 	});
 
 });
+
+function getNextFieldID() {
+	return jQuery('.custom-metabox .add-fields .pickle-cms-fields-wrapper').length;
+}
 
 /**
  * our sortable function for our metabox fields

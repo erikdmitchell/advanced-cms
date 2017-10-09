@@ -116,8 +116,13 @@ echo '</pre>';
 	
 	public function create_options($field) {}
 	
-	public function ajax_add_field() {			
-		echo $this->add_field();
+	public function ajax_add_field() {
+		$key=0;
+		
+		if (isset($_POST['field_id']))
+			$key=$_POST['field_id'];
+			
+		echo $this->add_field($key);
 		
 		wp_die();
 	}
