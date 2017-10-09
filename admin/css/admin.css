@@ -1,148 +1,174 @@
 /* general
 ---------- */
-.advanced-cms-admin-page .wp-list-table {
+.pickle-cms-admin-page .wp-list-table {
 	margin-top: 15px;
 	margin-bottom: 15px;
 }
 
-.tools_page_advanced-cms label {
+.tools_page_pickle-cms label {
 	font-weight: bold;
 	display: inline-block;
 	vertical-align: top;
 }
-.tools_page_advanced-cms label.required {
+.tools_page_pickle-cms label.required {
 	color: #000;
 }
-.tools_page_advanced-cms label.required:after {
+.tools_page_pickle-cms label.required:after {
 	color: red;
 	content: "*";
 	padding-left: 3px;
 }
-.advanced-cms-wrap .left-col {
+.pickle-cms-wrap .left-col {
 	float: left;
 	width: 70%;
 }
-.advanced-cms-wrap .right-col {
+.pickle-cms-wrap .right-col {
 	float: left;
 	width: 29%;
 	margin-left: 1%;
 }
-.advanced-cms-edit-list .advanced-cms-edit-list-row {
+.pickle-cms-edit-list .pickle-cms-edit-list-row {
 	overflow: hidden;
 }
-.advanced-cms-edit-list .advanced-cms-edit-list-row > div {
+.pickle-cms-edit-list .pickle-cms-edit-list-row > div {
 	margin-right: 5px;
 	float: left;
 }
-.advanced-cms-edit-list .advanced-cms-edit-list-row .label {
+.pickle-cms-edit-list .pickle-cms-edit-list-row .label {
 	font-weight: bold;
   vertical-align: top;
   color: #23282d;
 }
-.advanced-cms-wrap {
+.pickle-cms-wrap {
 	overflow: hidden;
 }
 
 /* mb */
-.add-fields .field-options > div {
-	display: none;
-	overflow: hidden;
-}
-
-.advanced-cms-wrap .form-row div.input {
+.pickle-cms-wrap .form-row div.input {
 	padding: 0;
 }
-.advanced-cms-wrap .form-row div.input > input {
+.pickle-cms-wrap .form-row div.input > input {
 	width: 100%;
 }
-.advanced-cms-wrap .fd > input,
-.advanced-cms-wrap .gen-field-id > input {
+.pickle-cms-wrap .fd > input,
+.pickle-cms-wrap .gen-field-id > input {
 	width: 50%;
 }
 
 /* errors */
-#advanced-cms-name-error,
-.advanced-cms-name-error {
+#pickle-cms-name-error,
+.pickle-cms-name-error {
 	color: red;
 	font-weight: bold;
 }
-.custom-metabox .advanced-cms-name-error {
+.custom-metabox .pickle-cms-name-error {
 	clear: both;
 	padding: 5px 0;
 }
 
 /* meta box fields
 ------------------ */
-.advanced-cms-fields-wrapper {
+.pickle-cms-wrap .add-fields {
+	padding-left: 0;
+}
+.pickle-cms-fields-wrapper {
 	margin-bottom: 20px;
 	overflow: hidden;
+	width: 80%;
 }
-.advanced-cms-fields-wrapper .ui-icon {
+.pickle-cms-fields-wrapper .ui-icon {
 	float: left;
 	margin-top: 3px;
 }
-.advanced-cms-fields-wrapper .field-row {
+.pickle-cms-fields-wrapper .field-row {
 	margin-bottom: 5px;
 	overflow: hidden;
 	margin-left: 30px;
 }
-.advanced-cms-fields-wrapper .field-row label {
+.pickle-cms-fields-wrapper .field-row label {
 	vertical-align: middle;
 	font-weight: bold;
 	color: #23282d;
-	width: 200px;
+	width: 20%;
 	display: inline-block;
 	float: left;
 	margin-top: 3px;
 }
-.advanced-cms-fields-wrapper input.field-label,
-.advanced-cms-fields-wrapper select.field-type,
-.advanced-cms-fields-wrapper input.field-description {
-	width: 502px;
+.pickle-cms-fields-wrapper .field-row > input,
+.pickle-cms-fields-wrapper .field-row > select,
+.pickle-cms-fields-wrapper .field-options .field-row input,
+.pickle-cms-fields-wrapper .field-options .field-row select {
+	width: 79%;
 }
-.advanced-cms-fields-wrapper input.field-id {
+.pickle-cms-fields-wrapper .field-options .field-row textarea {
+	width: 79%;
+	height: 100px;
+}
+/*
+.pickle-cms-fields-wrapper input.field-label,
+.pickle-cms-fields-wrapper select.field-type,
+.pickle-cms-fields-wrapper input.field-description {
+	width: 50%;
+}
+.pickle-cms-fields-wrapper input.field-id {
 	width: 394px;
 }
-.advanced-cms-fields-wrapper .field-options .option-row > div {
+.pickle-cms-fields-wrapper .field-options .options-row > div {
 	float: left;
 	width: 50%;
 }
-.advanced-cms-fields-wrapper .field-options .option-row .value-field label {
+.pickle-cms-fields-wrapper .field-options .options-row .value-field label {
 	margin-left: 10px;
 }
-.advanced-cms-fields-wrapper .field-options .option-row label {
-	width: 50px;
+.pickle-cms-fields-wrapper .field-options .options-row label {
+	width: 80px;
 }
-.advanced-cms-fields-wrapper .field-options .option-row input {
+.pickle-cms-fields-wrapper .field-options .options-row input {
 	width: 190px;
 }
-.advanced-cms-fields-wrapper .field-row .field_type,
-.advanced-cms-fields-wrapper .field-options .option-row .options-item,
-.advanced-cms-fields-wrapper .field-options .field-repeatable-check {
+.pickle-cms-fields-wrapper .field-options .options-row input[type="checkbox"] {
+	width: 16px;
+	margin-left: 5px;
+}
+.pickle-cms-fields-wrapper .field-options .options-row .field-repeatable-label,
+.pickle-cms-fields-wrapper .field-options .options-row .field-format-label {
+	width: auto;
+}
+.pickle-cms-fields-wrapper .field-row .field_type,
+.pickle-cms-fields-wrapper .field-options .options-row .options-item,
+.pickle-cms-fields-wrapper .field-options .field-repeatable-check {
 	float: left;
 }
-.advanced-cms-fields-wrapper .field-options .field-repeatable-check > input {
+.pickle-cms-fields-wrapper .field-options .field-repeatable-check > input {
 	margin-top: 0;
 }
-.advanced-cms-fields-wrapper .field-options .add-option-field-btn {
+.pickle-cms-fields-wrapper .field-options .add-option-field-btn {
 	float: right;
 }
-.advanced-cms-fields-wrapper .field-row .long-text {
+.pickle-cms-fields-wrapper .field-row .long-text {
 	width: 250px;
 }
-.advanced-cms-fields-wrapper .field-options .option-row {
-	margin-left: 200px;
+.pickle-cms-fields-wrapper .field-options .options-row {
+	margin-left: 230px;
 	overflow: hidden;
 	margin-bottom: 3px;
 }
-.advanced-cms-fields-wrapper .field-options .add-option-field {
+.pickle-cms-fields-wrapper .field-options .options.options-row .option-row {
+	width: 80%;
+	margin-left: 80px;
+}
+.pickle-cms-fields-wrapper .field-options .options.options-row #option-row-0 {
+	margin-left: 0;
+}
+*/
+.pickle-cms-fields-wrapper .field-options .add-option-field {
 	overflow: hidden;
 	margin-bottom: 10px;
 	margin-top: 10px;
 	height: 30px;
 	margin-left: 150px;
 }
-.advanced-cms-fields-wrapper .remove-field {
+.pickle-cms-fields-wrapper .remove-field {
 	float: right;
 }
 .wp-core-ui .button-primary.remove-field {
@@ -160,31 +186,31 @@ p.submit > #clear-files {
 	margin-left: 15px;
 }
 
-#advancedcms-updater-notices > .primary {
+#picklecms-updater-notices > .primary {
 	display: none;
 }
 
 /* metabox display
 ------------------ */
-.advanced-cms-meta-box .type-textarea button.duplicate,
-.advanced-cms-meta-box .type-textarea button.delete {
+.pickle-cms-meta-box .type-textarea button.duplicate,
+.pickle-cms-meta-box .type-textarea button.delete {
 	float: right;
 	margin-right: 7%;
 }
-.advanced-cms-meta-box .field_description {
+.pickle-cms-meta-box .field_description {
 	font-style: italic;
 	padding: 3px 0;
 }
-.advanced-cms-meta-box .advanced-cms-meta-box-thumb {
+.pickle-cms-meta-box .pickle-cms-meta-box-thumb {
 	clear: left;
 	text-align: center;
 	padding: 5px 0;
 }
-.advanced-cms-meta-box .format {
+.pickle-cms-meta-box .format {
 	margin-left: 5px;
 	font-style: italic;
 }
-.advanced-cms-meta-box .fields-wrap {
+.pickle-cms-meta-box .fields-wrap {
 	margin-left: 135px;
 }
 /*
@@ -196,7 +222,7 @@ p.submit > #clear-files {
 /**
  * custom post types
  */
-.advanced-cms-admin .ui-widget-overlay {
+.pickle-cms-admin .ui-widget-overlay {
 	background: #aaaaaa;
 }
 .custom-post-types .selected-icon {
@@ -205,7 +231,7 @@ p.submit > #clear-files {
 .custom-post-types .change-text {
 	padding-bottom: 10px;
 }
-.advanced-cms-dashicon-grid .dashicons {
+.pickle-cms-dashicon-grid .dashicons {
 	font-size: 25px;
 	width: 25px;
 	height: 25px;
@@ -217,14 +243,14 @@ p.submit > #clear-files {
 /**
  * documentation
  */
-.advanced-cms-doc-breadcrumb a {
+.pickle-cms-doc-breadcrumb a {
 	text-decoration: none;
 }
-.advanced-cms-doc-breadcrumb .sep {
+.pickle-cms-doc-breadcrumb .sep {
 	padding-left: 5px;
 	padding-right: 5px;
 }
-.advanced-cms-documentation pre {
+.pickle-cms-documentation pre {
   font-family: "Courier 10 Pitch", Courier, monospace;
   font-size: 95%;
   line-height: 140%;
@@ -233,7 +259,7 @@ p.submit > #clear-files {
   white-space: -moz-pre-wrap;
   white-space: -o-pre-wrap;
 }
-.advanced-cms-documentation code {
+.pickle-cms-documentation code {
   font-family: Monaco, Consolas, "Andale Mono", "DejaVu Sans Mono", monospace;
   font-size: 95%;
   line-height: 140%;
@@ -243,45 +269,45 @@ p.submit > #clear-files {
   white-space: -o-pre-wrap;
   background: #faf8f0;
 }
-.advanced-cms-documentation code {
+.pickle-cms-documentation code {
   display: block;
   padding: 0.5em 1em;
   border: 1px solid #bebab0;
 }
-.advanced-cms-documentation .doc-list {
+.pickle-cms-documentation .doc-list {
 
 }
-.advanced-cms-documentation .doc-list > li {
+.pickle-cms-documentation .doc-list > li {
 	margin-bottom: 10px;
 }
-.advanced-cms-documentation .doc-list > li .field {
+.pickle-cms-documentation .doc-list > li .field {
 	font-weight: bold;
 }
-.advanced-cms-documentation .doc-list > li .type {
+.pickle-cms-documentation .doc-list > li .type {
 	font-style: italic;
 }
-.advanced-cms-documentation .doc-list > li .description {
+.pickle-cms-documentation .doc-list > li .description {
 
 }
-.advanced-cms-documentation .doc-list > li .default {
+.pickle-cms-documentation .doc-list > li .default {
 	font-style: italic;
 }
-.advanced-cms-documentation .doc-sub-list {
+.pickle-cms-documentation .doc-sub-list {
 	margin: 10px 0 15px 30px;
 }
-.advanced-cms-documentation .doc-sub-list > li {
+.pickle-cms-documentation .doc-sub-list > li {
 
 }
-.advanced-cms-documentation .doc-sub-list > li .field-type {
+.pickle-cms-documentation .doc-sub-list > li .field-type {
 	font-weight: bold;
 }
-.advanced-cms-documentation .doc-sub-list > li .field-description {
+.pickle-cms-documentation .doc-sub-list > li .field-description {
 
 }
-.advanced-cms-documentation .doc-sub-list > li .field-options {
+.pickle-cms-documentation .doc-sub-list > li .field-options {
 	font-style: italic;
 }
-.advanced-cms-doc-version {
+.pickle-cms-doc-version {
 	float: right;
 	font-style: italic;
 }

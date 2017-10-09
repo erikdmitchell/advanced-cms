@@ -1,8 +1,8 @@
 <?php
-global $advanced_cms_gallery;
-global $advanced_cms_image;
+global $pickle_cms_gallery;
+global $pickle_cms_image;
 
-class advancedCMSGallery {
+class pickleCMSGallery {
 
 	public $images;
 
@@ -28,10 +28,10 @@ class advancedCMSGallery {
 	 * @return void
 	 */
 	public function __construct($args='') {
-		global $advanced_cms_gallery;
+		global $pickle_cms_gallery;
 
 		if (!empty($args))
-			$advanced_cms_gallery=$this->query($args);
+			$pickle_cms_gallery=$this->query($args);
 	}
 
 	/**
@@ -101,9 +101,9 @@ class advancedCMSGallery {
 		$this->get_images($this->query_vars);
 
 		if ($this->bootstrap) :
-			wp_enqueue_script('advanced-cms-gallery-bootstrap-script', advanced_CMS_URL.'/shortcodes/js/bootstrap-carousel.min.js', array('jquery'), '3.3.7', true);
+			wp_enqueue_script('pickle-cms-gallery-bootstrap-script', PICKLE_CMS_URL.'/shortcodes/js/bootstrap-carousel.min.js', array('jquery'), '3.3.7', true);
 
-			wp_enqueue_style('advanced-cms-gallery-bootstrap-style', advanced_CMS_URL.'/shortcodes/css/bootstrap-carousel.css', array(), '3.3.7');
+			wp_enqueue_style('pickle-cms-gallery-bootstrap-style', PICKLE_CMS_URL.'/shortcodes/css/bootstrap-carousel.css', array(), '3.3.7');
 		endif;
 
 		return $this;
@@ -179,9 +179,9 @@ class advancedCMSGallery {
 	 * @return void
 	 */
 	public function the_image() {
-		global $advanced_cms_image;
+		global $pickle_cms_image;
 
-		$advanced_cms_image = $this->next_image();
+		$pickle_cms_image = $this->next_image();
 	}
 
   /**
@@ -214,73 +214,73 @@ class advancedCMSGallery {
 }
 
 /**
- * advanced_cms_gallery_have_images function.
+ * pickle_cms_gallery_have_images function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_gallery_have_images() {
-	global $advanced_cms_gallery;
+function pickle_cms_gallery_have_images() {
+	global $pickle_cms_gallery;
 
-	return $advanced_cms_gallery->have_images();
+	return $pickle_cms_gallery->have_images();
 }
 
 /**
- * advanced_cms_gallery_the_image function.
+ * pickle_cms_gallery_the_image function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_gallery_the_image() {
-	global $advanced_cms_gallery;
+function pickle_cms_gallery_the_image() {
+	global $pickle_cms_gallery;
 
-	$advanced_cms_gallery->the_image();
+	$pickle_cms_gallery->the_image();
 }
 
 /**
- * advanced_cms_gallery_id function.
+ * pickle_cms_gallery_id function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_gallery_id() {
-	echo 	advanced_cms_gallery_get_id();
+function pickle_cms_gallery_id() {
+	echo 	pickle_cms_gallery_get_id();
 }
 
 /**
- * advanced_cms_gallery_get_id function.
+ * pickle_cms_gallery_get_id function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_gallery_get_id() {
-	global $advanced_cms_gallery;
+function pickle_cms_gallery_get_id() {
+	global $pickle_cms_gallery;
 
-	return $advanced_cms_gallery->id;
+	return $pickle_cms_gallery->id;
 }
 
 /**
- * advanced_cms_image_class function.
+ * pickle_cms_image_class function.
  *
  * @access public
  * @param string $class (default: '')
  * @param mixed $image_id (default: null)
  * @return void
  */
-function advanced_cms_image_class($class='', $image_id=null) {
-	echo join(' ', advanced_cms_get_image_class($class, $image_id));
+function pickle_cms_image_class($class='', $image_id=null) {
+	echo join(' ', pickle_cms_get_image_class($class, $image_id));
 }
 
 /**
- * advanced_cms_get_image_class function.
+ * pickle_cms_get_image_class function.
  *
  * @access public
  * @param string $class (default: '')
  * @param mixed $image_id (default: null)
  * @return void
  */
-function advanced_cms_get_image_class($class='', $image_id=null) {
-	global $advanced_cms_gallery, $advanced_cms_image;
+function pickle_cms_get_image_class($class='', $image_id=null) {
+	global $pickle_cms_gallery, $pickle_cms_image;
 
 	$classes=array();
 
@@ -294,12 +294,12 @@ function advanced_cms_get_image_class($class='', $image_id=null) {
 	endif;
 
 	if (!$image_id)
-		$image_id=$advanced_cms_image->id;
+		$image_id=$pickle_cms_image->id;
 
 	$classes[]=$image_id;
 	$classes[]='item';
 
-	if ($advanced_cms_gallery->current_image==0)
+	if ($pickle_cms_gallery->current_image==0)
 		$classes[]='active';
 
 	$classes=array_map('esc_attr', $classes);
@@ -308,97 +308,97 @@ function advanced_cms_get_image_class($class='', $image_id=null) {
 }
 
 /**
- * advanced_cms_gallery_image function.
+ * pickle_cms_gallery_image function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_gallery_image() {
-	echo advanced_cms_gallery_get_image();
+function pickle_cms_gallery_image() {
+	echo pickle_cms_gallery_get_image();
 }
 
 /**
- * advanced_cms_gallery_get_image function.
+ * pickle_cms_gallery_get_image function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_gallery_get_image() {
-	global $advanced_cms_image;
+function pickle_cms_gallery_get_image() {
+	global $pickle_cms_image;
 
-	return $advanced_cms_image->image;
+	return $pickle_cms_image->image;
 }
 
 /**
- * advanced_cms_gallery_image_caption function.
+ * pickle_cms_gallery_image_caption function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_gallery_image_caption() {
-	echo advanced_cms_gallery_get_image_caption();
+function pickle_cms_gallery_image_caption() {
+	echo pickle_cms_gallery_get_image_caption();
 }
 
 /**
- * advanced_cms_gallery_get_image_caption function.
+ * pickle_cms_gallery_get_image_caption function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_gallery_get_image_caption() {
-	global $advanced_cms_image;
+function pickle_cms_gallery_get_image_caption() {
+	global $pickle_cms_image;
 
-	return $advanced_cms_image->caption;
+	return $pickle_cms_image->caption;
 }
 
 /**
- * advanced_cms_gallery_has_caption function.
+ * pickle_cms_gallery_has_caption function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_gallery_has_caption() {
-	global $advanced_cms_image;
+function pickle_cms_gallery_has_caption() {
+	global $pickle_cms_image;
 
-	if ($advanced_cms_image->caption!='')
+	if ($pickle_cms_image->caption!='')
 		return true;
 
 	return false;
 }
 
 /**
- * advanced_cms_gallery_indicators function.
+ * pickle_cms_gallery_indicators function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_gallery_indicators() {
-	echo advanced_cms_gallery_get_indicators();
+function pickle_cms_gallery_indicators() {
+	echo pickle_cms_gallery_get_indicators();
 }
 
 /**
- * advanced_cms_gallery_get_indicators function.
+ * pickle_cms_gallery_get_indicators function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_gallery_get_indicators() {
-	global $advanced_cms_gallery;
+function pickle_cms_gallery_get_indicators() {
+	global $pickle_cms_gallery;
 
 	$html=null;
 
-	if (!$advanced_cms_gallery->image_count || !$advanced_cms_gallery->show_indicators)
+	if (!$pickle_cms_gallery->image_count || !$pickle_cms_gallery->show_indicators)
 		return false;
 
 	$html.='<ol class="carousel-indicators">';
-		foreach ($advanced_cms_gallery->images as $key => $image) :
+		foreach ($pickle_cms_gallery->images as $key => $image) :
 			if ($key==0) :
 				$class='active';
 			else :
 				$class='';
 			endif;
 
-	  	$html.='<li data-target="#advanced-cms-carousel-'.advanced_cms_gallery_get_id().'" data-slide-to="'.$key.'" class="'.$class.'"></li>';
+	  	$html.='<li data-target="#pickle-cms-carousel-'.pickle_cms_gallery_get_id().'" data-slide-to="'.$key.'" class="'.$class.'"></li>';
 		endforeach;
 	$html.='</ol>';
 
@@ -406,34 +406,34 @@ function advanced_cms_gallery_get_indicators() {
 }
 
 /**
- * advanced_cms_gallery_controls function.
+ * pickle_cms_gallery_controls function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_gallery_controls() {
-	echo advanced_cms_gallery_get_controls();
+function pickle_cms_gallery_controls() {
+	echo pickle_cms_gallery_get_controls();
 }
 
 /**
- * advanced_cms_gallery_get_controls function.
+ * pickle_cms_gallery_get_controls function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_gallery_get_controls() {
-	global $advanced_cms_gallery;
+function pickle_cms_gallery_get_controls() {
+	global $pickle_cms_gallery;
 
 	$html=null;
 
-	if (!$advanced_cms_gallery->image_count || !$advanced_cms_gallery->show_controls)
+	if (!$pickle_cms_gallery->image_count || !$pickle_cms_gallery->show_controls)
 		return false;
 
-  $html.='<a class="left carousel-control" href="#advanced-cms-carousel-'.advanced_cms_gallery_get_id().'" role="button" data-slide="prev">';
+  $html.='<a class="left carousel-control" href="#pickle-cms-carousel-'.pickle_cms_gallery_get_id().'" role="button" data-slide="prev">';
     $html.='<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>';
     $html.='<span class="sr-only">Previous</span>';
   $html.='</a>';
-  $html.='<a class="right carousel-control" href="#advanced-cms-carousel-'.advanced_cms_gallery_get_id().'" role="button" data-slide="next">';
+  $html.='<a class="right carousel-control" href="#pickle-cms-carousel-'.pickle_cms_gallery_get_id().'" role="button" data-slide="next">';
     $html.='<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>';
     $html.='<span class="sr-only">Next</span>';
   $html.='</a>';

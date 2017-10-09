@@ -1,4 +1,4 @@
-=== Advanced CMS ===
+=== Pickle CMS ===
 Contributors: erikdmitchell
 Tags: cms, metaboxes, post type, custom, taxonomy
 Requires at least: 3.8

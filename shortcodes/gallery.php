@@ -1,13 +1,13 @@
 <?php
 
 /**
- * advanced_cms_gallery_shortcode function.
+ * pickle_cms_gallery_shortcode function.
  *
  * @access public
  * @param mixed $atts
  * @return void
  */
-function advanced_cms_gallery_shortcode($atts) {
+function pickle_cms_gallery_shortcode($atts) {
 	global $post;
 
   $atts=shortcode_atts(array(
@@ -23,31 +23,31 @@ function advanced_cms_gallery_shortcode($atts) {
 
   $atts['image_ids']=get_post_meta($post->ID, $atts['id'], true);
 
-	$gallery=new advancedCMSGallery($atts);
+	$gallery=new pickleCMSGallery($atts);
 
-  return advanced_cms_get_template_part('gallery');
+  return pickle_cms_get_template_part('gallery');
 }
-add_shortcode('advanced-cms-gallery', 'advanced_cms_gallery_shortcode');
+add_shortcode('pickle-cms-gallery', 'pickle_cms_gallery_shortcode');
 
 /**
- * advanced_cms_gallery_output function.
+ * pickle_cms_gallery_output function.
  *
  * @access public
  * @param string $args (default: '')
  * @return void
  */
-function advanced_cms_gallery_output($args='') {
-	echo advanced_cms_get_gallery_output($args);
+function pickle_cms_gallery_output($args='') {
+	echo pickle_cms_get_gallery_output($args);
 }
 
 /**
- * advanced_cms_get_gallery_output function.
+ * pickle_cms_get_gallery_output function.
  *
  * @access public
  * @param string $args (default: '')
  * @return void
  */
-function advanced_cms_get_gallery_output($args='') {
+function pickle_cms_get_gallery_output($args='') {
 	global $post;
 
   $default_args=array(
@@ -66,8 +66,8 @@ function advanced_cms_get_gallery_output($args='') {
 
   $args['image_ids']=get_post_meta($post_id, $id, true);
 
-	$gallery=new advancedCMSGallery($args);
+	$gallery=new pickleCMSGallery($args);
 
-  return advanced_cms_get_template_part('gallery');
+  return pickle_cms_get_template_part('gallery');
 }
 ?>

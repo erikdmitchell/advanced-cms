@@ -1,27 +1,27 @@
 <?php
 
 /**
- * advanced_cms_get_template_part function.
+ * pickle_cms_get_template_part function.
  *
  * @access public
  * @param string $template_name (default: '')
  * @param string $atts (default: '')
  * @return void
  */
-function advanced_cms_get_template_part($template_name='', $atts='') {
+function pickle_cms_get_template_part($template_name='', $atts='') {
 	if (empty($template_name))
 		return false;
 
 	ob_start();
 
-	do_action('advanced_cms_get_template_part_'.$template_name);
+	do_action('pickle_cms_get_template_part_'.$template_name);
 
-	if (file_exists(get_stylesheet_directory().'/advanced-cms/'.$template_name.'.php')) :
-		include(get_stylesheet_directory().'/advanced-cms/'.$template_name.'.php');
-	elseif (file_exists(get_template_directory().'/advanced-cms/'.$template_name.'.php')) :
-		include(get_template_directory().'/advanced-cms/'.$template_name.'.php');
-	elseif (file_exists(advanced_CMS_PATH.'templates/'.$template_name.'.php')) :
-		include(advanced_CMS_PATH.'templates/'.$template_name.'.php');
+	if (file_exists(get_stylesheet_directory().'/pickle-cms/'.$template_name.'.php')) :
+		include(get_stylesheet_directory().'/pickle-cms/'.$template_name.'.php');
+	elseif (file_exists(get_template_directory().'/pickle-cms/'.$template_name.'.php')) :
+		include(get_template_directory().'/pickle-cms/'.$template_name.'.php');
+	elseif (file_exists(PICKLE_CMS_PATH.'templates/'.$template_name.'.php')) :
+		include(PICKLE_CMS_PATH.'templates/'.$template_name.'.php');
 	endif;
 
 	$html=ob_get_contents();
@@ -32,16 +32,16 @@ function advanced_cms_get_template_part($template_name='', $atts='') {
 }
 
 /**
- * advanced_cms_dashicon_grid function.
+ * pickle_cms_dashicon_grid function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_dashicon_grid() {
-	$dashicons=advanced_cms_get_dashicons();
+function pickle_cms_dashicon_grid() {
+	$dashicons=pickle_cms_get_dashicons();
 	$html=null;
 
-	$html.='<div class="advanced-cms-dashicon-grid">';
+	$html.='<div class="pickle-cms-dashicon-grid">';
 		foreach ($dashicons as $dashicon) :
 			$html.='<a href="#" class="dashicons '.$dashicon.'" data-icon="'.$dashicon.'"></a>';
 		endforeach;
@@ -51,12 +51,12 @@ function advanced_cms_dashicon_grid() {
 }
 
 /**
- * advanced_cms_get_dashicons function.
+ * pickle_cms_get_dashicons function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_get_dashicons() {
+function pickle_cms_get_dashicons() {
 	$dashicons=array(
 		'dashicons-admin-site',
 		'dashicons-dashboard',
@@ -298,7 +298,7 @@ function advanced_cms_get_dashicons() {
 }
 
 /**
- * advanced_cms_get_field_template function.
+ * pickle_cms_get_field_template function.
  *
  * @access public
  * @param string $template_name (default: '')
@@ -306,18 +306,18 @@ function advanced_cms_get_dashicons() {
  * @param string $value (default: '')
  * @return void
  */
-function advanced_cms_get_field_template($template_name='', $atts='', $value='') {
+function pickle_cms_get_field_template($template_name='', $atts='', $value='') {
 	if (empty($template_name))
 		return false;
 
 	ob_start();
 
-	if (file_exists(get_stylesheet_directory().'/advanced-cms/metabox-fields/'.$template_name.'.php')) :
-		include(get_stylesheet_directory().'/advanced-cms/metabox-fields/'.$template_name.'.php');
-	elseif (file_exists(get_template_directory().'/advanced-cms/metabox-fields/'.$template_name.'.php')) :
-		include(get_template_directory().'/advanced-cms/metabox-fields/'.$template_name.'.php');
-	elseif (file_exists(advanced_CMS_PATH.'templates/metabox-fields/'.$template_name.'.php')) :
-		include(advanced_CMS_PATH.'templates/metabox-fields/'.$template_name.'.php');
+	if (file_exists(get_stylesheet_directory().'/pickle-cms/metabox-fields/'.$template_name.'.php')) :
+		include(get_stylesheet_directory().'/pickle-cms/metabox-fields/'.$template_name.'.php');
+	elseif (file_exists(get_template_directory().'/pickle-cms/metabox-fields/'.$template_name.'.php')) :
+		include(get_template_directory().'/pickle-cms/metabox-fields/'.$template_name.'.php');
+	elseif (file_exists(PICKLE_CMS_PATH.'templates/metabox-fields/'.$template_name.'.php')) :
+		include(PICKLE_CMS_PATH.'templates/metabox-fields/'.$template_name.'.php');
 	endif;
 
 	$html=ob_get_contents();
@@ -328,7 +328,7 @@ function advanced_cms_get_field_template($template_name='', $atts='', $value='')
 }
 
 /**
- * advanced_cms_checked_checkbox function.
+ * pickle_cms_checked_checkbox function.
  *
  * @access public
  * @param mixed $checked
@@ -336,7 +336,7 @@ function advanced_cms_get_field_template($template_name='', $atts='', $value='')
  * @param bool $echo (default: true)
  * @return void
  */
-function advanced_cms_checked_checkbox($checked, $current=true, $echo=true) {
+function pickle_cms_checked_checkbox($checked, $current=true, $echo=true) {
 	$type='checked';
 
 	if (is_serialized($checked))
@@ -358,26 +358,26 @@ function advanced_cms_checked_checkbox($checked, $current=true, $echo=true) {
 }
 
 /**
- * advanced_cms_admin_link function.
+ * pickle_cms_admin_link function.
  *
  * @access public
  * @param string $args (default: '')
  * @return void
  */
-function advanced_cms_admin_link($args='') {
-	echo advanced_cms_get_admin_link($args);
+function pickle_cms_admin_link($args='') {
+	echo pickle_cms_get_admin_link($args);
 }
 
 /**
- * advanced_cms_get_admin_link function.
+ * pickle_cms_get_admin_link function.
  *
  * @access public
  * @param string $args (default: '')
  * @return void
  */
-function advanced_cms_get_admin_link($args='') {
+function pickle_cms_get_admin_link($args='') {
 	$default_args=array(
-		'page' => 'advanced-cms',
+		'page' => 'pickle-cms',
 	);
 	$args=wp_parse_args($args, $default_args);
 
@@ -387,30 +387,32 @@ function advanced_cms_get_admin_link($args='') {
 }
 
 /**
- * advanced_cms_setup_post_type_args function.
+ * pickle_cms_setup_post_type_args function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_setup_post_type_args() {
-	global $advanced_cms_admin;
+function pickle_cms_setup_post_type_args() {
+	global $pickle_cms_admin;
 
 	$default_args=array(
-		'base_url' => admin_url('tools.php?page=advanced-cms&tab=post-types'),
+		'base_url' => admin_url('tools.php?page=pickle-cms&tab=post-types'),
 		'btn_text' => 'Create',
 		'name' => '',
 		'label' => '',
 		'singular_label' => '',
 		'description' => '',
-		'title' => 1,
-		'thumbnail' => 1,
-		'editor' => 1,
-		'revisions' => 1,
+		'supports' => array(
+			'title' => 1,
+			'thumbnail' => 1,
+			'editor' => 1,
+			'revisions' => 1,
+			'page_attributes' => 0,
+			'excerpt' => 0,
+			'comments' => 0,
+		),
 		'hierarchical' => 0,
-		'page_attributes' => 0,
-		'excerpt' => 0,
 		'id' => -1,
-		'comments' => 0,
 		'header' => 'Add New Custom Post Type',
 		'icon' => 'dashicons-admin-post',
 		'error_class' => '',
@@ -418,7 +420,7 @@ function advanced_cms_setup_post_type_args() {
 
 	// edit custom post type //
 	if (isset($_GET['slug']) && $_GET['slug']) :
-		foreach ($advanced_cms_admin->options['post_types'] as $key => $post_type) :
+		foreach ($pickle_cms_admin->options['post_types'] as $key => $post_type) :
 			if ($post_type['name']==$_GET['slug']) :
 				$args=$post_type;
 				$args['header']='Edit Post Type';
@@ -428,36 +430,35 @@ function advanced_cms_setup_post_type_args() {
 		endforeach;
 	endif;
 
-	$args=advanced_cms_parse_args($args, $default_args);
+	$args=pickle_cms_parse_args($args, $default_args);
 
 	return $args;
 }
 
 /**
- * advanced_cms_setup_metabox_args function.
+ * pickle_cms_setup_metabox_args function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_setup_metabox_args() {
-	global $advanced_cms_admin;
+function pickle_cms_setup_metabox_args() {
+	global $pickle_cms_admin;
 
 	$default_args=array(
-		'base_url' => admin_url('tools.php?page=advanced-cms&tab=metaboxes'),
+		'base_url' => admin_url('tools.php?page=pickle-cms&tab=metaboxes'),
 		'btn_text' => 'Create',
 		'mb_id' => '',
 		'title' => '',
 		'prefix' => '',
 		'post_types' => '',
 		'edit_class_v' => '',
-		'fields' => '',
-		'title' => '',
+		'fields' => array(),
 		'header' => 'Add New Metabox',
 	);
 
 	// edit //
 	if (isset($_GET['id']) && $_GET['id']) :
-		foreach ($advanced_cms_admin->options['metaboxes'] as $metabox) :
+		foreach ($pickle_cms_admin->options['metaboxes'] as $metabox) :
 			if ($metabox['mb_id']==$_GET['id']) :
 				$args=$metabox;
 				$args['header']='Edit Metabox';
@@ -466,19 +467,19 @@ function advanced_cms_setup_metabox_args() {
 		endforeach;
 	endif;
 
-	$args=advanced_cms_parse_args($args, $default_args);
+	$args=pickle_cms_parse_args($args, $default_args);
 
 	return $args;
 }
 
 /**
- * advanced_cms_metabox_post_types_list function.
+ * pickle_cms_metabox_post_types_list function.
  *
  * @access public
  * @param string $post_types (default: '')
  * @return void
  */
-function advanced_cms_metabox_post_types_list($post_types='') {
+function pickle_cms_metabox_post_types_list($post_types='') {
 	if (empty($post_types))
 		return false;
 
@@ -488,13 +489,13 @@ function advanced_cms_metabox_post_types_list($post_types='') {
 }
 
 /**
- * advanced_cms_setup_taxonomy_args function.
+ * pickle_cms_setup_taxonomy_args function.
  *
  * @access public
  * @return void
  */
-function advanced_cms_setup_taxonomy_args() {
-	global $advanced_cms_admin;
+function pickle_cms_setup_taxonomy_args() {
+	global $pickle_cms_admin;
 
 	$default_args=array(
 		'btn_text' => 'Create',
@@ -510,7 +511,7 @@ function advanced_cms_setup_taxonomy_args() {
 
 	// edit custom taxonomy //
 	if (isset($_GET['id']) && $_GET['id']) :
-		foreach ($advanced_cms_admin->options['taxonomies'] as $key => $taxonomy) :
+		foreach ($pickle_cms_admin->options['taxonomies'] as $key => $taxonomy) :
 			if ($taxonomy['name']==$_GET['id']) :
 				$args=$taxonomy['args'];
 				$args['name']=$taxonomy['name'];
@@ -522,8 +523,65 @@ function advanced_cms_setup_taxonomy_args() {
 		endforeach;
 	endif;
 
-	$args=advanced_cms_parse_args($args, $default_args);
+	$args=pickle_cms_parse_args($args, $default_args);
 
 	return $args;
 }
+
+function pickle_cms_setup_admin_columns_args() {
+	global $pickle_cms_admin;
+
+	$default_args=array(
+		'base_url' => admin_url('tools.php?page=pickle-cms&tab=columns'),
+		'btn_text' => 'Create',
+		'name' => '',
+		'label' => '',
+		'singular_label' => '',
+		'description' => '',
+		'supports' => array(
+			'title' => 1,
+			'thumbnail' => 1,
+			'editor' => 1,
+			'revisions' => 1,
+			'page_attributes' => 0,
+			'excerpt' => 0,
+			'comments' => 0,
+		),
+		'hierarchical' => 0,
+		'id' => -1,
+		'header' => 'Add New Admin Column',
+		'icon' => 'dashicons-admin-post',
+		'error_class' => '',
+	);
+
+	// edit custom post type //
+	if (isset($_GET['slug']) && $_GET['slug']) :
+		foreach ($pickle_cms_admin->options['post_types'] as $key => $post_type) :
+			if ($post_type['name']==$_GET['slug']) :
+				$args=$post_type;
+				$args['header']='Edit Post Type';
+				$args['btn_text']='Update';
+				$args['id']=$key;
+			endif;
+		endforeach;
+	endif;
+
+	$args=pickle_cms_parse_args($args, $default_args);
+
+	return $args;
+}
+
+function pickle_cms_parse_args( &$a, $b ) {
+	$a = (array) $a;
+	$b = (array) $b;
+	$result = $b;
+	foreach ( $a as $k => &$v ) {
+		if ( is_array( $v ) && isset( $result[ $k ] ) ) {
+			$result[ $k ] = pickle_cms_parse_args( $v, $result[ $k ] );
+		} else {
+			$result[ $k ] = $v;
+		}
+	}
+	return $result;
+	}
 ?>

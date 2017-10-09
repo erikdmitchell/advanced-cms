@@ -1,7 +1,8 @@
-<?php global $advanced_cms_admin; ?>
+<?php global $pickle_cms_admin; ?>
 
-<div class="advanced-cms-main">
+<div class="pickle-cms-main">
 
-	<?php advanced_cms_load_documentation(); ?>
+	<?php //pickle_cms_load_documentation(); ?>
+	LOAD DOCUMENTATION?!
 	
 </div>

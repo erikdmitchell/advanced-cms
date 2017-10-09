@@ -1,7 +1,7 @@
-<?php advanced_cms_doc_header(); ?>
+<?php pickle_cms_doc_header(); ?>
 
 	<section>
-		<h3>add_advanced_cms_metabox_custom_fields-XXX</h3>
+		<h3>add_pickle_cms_metabox_custom_fields-XXX</h3>
 
 		<p>
 			Use this filter to add custom fields to a metabox. This is usually done in functions.php, but can be expanded and used elsewhere.<br />
@@ -16,18 +16,18 @@
 			Sample using the metabox Trail Head Details (trail_head_details)
 			<pre><code>
 				function custom_meta_fields($extra_fields,$prefix) {
-				    global $advancedMetaboxes;
+				    global $pickleMetaboxes;
 
 				    $args=array(
 				        'field_label' => 'Trails',
-				        'field_id' => $advancedMetaboxes->generate_field_id($prefix,'Trails')
+				        'field_id' => $pickleMetaboxes->generate_field_id($prefix,'Trails')
 				    );
 
 				    $extra_fields[]=$args;
 
 				    return $extra_fields;
 				}
-				add_filter('add_advanced_cms_metabox_custom_fields-trail_head_details','custom_meta_fields',10,2);
+				add_filter('add_pickle_cms_metabox_custom_fields-trail_head_details','custom_meta_fields',10,2);
 			</code></pre>
 		</p>
 
@@ -35,16 +35,16 @@
 			Sample with multiple fields (amenity_details)
 			<pre><code>
 				function custom_meta_fields_amenity_details($extra_fields,$prefix) {
-				    global $advancedMetaboxes;
+				    global $pickleMetaboxes;
 
 				    $trails=array(
 				        'field_label' => 'Trails',
-				        'field_id' => $advancedMetaboxes->generate_field_id($prefix,'Trails')
+				        'field_id' => $pickleMetaboxes->generate_field_id($prefix,'Trails')
 				    );
 
 				    $trail_heads=array(
 				        'field_label' => 'Trail Heads',
-				        'field_id' => $advancedMetaboxes->generate_field_id($prefix,'Trail Heads')
+				        'field_id' => $pickleMetaboxes->generate_field_id($prefix,'Trail Heads')
 				    );
 
 				    $extra_fields[]=$trails;
@@ -52,16 +52,16 @@
 
 				    return $extra_fields;
 				}
-				add_filter('add_advanced_cms_metabox_custom_fields-amenity_details','custom_meta_fields_amenity_details',10,2);
+				add_filter('add_pickle_cms_metabox_custom_fields-amenity_details','custom_meta_fields_amenity_details',10,2);
 			</code></pre>
 		</p>
 	</section>
 
 	<section>
-		<h3>add_advanced_cms_metabox_custom_fields-XXX</h3>
+		<h3>add_pickle_cms_metabox_custom_fields-XXX</h3>
 
 		<p>
-			Use this filter to add the actual metabox input (input, textarea, dropdown, etc) to the custom field. Must be used with add_advanced_cms_metabox_custom_fields-XXX.<br />
+			Use this filter to add the actual metabox input (input, textarea, dropdown, etc) to the custom field. Must be used with add_pickle_cms_metabox_custom_fields-XXX.<br />
 			The XXX refers to the specific field id you wish to attach the field to.
 		</p>
 
@@ -94,9 +94,9 @@
 
 				    return $html;
 				}
-				add_filter('add_advanced_cms_metabox_custom_input-_trail_head_details_trails','trails_select_box',10,2);
+				add_filter('add_pickle_cms_metabox_custom_input-_trail_head_details_trails','trails_select_box',10,2);
 			</code></pre>
 		</p>
 	</section>
 
-<?php advanced_cms_doc_footer(); ?>
+<?php pickle_cms_doc_footer(); ?>

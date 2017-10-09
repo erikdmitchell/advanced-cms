@@ -1,0 +1,1 @@
+<input type="button" class="button" name="<?php echo $atts['id']; ?>" id="<?php echo $atts['id']; ?>" value="<?php echo $atts['value']; ?>" />

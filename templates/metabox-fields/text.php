@@ -1,0 +1,1 @@
+<input type="text" class="regular-text" name="<?php echo $atts['id']; ?>" id="<?php echo $atts['id']; ?>" value="<?php echo htmlentities($value); ?>" />

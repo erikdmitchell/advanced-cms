@@ -1,5 +1,5 @@
 <?php
-class advancedCMSPostTypes {
+class pickleCMSPostTypes {
 
 	protected $post_types=array();
 
@@ -10,7 +10,7 @@ class advancedCMSPostTypes {
 	 * @return void
 	 */
 	function __construct() {
-		$this->post_types=get_option('advanced_cms_post_types');
+		$this->post_types=get_option('pickle_cms_post_types');
 
 		add_action('init', array($this, 'create_post_types'));
 	}
@@ -26,49 +26,34 @@ class advancedCMSPostTypes {
 			return false;
 
 		foreach ($this->post_types as $post_type) :
-			// setup our default 'args' //
-			$supports=array();
-			$taxonomies='post_tag';
-			$title=false;
-			$thumbnail=false;
-			$editor=false;
-			$revisions=false;
-			$page_attributes=false;
-			$excerpt=false;
-			$hierarchical=false;
-			$comments=false;
-			$icon='dashicons-admin-post';
+			$default_args=array(
+				'name' => 'name',
+				'label' => 'Label',
+				'singular_label' => 'Single Label',
+				'description' => '',
+				'supports' => array(
+					'title' => 0,
+					'thumbnail' => 0,
+					'editor' => 0,
+					'revisions' => 0,
+					'page_attributes' => 0,
+					'excerpt' => 0,
+					'comments' => 0,
+				),
+				'hierarchical' => 0, 
+				'taxonomies' => 0, 
+				'icon' => 'dashicons-admin-post'				
+			);
+			$args=pickle_cms_parse_args($post_type, $default_args);
 
-			extract($post_type);
-
-			// check for custom 'args' //
-			if ($title)
-				$supports[]='title';
-
-			if ($thumbnail)
-				$supports[]='thumbnail';
-
-			if ($editor)
-				$supports[]='editor';
-
-			if ($revisions)
-				$supports[]='revisions';
-
-			if ($page_attributes)
-				$supports[]='page-attributes';
-
-			if ($excerpt)
-				$supports[]='excerpt';
-
-			if ($comments)
-				$supports[]='comments';
+			extract($args);
 
 			register_post_type($post_type['name'],
 				array(
 					'labels' => array(
-						'name' => _x($label,$label,$name),
-						'singular_name' => _x($singular_label,$name),
-						'add_new' => _x('Add New',$name),
+						'name' => _x($label, $label, $name),
+						'singular_name' => _x($singular_label, $name),
+						'add_new' => _x('Add New', $name),
 						'add_new_item' => __('Add New '.$singular_label),
 						'edit_item' => __('Edit '.$singular_label),
 						'new_item' => __('New '.$singular_label),
@@ -85,7 +70,7 @@ class advancedCMSPostTypes {
 					'menu_icon' => $icon,
 					'show_in_menu' => true,
 					'menu_position'=> 5,
-					'supports' => $supports,
+					'supports' => $this->setup_supports($supports),
 					'taxonomies' => array($taxonomies),
 					'hierarchical' => $hierarchical
 				)
@@ -94,7 +79,28 @@ class advancedCMSPostTypes {
 		endforeach;
 	}
 
+	/**
+	 * setup_supports function.
+	 * 
+	 * @access protected
+	 * @param array $arr (default: array())
+	 * @return void
+	 */
+	protected function setup_supports($arr=array()) {
+		$supports=array();
+		
+		if (empty($arr))
+			return $supports;
+			
+		foreach ($arr as $key => $value) :
+			if ($value)
+				$supports[]=$key;
+		endforeach;
+		
+		return $supports;
+	}
+
 }
 
-new advancedCMSPostTypes();
+new pickleCMSPostTypes();
 ?>
