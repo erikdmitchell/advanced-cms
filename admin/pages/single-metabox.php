@@ -53,6 +53,7 @@ $pickle_cms_metabox_args=pickle_cms_setup_metabox_args();
 						<?php foreach ($pickle_cms_metabox_args['fields'] as $key => $field): ?>
 
 <pre>
+	(single metabox) <br>
 	<?php print_r($field); ?>
 </pre>
 							

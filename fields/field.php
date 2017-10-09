@@ -77,7 +77,7 @@ class Pickle_CMS_Field {
 				$html.='<label for="id">Field ID</label>';
 		
 				$html.='<div class="gen-field-id">';
-					$html.='<input type="text" readonly="readonly" class="field-type field-id" value="" /> <span class="description">(use as meta key)</span>';
+					$html.='<input type="text" readonly="readonly" class="field-type field-id" name="fields['.$key.'][field_id]" value="" /> <span class="description">(use as meta key)</span>';
 				$html.='</div>';
 			$html.='</div>';
 		
@@ -85,7 +85,7 @@ class Pickle_CMS_Field {
 				$html.='<input type="button" name="remove-field" id="remove-field-btn" class="button button-primary remove-field" data-id="fields-wrapper-'.$key.'" value="Remove">';
 			$html.='</div>';
 		
-			$html.='<input type="hidden" name="fields['.$field['order'].'][order]" class="order name-item" value="'.$field['order'].'" />';	
+			//$html.='<input type="hidden" name="fields['.$field['order'].'][order]" class="order name-item" value="'.$field['order'].'" />';	
 		
 		$html.='</div>';
 
