@@ -75,6 +75,7 @@ final class PickleCMS {
 		 */
 		include_once(PICKLE_CMS_PATH.'classes/metaboxes.php');
 		include_once(PICKLE_CMS_PATH.'classes/post-types.php');
+		include_once(PICKLE_CMS_PATH.'classes/taxonomies.php');
 		include_once(PICKLE_CMS_PATH.'fields/pickle-cms-fields.php'); // metabox fields
 		 
 		/**
@@ -88,6 +89,7 @@ final class PickleCMS {
 		// setup post types
 		$this->post_types=new PickleCMS_Post_Types();
 		// setup taxonomies
+		$this->taxonomies=new PickleCMS_Taxonomies();
 	}
 
 	private function init_hooks() {

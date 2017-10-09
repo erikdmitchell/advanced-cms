@@ -1,5 +1,5 @@
 <?php
-class pickleCMSTaxonomies {
+class PickleCMS_Taxonomies {
 
 	protected $taxonomies=array();
 
@@ -34,6 +34,4 @@ class pickleCMSTaxonomies {
 	}
 
 }
-
-new pickleCMSTaxonomies();
 ?>
