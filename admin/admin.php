@@ -20,6 +20,7 @@ class PickleCMSAdmin {
 		add_action('admin_init', array($this, 'update_post_types'));
 		add_action('admin_init', array($this, 'update_metaboxes'));
 		add_action('admin_init', array($this, 'update_taxonomies'));
+		add_action('admin_init', array($this, 'update_admin_columns'));
 		add_action('admin_notices', array($this, 'admin_notices'));
 		
 		add_action('wp_ajax_pickle_cms_get_metabox', array($this, 'ajax_get_metabox'));
@@ -29,12 +30,12 @@ class PickleCMSAdmin {
 		add_action('wp_ajax_pickle_cms_get_taxonomy', array($this, 'ajax_get_taxonomy'));
 		add_action('wp_ajax_pickle_cms_delete_taxonomy', array($this, 'ajax_delete_taxonomy'));
 		add_action('wp_ajax_pickle_cms_reserved_names', array($this, 'ajax_reserved_names'));
-		add_action('wp_ajax_pickle_cms_blank_metabox_field', array($this, 'ajax_blank_metabox_field'));
+		//add_action('wp_ajax_pickle_cms_blank_metabox_field', array($this, 'ajax_blank_metabox_field'));
 
 		$this->options['metaboxes']=$this->get_option('pickle_cms_metaboxes', array());
 		$this->options['post_types']=$this->get_option('pickle_cms_post_types', array());
 		$this->options['taxonomies']=$this->get_option('pickle_cms_taxonomies', array());
-		$this->options['columns']=$this->get_option('pickle_cms_admin_columns', array());
+		$this->options['admin_columns']=$this->get_option('pickle_cms_admin_columns', array());
 	}
 	
 	/**
@@ -814,10 +815,54 @@ exit;
 		return $admin_url;
 	}
 	
-	public function ajax_blank_metabox_field() {
-print_r($_POST);
+	public function update_admin_columns() {
+		if (!isset($_POST['pickle_cms_admin']) || !wp_verify_nonce($_POST['pickle_cms_admin'], 'update_columns'))
+			return;
 
-		wp_die();		
+		if (!isset($_POST['post_type']) || $_POST['post_type']=='0')
+			return;
+		
+		if (!isset($_POST['metabox_taxonomy']) || $_POST['metabox_taxonomy']=='0')
+			return;
+
+		$admin_columns=get_option('pickle_cms_admin_columns');
+
+		$arr=array(
+			'post_type' => $_POST['post_type'],
+			'metabox_taxonomy' => $_POST['metabox_taxonomy'],
+		);
+
+		if ($_POST['admin_column_id']!=-1) :
+			$admin_columns[$_POST['admin_column_id']]=$arr;
+		else :
+			$admin_columns[]=$arr;
+		endif;
+
+		if (get_option('pickle_cms_admin_columns'))
+			$option_exists=true;
+
+		$this->options['admin_columns']=$admin_columns; // set var
+
+		$update=update_option('pickle_cms_admin_columns', $admin_columns);
+
+		if ($update) :
+			$update=true;
+		elseif ($option_exists) :
+			$update=true;
+		else :
+			$update=false;
+		endif;
+
+		$url=$this->admin_url(array(
+			'tab' => 'columns',
+			'action' => 'update',
+			//'id' => $data['name'],
+			'updated' => $update,
+			'edit' => 'columns'
+		));
+// http://plugins.dev/wp-admin/tools.php?page=pickle-cms&tab=columns&action=update&post_type=movie&metabox_taxonomy=genre
+		wp_redirect($url);
+		exit;
 	}
 
 }
