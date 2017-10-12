@@ -7,7 +7,7 @@ function ajax_pickle_cms_admin_col_change_post_type() {
 }
 add_action('wp_ajax_pickle_cms_admin_col_change_post_type', 'ajax_pickle_cms_admin_col_change_post_type');
 
-function pickle_cms_metabox_taxonomy_dropdown($post_type='') {
+function pickle_cms_metabox_taxonomy_dropdown($post_type='', $selected='') {
 	$html='';
 	$metabox_fields=array();
 	$taxonomies=pickle_cms_get_taxonomies($post_type);
@@ -24,7 +24,7 @@ function pickle_cms_metabox_taxonomy_dropdown($post_type='') {
 			$html.='<option value="0">Taxonomy:</option>';
 			
 			foreach ($taxonomies as $taxonomy) :
-				$html.='<option value="'.$taxonomy['name'].'">&nbsp;&nbsp;'.$taxonomy['args']['label'].'</option>';
+				$html.='<option value="'.$taxonomy['name'].'" '.selected($selected, $taxonomy['name'], false).'>&nbsp;&nbsp;'.$taxonomy['args']['label'].'</option>';
 			endforeach;
 		endif;
 
@@ -32,7 +32,7 @@ function pickle_cms_metabox_taxonomy_dropdown($post_type='') {
 			$html.='<option value="0">Metabox Fields:</option>';
 			
 			foreach ($metabox_fields as $metabox_field) :
-				$html.='<option value="'.$metabox_field['id'].'">&nbsp;&nbsp;'.$metabox_field['title'].'</option>';
+				$html.='<option value="'.$metabox_field['id'].'" '.selected($selected, $metabox_field['id'], false).'>&nbsp;&nbsp;'.$metabox_field['title'].'</option>';
 			endforeach;
 		endif;
 	

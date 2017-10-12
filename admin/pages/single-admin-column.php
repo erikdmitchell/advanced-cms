@@ -3,9 +3,7 @@ global $pickle_cms_admin;
 
 $args=pickle_cms_setup_admin_columns_args(); 
 ?>
-<pre>
-	<?php print_r($args); ?>
-</pre>
+
 <h3><?php echo $args['header']; ?> <a href="<?php pickle_cms_admin_link(array('tab' => 'columns', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h3>
 
 <div class="pickle-cms-admin-page single-admin-column">
@@ -23,8 +21,13 @@ $args=pickle_cms_setup_admin_columns_args();
 						<label for="label" class="required">Taxonomy/Meta</label>
 					</th>
 					<td id="select-post-type">
-						what baout eidt <br>
-						Select a post type first.
+						<?php 
+						if (isset($_GET['metabox_taxonomy'])) :
+							echo pickle_cms_metabox_taxonomy_dropdown($_GET['post_type'], $_GET['metabox_taxonomy']); 
+						else :
+							echo 'Select a post type first.';
+						endif;	
+						?>
 					</td>
 				</tr>
 
