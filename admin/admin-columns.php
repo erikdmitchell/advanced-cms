@@ -2,7 +2,11 @@
 
 function ajax_pickle_cms_admin_col_change_post_type() {
 	$taxonomies=pickle_cms_get_taxonomies($_POST['post_type']);
-	$metaboxes=pickle_cms_get_metabox_fields($_POST['post_type']);
+	$metaboxes=pickle_cms_get_metaboxes($_POST['post_type']);
+	
+	foreach ($metaboxes as $metabox) :
+		$metabox_fields=array_merge($metabox_fields, pickle_cms_get_metabox_fields($metabox['mb_id']);
+	endforeach;
 	
 	// build out drop down w/ separator //
 		
@@ -31,7 +35,7 @@ function pickle_cms_get_taxonomies($object_type='') {
 }
 
 // metaboxes //
-function pickle_cms_get_metabox_fields($object_type='', $metabox_id='') {
+function pickle_cms_get_metaboxes($object_type='', $metabox_id='') {
 	global $pickle_cms_admin;
 	
 	$fields=array();
@@ -58,15 +62,10 @@ function pickle_cms_get_metabox_fields($object_type='', $metabox_id='') {
 		endforeach;
 	endif;
 	
-	// get metabox fields //
-	foreach ($metaboxes as $metabox) :
-		$fields=array_merge($fields, pickle_cms_get_metabox_fields2($metabox['mb_id']));
-	endforeach;
-	
-	return $fields;
+	return $metaboxes;
 }
 
-function pickle_cms_get_metabox_fields2($metabox_id='') {
+function pickle_cms_get_metabox_fields($metabox_id='') {
 	global $pickle_cms_admin;
 
 	$fields=array();
