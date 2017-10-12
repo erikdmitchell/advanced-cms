@@ -8,7 +8,7 @@ $args=pickle_cms_setup_admin_columns_args();
 
 <div class="pickle-cms-admin-page single-admin-column">
 
-	<form class="custom-post-types" method="post">
+	<form class="pickle-cms-admin-column" method="post">
 		<?php wp_nonce_field('update_columns', 'pickle_cms_admin'); ?>
 
 		<table class="form-table">
@@ -18,42 +18,19 @@ $args=pickle_cms_setup_admin_columns_args();
 
 				<tr>
 					<th scope="row">
-						<label for="label" class="required">Label</label>
+						<label for="label" class="required">Taxonomy/Meta</label>
 					</th>
 					<td>
 						Choose from taxonomy and meta to display
-						<input type="text" name="label" id="label" class="required" value="<?php echo $args['label']; ?>" /><span class="example">(e.g. Movies)</span>
 					</td>
 				</tr>
 
 				<tr>
 					<th scope="row">
-						<label for="singular_label" class="">Singular Label</label>
+						<label for="label" class="required">Label</label>
 					</th>
 					<td>
-						<input type="text" name="singular_label" id="singular_label" value="<?php echo $args['singular_label']; ?>" /><span class="example">(e.g. Movie)</span>
-					</td>
-				</tr>
-
-				<tr>
-					<th scope="row">
-						<label for="description" class="">Description</label>
-					</th>
-					<td>
-						<textarea name="description" id="description" rows="4" cols="40"><?php echo $args['description']; ?></textarea>
-					</td>
-				</tr>
-
-				<tr>
-					<th scope="row">
-						<label for="title" class="">Title</label>
-					</th>
-					<td>
-						<select name="supports[title]" id="title">
-							<option value="1" <?php selected($args['supports']['title'], 1); ?>>True</option>
-							<option value="0" <?php selected($args['supports']['title'], 0); ?>>False</option>
-						</select>
-						<span class="example">(default True)</span>
+						<input type="text" name="label" id="label" class="required" value="<?php echo $args['label']; ?>" />
 					</td>
 				</tr>
 

@@ -88,6 +88,7 @@ class PickleCMSAdmin {
 		wp_enqueue_script('pickle-cms-admin-post-types', PICKLE_CMS_ADMIN_URL.'js/post-types.js', array('jquery-ui-dialog'), '0.1.0');
 		wp_enqueue_script('pickle-cms-admin-taxonomies', PICKLE_CMS_ADMIN_URL.'js/taxonomies.js', array('jquery'), '0.1.0');
 		wp_enqueue_script('pickle-cms-fields-script', PICKLE_CMS_ADMIN_URL.'js/fields.js', array('jquery'), '0.1.0', true);
+		wp_enqueue_script('pickle-cms-admin-columns-script', PICKLE_CMS_ADMIN_URL.'js/admin-columns.js', array('jquery'), '0.1.0', true);
 		
 		wp_enqueue_script('pickle-cms-admin-metaboxes');
 

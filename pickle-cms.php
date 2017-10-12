@@ -76,15 +76,19 @@ final class PickleCMS {
 		include_once(PICKLE_CMS_PATH.'classes/metaboxes.php');
 		include_once(PICKLE_CMS_PATH.'classes/post-types.php');
 		include_once(PICKLE_CMS_PATH.'classes/taxonomies.php');
+		//include_once(PICKLE_CMS_PATH.'classes/admin-columns.php');
 		include_once(PICKLE_CMS_PATH.'fields/pickle-cms-fields.php'); // metabox fields
 		 
+		// admin (new) //
+		include_once(PICKLE_CMS_PATH.'admin/admin-columns.php');
+		
 		/**
 		 * libraries
 		 */
 		include_once(PICKLE_CMS_PATH.'lib/countries-states.php'); // contains global vars/arrays for states and countries
 		
 		// setup admin columns?
-		$this->admin_columns=new PickleCMS_Admin_Columns();
+		//$this->admin_columns=new PickleCMS_Admin_Columns();
 		// setup metaboxes
 		$this->meta_boxes=new PickleCMS_Metaboxes();
 		// setup post types
