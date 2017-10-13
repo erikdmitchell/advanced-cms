@@ -83,36 +83,7 @@ function pickle_cms_setup_taxonomy_args() {
 	return $args;
 }
 
-function pickle_cms_setup_metabox_args() {
-	global $pickle_cms_admin;
 
-	$default_args=array(
-		'base_url' => admin_url('tools.php?page=pickle-cms&tab=metaboxes'),
-		'btn_text' => 'Create',
-		'mb_id' => '',
-		'title' => '',
-		'prefix' => '',
-		'post_types' => '',
-		'edit_class_v' => '',
-		'fields' => array(),
-		'header' => 'Add New Metabox',
-	);
-
-	// edit //
-	if (isset($_GET['id']) && $_GET['id']) :
-		foreach ($pickle_cms_admin->options['metaboxes'] as $metabox) :
-			if ($metabox['mb_id']==$_GET['id']) :
-				$args=$metabox;
-				$args['header']='Edit Metabox';
-				$args['btn_text']='Update';
-			endif;
-		endforeach;
-	endif;
-
-	$args=pickle_cms_parse_args($args, $default_args);
-
-	return $args;
-}
 
 
 

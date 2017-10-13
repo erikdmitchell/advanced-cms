@@ -1,14 +1,19 @@
 <?php
 
-class PickleCMS_Admin_Metaboxes extends PickleCMS_Admin {
+class PickleCMS_Admin_Component_Metaboxes extends PickleCMS_Admin_Component {
 
 	public function __construct() {
-		add_action('admin_init', array($this, 'update_metaboxes'));
+		add_action('admin_init', array($this, 'update'));
 		
-		add_action('wp_ajax_pickle_cms_get_metabox', array($this, 'ajax_get_metabox'));
-		add_action('wp_ajax_pickle_cms_delete_metabox', array($this, 'ajax_delete_metabox'));
+		add_action('wp_ajax_pickle_cms_get_metabox', array($this, 'ajax_get'));
+		add_action('wp_ajax_pickle_cms_delete_metabox', array($this, 'ajax_delete'));
 
-		$this->options['metaboxes']=$this->get_option('pickle_cms_metaboxes', array());
+		$this->slug='metaboxes';
+		$this->name='Metaboxes';
+		$this->items=$this->get_option('pickle_cms_metaboxes', array());
+		
+		// do not delete!
+    	parent::__construct();	
 	}
 	
 	public function scripts_styles($hook) {
@@ -25,7 +30,7 @@ class PickleCMS_Admin_Metaboxes extends PickleCMS_Admin {
 		wp_enqueue_style('pickle-cms-metabox-style', PICKLE_CMS_ADMIN_URL.'css/metaboxes.css');		
 	}
 
-	public function update_metaboxes() {
+	public function update() {
 		if (!isset($_POST['pickle_cms_admin']) || !wp_verify_nonce($_POST['pickle_cms_admin'], 'update_metaboxes'))
 			return false;
 
@@ -107,7 +112,7 @@ class PickleCMS_Admin_Metaboxes extends PickleCMS_Admin {
 		return;
 	}
 
-	public function ajax_get_metabox() {
+	public function ajax_get() {
 		if (!isset($_POST['id']))
 			return false;
 
@@ -122,7 +127,7 @@ class PickleCMS_Admin_Metaboxes extends PickleCMS_Admin {
 		wp_die();
 	}
 
-	public function ajax_delete_metabox() {
+	public function ajax_delete() {
 
 		if (!isset($_POST['id']))
 			return;
@@ -167,6 +172,35 @@ class PickleCMS_Admin_Metaboxes extends PickleCMS_Admin {
 		endforeach;
 
 		return $meta_box_slugs;
+	}
+
+	public function setup() {
+		$default_args=array(
+			'base_url' => admin_url('tools.php?page=pickle-cms&tab=metaboxes'),
+			'btn_text' => 'Create',
+			'mb_id' => '',
+			'title' => '',
+			'prefix' => '',
+			'post_types' => '',
+			'edit_class_v' => '',
+			'fields' => array(),
+			'header' => 'Add New Metabox',
+		);
+	
+		// edit //
+		if (isset($_GET['id']) && $_GET['id']) :
+			foreach (picklecms()->admin->components['metaboxes']->items as $metabox) :
+				if ($metabox['mb_id']==$_GET['id']) :
+					$args=$metabox;
+					$args['header']='Edit Metabox';
+					$args['btn_text']='Update';
+				endif;
+			endforeach;
+		endif;
+	
+		$args=pickle_cms_parse_args($args, $default_args);
+	
+		return $args;
 	}
 
 }
