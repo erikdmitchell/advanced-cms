@@ -3,10 +3,10 @@ class PickleCMS_Admin_Component_Post_Types extends PickleCMS_Admin_Component {
 	
 	public function __construct() {
 		add_action('admin_enqueue_scripts', array($this, 'scripts_styles'));
-		add_action('admin_init', array($this, 'update_post_types'));
+		add_action('admin_init', array($this, 'update'));
 		
-		add_action('wp_ajax_pickle_cms_get_post_type', array($this, 'ajax_get_post_type'));
-		add_action('wp_ajax_pickle_cms_delete_post_type', array($this, 'ajax_delete_post_type'));
+		add_action('wp_ajax_pickle_cms_get_post_type', array($this, 'ajax_get'));
+		add_action('wp_ajax_pickle_cms_delete_post_type', array($this, 'ajax_delete'));
 		
 		$this->slug='post-types';
 		$this->name='Post Types';
@@ -83,7 +83,7 @@ class PickleCMS_Admin_Component_Post_Types extends PickleCMS_Admin_Component {
 		exit();
 	}
 
-	public function get() {
+	public function ajax_get() {
 		if (!isset($_POST['slug']))
 			return false;
 
@@ -126,9 +126,7 @@ class PickleCMS_Admin_Component_Post_Types extends PickleCMS_Admin_Component {
 		return false;
 	}
 	
-	public function default_args() {
-		global $pickle_cms_admin;
-	
+	public function setup() {
 		$default_args=array(
 			'base_url' => admin_url('tools.php?page=pickle-cms&tab=post-types'),
 			'btn_text' => 'Create',
@@ -154,7 +152,7 @@ class PickleCMS_Admin_Component_Post_Types extends PickleCMS_Admin_Component {
 	
 		// edit custom post type //
 		if (isset($_GET['slug']) && $_GET['slug']) :
-			foreach ($pickle_cms_admin->options['post_types'] as $key => $post_type) :
+			foreach ($this->items as $key => $post_type) :
 				if ($post_type['name']==$_GET['slug']) :
 					$args=$post_type;
 					$args['header']='Edit Post Type';

@@ -99,10 +99,6 @@ class PickleCMS_Admin {
 
 		if (isset( $_GET[ 'tab' ] ))
 			$active_tab=$_GET['tab'];
-echo '<pre>';
-print_r(picklecms()->admin);
-print_r($tabs);		
-echo '</pre>';			
 		?>
 
 		<div class="wrap pickle-cms-wrap">
