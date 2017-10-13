@@ -1,8 +1,8 @@
 <?php
 
 class PickleCMS_Admin {
-
-	public $options=array();
+	
+	public $components=array();
 
 	public function __construct() {
 		add_action('admin_menu', array($this, 'build_admin_menu'));
@@ -10,15 +10,29 @@ class PickleCMS_Admin {
 		add_action('admin_notices', array($this, 'admin_notices'));
 
 		add_action('wp_ajax_pickle_cms_reserved_names', array($this, 'ajax_reserved_names'));
-	}
-
-	protected function get_option($name='', $default='') {
-		$option=get_option($name, $default);
 		
-		if ($option=='')
-			$option=$default;
+		$this->init_hooks();
+	}
+	
+	private function init_hooks() {
+		add_action('admin_init', array($this, 'register_components'));
+	}
+	
+	public function register_components() {
+		$classes=array();
+	
+		foreach (get_declared_classes() as $class) :
+			if (is_subclass_of($class, 'PickleCMS_Admin_Component'))
+				$classes[]=$class;
+		endforeach;
 
-		return $option;
+		foreach ($classes as $class) :
+			$c=new $class();
+			$slug=$c->slug;
+			$name=$c->name;
+			
+			$this->components[$slug]=$c;
+		endforeach;
 	}
 
 	public function build_admin_menu() {
@@ -72,6 +86,8 @@ class PickleCMS_Admin {
 
 	public function admin_page() {
 		$active_tab='cms-main';
+		$tabs=apply_filters('pickle_cms_admin_tabs', array('cms-main' => 'Main'));
+/*
 		$tabs=array(
 			'cms-main' => 'Main',
 			'post-types' => 'Post Types',
@@ -79,9 +95,14 @@ class PickleCMS_Admin {
 			'taxonomies' => 'Taxonomies',
 			'columns' => 'Admin Columns',
 		);
+*/
 
 		if (isset( $_GET[ 'tab' ] ))
 			$active_tab=$_GET['tab'];
+echo '<pre>';
+print_r($this);	
+print_r($tabs);		
+echo '</pre>';			
 		?>
 
 		<div class="wrap pickle-cms-wrap">
@@ -267,4 +288,6 @@ class PickleCMS_Admin {
 	}
 	
 }
+
+new PickleCMS_Admin();
 ?>

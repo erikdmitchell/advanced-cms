@@ -1,5 +1,5 @@
 <?php
-class PickleCMS_Admin_Post_Types extends PickleCMS_Admin {
+class PickleCMS_Admin_Component_Post_Types extends PickleCMS_Admin_Component {
 	
 	public function __construct() {
 		add_action('admin_enqueue_scripts', array($this, 'scripts_styles'));
@@ -7,8 +7,13 @@ class PickleCMS_Admin_Post_Types extends PickleCMS_Admin {
 		
 		add_action('wp_ajax_pickle_cms_get_post_type', array($this, 'ajax_get_post_type'));
 		add_action('wp_ajax_pickle_cms_delete_post_type', array($this, 'ajax_delete_post_type'));
-
-		$this->options['post_types']=$this->get_option('pickle_cms_post_types', array());
+		
+		$this->slug='post-types';
+		$this->name='Post Types';
+		//$this->options=$this->get_option('pickle_cms_post_types', array());
+		
+		// do not delete!
+    	parent::__construct();		
 	}
 
 	public function scripts_styles($hook) {

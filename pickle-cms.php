@@ -60,12 +60,6 @@ final class PickleCMS {
 
 	public function includes() {
 		/**
-		 * admin
-		 */
-		include_once(PICKLE_CMS_PATH.'admin/functions.php'); // admin functions
-		include_once(PICKLE_CMS_PATH.'admin/admin.php'); // admin class
-		 
-		/**
 		 * general
 		 */
 		include_once(PICKLE_CMS_PATH.'functions.php'); // contains misc functions
@@ -78,23 +72,28 @@ final class PickleCMS {
 		include_once(PICKLE_CMS_PATH.'classes/taxonomies.php');
 		//include_once(PICKLE_CMS_PATH.'classes/admin-columns.php');
 		include_once(PICKLE_CMS_PATH.'fields/pickle-cms-fields.php'); // metabox fields
-		 
-		// admin (new) //
-		include_once(PICKLE_CMS_PATH.'admin/admin-columns.php');
 		
 		/**
 		 * libraries
 		 */
 		include_once(PICKLE_CMS_PATH.'lib/countries-states.php'); // contains global vars/arrays for states and countries
 		
-		// setup admin columns?
+		/**
+		 * admin
+		 */
+		include_once(PICKLE_CMS_ADMIN_PATH.'classes/admin.php');
+		include_once(PICKLE_CMS_ADMIN_PATH.'classes/component.php');		
+		include_once(PICKLE_CMS_ADMIN_PATH.'classes/post-types.php');		
+		include_once(PICKLE_CMS_PATH.'admin/functions.php'); // admin functions
+		
+		// setup admin columns
 		//$this->admin_columns=new PickleCMS_Admin_Columns();
 		// setup metaboxes
-		$this->meta_boxes=new PickleCMS_Metaboxes();
+		//$this->meta_boxes=new PickleCMS_Metaboxes();
 		// setup post types
-		$this->post_types=new PickleCMS_Post_Types();
+		//$this->post_types=new PickleCMS_Post_Types();
 		// setup taxonomies
-		$this->taxonomies=new PickleCMS_Taxonomies();
+		//$this->taxonomies=new PickleCMS_Taxonomies();
 	}
 
 	private function init_hooks() {
