@@ -94,6 +94,10 @@ final class PickleCMS {
 		//$this->post_types=new PickleCMS_Post_Types();
 		// setup taxonomies
 		//$this->taxonomies=new PickleCMS_Taxonomies();
+		
+		if (is_admin()) :
+			$this->admin=new PickleCMS_Admin();
+		endif;
 	}
 
 	private function init_hooks() {

@@ -10,7 +10,7 @@ class PickleCMS_Admin_Component_Post_Types extends PickleCMS_Admin_Component {
 		
 		$this->slug='post-types';
 		$this->name='Post Types';
-		//$this->options=$this->get_option('pickle_cms_post_types', array());
+		$this->items=$this->get_option('pickle_cms_post_types', array());
 		
 		// do not delete!
     	parent::__construct();		
@@ -20,7 +20,7 @@ class PickleCMS_Admin_Component_Post_Types extends PickleCMS_Admin_Component {
 		wp_enqueue_script('pickle-cms-admin-post-types', PICKLE_CMS_ADMIN_URL.'js/post-types.js', array('jquery-ui-dialog'), '0.1.0');
 	}
 
-	public function update_post_types() {
+	public function update() {
 		if (!isset($_POST['pickle_cms_admin']) || !wp_verify_nonce($_POST['pickle_cms_admin'], 'update_cpts'))
 			return false;
 
@@ -83,7 +83,7 @@ class PickleCMS_Admin_Component_Post_Types extends PickleCMS_Admin_Component {
 		exit();
 	}
 
-	public function ajax_get_post_type() {
+	public function get() {
 		if (!isset($_POST['slug']))
 			return false;
 
@@ -98,7 +98,7 @@ class PickleCMS_Admin_Component_Post_Types extends PickleCMS_Admin_Component {
 		wp_die();
 	}
 
-	public function ajax_delete_post_type() {
+	public function ajax_delete() {
 		if (!isset($_POST['name']))
 			return false;
 
@@ -110,7 +110,7 @@ class PickleCMS_Admin_Component_Post_Types extends PickleCMS_Admin_Component {
 		wp_die();
 	}
 
-	public function delete_post_type($name='') {
+	public function delete($name='') {
 		$post_types=array();
 
 		// build clean array //
@@ -125,49 +125,49 @@ class PickleCMS_Admin_Component_Post_Types extends PickleCMS_Admin_Component {
 
 		return false;
 	}
-
-}	
 	
-function pickle_cms_setup_post_type_args() {
-	global $pickle_cms_admin;
+	public function default_args() {
+		global $pickle_cms_admin;
+	
+		$default_args=array(
+			'base_url' => admin_url('tools.php?page=pickle-cms&tab=post-types'),
+			'btn_text' => 'Create',
+			'name' => '',
+			'label' => '',
+			'singular_label' => '',
+			'description' => '',
+			'supports' => array(
+				'title' => 1,
+				'thumbnail' => 1,
+				'editor' => 1,
+				'revisions' => 1,
+				'page_attributes' => 0,
+				'excerpt' => 0,
+				'comments' => 0,
+			),
+			'hierarchical' => 0,
+			'id' => -1,
+			'header' => 'Add New Custom Post Type',
+			'icon' => 'dashicons-admin-post',
+			'error_class' => '',
+		);
+	
+		// edit custom post type //
+		if (isset($_GET['slug']) && $_GET['slug']) :
+			foreach ($pickle_cms_admin->options['post_types'] as $key => $post_type) :
+				if ($post_type['name']==$_GET['slug']) :
+					$args=$post_type;
+					$args['header']='Edit Post Type';
+					$args['btn_text']='Update';
+					$args['id']=$key;
+				endif;
+			endforeach;
+		endif;
+	
+		$args=pickle_cms_parse_args($args, $default_args);
+	
+		return $args;		
+	}
 
-	$default_args=array(
-		'base_url' => admin_url('tools.php?page=pickle-cms&tab=post-types'),
-		'btn_text' => 'Create',
-		'name' => '',
-		'label' => '',
-		'singular_label' => '',
-		'description' => '',
-		'supports' => array(
-			'title' => 1,
-			'thumbnail' => 1,
-			'editor' => 1,
-			'revisions' => 1,
-			'page_attributes' => 0,
-			'excerpt' => 0,
-			'comments' => 0,
-		),
-		'hierarchical' => 0,
-		'id' => -1,
-		'header' => 'Add New Custom Post Type',
-		'icon' => 'dashicons-admin-post',
-		'error_class' => '',
-	);
-
-	// edit custom post type //
-	if (isset($_GET['slug']) && $_GET['slug']) :
-		foreach ($pickle_cms_admin->options['post_types'] as $key => $post_type) :
-			if ($post_type['name']==$_GET['slug']) :
-				$args=$post_type;
-				$args['header']='Edit Post Type';
-				$args['btn_text']='Update';
-				$args['id']=$key;
-			endif;
-		endforeach;
-	endif;
-
-	$args=pickle_cms_parse_args($args, $default_args);
-
-	return $args;
-}	
+}
 ?>

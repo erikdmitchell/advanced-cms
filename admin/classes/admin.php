@@ -100,7 +100,7 @@ class PickleCMS_Admin {
 		if (isset( $_GET[ 'tab' ] ))
 			$active_tab=$_GET['tab'];
 echo '<pre>';
-print_r($this);	
+print_r(picklecms()->admin);
 print_r($tabs);		
 echo '</pre>';			
 		?>
@@ -288,6 +288,4 @@ echo '</pre>';
 	}
 	
 }
-
-new PickleCMS_Admin();
 ?>
