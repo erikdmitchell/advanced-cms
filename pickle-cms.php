@@ -85,6 +85,8 @@ final class PickleCMS {
 		include_once(PICKLE_CMS_ADMIN_PATH.'classes/component.php');		
 		include_once(PICKLE_CMS_ADMIN_PATH.'classes/post-types.php');		
 		include_once(PICKLE_CMS_ADMIN_PATH.'classes/metaboxes.php');
+		include_once(PICKLE_CMS_ADMIN_PATH.'classes/taxonomies.php');
+		include_once(PICKLE_CMS_ADMIN_PATH.'classes/admin-columns.php');		
 		include_once(PICKLE_CMS_PATH.'admin/functions.php'); // admin functions
 		
 		// setup admin columns

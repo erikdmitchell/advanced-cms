@@ -1,8 +1,4 @@
-<?php 
-global $pickle_cms_admin;	
-
-$args=pickle_cms_setup_admin_columns_args(); 
-?>
+<?php $args=picklecms()->admin->components['columns']->setup(); ?>
 
 <h3><?php echo $args['header']; ?> <a href="<?php pickle_cms_admin_link(array('tab' => 'columns', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h3>
 
@@ -14,7 +10,7 @@ $args=pickle_cms_setup_admin_columns_args();
 		<table class="form-table">
 			<tbody>
 
-				<?php echo $pickle_cms_admin->get_post_types_list($args['post_type'], 'dropdown'); ?>
+				<?php echo picklecms()->admin->get_post_types_list($args['post_type'], 'dropdown'); ?>
 
 				<tr>
 					<th scope="row">

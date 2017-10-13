@@ -1,15 +1,19 @@
 <?php
-
-class PickleCMS_Admin_Columns extends PickleCMS_Admin {
+class PickleCMS_Admin_Component_Admin_Columns extends PickleCMS_Admin_Component {
 
 	public function __construct() {
 		add_action('admin_enqueue_scripts', array($this, 'scripts_styles'));
 
 		add_action('admin_init', array($this, 'update_admin_columns'));
 
-		$this->options['admin_columns']=$this->get_option('pickle_cms_admin_columns', array());
+		$this->slug='columns';
+		$this->name='Admin Columns';
+		$this->items=$this->get_option('pickle_cms_admin_columns', array());
+		
+		// do not delete!
+    	parent::__construct();	
 	}
-
+	
 	public function scripts_styles($hook) {
 		wp_enqueue_script('pickle-cms-admin-columns-script', PICKLE_CMS_ADMIN_URL.'js/admin-columns.js', array('jquery'), '0.1.0', true);	
 	}
@@ -64,6 +68,33 @@ class PickleCMS_Admin_Columns extends PickleCMS_Admin {
 		exit;
 	}
 
+	function setup() {
+		$default_args=array(
+			'base_url' => admin_url('tools.php?page=pickle-cms&tab=columns'),
+			'btn_text' => 'Create',
+			'post_type' => '',
+			'metabox_taxonomy' => '',
+			'id' => -1,
+			'header' => 'Add New Admin Column',
+		);
+	
+		// edit custom post type //
+		if (isset($_GET['post_type']) && $_GET['post_type']) :
+			foreach ($this->items as $key => $column) :
+				if ($column['post_type']==$_GET['post_type'] && $column['metabox_taxonomy']==$_GET['metabox_taxonomy']) :
+					$args=$column;
+					$args['header']='Edit Admin Column';
+					$args['btn_text']='Update';
+					$args['id']=$key;
+				endif;
+			endforeach;
+		endif;
+	
+		$args=pickle_cms_parse_args($args, $default_args);
+	
+		return $args;
+	}
+
 }
 
 function ajax_pickle_cms_admin_col_change_post_type() {
@@ -109,10 +140,8 @@ function pickle_cms_metabox_taxonomy_dropdown($post_type='', $selected='') {
 
 // taxonomies //
 function pickle_cms_get_taxonomies($object_type='') {
-	global $pickle_cms_admin;
-	
 	$taxonomies=array();
-	$all_taxonomies=$pickle_cms_admin->options['taxonomies'];
+	$all_taxonomies=picklecms()->admin->components['taxonomies']->items;
 
 	if (empty($object_type)) :
 		$taxonomies=$all_taxonomies;
@@ -129,11 +158,9 @@ function pickle_cms_get_taxonomies($object_type='') {
 
 // metaboxes //
 function pickle_cms_get_metaboxes($object_type='', $metabox_id='') {
-	global $pickle_cms_admin;
-	
 	$fields=array();
 	$metaboxes=array();
-	$all_metaboxes=$pickle_cms_admin->options['metaboxes'];
+	$all_metaboxes=picklecms()->admin->components['metaboxes']->items;
 	
 	// get metaboxes //
 	if (empty($metabox_id)) :
@@ -159,10 +186,8 @@ function pickle_cms_get_metaboxes($object_type='', $metabox_id='') {
 }
 
 function pickle_cms_get_metabox_fields($metabox_id='') {
-	global $pickle_cms_admin;
-
 	$fields=array();
-	$all_metaboxes=$pickle_cms_admin->options['metaboxes'];
+	$all_metaboxes=picklecms()->admin->components['metaboxes']->items;
 	
 	foreach ($all_metaboxes as $metabox) :
 		if ($metabox_id==$metabox['mb_id']) :
@@ -171,34 +196,5 @@ function pickle_cms_get_metabox_fields($metabox_id='') {
 	endforeach;
 	
 	return $fields;
-}
-
-function pickle_cms_setup_admin_columns_args() {
-	global $pickle_cms_admin;
-
-	$default_args=array(
-		'base_url' => admin_url('tools.php?page=pickle-cms&tab=columns'),
-		'btn_text' => 'Create',
-		'post_type' => '',
-		'metabox_taxonomy' => '',
-		'id' => -1,
-		'header' => 'Add New Admin Column',
-	);
-
-	// edit custom post type //
-	if (isset($_GET['post_type']) && $_GET['post_type']) :
-		foreach ($pickle_cms_admin->options['admin_columns'] as $key => $column) :
-			if ($column['post_type']==$_GET['post_type'] && $column['metabox_taxonomy']==$_GET['metabox_taxonomy']) :
-				$args=$column;
-				$args['header']='Edit Admin Column';
-				$args['btn_text']='Update';
-				$args['id']=$key;
-			endif;
-		endforeach;
-	endif;
-
-	$args=pickle_cms_parse_args($args, $default_args);
-
-	return $args;
 }
 ?>

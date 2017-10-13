@@ -1,16 +1,20 @@
 <?php
-
-class PickleCMS_Admin_Taxonomies extends PickleCMS_Admin {
+class PickleCMS_Admin_Component_Taxonomies extends PickleCMS_Admin_Component {
 
 	public function __construct() {
 		add_action('admin_enqueue_scripts', array($this, 'scripts_styles'));
 
-		add_action('admin_init', array($this, 'update_taxonomies'));
+		add_action('admin_init', array($this, 'update'));
 
-		add_action('wp_ajax_pickle_cms_get_taxonomy', array($this, 'ajax_get_taxonomy'));
-		add_action('wp_ajax_pickle_cms_delete_taxonomy', array($this, 'ajax_delete_taxonomy'));
+		add_action('wp_ajax_pickle_cms_get_taxonomy', array($this, 'ajax_get'));
+		add_action('wp_ajax_pickle_cms_delete_taxonomy', array($this, 'ajax_delete'));
 
-		$this->options['taxonomies']=$this->get_option('pickle_cms_taxonomies', array());
+		$this->slug='taxonomies';
+		$this->name='Taxonomies';
+		$this->items=$this->get_option('pickle_cms_taxonomies', array());
+		
+		// do not delete!
+    	parent::__construct();	
 	}
 
 	public function scripts_styles($hook) {
@@ -19,7 +23,7 @@ class PickleCMS_Admin_Taxonomies extends PickleCMS_Admin {
 		wp_enqueue_script('pickle-cms-admin-taxonomies', PICKLE_CMS_ADMIN_URL.'js/taxonomies.js', array('jquery'), '0.1.0');
 	}
 
-	public function update_taxonomies() {
+	public function update() {
 		if (!isset($_POST['pickle_cms_admin']) || !wp_verify_nonce($_POST['pickle_cms_admin'], 'update_taxonomies'))
 			return false;
 
@@ -80,7 +84,7 @@ class PickleCMS_Admin_Taxonomies extends PickleCMS_Admin {
 		exit();
 	}
 
-	public function ajax_get_taxonomy() {
+	public function ajax_get() {
 		if (!isset($_POST['name']))
 			return false;
 
@@ -95,11 +99,11 @@ class PickleCMS_Admin_Taxonomies extends PickleCMS_Admin {
 		wp_die();
 	}
 
-	public function ajax_delete_taxonomy() {
+	public function ajax_delete() {
 		if (!isset($_POST['id']))
 			return;
 
-		if ($this->delete_taxonomy($_POST['id']))
+		if ($this->delete($_POST['id']))
 			return true;
 
 		return;
@@ -107,7 +111,7 @@ class PickleCMS_Admin_Taxonomies extends PickleCMS_Admin {
 		wp_die();
 	}
 
-	public function delete_taxonomy($name='') {
+	public function delete($name='') {
 		$taxonomies=array();
 
 		// build clean array //
@@ -123,5 +127,36 @@ class PickleCMS_Admin_Taxonomies extends PickleCMS_Admin {
 		return false;
 	}
 
+	public function setup() {
+		$default_args=array(
+			'btn_text' => 'Create',
+			'name' => null,
+			'label' => null,
+			'object_type' => null,
+			'hierarchical' => 1,
+			'show_ui' => 1,
+			'show_admin_col' => 1,
+			'id' => -1,
+			'header' => 'Add New Taxonomy',
+		);
+	
+		// edit custom taxonomy //
+		if (isset($_GET['id']) && $_GET['id']) :
+			foreach ($this->items as $key => $taxonomy) :
+				if ($taxonomy['name']==$_GET['id']) :
+					$args=$taxonomy['args'];
+					$args['name']=$taxonomy['name'];
+					$args['object_type']=$taxonomy['object_type'];
+					$args['id']=$key;
+					$args['btn_text']='Update';
+					$args['header']='Update Taxonomy';
+				endif;
+			endforeach;
+		endif;
+	
+		$args=pickle_cms_parse_args($args, $default_args);
+	
+		return $args;
+	}
 }
 ?>

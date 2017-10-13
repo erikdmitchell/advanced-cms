@@ -1,5 +1,3 @@
-<?php global $pickle_cms_admin; ?>
-
 <div class="pickle-cms-admin-page admin-columns">
 
 	<h2>Admin Columns <a href="<?php pickle_cms_admin_link(array('tab' => 'columns', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h2>
@@ -13,8 +11,8 @@
 		</thead>
 
 		<tbody class="admin-column-list">
-			<?php if (count($pickle_cms_admin->options['admin_columns'])) : ?>
-				<?php foreach($pickle_cms_admin->options['admin_columns'] as $id => $column) : ?>
+			<?php if (count(picklecms()->admin->components['columns']->items)) : ?>
+				<?php foreach(picklecms()->admin->components['columns']->items as $id => $column) : ?>
 					<tr id="admin-column-<?php echo $id; ?>" class="admin-column">
 						<td class="post-type" data-colname="Post Type">
 							<strong><a class="row-title" href="<?php pickle_cms_admin_link(array('tab' => 'columns', 'action' => 'update', 'post_type' => $column['post_type'], 'metabox_taxonomy' => $column['metabox_taxonomy'])); ?>"><?php echo $column['post_type']; ?></a></strong>

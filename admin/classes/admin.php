@@ -87,15 +87,6 @@ class PickleCMS_Admin {
 	public function admin_page() {
 		$active_tab='cms-main';
 		$tabs=apply_filters('pickle_cms_admin_tabs', array('cms-main' => 'Main'));
-/*
-		$tabs=array(
-			'cms-main' => 'Main',
-			'post-types' => 'Post Types',
-			'metaboxes' => 'Metaboxes',
-			'taxonomies' => 'Taxonomies',
-			'columns' => 'Admin Columns',
-		);
-*/
 
 		if (isset( $_GET[ 'tab' ] ))
 			$active_tab=$_GET['tab'];

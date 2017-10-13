@@ -49,46 +49,6 @@ function get_pickle_cms_admin_tab() {
 	return false;
 }
 
-function pickle_cms_setup_taxonomy_args() {
-	global $pickle_cms_admin;
-
-	$default_args=array(
-		'btn_text' => 'Create',
-		'name' => null,
-		'label' => null,
-		'object_type' => null,
-		'hierarchical' => 1,
-		'show_ui' => 1,
-		'show_admin_col' => 1,
-		'id' => -1,
-		'header' => 'Add New Taxonomy',
-	);
-
-	// edit custom taxonomy //
-	if (isset($_GET['id']) && $_GET['id']) :
-		foreach ($pickle_cms_admin->options['taxonomies'] as $key => $taxonomy) :
-			if ($taxonomy['name']==$_GET['id']) :
-				$args=$taxonomy['args'];
-				$args['name']=$taxonomy['name'];
-				$args['object_type']=$taxonomy['object_type'];
-				$args['id']=$key;
-				$args['btn_text']='Update';
-				$args['header']='Update Taxonomy';
-			endif;
-		endforeach;
-	endif;
-
-	$args=pickle_cms_parse_args($args, $default_args);
-
-	return $args;
-}
-
-
-
-
-
-
-
 function pickle_cms_get_admin_link($args='') {
 	$default_args=array(
 		'page' => 'pickle-cms',
