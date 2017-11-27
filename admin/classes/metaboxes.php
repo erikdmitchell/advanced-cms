@@ -287,13 +287,9 @@ print_r($this->items);
 
 			$html.=wp_nonce_field('update_metabox', 'pickle_cms_metabox', true, false);
 			
-			foreach ($this->config as $config) :
 
-				if ($metabox['args']['meta_box_id']==$config['mb_id']) :
-
-					if (!empty($config['fields'])) :
 	
-						foreach ($config['fields'] as $field) :	
+						foreach ($fields as $field) :	
 							$classes=array('meta-row', $field['id'], 'type-'.$field['field_type']);
 							$field['value']=get_post_meta($post->ID, $field['id'], true);
 					
@@ -310,11 +306,7 @@ print_r($this->items);
 							$html.='</div>';
 							$row_counter++;																
 						endforeach;
-					endif;
 
-				endif;
-
-			endforeach;
 
 			$html.='<input type="hidden" id="pickle-cms-metabox-id" name="pickle-cms-metabox-id" value="'.$metabox['args']['meta_box_id'].'" />';
 			$html.='<input type="hidden" id="pickle-cms-config-key" name="pickle-cms-config-key" value="'.$metabox['args']['config_key'].'" />';
@@ -327,7 +319,11 @@ print_r($this->items);
 	public function get_metabox_fields($id='') {
     	foreach ($this->items as $item) :
     	    if ($item['mb_id'] == $id) :
-    	        return $item['fields'];
+    	        if (isset($item['fields'])) :
+        	        return $item['fields'];
+                else:
+                    return '';
+                endif;
     	    endif;
     	endforeach;
     	
