@@ -21,7 +21,7 @@ final class PickleCMS {
 
 	protected static $_instance=null;
 	
-	public $metaboxes=null;
+	//public $metaboxes=null;
 	
 	public $post_types=null;
 	
@@ -41,7 +41,6 @@ final class PickleCMS {
 		$this->define_constants();
 		$this->includes();
 		$this->init_hooks();
-
 	}
 
 	private function define_constants() {
@@ -88,15 +87,6 @@ final class PickleCMS {
 		include_once(PICKLE_CMS_ADMIN_PATH.'classes/taxonomies.php');
 		include_once(PICKLE_CMS_ADMIN_PATH.'classes/admin-columns.php');		
 		include_once(PICKLE_CMS_PATH.'admin/functions.php'); // admin functions
-		
-		// setup admin columns
-		//$this->admin_columns=new PickleCMS_Admin_Columns();
-		// setup metaboxes
-		//$this->meta_boxes=new PickleCMS_Metaboxes();
-		// setup post types
-		//$this->post_types=new PickleCMS_Post_Types();
-		// setup taxonomies
-		//$this->taxonomies=new PickleCMS_Taxonomies();
 		
 		if (is_admin()) :
 			$this->admin=new PickleCMS_Admin();

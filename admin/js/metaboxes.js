@@ -19,7 +19,11 @@ jQuery(document).ready(function($) {
 		};
 
 		$.post(ajaxurl, data, function(response) {
+console.log(response);
 			var response_data=$.parseJSON(response);
+
+console.log(response_data);	
+
 			var data={
 				'label' : response_data.title,
 				'id' : response_data.mb_id
@@ -28,6 +32,7 @@ jQuery(document).ready(function($) {
 				'action' : 'pickle_cms_delete_metabox',
 				'id' : response_data.mb_id
 			}
+		
 			setupDialogBox(data, delete_data, 'metabox');
 		});
 	});

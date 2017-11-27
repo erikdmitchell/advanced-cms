@@ -7,7 +7,7 @@ class PickleCMS_Admin {
 	public function __construct() {
 		add_action('admin_menu', array($this, 'build_admin_menu'));
 		add_action('admin_enqueue_scripts', array($this, 'scripts_styles'));
-		add_action('admin_notices', array($this, 'admin_notices'));
+		//add_action('admin_notices', array($this, 'admin_notices'));
 
 		add_action('wp_ajax_pickle_cms_reserved_names', array($this, 'ajax_reserved_names'));
 		
@@ -15,7 +15,7 @@ class PickleCMS_Admin {
 	}
 	
 	private function init_hooks() {
-		add_action('admin_init', array($this, 'register_components'));
+		add_action('admin_init', array($this, 'register_components'), 0);
 	}
 	
 	public function register_components() {
@@ -44,17 +44,18 @@ class PickleCMS_Admin {
 
 		$ui = $wp_scripts->query('jquery-ui-core');
 				
-		wp_enqueue_script('jquery-ui-dialog');
-		wp_enqueue_script('jquery-ui-sortable');
+		//wp_enqueue_script('jquery-ui-dialog');
+		//wp_enqueue_script('jquery-ui-sortable');
 		wp_enqueue_script('namecheck-script', PICKLE_CMS_URL.'js/jquery.namecheck.js', array('jquery'), '0.1.0');
 
 		wp_enqueue_script('requiredFields-script', PICKLE_CMS_ADMIN_URL.'js/jquery.requiredFields.js', array('jquery'), '0.1.0');
 		wp_enqueue_script('pickle-cms-admin-functions', PICKLE_CMS_ADMIN_URL.'js/functions.js', array('jquery'), '0.1.0');
 
-		wp_enqueue_style('jquery-ui-smoothness', "https://ajax.googleapis.com/ajax/libs/jqueryui/{$ui->ver}/themes/smoothness/jquery-ui.min.css");
+		//wp_enqueue_style('jquery-ui-smoothness', "https://ajax.googleapis.com/ajax/libs/jqueryui/{$ui->ver}/themes/smoothness/jquery-ui.min.css");
 		wp_enqueue_style('pickle-cms-admin-style', PICKLE_CMS_ADMIN_URL.'css/admin.css');
 	}
 
+/*
 	public function admin_notices() {
 		if (isset($_GET['edit'])) :
 			switch ($_GET['edit']) :
@@ -83,6 +84,7 @@ class PickleCMS_Admin {
 			endif;
 		endif;
 	}
+*/
 
 	public function admin_page() {
 		$active_tab='cms-main';
@@ -264,6 +266,7 @@ class PickleCMS_Admin {
 		wp_die();
 	}
 
+/*
 	protected function admin_url($args='') {
 		$default_args=array(
 			'page' => 'pickle-cms'
@@ -273,6 +276,7 @@ class PickleCMS_Admin {
 
 		return $admin_url;
 	}
+*/
 	
 }
 ?>

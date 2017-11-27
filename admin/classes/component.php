@@ -7,6 +7,8 @@ class PickleCMS_Admin_Component {
 	
 	public $items='';
 	
+	public $version='';
+	
 	public function __construct() {
 		add_filter('pickle_cms_admin_tabs', array($this, 'add_admin_tab'));
 	}

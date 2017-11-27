@@ -1,3 +1,13 @@
+
+/**
+ * setupDialogBox function.
+ * 
+ * @access public
+ * @param mixed data
+ * @param mixed delete_data
+ * @param mixed description
+ * @return void
+ */
 function setupDialogBox(data, delete_data, description) {
 	var dialogBoxID='dialog-confirm';
 	var $dialogBox='';
