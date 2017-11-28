@@ -19,10 +19,7 @@ jQuery(document).ready(function($) {
 		};
 
 		$.post(ajaxurl, data, function(response) {
-console.log(response);
 			var response_data=$.parseJSON(response);
-
-console.log(response_data);	
 
 			var data={
 				'label' : response_data.title,
