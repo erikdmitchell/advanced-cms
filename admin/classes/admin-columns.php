@@ -9,13 +9,14 @@ class PickleCMS_Admin_Component_Admin_Columns extends PickleCMS_Admin_Component 
 		$this->slug='columns';
 		$this->name='Admin Columns';
 		$this->items=$this->get_option('pickle_cms_admin_columns', array());
+		$this->version='0.1.0';
 		
 		// do not delete!
     	parent::__construct();	
 	}
 	
 	public function scripts_styles($hook) {
-		wp_enqueue_script('pickle-cms-admin-columns-script', PICKLE_CMS_ADMIN_URL.'js/admin-columns.js', array('jquery'), '0.1.0', true);	
+		wp_enqueue_script('pickle-cms-admin-columns-script', PICKLE_CMS_ADMIN_URL.'js/admin-columns.js', array('jquery'), $this->version, true);	
 	}
 	
 	public function update_admin_columns() {
@@ -44,8 +45,6 @@ class PickleCMS_Admin_Component_Admin_Columns extends PickleCMS_Admin_Component 
 		if (get_option('pickle_cms_admin_columns'))
 			$option_exists=true;
 
-		$this->options['admin_columns']=$admin_columns; // set var
-
 		$update=update_option('pickle_cms_admin_columns', $admin_columns);
 
 		if ($update) :
@@ -56,12 +55,12 @@ class PickleCMS_Admin_Component_Admin_Columns extends PickleCMS_Admin_Component 
 			$update=false;
 		endif;
 
-		$url=$this->admin_url(array(
+		$url=pickle_cms_get_admin_link(array(
 			'tab' => 'columns',
 			'action' => 'update',
-			//'id' => $data['name'],
 			'updated' => $update,
-			'edit' => 'columns'
+			'post_type' => $_POST['post_type'],
+			'metabox_taxonomy' => $_POST['metabox_taxonomy'],
 		));
 
 		wp_redirect($url);
