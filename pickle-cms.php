@@ -21,13 +21,9 @@ final class PickleCMS {
 
 	protected static $_instance=null;
 	
-	//public $metaboxes=null;
-	
 	public $post_types=null;
 	
 	public $taxonomies=null;
-	
-	public $admin_columns=null;
 
 	public static function instance() {
 		if ( is_null( self::$_instance ) ) {
@@ -68,7 +64,6 @@ final class PickleCMS {
 		 */
 		include_once(PICKLE_CMS_PATH.'classes/post-types.php');
 		include_once(PICKLE_CMS_PATH.'classes/taxonomies.php');
-		//include_once(PICKLE_CMS_PATH.'classes/admin-columns.php');
 		include_once(PICKLE_CMS_PATH.'fields/pickle-cms-fields.php'); // metabox fields
 		
 		/**
