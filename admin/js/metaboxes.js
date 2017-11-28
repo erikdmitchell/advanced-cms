@@ -10,6 +10,7 @@ jQuery(document).ready(function($) {
 		}
 	});
 
+    // delete metabox (pops up confirm dialog) //
 	$('.pickle-cms-metaboxes .metaboxes-list td a .dashicons-trash').on('click',function(e) {
 		e.preventDefault();
 

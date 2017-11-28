@@ -11,8 +11,7 @@ class PickleCMS_Admin_Component_Metaboxes extends PickleCMS_Admin_Component {
 		add_action('admin_init', array($this, 'update'));
         add_action('save_post', array($this, 'save_metabox_data'));
 		add_action('wp_ajax_pickle_cms_get_metabox', array($this, 'ajax_get'));
-		
-		add_action('wp_ajax_pickle_cms_delete_metabox', array($this, 'ajax_delete')); // check
+		add_action('wp_ajax_pickle_cms_delete_metabox', array($this, 'ajax_delete'));
 
 		$this->slug='metaboxes';
 		$this->name='Metaboxes';
@@ -144,8 +143,13 @@ class PickleCMS_Admin_Component_Metaboxes extends PickleCMS_Admin_Component {
 		wp_die();
 	}
 
-	public function ajax_delete() {
-
+	/**
+	 * ajax_delete function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function ajax_delete() {	
 		if (!isset($_POST['id']))
 			return;
 
@@ -157,20 +161,26 @@ class PickleCMS_Admin_Component_Metaboxes extends PickleCMS_Admin_Component {
 		wp_die();
 	}
 
-	public function delete_metabox($id='') {
+	/**
+	 * delete_metabox function.
+	 * 
+	 * @access protected
+	 * @param string $id (default: '')
+	 * @return void
+	 */
+	protected function delete_metabox($id='') {
 		$metaboxes=array();
 
 		// build clean array //
-		foreach ($this->options['metaboxes'] as $key => $metabox) :
-			if ($metabox['mb_id']!=$id)
+		foreach ($this->items as $metabox) :
+			if ($metabox['mb_id'] != $id) :
 				$metaboxes[]=$metabox;
+            endif;
 		endforeach;
-
-		$this->options['metaboxes']=$metaboxes; // set var
 
 		update_option('pickle_cms_metaboxes', $metaboxes); // update option
 
-		return false;
+		return true;
 	}
 
 	public function get_wp_metabox_slugs() {
