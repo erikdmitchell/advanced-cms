@@ -6,7 +6,7 @@ class PickleCMS_Admin_Component_Admin_Columns extends PickleCMS_Admin_Component 
 		add_action('admin_init', array($this, 'load_columns'));		
 		add_action('admin_init', array($this, 'update_admin_columns'));
 		add_action('wp_ajax_pickle_cms_get_column', array($this, 'ajax_get'));
-		add_action('wp_ajax_pickle_cms_delete_column', array($this, 'ajax_delete'));		
+		add_action('wp_ajax_pickle_cms_delete_column', array($this, 'ajax_delete'));
 
 		$this->slug='columns';
 		$this->name='Admin Columns';
@@ -180,16 +180,54 @@ class PickleCMS_Admin_Component_Admin_Columns extends PickleCMS_Admin_Component 
 	public function load_columns() {
         foreach ($this->items as $item) :
 	    	add_filter('manage_edit-'.$item['post_type'].'_columns', array($this, 'custom_admin_columns'));
-    		add_action('manage_'.$item['post_type'].'_posts_custom_column', array($this, 'custom_colun_row'), 10, 2);            
+    		//add_action('manage_'.$item['post_type'].'_posts_custom_column', array($this, 'custom_colun_row'), 10, 2);            
         endforeach;
 	}
 	
 	public function custom_admin_columns($columns) {
 		foreach ($this->items as $col) :
-			$columns[$col['slug']]=$col['label']; // this doth not work
+			$columns[$col['metabox_taxonomy']]=$this->get_column_label($col['metabox_taxonomy']); // this doth not work
 		endforeach;
 
 		return $columns;
+	}
+	
+	/**
+	 * get_column_label function.
+	 * 
+	 * @access protected
+	 * @param string $slug (default: '')
+	 * @return void
+	 */
+	protected function get_column_label($slug='') {
+    	global $post;
+    	
+    	$metabox_fields=array();
+    	$post_type=get_post_type($post);
+        $taxonomies=pickle_cms_get_taxonomies($post_type);
+        $metaboxes=pickle_cms_get_metaboxes($post_type);
+        $mb_tax_arr=array();
+        
+    	foreach ($metaboxes as $metabox) :
+    		$metabox_fields=array_merge($metabox_fields, pickle_cms_get_metabox_fields($metabox['mb_id']));
+    	endforeach;	        
+        
+        print_r($taxonomies); 
+        
+        foreach ($taxonomies as $taxonomy) :
+            $mb_tax_arr[$taxonomy['name']]=$taxonomy['args']['label'];
+        endforeach;
+        
+        foreach ($metabox_fields as $field) :
+            $mb_tax_arr[$field['id']]=$field['title'];
+        endforeach;
+        
+        foreach ($mb_tax_arr as $mb_tax_slug => $label) :
+            if ($mb_tax_slug==$slug)
+                return $label;
+        endforeach;   	
+        
+        return;
 	}
 	
 	public function custom_colun_row($column_name,$post_id) {
