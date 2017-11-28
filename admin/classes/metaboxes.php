@@ -4,9 +4,10 @@ class PickleCMS_Admin_Component_Metaboxes extends PickleCMS_Admin_Component {
 
     public $config='';
 
-	public function __construct() {   	
+	public function __construct() {   
+    	add_action('add_meta_boxes', array($this, 'add_meta_boxes'));	
 		add_action('admin_enqueue_scripts', array($this, 'scripts_styles'));
-		add_action('admin_init', array($this, 'add_metaboxes_to_global')); // check
+		add_action('admin_init', array($this, 'add_metaboxes_to_global'));
 		add_action('admin_init', array($this, 'update'));
 		
 
@@ -16,7 +17,7 @@ class PickleCMS_Admin_Component_Metaboxes extends PickleCMS_Admin_Component {
 
 
 		add_action('save_post', array($this, 'save_metabox_data')); // check
-		add_action('add_meta_boxes', array($this, 'add_meta_boxes')); // check
+
 
 
 		$this->slug='metaboxes';
@@ -219,21 +220,33 @@ print_r($_POST);
 		return $args;
 	}
 	
+	/**
+	 * add_metaboxes_to_global function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function add_metaboxes_to_global() {
 		global $wp_meta_boxes;
 
 		// cycle through metaboxes //
-		if (!$this->config || empty($this->config))
+		if (!$this->items || empty($this->items))
 			return false;
 
-		foreach ($this->config as $metabox) :
+		foreach ($this->items as $metabox) :
 			$callback=array();
+			$fields=$this->get_metabox_fields($metabox['mb_id']);
 
-			// grab mb fields (callback) //
-			foreach ($metabox['fields'] as $field) :
-				if (isset($field['field_id']))
-					$callback[]=$field['field_id'];
-			endforeach;
+            if (!empty($fields)) :
+
+    			// grab mb fields (callback) //
+    			foreach ($fields as $field) :
+    				if (isset($field['id'])) :
+    					$callback[]=$field['id'];
+    				endif;
+    			endforeach;
+			
+			endif;
 
 			// setup for each post type //
 			foreach ($metabox['post_types'] as $post_type) :
@@ -247,9 +260,15 @@ print_r($_POST);
 				);
 				$wp_meta_boxes[$post_type]['normal']['high']=$arr;
 			endforeach;
-		endforeach;
+		endforeach;		
 	}	
 
+	/**
+	 * add_meta_boxes function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function add_meta_boxes() {
     	global $post;
     	
@@ -277,35 +296,43 @@ print_r($_POST);
         endforeach;
 	}
 	
+	/**
+	 * generate_metabox_fields function.
+	 * 
+	 * @access public
+	 * @param mixed $post
+	 * @param mixed $metabox
+	 * @return void
+	 */
 	function generate_metabox_fields($post, $metabox) {
 		$html=null;
 		$row_counter=1;
 		$fields=$this->get_metabox_fields($metabox['id']);
-print_r($fields);
-print_r($this->items);
+		
+		if (empty($fields))
+		    return;
+
 		$html.='<div class="pickle-cms-meta-box">';
 
 			$html.=wp_nonce_field('update_metabox', 'pickle_cms_metabox', true, false);
 			
+			foreach ($fields as $field) :	
+				$classes=array('meta-row', $field['id'], 'type-'.$field['field_type']);
+				$field['value']=get_post_meta($post->ID, $field['id'], true);
+		
+				$html.='<div id="meta-row-'.$row_counter.'" class="'.implode(' ', $classes).'" data-input-id="'.$field['id'].'" data-field-type="'.$field['field_type'].'" data-field-order="">';
+					$html.='<label for="'.$field['id'].'">'.$field['title'].'</label>';
 
-	
-						foreach ($fields as $field) :	
-							$classes=array('meta-row', $field['id'], 'type-'.$field['field_type']);
-							$field['value']=get_post_meta($post->ID, $field['id'], true);
-					
-							$html.='<div id="meta-row-'.$row_counter.'" class="'.implode(' ', $classes).'" data-input-id="'.$field['id'].'" data-field-type="'.$field['field_type'].'" data-field-order="">';
-								$html.='<label for="'.$field['id'].'">'.$field['title'].'</label>';
-		
-								$html.='<div class="fields-wrap">';
-									$html.=pickle_cms_fields()->fields[$field['field_type']]->create_field($field);
-									
-									if (isset($field['description']))
-										$html.='<p class="description">'.$field['description'].'</p>';
-								$html.='</div>';
-		
-							$html.='</div>';
-							$row_counter++;																
-						endforeach;
+					$html.='<div class="fields-wrap">';
+						$html.=pickle_cms_fields()->fields[$field['field_type']]->create_field($field);
+						
+						if (isset($field['description']))
+							$html.='<p class="description">'.$field['description'].'</p>';
+					$html.='</div>';
+
+				$html.='</div>';
+				$row_counter++;																
+			endforeach;
 
 
 			$html.='<input type="hidden" id="pickle-cms-metabox-id" name="pickle-cms-metabox-id" value="'.$metabox['args']['meta_box_id'].'" />';
@@ -316,6 +343,13 @@ print_r($this->items);
 		echo $html;
 	}
 	
+	/**
+	 * get_metabox_fields function.
+	 * 
+	 * @access public
+	 * @param string $id (default: '')
+	 * @return void
+	 */
 	public function get_metabox_fields($id='') {
     	foreach ($this->items as $item) :
     	    if ($item['mb_id'] == $id) :
@@ -344,7 +378,8 @@ print_r($this->items);
 			return;
 		
 		$custom_values=array();
-	
+echo '<pre>';	
+print_r($this);
 		foreach ($this->registered_fields as $key) :
 			if (isset($_POST[$key])) :
 				$custom_values[$key]=$_POST[$key];
@@ -352,10 +387,20 @@ print_r($this->items);
 		endforeach;
 		
 		foreach ($custom_values as $meta_key => $meta_value) :
-			update_post_meta($post_id, $meta_key, $meta_value);
+			//update_post_meta($post_id, $meta_key, $meta_value);
 		endforeach;
+echo '</pre>';		
+exit;		
 	}
 
+    /**
+     * is_metabox_in_post_type function.
+     * 
+     * @access protected
+     * @param string $metabox (default: '')
+     * @param string $post_type (default: '')
+     * @return void
+     */
     protected function is_metabox_in_post_type($metabox='', $post_type='') {
         if (empty($metabox) || empty($post_type))
             return false;
