@@ -1,23 +1,45 @@
 <?php
 class PickleCMS_Admin_Component_Admin_Columns extends PickleCMS_Admin_Component {
 
+	/**
+	 * __construct function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function __construct() {
 		add_action('admin_enqueue_scripts', array($this, 'scripts_styles'));
-
+		add_action('admin_init', array($this, 'load_columns'));		
 		add_action('admin_init', array($this, 'update_admin_columns'));
+		add_action('wp_ajax_pickle_cms_get_column', array($this, 'ajax_get'));
+		add_action('wp_ajax_pickle_cms_delete_column', array($this, 'ajax_delete'));
 
 		$this->slug='columns';
 		$this->name='Admin Columns';
 		$this->items=$this->get_option('pickle_cms_admin_columns', array());
+		$this->version='0.1.0';
 		
 		// do not delete!
     	parent::__construct();	
 	}
 	
+	/**
+	 * scripts_styles function.
+	 * 
+	 * @access public
+	 * @param mixed $hook
+	 * @return void
+	 */
 	public function scripts_styles($hook) {
-		wp_enqueue_script('pickle-cms-admin-columns-script', PICKLE_CMS_ADMIN_URL.'js/admin-columns.js', array('jquery'), '0.1.0', true);	
+		wp_enqueue_script('pickle-cms-admin-columns-script', PICKLE_CMS_ADMIN_URL.'js/admin-columns.js', array('jquery'), $this->version, true);	
 	}
 	
+	/**
+	 * update_admin_columns function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function update_admin_columns() {
 		if (!isset($_POST['pickle_cms_admin']) || !wp_verify_nonce($_POST['pickle_cms_admin'], 'update_columns'))
 			return;
@@ -44,8 +66,6 @@ class PickleCMS_Admin_Component_Admin_Columns extends PickleCMS_Admin_Component 
 		if (get_option('pickle_cms_admin_columns'))
 			$option_exists=true;
 
-		$this->options['admin_columns']=$admin_columns; // set var
-
 		$update=update_option('pickle_cms_admin_columns', $admin_columns);
 
 		if ($update) :
@@ -56,18 +76,24 @@ class PickleCMS_Admin_Component_Admin_Columns extends PickleCMS_Admin_Component 
 			$update=false;
 		endif;
 
-		$url=$this->admin_url(array(
+		$url=pickle_cms_get_admin_link(array(
 			'tab' => 'columns',
 			'action' => 'update',
-			//'id' => $data['name'],
 			'updated' => $update,
-			'edit' => 'columns'
+			'post_type' => $_POST['post_type'],
+			'metabox_taxonomy' => $_POST['metabox_taxonomy'],
 		));
 
 		wp_redirect($url);
 		exit;
 	}
 
+	/**
+	 * setup function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	function setup() {
 		$default_args=array(
 			'base_url' => admin_url('tools.php?page=pickle-cms&tab=columns'),
@@ -94,6 +120,188 @@ class PickleCMS_Admin_Component_Admin_Columns extends PickleCMS_Admin_Component 
 	
 		return $args;
 	}
+
+	/**
+	 * ajax_get function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function ajax_get() {
+		if (!isset($_POST['post_type']) || !isset($_POST['taxonomy']))
+			return false;
+
+		// find matching post type //
+		foreach ($this->items as $column) :		
+			if ($column['post_type']==$_POST['post_type'] && $column['metabox_taxonomy']==$_POST['taxonomy']) :			
+				echo json_encode($column);
+				break;
+			endif;
+		endforeach;
+
+		wp_die();
+	}
+
+	/**
+	 * ajax_delete function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function ajax_delete() {	   	
+		if (!isset($_POST['post_type']) || !isset($_POST['taxonomy']))
+			return;
+
+		if ($this->delete_column($_POST['post_type'], $_POST['taxonomy']))
+			return true;
+
+		return;
+
+		wp_die();
+	}
+
+	/**
+	 * delete_column function.
+	 * 
+	 * @access protected
+	 * @param string $post_type (default: '')
+	 * @param string $taxonomy (default: '')
+	 * @return void
+	 */
+	protected function delete_column($post_type='', $taxonomy='') {
+		$cols=array();
+
+		// build clean array //
+		foreach ($this->items as $col) :		
+			if ($col['post_type'] != $post_type || $col['metabox_taxonomy'] != $taxonomy) :
+				$cols[]=$col;
+            endif;
+		endforeach;
+
+		update_option('pickle_cms_admin_columns', $cols); // update option
+
+		return true;
+	}
+	
+	public function load_columns() {
+        foreach ($this->items as $item) :
+	    	add_filter('manage_edit-'.$item['post_type'].'_columns', array($this, 'custom_admin_columns'));
+    		add_action('manage_'.$item['post_type'].'_posts_custom_column', array($this, 'custom_colun_row'), 10, 2);            
+        endforeach;
+	}
+	
+	public function custom_admin_columns($columns) {
+		foreach ($this->items as $col) :
+			$columns[$col['metabox_taxonomy']]=$this->get_column_label($col['metabox_taxonomy']); // this doth not work
+		endforeach;
+
+		return $columns;
+	}
+	
+	/**
+	 * get_column_label function.
+	 * 
+	 * @access protected
+	 * @param string $slug (default: '')
+	 * @return void
+	 */
+	protected function get_column_label($slug='') {
+    	global $post;
+    	
+    	$metabox_fields=array();
+    	$post_type=get_post_type($post);
+        $taxonomies=pickle_cms_get_taxonomies($post_type);
+        $metaboxes=pickle_cms_get_metaboxes($post_type);
+        $mb_tax_arr=array();
+        
+    	foreach ($metaboxes as $metabox) :
+    		$metabox_fields=array_merge($metabox_fields, pickle_cms_get_metabox_fields($metabox['mb_id']));
+    	endforeach;
+        
+        foreach ($taxonomies as $taxonomy) :
+            $mb_tax_arr[$taxonomy['name']]=$taxonomy['args']['label'];
+        endforeach;
+        
+        foreach ($metabox_fields as $field) :
+            $mb_tax_arr[$field['id']]=$field['title'];
+        endforeach;
+        
+        foreach ($mb_tax_arr as $mb_tax_slug => $label) :
+            if ($mb_tax_slug==$slug)
+                return $label;
+        endforeach;   	
+        
+        return;
+	}
+	
+	/**
+	 * custom_colun_row function.
+	 * 
+	 * @access public
+	 * @param mixed $column_name
+	 * @param mixed $post_id
+	 * @return void
+	 */
+	public function custom_colun_row($column_name, $post_id) {
+		$custom_fields=get_post_custom($post_id);
+
+        $type=$this->get_column_value_type($column_name, $post_id);	
+        
+		switch ($type) :
+			case 'metabox':
+				if (isset($custom_fields[$column_name][0]))
+					echo $custom_fields[$column_name][0];
+				break;
+			case 'taxonomy':
+				$terms=wp_get_post_terms($post_id, $column_name);
+				if ($terms)
+					echo $terms[0]->name;
+				break;
+			default:
+		endswitch;
+	}		
+
+    /**
+     * get_column_value_type function.
+     * 
+     * @access protected
+     * @param string $column_name (default: '')
+     * @param int $post_id (default: 0)
+     * @return void
+     */
+    protected function get_column_value_type($column_name='', $post_id=0) {
+    	$metabox_fields=array();
+    	$post_type=get_post_type($post_id);
+        $taxonomies=pickle_cms_get_taxonomies($post_type);
+        $metaboxes=pickle_cms_get_metaboxes($post_type);
+        $mb_tax_arr=array();
+        
+    	foreach ($metaboxes as $metabox) :
+    		$metabox_fields=array_merge($metabox_fields, pickle_cms_get_metabox_fields($metabox['mb_id']));
+    	endforeach;
+
+        foreach ($taxonomies as $taxonomy) :
+            $mb_tax_arr[]=array(
+                'slug' => $taxonomy['name'],
+                'type' => 'taxonomy',
+            );
+        endforeach;
+        
+        foreach ($metabox_fields as $field) :
+            $mb_tax_arr[]=array(
+                'slug' => $field['id'],
+                'type' => 'metabox',
+            );
+        endforeach;    
+        
+        foreach ($mb_tax_arr as $arr) :
+            if ($arr['slug'] == $column_name) :
+                return $arr['type'];
+            endif;
+        endforeach;
+        
+        return;    
+    }
 
 }
 
