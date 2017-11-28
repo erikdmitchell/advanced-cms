@@ -1,7 +1,7 @@
 <?php
-class pickleCMSPostTypes {
+class PickleCMS_Post_Types {
 
-	protected $post_types=array();
+	public $post_types=array();
 
 	/**
 	 * __construct function.
@@ -23,7 +23,7 @@ class pickleCMSPostTypes {
 	 */
 	function create_post_types() {
 		if (empty($this->post_types))
-			return false;
+			return;
 
 		foreach ($this->post_types as $post_type) :
 			$default_args=array(
@@ -101,6 +101,4 @@ class pickleCMSPostTypes {
 	}
 
 }
-
-new pickleCMSPostTypes();
 ?>

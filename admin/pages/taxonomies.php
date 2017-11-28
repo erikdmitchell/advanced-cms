@@ -1,5 +1,3 @@
-<?php global $pickle_cms_admin; ?>
-
 <div class="pickle-cms-admin-page taxonomies-page">
 
 	<h2>Taxonomies <a href="<?php pickle_cms_admin_link(array('tab' => 'taxonomies', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h2>
@@ -14,8 +12,8 @@
 		</thead>
 
 		<tbody class="taxonomies-list">
-			<?php if (count($pickle_cms_admin->options['taxonomies'])) : ?>
-				<?php foreach($pickle_cms_admin->options['taxonomies'] as $taxonomy) : ?>
+			<?php if (count(picklecms()->admin->components['taxonomies']->items)) : ?>
+				<?php foreach(picklecms()->admin->components['taxonomies']->items as $taxonomy) : ?>
 					<tr id="taxonomy-<?php echo $taxonomy['name']; ?>">
 						<td class="id" data-colname="ID"><?php echo $taxonomy['name']; ?></td>
 						<td class="metabox" data-colname="Metabox">

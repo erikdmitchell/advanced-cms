@@ -1,1 +1,0 @@
-<input type="text" class="email validator regular-text" name="<?php echo $atts['id']; ?>" id="<?php echo $atts['id']; ?>" value="<?php echo $value; ?>" />

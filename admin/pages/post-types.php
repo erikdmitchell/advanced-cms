@@ -1,5 +1,3 @@
-<?php global $pickle_cms_admin; ?>
-
 <div class="pickle-cms-admin-page post-types-page">
 
 	<h2>Post Types <a href="<?php pickle_cms_admin_link(array('tab' => 'post-types', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h2>
@@ -16,8 +14,8 @@
 		</thead>
 
 		<tbody class="post-type-list">
-			<?php if (count($pickle_cms_admin->options['post_types'])) : ?>
-				<?php foreach($pickle_cms_admin->options['post_types'] as $id => $post_type) : ?>
+			<?php if (count(picklecms()->admin->components['post-types']->items)) : ?>
+				<?php foreach(picklecms()->admin->components['post-types']->items as $id => $post_type) : ?>
 					<tr id="post-type-<?php echo $id; ?>" class="post-type">
 						<td class="post-type" data-colname="Post Type">
 							<strong><a class="row-title" href="<?php pickle_cms_admin_link(array('tab' => 'post-types', 'action' => 'update', 'slug' => $post_type['name'])); ?>"><?php echo $post_type['label']; ?></a></strong>

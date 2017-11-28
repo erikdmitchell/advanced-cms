@@ -1,7 +1,7 @@
 <?php
-class pickleCMSTaxonomies {
+class PickleCMS_Taxonomies {
 
-	protected $taxonomies=array();
+	public $taxonomies=array();
 
 	/**
 	 * __construct function.
@@ -34,6 +34,4 @@ class pickleCMSTaxonomies {
 	}
 
 }
-
-new pickleCMSTaxonomies();
 ?>
