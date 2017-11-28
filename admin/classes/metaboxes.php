@@ -9,10 +9,9 @@ class PickleCMS_Admin_Component_Metaboxes extends PickleCMS_Admin_Component {
 		add_action('admin_enqueue_scripts', array($this, 'scripts_styles'));
 		add_action('admin_init', array($this, 'add_metaboxes_to_global'));
 		add_action('admin_init', array($this, 'update'));
-		
         add_action('save_post', array($this, 'save_metabox_data'));
+		add_action('wp_ajax_pickle_cms_get_metabox', array($this, 'ajax_get'));
 		
-		add_action('wp_ajax_pickle_cms_get_metabox', array($this, 'ajax_get')); // check
 		add_action('wp_ajax_pickle_cms_delete_metabox', array($this, 'ajax_delete')); // check
 
 		$this->slug='metaboxes';
@@ -124,12 +123,18 @@ class PickleCMS_Admin_Component_Metaboxes extends PickleCMS_Admin_Component {
 		return;
 	}
 
+	/**
+	 * ajax_get function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function ajax_get() {
 		if (!isset($_POST['id']))
 			return false;
-print_r($_POST);
+
 		// find matching post type //
-		foreach ($this->options['metaboxes'] as $metabox) :
+		foreach ($this->items as $metabox) :
 			if ($metabox['mb_id']==$_POST['id']) :
 				echo json_encode($metabox);
 				break;
