@@ -48,7 +48,8 @@ class PickleCMS_Admin_Component_Post_Types extends PickleCMS_Admin_Component {
 			'hierarchical' => $data['hierarchical'],
 			'icon' => $data['icon'],
 		);
-		$url=$this->admin_url(array(
+		
+		$url=pickle_cms_get_admin_link(array(
 			'tab' => 'post-types',
 			'action' => 'update',
 			'edit' => 'cpt',
