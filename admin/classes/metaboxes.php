@@ -10,15 +10,10 @@ class PickleCMS_Admin_Component_Metaboxes extends PickleCMS_Admin_Component {
 		add_action('admin_init', array($this, 'add_metaboxes_to_global'));
 		add_action('admin_init', array($this, 'update'));
 		
-
+        add_action('save_post', array($this, 'save_metabox_data'));
 		
 		add_action('wp_ajax_pickle_cms_get_metabox', array($this, 'ajax_get')); // check
 		add_action('wp_ajax_pickle_cms_delete_metabox', array($this, 'ajax_delete')); // check
-
-
-		add_action('save_post', array($this, 'save_metabox_data')); // check
-
-
 
 		$this->slug='metaboxes';
 		$this->name='Metaboxes';
@@ -364,6 +359,13 @@ print_r($_POST);
     	return;
 	}	
 
+	/**
+	 * save_metabox_data function.
+	 * 
+	 * @access public
+	 * @param mixed $post_id
+	 * @return void
+	 */
 	public function save_metabox_data($post_id) {
 		// Bail if we're doing an auto save
 		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) 
@@ -378,19 +380,22 @@ print_r($_POST);
 			return;
 		
 		$custom_values=array();
-echo '<pre>';	
-print_r($this);
-		foreach ($this->registered_fields as $key) :
-			if (isset($_POST[$key])) :
-				$custom_values[$key]=$_POST[$key];
+        $metaboxes=$this->get_post_type_metaboxes(get_post_type($post_id));
+        
+        // loop through mb fields and see if they're in our $_POST //
+		foreach ($metaboxes as $metabox) :
+		    if (isset($metabox['fields'])) :
+    		    foreach ($metabox['fields'] as $field) :   		    
+        			if (isset($_POST[$field['id']])) :
+        				$custom_values[$field['id']]=$_POST[$field['id']];
+                    endif;
+    			endforeach;
 			endif;
 		endforeach;
-		
+	
 		foreach ($custom_values as $meta_key => $meta_value) :
-			//update_post_meta($post_id, $meta_key, $meta_value);
+			update_post_meta($post_id, $meta_key, $meta_value);
 		endforeach;
-echo '</pre>';		
-exit;		
 	}
 
     /**
@@ -409,6 +414,21 @@ exit;
             return true;
             
         return false;            
+    }
+    
+    protected function get_post_type_metaboxes($post_type='') {
+        if (empty($post_type))
+            return;
+            
+        $metaboxes=array();
+            
+        foreach ($this->items as $item) :
+            if ($this->is_metabox_in_post_type($item, $post_type)) :
+                $metaboxes[]=$item;
+            endif;
+        endforeach;
+        
+        return $metaboxes;
     }
 
 }
