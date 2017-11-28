@@ -1,6 +1,12 @@
 <?php
 class PickleCMS_Admin_Component_Admin_Columns extends PickleCMS_Admin_Component {
 
+	/**
+	 * __construct function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function __construct() {
 		add_action('admin_enqueue_scripts', array($this, 'scripts_styles'));
 		add_action('admin_init', array($this, 'load_columns'));		
@@ -180,7 +186,7 @@ class PickleCMS_Admin_Component_Admin_Columns extends PickleCMS_Admin_Component 
 	public function load_columns() {
         foreach ($this->items as $item) :
 	    	add_filter('manage_edit-'.$item['post_type'].'_columns', array($this, 'custom_admin_columns'));
-    		//add_action('manage_'.$item['post_type'].'_posts_custom_column', array($this, 'custom_colun_row'), 10, 2);            
+    		add_action('manage_'.$item['post_type'].'_posts_custom_column', array($this, 'custom_colun_row'), 10, 2);            
         endforeach;
 	}
 	
@@ -210,9 +216,7 @@ class PickleCMS_Admin_Component_Admin_Columns extends PickleCMS_Admin_Component 
         
     	foreach ($metaboxes as $metabox) :
     		$metabox_fields=array_merge($metabox_fields, pickle_cms_get_metabox_fields($metabox['mb_id']));
-    	endforeach;	        
-        
-        print_r($taxonomies); 
+    	endforeach;
         
         foreach ($taxonomies as $taxonomy) :
             $mb_tax_arr[$taxonomy['name']]=$taxonomy['args']['label'];
@@ -230,35 +234,74 @@ class PickleCMS_Admin_Component_Admin_Columns extends PickleCMS_Admin_Component 
         return;
 	}
 	
-	public function custom_colun_row($column_name,$post_id) {
+	/**
+	 * custom_colun_row function.
+	 * 
+	 * @access public
+	 * @param mixed $column_name
+	 * @param mixed $post_id
+	 * @return void
+	 */
+	public function custom_colun_row($column_name, $post_id) {
 		$custom_fields=get_post_custom($post_id);
 
-		foreach ($this->config['columns'] as $col) :
-			if ($col['slug']==$column_name) :
-				if (isset($col['type'])) :
-				switch ($col['type']) :
-					case 'meta':
-						if (isset($custom_fields[$col['slug']][0]))
-							echo $custom_fields[$col['slug']][0];
-						break;
-					case 'taxonomy':
-						$terms=wp_get_post_terms($post_id,$col['slug']);
-						if ($terms)
-							echo $terms[0]->name;
-						break;
-					default: // meta //
-						if (isset($custom_fields[$col['slug']][0]))
-							echo $custom_fields[$col['slug']][0];
-						break;
-				endswitch;
-				else :
-					// assume meta for legacy (1.0.1) purposes //
-					if (isset($custom_fields[$col['slug']][0]))
-						echo $custom_fields[$col['slug']][0];
-				endif;
-			endif;
-		endforeach;
+        $type=$this->get_column_value_type($column_name, $post_id);	
+        
+		switch ($type) :
+			case 'metabox':
+				if (isset($custom_fields[$column_name][0]))
+					echo $custom_fields[$column_name][0];
+				break;
+			case 'taxonomy':
+				$terms=wp_get_post_terms($post_id, $column_name);
+				if ($terms)
+					echo $terms[0]->name;
+				break;
+			default:
+		endswitch;
 	}		
+
+    /**
+     * get_column_value_type function.
+     * 
+     * @access protected
+     * @param string $column_name (default: '')
+     * @param int $post_id (default: 0)
+     * @return void
+     */
+    protected function get_column_value_type($column_name='', $post_id=0) {
+    	$metabox_fields=array();
+    	$post_type=get_post_type($post_id);
+        $taxonomies=pickle_cms_get_taxonomies($post_type);
+        $metaboxes=pickle_cms_get_metaboxes($post_type);
+        $mb_tax_arr=array();
+        
+    	foreach ($metaboxes as $metabox) :
+    		$metabox_fields=array_merge($metabox_fields, pickle_cms_get_metabox_fields($metabox['mb_id']));
+    	endforeach;
+
+        foreach ($taxonomies as $taxonomy) :
+            $mb_tax_arr[]=array(
+                'slug' => $taxonomy['name'],
+                'type' => 'taxonomy',
+            );
+        endforeach;
+        
+        foreach ($metabox_fields as $field) :
+            $mb_tax_arr[]=array(
+                'slug' => $field['id'],
+                'type' => 'metabox',
+            );
+        endforeach;    
+        
+        foreach ($mb_tax_arr as $arr) :
+            if ($arr['slug'] == $column_name) :
+                return $arr['type'];
+            endif;
+        endforeach;
+        
+        return;    
+    }
 
 }
 
