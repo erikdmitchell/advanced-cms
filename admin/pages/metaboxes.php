@@ -1,5 +1,3 @@
-<?php global $pickle_cms_admin; ?>
-
 <div class="pickle-cms-admin-page metaboxes-page">
 
 	<h2>Metaboxes <a href="<?php pickle_cms_admin_link(array('tab' => 'metaboxes', 'action' => 'update')); ?>" class="page-title-action">Add New</a></h2>
@@ -15,8 +13,8 @@
 		</thead>
 
 		<tbody class="metaboxes-list">
-			<?php if (count($pickle_cms_admin->options['metaboxes'])) : ?>
-				<?php foreach($pickle_cms_admin->options['metaboxes'] as $metabox) : ?>
+			<?php if (count(picklecms()->admin->components['metaboxes']->items)) : ?>
+				<?php foreach(picklecms()->admin->components['metaboxes']->items as $metabox) : ?>
 					<tr id="metabox-<?php echo $metabox['mb_id']; ?>">
 						<td class="id" data-colname="ID">
 							<?php echo $metabox['mb_id']; ?>

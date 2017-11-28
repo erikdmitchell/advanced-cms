@@ -11,24 +11,98 @@ Domain PAth: /languages
 License: GPL2
 */
 
-define('PICKLE_CMS_PATH', plugin_dir_path(__FILE__));
-define('PICKLE_CMS_URL', plugin_dir_url(__FILE__));
-define('PICKLE_CMS_ADMIN_PATH', plugin_dir_path(__FILE__).'admin/');
-define('PICKLE_CMS_ADMIN_URL', plugin_dir_url(__FILE__).'admin/');
-define('PICKLE_CMS_VERSION', '0.1.0');
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
 
-require_once(PICKLE_CMS_PATH.'admin/functions.php'); // admin functions
-require_once(PICKLE_CMS_PATH.'admin.php'); // admin class
-//require_once(PICKLE_CMS_PATH.'admin/documentation/init.php'); // handles our documentation
-//require_once(PICKLE_CMS_PATH.'classes/admin-columns.php'); // allows for custom admin columns
-//require_once(PICKLE_CMS_PATH.'classes/taxonomies.php'); // calls custom taxonomies
-//require_once(PICKLE_CMS_PATH.'classes/post-types.php'); // calls custom post types
-require_once(PICKLE_CMS_PATH.'classes/metaboxes.php'); // our custom metabox class
-require_once(PICKLE_CMS_PATH.'functions.php'); // contains misc functions
-require_once(PICKLE_CMS_PATH.'lib/countries-states.php'); // contains global vars/arrays for states and countries
-//require_once(PICKLE_CMS_PATH.'shortcodes/init.php'); // our shortcodes
-//require_once(PICKLE_CMS_PATH.'widgets/init.php'); // our widgets
+final class PickleCMS {
 
-// metabox fields //
-require_once(PICKLE_CMS_PATH.'fields/pickle-cms-fields.php');
+	public $version='0.1.0';
+
+	protected static $_instance=null;
+	
+	//public $metaboxes=null;
+	
+	public $post_types=null;
+	
+	public $taxonomies=null;
+	
+	public $admin_columns=null;
+
+	public static function instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+		
+		return self::$_instance;
+	}
+
+	public function __construct() {
+		$this->define_constants();
+		$this->includes();
+		$this->init_hooks();
+	}
+
+	private function define_constants() {
+		$this->define('PICKLE_CMS_PATH', plugin_dir_path(__FILE__));
+		$this->define('PICKLE_CMS_URL', plugin_dir_url(__FILE__));
+		$this->define('PICKLE_CMS_ADMIN_PATH', plugin_dir_path(__FILE__).'admin/');
+		$this->define('PICKLE_CMS_ADMIN_URL', plugin_dir_url(__FILE__).'admin/');
+		$this->define('PICKLE_CMS_VERSION', $this->version);
+	}
+
+	private function define( $name, $value ) {
+		if ( ! defined( $name ) ) {
+			define( $name, $value );
+		}
+	}
+
+	public function includes() {
+		/**
+		 * general
+		 */
+		include_once(PICKLE_CMS_PATH.'functions.php'); // contains misc functions
+		
+		/**
+		 * classes
+		 */
+		include_once(PICKLE_CMS_PATH.'classes/metaboxes.php');
+		include_once(PICKLE_CMS_PATH.'classes/post-types.php');
+		include_once(PICKLE_CMS_PATH.'classes/taxonomies.php');
+		//include_once(PICKLE_CMS_PATH.'classes/admin-columns.php');
+		include_once(PICKLE_CMS_PATH.'fields/pickle-cms-fields.php'); // metabox fields
+		
+		/**
+		 * libraries
+		 */
+		include_once(PICKLE_CMS_PATH.'lib/countries-states.php'); // contains global vars/arrays for states and countries
+		
+		/**
+		 * admin
+		 */
+		include_once(PICKLE_CMS_ADMIN_PATH.'classes/admin.php');
+		include_once(PICKLE_CMS_ADMIN_PATH.'classes/component.php');		
+		include_once(PICKLE_CMS_ADMIN_PATH.'classes/post-types.php');		
+		include_once(PICKLE_CMS_ADMIN_PATH.'classes/metaboxes.php');
+		include_once(PICKLE_CMS_ADMIN_PATH.'classes/taxonomies.php');
+		include_once(PICKLE_CMS_ADMIN_PATH.'classes/admin-columns.php');		
+		include_once(PICKLE_CMS_PATH.'admin/functions.php'); // admin functions
+		
+		if (is_admin()) :
+			$this->admin=new PickleCMS_Admin();
+		endif;
+	}
+
+	private function init_hooks() {
+
+	}
+
+}
+
+function picklecms() {
+	return PickleCMS::instance();
+}
+
+// Global for backwards compatibility.
+$GLOBALS['picklecms'] = picklecms();
 ?>

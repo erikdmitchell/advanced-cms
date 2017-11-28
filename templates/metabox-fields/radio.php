@@ -1,1 +1,0 @@
-<input type="radio" class="field-input" name="<?php echo $atts['id']; ?>" id="<?php echo $atts['id']; ?>" value="<?php echo $atts['value']; ?>" <?php checked($value, $atts['value']); ?> /> <?php echo $atts['name']; ?> <br/>

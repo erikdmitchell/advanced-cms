@@ -48,4 +48,19 @@ function get_pickle_cms_admin_tab() {
 
 	return false;
 }
+
+function pickle_cms_get_admin_link($args='') {
+	$default_args=array(
+		'page' => 'pickle-cms',
+	);
+	$args=wp_parse_args($args, $default_args);
+
+	$url=add_query_arg($args, admin_url('tools.php'));
+
+	return $url;
+}
+
+function pickle_cms_admin_link($args='') {
+	echo pickle_cms_get_admin_link($args);
+}
 ?>
