@@ -2,8 +2,12 @@
 
 class PickleCMS_Admin_Component_Metaboxes extends PickleCMS_Admin_Component {
 
-    public $config='';
-
+	/**
+	 * __construct function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function __construct() {   
     	add_action('add_meta_boxes', array($this, 'add_meta_boxes'));	
 		add_action('admin_enqueue_scripts', array($this, 'scripts_styles'));
@@ -183,6 +187,12 @@ class PickleCMS_Admin_Component_Metaboxes extends PickleCMS_Admin_Component {
 		return true;
 	}
 
+	/**
+	 * get_wp_metabox_slugs function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function get_wp_metabox_slugs() {
 		global $wp_meta_boxes;
 
@@ -201,6 +211,12 @@ class PickleCMS_Admin_Component_Metaboxes extends PickleCMS_Admin_Component {
 		return $meta_box_slugs;
 	}
 
+	/**
+	 * setup function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function setup() {
 		$default_args=array(
 			'base_url' => admin_url('tools.php?page=pickle-cms&tab=metaboxes'),
@@ -431,6 +447,13 @@ class PickleCMS_Admin_Component_Metaboxes extends PickleCMS_Admin_Component {
         return false;            
     }
     
+    /**
+     * get_post_type_metaboxes function.
+     * 
+     * @access protected
+     * @param string $post_type (default: '')
+     * @return void
+     */
     protected function get_post_type_metaboxes($post_type='') {
         if (empty($post_type))
             return;
