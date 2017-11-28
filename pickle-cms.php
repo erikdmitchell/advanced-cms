@@ -66,7 +66,6 @@ final class PickleCMS {
 		/**
 		 * classes
 		 */
-		include_once(PICKLE_CMS_PATH.'classes/metaboxes.php');
 		include_once(PICKLE_CMS_PATH.'classes/post-types.php');
 		include_once(PICKLE_CMS_PATH.'classes/taxonomies.php');
 		//include_once(PICKLE_CMS_PATH.'classes/admin-columns.php');
