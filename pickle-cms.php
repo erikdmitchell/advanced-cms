@@ -87,6 +87,8 @@ final class PickleCMS {
 		include_once(PICKLE_CMS_ADMIN_PATH.'classes/admin-columns.php');		
 		include_once(PICKLE_CMS_PATH.'admin/functions.php'); // admin functions
 		
+		$this->post_types=new PickleCMS_Post_Types();
+		
 		if (is_admin()) :
 			$this->admin=new PickleCMS_Admin();
 		endif;
