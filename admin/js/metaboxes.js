@@ -10,6 +10,7 @@ jQuery(document).ready(function($) {
 		}
 	});
 
+    // delete metabox (pops up confirm dialog) //
 	$('.pickle-cms-metaboxes .metaboxes-list td a .dashicons-trash').on('click',function(e) {
 		e.preventDefault();
 
@@ -19,10 +20,7 @@ jQuery(document).ready(function($) {
 		};
 
 		$.post(ajaxurl, data, function(response) {
-console.log(response);
 			var response_data=$.parseJSON(response);
-
-console.log(response_data);	
 
 			var data={
 				'label' : response_data.title,

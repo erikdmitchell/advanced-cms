@@ -44,14 +44,14 @@ class PickleCMS_Admin {
 
 		$ui = $wp_scripts->query('jquery-ui-core');
 				
-		//wp_enqueue_script('jquery-ui-dialog');
-		//wp_enqueue_script('jquery-ui-sortable');
+		wp_enqueue_script('jquery-ui-dialog');
+		wp_enqueue_script('jquery-ui-sortable');
 		wp_enqueue_script('namecheck-script', PICKLE_CMS_URL.'js/jquery.namecheck.js', array('jquery'), '0.1.0');
 
 		wp_enqueue_script('requiredFields-script', PICKLE_CMS_ADMIN_URL.'js/jquery.requiredFields.js', array('jquery'), '0.1.0');
 		wp_enqueue_script('pickle-cms-admin-functions', PICKLE_CMS_ADMIN_URL.'js/functions.js', array('jquery'), '0.1.0');
 
-		//wp_enqueue_style('jquery-ui-smoothness', "https://ajax.googleapis.com/ajax/libs/jqueryui/{$ui->ver}/themes/smoothness/jquery-ui.min.css");
+		wp_enqueue_style('jquery-ui-smoothness', "https://ajax.googleapis.com/ajax/libs/jqueryui/{$ui->ver}/themes/smoothness/jquery-ui.min.css");
 		wp_enqueue_style('pickle-cms-admin-style', PICKLE_CMS_ADMIN_URL.'css/admin.css');
 	}
 
