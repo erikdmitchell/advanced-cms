@@ -1,7 +1,7 @@
 <?php
 class PickleCMS_Taxonomies {
 
-	protected $taxonomies=array();
+	public $taxonomies=array();
 
 	/**
 	 * __construct function.
