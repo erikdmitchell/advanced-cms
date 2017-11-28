@@ -1,7 +1,7 @@
 /**
  * validates our taxonomy id
  *
- * @since 2.1.9.1
+ * @since 1.0.0
  */
 (function($) {
 	$.fn.taxonomyIDcheck=function($this, value, options) {

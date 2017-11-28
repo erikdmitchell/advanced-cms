@@ -1,6 +1,18 @@
 <?php
+    
+/**
+ * PickleCMS_Admin_Component_Taxonomies class.
+ * 
+ * @extends PickleCMS_Admin_Component
+ */
 class PickleCMS_Admin_Component_Taxonomies extends PickleCMS_Admin_Component {
 
+	/**
+	 * __construct function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function __construct() {
 		add_action('admin_enqueue_scripts', array($this, 'scripts_styles'));
 
@@ -12,17 +24,31 @@ class PickleCMS_Admin_Component_Taxonomies extends PickleCMS_Admin_Component {
 		$this->slug='taxonomies';
 		$this->name='Taxonomies';
 		$this->items=$this->get_option('pickle_cms_taxonomies', array());
+		$this->version='0.1.0';
 		
 		// do not delete!
     	parent::__construct();	
 	}
 
+	/**
+	 * scripts_styles function.
+	 * 
+	 * @access public
+	 * @param mixed $hook
+	 * @return void
+	 */
 	public function scripts_styles($hook) {
-		wp_enqueue_script('taxonomy-id-check-script', PICKLE_CMS_URL.'js/jquery.taxonomy-id-check.js', array('jquery'), '0.1.0');
+		wp_enqueue_script('taxonomy-id-check-script', PICKLE_CMS_ADMIN_URL.'js/jquery.taxonomy-id-check.js', array('jquery'), $this->version, true);
 		
-		wp_enqueue_script('pickle-cms-admin-taxonomies', PICKLE_CMS_ADMIN_URL.'js/taxonomies.js', array('jquery'), '0.1.0');
+		wp_enqueue_script('pickle-cms-admin-taxonomies', PICKLE_CMS_ADMIN_URL.'js/taxonomies.js', array('jquery'), $this->version, true);
 	}
 
+	/**
+	 * update function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function update() {
 		if (!isset($_POST['pickle_cms_admin']) || !wp_verify_nonce($_POST['pickle_cms_admin'], 'update_taxonomies'))
 			return false;
@@ -82,6 +108,12 @@ class PickleCMS_Admin_Component_Taxonomies extends PickleCMS_Admin_Component {
 		exit();
 	}
 
+	/**
+	 * ajax_get function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function ajax_get() {
 		if (!isset($_POST['name']))
 			return false;
@@ -97,6 +129,12 @@ class PickleCMS_Admin_Component_Taxonomies extends PickleCMS_Admin_Component {
 		wp_die();
 	}
 
+	/**
+	 * ajax_delete function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function ajax_delete() {
 		if (!isset($_POST['id']))
 			return;
@@ -109,6 +147,13 @@ class PickleCMS_Admin_Component_Taxonomies extends PickleCMS_Admin_Component {
 		wp_die();
 	}
 
+	/**
+	 * delete function.
+	 * 
+	 * @access public
+	 * @param string $name (default: '')
+	 * @return void
+	 */
 	public function delete($name='') {
 		$taxonomies=array();
 
@@ -123,6 +168,12 @@ class PickleCMS_Admin_Component_Taxonomies extends PickleCMS_Admin_Component {
 		return false;
 	}
 
+	/**
+	 * setup function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function setup() {
 		$default_args=array(
 			'btn_text' => 'Create',
