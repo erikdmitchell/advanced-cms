@@ -3,8 +3,10 @@ class PickleCMS_Admin_Component_Admin_Columns extends PickleCMS_Admin_Component 
 
 	public function __construct() {
 		add_action('admin_enqueue_scripts', array($this, 'scripts_styles'));
-
+		add_action('admin_init', array($this, 'load_columns'));		
 		add_action('admin_init', array($this, 'update_admin_columns'));
+		add_action('wp_ajax_pickle_cms_get_column', array($this, 'ajax_get'));
+		add_action('wp_ajax_pickle_cms_delete_column', array($this, 'ajax_delete'));		
 
 		$this->slug='columns';
 		$this->name='Admin Columns';
@@ -15,10 +17,23 @@ class PickleCMS_Admin_Component_Admin_Columns extends PickleCMS_Admin_Component 
     	parent::__construct();	
 	}
 	
+	/**
+	 * scripts_styles function.
+	 * 
+	 * @access public
+	 * @param mixed $hook
+	 * @return void
+	 */
 	public function scripts_styles($hook) {
 		wp_enqueue_script('pickle-cms-admin-columns-script', PICKLE_CMS_ADMIN_URL.'js/admin-columns.js', array('jquery'), $this->version, true);	
 	}
 	
+	/**
+	 * update_admin_columns function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	public function update_admin_columns() {
 		if (!isset($_POST['pickle_cms_admin']) || !wp_verify_nonce($_POST['pickle_cms_admin'], 'update_columns'))
 			return;
@@ -67,6 +82,12 @@ class PickleCMS_Admin_Component_Admin_Columns extends PickleCMS_Admin_Component 
 		exit;
 	}
 
+	/**
+	 * setup function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
 	function setup() {
 		$default_args=array(
 			'base_url' => admin_url('tools.php?page=pickle-cms&tab=columns'),
@@ -93,6 +114,113 @@ class PickleCMS_Admin_Component_Admin_Columns extends PickleCMS_Admin_Component 
 	
 		return $args;
 	}
+
+	/**
+	 * ajax_get function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function ajax_get() {
+		if (!isset($_POST['post_type']) || !isset($_POST['taxonomy']))
+			return false;
+
+		// find matching post type //
+		foreach ($this->items as $column) :		
+			if ($column['post_type']==$_POST['post_type'] && $column['metabox_taxonomy']==$_POST['taxonomy']) :			
+				echo json_encode($column);
+				break;
+			endif;
+		endforeach;
+
+		wp_die();
+	}
+
+	/**
+	 * ajax_delete function.
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function ajax_delete() {	   	
+		if (!isset($_POST['post_type']) || !isset($_POST['taxonomy']))
+			return;
+
+		if ($this->delete_column($_POST['post_type'], $_POST['taxonomy']))
+			return true;
+
+		return;
+
+		wp_die();
+	}
+
+	/**
+	 * delete_column function.
+	 * 
+	 * @access protected
+	 * @param string $post_type (default: '')
+	 * @param string $taxonomy (default: '')
+	 * @return void
+	 */
+	protected function delete_column($post_type='', $taxonomy='') {
+		$cols=array();
+
+		// build clean array //
+		foreach ($this->items as $col) :		
+			if ($col['post_type'] != $post_type || $col['metabox_taxonomy'] != $taxonomy) :
+				$cols[]=$col;
+            endif;
+		endforeach;
+
+		update_option('pickle_cms_admin_columns', $cols); // update option
+
+		return true;
+	}
+	
+	public function load_columns() {
+        foreach ($this->items as $item) :
+	    	add_filter('manage_edit-'.$item['post_type'].'_columns', array($this, 'custom_admin_columns'));
+    		add_action('manage_'.$item['post_type'].'_posts_custom_column', array($this, 'custom_colun_row'), 10, 2);            
+        endforeach;
+	}
+	
+	public function custom_admin_columns($columns) {
+		foreach ($this->items as $col) :
+			$columns[$col['slug']]=$col['label']; // this doth not work
+		endforeach;
+
+		return $columns;
+	}
+	
+	public function custom_colun_row($column_name,$post_id) {
+		$custom_fields=get_post_custom($post_id);
+
+		foreach ($this->config['columns'] as $col) :
+			if ($col['slug']==$column_name) :
+				if (isset($col['type'])) :
+				switch ($col['type']) :
+					case 'meta':
+						if (isset($custom_fields[$col['slug']][0]))
+							echo $custom_fields[$col['slug']][0];
+						break;
+					case 'taxonomy':
+						$terms=wp_get_post_terms($post_id,$col['slug']);
+						if ($terms)
+							echo $terms[0]->name;
+						break;
+					default: // meta //
+						if (isset($custom_fields[$col['slug']][0]))
+							echo $custom_fields[$col['slug']][0];
+						break;
+				endswitch;
+				else :
+					// assume meta for legacy (1.0.1) purposes //
+					if (isset($custom_fields[$col['slug']][0]))
+						echo $custom_fields[$col['slug']][0];
+				endif;
+			endif;
+		endforeach;
+	}		
 
 }
 

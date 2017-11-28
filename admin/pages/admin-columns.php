@@ -18,7 +18,7 @@
 							<strong><a class="row-title" href="<?php pickle_cms_admin_link(array('tab' => 'columns', 'action' => 'update', 'post_type' => $column['post_type'], 'metabox_taxonomy' => $column['metabox_taxonomy'])); ?>"><?php echo $column['post_type']; ?></a></strong>
 						</td>
 						<td class="taxonomy-meta" data-colname="Taxonomy/Meta"><?php echo $column['metabox_taxonomy']; ?></td>
-						<td class="actions" data-colname="Actions"><a href="<?php pickle_cms_admin_link(); ?>"><span class="dashicons dashicons-trash" data-slug=""></span></a></td>
+						<td class="actions" data-colname="Actions"><a href="<?php pickle_cms_admin_link(); ?>"><span class="dashicons dashicons-trash" data-post-type="<?php echo $column['post_type']; ?>" data-taxonomy="<?php echo $column['metabox_taxonomy']; ?>"></span></a></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>

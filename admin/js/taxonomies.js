@@ -35,7 +35,7 @@ jQuery(document).ready(function($) {
 				'id' : response_data.name
 			}
 
-			setupDialogBox(data, delete_data, 'metabox');
+			setupDialogBox(data, delete_data, 'taxonomy');
 		});
 	});
 
