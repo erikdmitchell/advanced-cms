@@ -60,9 +60,7 @@ class PickleCMS_Admin_Component_Taxonomies extends PickleCMS_Admin_Component {
 		if (get_option('pickle_cms_taxonomies'))
 			$option_exists=true;
 
-		$this->options['taxonomies']=$taxonomies; // set var
-
-		$update=update_option('pickle_cms_taxonomies',$taxonomies);
+		$update=update_option('pickle_cms_taxonomies', $taxonomies);
 
 		if ($update) :
 			$update=true;
@@ -72,7 +70,7 @@ class PickleCMS_Admin_Component_Taxonomies extends PickleCMS_Admin_Component {
 			$update=false;
 		endif;
 
-		$url=$this->admin_url(array(
+		$url=pickle_cms_get_admin_link(array(
 			'tab' => 'taxonomies',
 			'action' => 'update',
 			'id' => $data['name'],
@@ -89,7 +87,7 @@ class PickleCMS_Admin_Component_Taxonomies extends PickleCMS_Admin_Component {
 			return false;
 
 		// find matching post type //
-		foreach ($this->options['taxonomies'] as $taxonomy) :
+		foreach ($this->items as $taxonomy) :
 			if ($taxonomy['name']==$_POST['name']) :
 				echo json_encode($taxonomy);
 				break;
@@ -115,12 +113,10 @@ class PickleCMS_Admin_Component_Taxonomies extends PickleCMS_Admin_Component {
 		$taxonomies=array();
 
 		// build clean array //
-		foreach ($this->options['taxonomies'] as $key => $taxonomy) :
+		foreach ($this->items as $taxonomy) :
 			if ($taxonomy['name']!=$name)
 				$taxonomies[]=$taxonomy;
 		endforeach;
-
-		$this->options['taxonomies']=$taxonomies; // set var
 
 		update_option('pickle_cms_taxonomies', $taxonomies); // update option
 
